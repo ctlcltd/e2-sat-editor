@@ -2791,7 +2791,7 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, int pos, int offset, int& end,
 					print_obj_pair(TYPE::ssid, chref.ref.ssid), print_obj_sep();
 					print_obj_pair(TYPE::tsid, chref.ref.tsid), print_obj_sep();
 					print_obj_pair(TYPE::stype, chref.anum), print_obj_sep();
-					print_obj_pair(TYPE::churi, chref.uri), print_obj_sep();
+					print_obj_pair(TYPE::churl, chref.url), print_obj_sep();
 					print_obj_pair(TYPE::refid, refid), print_obj_sep();
 					print_obj_pair(TYPE::idx, it->first), print_obj_sep(1);
 					print_obj_end(), print_obj_dlm();
@@ -3255,7 +3255,7 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 				chref.stream = true;
 				chref.etype = any_cast<int>(field(TYPE::etype));
 				chref.value = any_cast<string>(field(TYPE::chvalue));
-				chref.uri = any_cast<string>(field(TYPE::churi));
+				chref.url = any_cast<string>(field(TYPE::churl));
 
 				if (chref.etype == 0)
 					chref.etype = 1;
@@ -3651,7 +3651,7 @@ void e2db_cli::print_obj_pair(TYPE type, std::any val)
 		case TYPE::mname: name = hrn ? "Marker Name" : "mname"; value_type = VALUE::val_string; break;
 		case TYPE::mnum: name = hrn ? "Marker Number" : "mnum"; value_type = VALUE::val_int; break;
 		case TYPE::chvalue: name = hrn ? "Channel Name" : "chvalue"; value_type = VALUE::val_string; break;
-		case TYPE::churi: name = hrn ? "Channel URI" : "churi"; value_type = VALUE::val_string; break;
+		case TYPE::churl: name = hrn ? "Channel URL" : "churl"; value_type = VALUE::val_string; break;
 		case TYPE::etype: name = hrn ? "Favourite Type" : "etype"; value_type = VALUE::val_int; break;
 		case TYPE::atype: name = hrn ? "Favourite Flag" : "atype"; value_type = VALUE::val_int; break;
 		case TYPE::freq: name = hrn ? "Frequency" : "freq"; value_type = VALUE::val_int; break;
@@ -3759,7 +3759,7 @@ void e2db_cli::print_obj_pair(TYPE type, std::any val)
 		case TYPE::chname:
 		case TYPE::mname:
 		case TYPE::chvalue:
-		case TYPE::churi:
+		case TYPE::churl:
 		case TYPE::charset:
 		case TYPE::tname:
 		case TYPE::country:
@@ -4075,7 +4075,7 @@ std::any e2db_cli::field(TYPE type, bool required)
 		case TYPE::mname: label = "Marker Name"; break;
 		case TYPE::mnum: label = "Marker Number"; description = "in digits"; break;
 		case TYPE::chvalue: label = "Channel Name"; break;
-		case TYPE::churi: label = "Channel URI"; break;
+		case TYPE::churl: label = "Channel URL"; break;
 		case TYPE::etype: label = "Favourite Type"; description = "exact match: 1 = broadcast, 2 = file, 3 = 4097, 8139 = youtube, 8193 = eservice"; break;
 		case TYPE::atype: label = "Favourite Flag"; description = "exact match: 64 = marker, 512 = marker hidden, 832 = marker hidden, 320 = marker numbered, 128 = group"; break;
 		case TYPE::freq: label = "Frequency"; description = "in Hertz, 6 digits"; break;

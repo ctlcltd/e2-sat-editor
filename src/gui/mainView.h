@@ -96,7 +96,7 @@ class mainView : public viewAbstract
 			parental,
 			chid,
 			reftype = 8,
-			uri = 13
+			url = 13
 		};
 
 		enum ITEM_ROW_ROLE {

@@ -692,7 +692,7 @@ QStringList e2db::entryFavourite(channel_reference chref)
 	QString tsid = QString::number(chref.ref.tsid);
 	QString chtype;
 	QString sys;
-	QString uri = QString::fromStdString(chref.uri);
+	QString url = QString::fromStdString(chref.url);
 
 	switch (chref.etype)
 	{
@@ -760,7 +760,7 @@ QStringList e2db::entryFavourite(channel_reference chref)
 			entry[5] = tsid;
 			entry[6] = "STREAM";
 			entry[9] = sys;
-			entry[11] = uri;
+			entry[11] = url;
 			return entry;
 		}
 		else if (entries.transponders.count(ref_txid))
@@ -770,12 +770,12 @@ QStringList e2db::entryFavourite(channel_reference chref)
 			QStringList entry = QStringList ({value, NULL, chid, txid, ssid, tsid, "STREAM", NULL, NULL});
 			entry.append(entries.transponders[ref_txid]);
 			entry[9] = sys;
-			entry[11] = uri;
+			entry[11] = url;
 			return entry;
 		}
 	}
 
-	return QStringList ({value, NULL, chid, NULL, ssid, tsid, chtype, NULL, NULL, sys, NULL, uri, NULL, NULL, NULL, NULL});
+	return QStringList ({value, NULL, chid, NULL, ssid, tsid, chtype, NULL, NULL, sys, NULL, url, NULL, NULL, NULL, NULL});
 }
 
 QStringList e2db::entryMarker(channel_reference chref)

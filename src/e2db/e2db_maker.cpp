@@ -726,7 +726,7 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file, int ver)
 				{
 					ss << conv_uri_value(chref.value);
 				}
-				if (chref.valverb)
+				if (chref.descrval)
 				{
 					ln++;
 
@@ -757,7 +757,7 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file, int ver)
 						ss << ':';
 						ss << conv_uri_value(chref.value);
 					}
-					if (chref.valverb)
+					if (chref.descrval)
 					{
 						ln++;
 
@@ -784,9 +784,9 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file, int ver)
 				ss << chref.x8 << ':';
 				ss << chref.x9 << ':';
 
-				if (! chref.uri.empty())
+				if (! chref.url.empty())
 				{
-					ss << conv_uri_value(chref.uri);
+					ss << conv_uri_value(chref.url);
 				}
 				if (! chref.value.empty())
 				{
@@ -795,7 +795,7 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file, int ver)
 						ss << ':';
 						ss << conv_uri_value(chref.value);
 					}
-					if (chref.valverb)
+					if (chref.descrval)
 					{
 						ln++;
 
@@ -1709,9 +1709,9 @@ void e2db_maker::make_parentallock_list(string filename, PARENTALLOCK ltype, e2d
 						ss << chref.x8 << ':';
 						ss << chref.x9 << ':';
 
-						if (! chref.uri.empty())
+						if (! chref.url.empty())
 						{
-							ss << conv_uri_value(chref.uri);
+							ss << conv_uri_value(chref.url);
 						}
 						if (! chref.value.empty())
 						{
@@ -1849,7 +1849,7 @@ bool e2db_maker::write(string path)
 
 		if (push_file(path))
 		{
-			db.dstat = DSTAT::d_written;
+			db.dstat = DSTAT::d_write;
 
 			return true;
 		}

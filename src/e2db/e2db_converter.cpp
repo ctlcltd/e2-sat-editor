@@ -1325,7 +1325,7 @@ void e2db_converter::parse_m3u(istream& ifile, unordered_map<string, vector<m3u_
 		}
 		else if (step == 2)
 		{
-			entry.chref.uri = line;
+			entry.chref.url = line;
 
 			if (ub_name.empty())
 				ub_name = "__m3u__";
@@ -1437,7 +1437,7 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>>& sxv, e2db_
 				if (chref.etype != 0 && ! val.empty() && val.find("//") != string::npos)
 				{
 					chref.stream = true;
-					chref.uri = val;
+					chref.url = val;
 				}
 				else
 				{
@@ -1791,13 +1791,13 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>>& s
 			else if (i == 14)
 				tx.pos = value_transponder_position(val);
 			// tuner name
-			// uri
+			// url
 			else if (i == 15)
 			{
 				if (chref.etype != 0 && ! val.empty() && val.find("//") != string::npos)
 				{
 					chref.stream = true;
-					chref.uri = val;
+					chref.url = val;
 				}
 				else
 				{
@@ -2550,7 +2550,7 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 				sys = value_favourite_type(chref);
 			string tname;
 			if (chref.stream)
-				tname = chref.uri;
+				tname = chref.url;
 
 			ss << idx << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << value << CSV_ESCAPE << CSV_SEPARATOR;
@@ -2826,7 +2826,7 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 				sys = value_favourite_type(chref);
 			string tname;
 			if (chref.stream)
-				tname = chref.uri;
+				tname = chref.url;
 
 			ss << idx << CSV_SEPARATOR;
 			ss << CSV_ESCAPE << value << CSV_ESCAPE << CSV_SEPARATOR;
@@ -3334,7 +3334,7 @@ void e2db_converter::m3u_channel_list(string& body, string bname, fcopts opts)
 				else
 					ss << idx;
 				ss << '\n';
-				ss << chref.uri;
+				ss << chref.url;
 				ss << '\n';
 			}
 		}
@@ -3607,7 +3607,7 @@ void e2db_converter::page_body_channel_list(html_page& page, string bname, DOC_V
 				sys = value_favourite_type(chref);
 			string tname;
 			if (chref.stream)
-				tname = chref.uri;
+				tname = chref.url;
 
 			page.body += "<tr class=\"" + cssname + "\">";
 			page.body += "<td class=\"trid\">" + idx + "</td>";

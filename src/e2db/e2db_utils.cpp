@@ -169,7 +169,7 @@ void e2db_utils::fix_remove_references()
 					}
 					else if (chref.stream)
 					{
-						if (chref.uri.empty())
+						if (chref.url.empty())
 							ref_error = true;
 					}
 					else
@@ -1349,7 +1349,7 @@ e2db_utils::sort_data e2db_utils::get_data(SORT_ITEM model, string iname, vector
 				else if (prop == "tsid") s.push(&chref.ref.tsid);
 				else if (prop == "onid") s.push(&chref.ref.onid);
 				else if (prop == "dvbns") s.push(&chref.ref.dvbns);
-				else if (prop == "uri") s.push(&chref.uri);
+				else if (prop == "url") s.push(&chref.url);
 				else if (prop == "value") s.push(&chref.value);
 				else if (prop == "inum") s.push(&chref.inum);
 				else if (prop == "anum") s.push(&chref.anum);

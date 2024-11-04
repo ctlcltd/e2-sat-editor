@@ -1508,7 +1508,7 @@ void e2db_abstract::add_channel_reference(int idx, userbouquet& ub, channel_refe
 
 void e2db_abstract::set_channel_reference_description(userbouquet& ub, channel_reference& chref, string value)
 {
-	ub.channels[chref.chid].valverb = true;
+	ub.channels[chref.chid].descrval = true;
 	ub.channels[chref.chid].value = value;
 }
 

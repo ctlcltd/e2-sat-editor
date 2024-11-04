@@ -1167,7 +1167,7 @@ vector<QPair<QString, QString>> tools::sortComboBoxProps(SORT_ITEM model)
 			{tr("TSID"), "tsid"},
 			{tr("ONID"), "onid"},
 			{tr("DVBNS"), "dvbns"},
-			{tr("URI"), "uri"},
+			{tr("URL"), "url"},
 			{tr("FAV Name"), "value"},
 			{tr("FAV Index"), "inum"},
 			{tr("Transponder order"), "txr"},

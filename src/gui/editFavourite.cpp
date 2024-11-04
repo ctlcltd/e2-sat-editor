@@ -439,7 +439,7 @@ void editFavourite::streamLayout()
 	dtl1->setStyleSheet("#dial_field_description { margin-right: 1px; margin-left: 1px }");
 
 	QTextEdit* dtf0rr = new QTextEdit;
-	dtf0rr->setProperty("field", "uri");
+	dtf0rr->setProperty("field", "url");
 	dtf0rr->setAcceptRichText(false);
 	fields.emplace_back(dtf0rr);
 	dtf0rr->setMinimumWidth(280);
@@ -534,8 +534,8 @@ void editFavourite::store()
 			chref.ref.dvbns = val.empty() ? 0 : std::stoi(val);
 		else if (key == "onid")
 			chref.ref.onid = val.empty() ? 0 : std::stoi(val);
-		else if (key == "uri")
-			chref.uri = val;
+		else if (key == "url")
+			chref.url = val;
 		else if (key == "value")
 			chref.value = val;
 	}
@@ -543,7 +543,7 @@ void editFavourite::store()
 	chref.stream = false;
 	chref.marker = false;
 
-	if (chref.etype != 0 && ! chref.uri.empty() && chref.uri.find("//") != string::npos)
+	if (chref.etype != 0 && ! chref.url.empty() && chref.url.find("//") != string::npos)
 		chref.stream = true;
 	else if (chref.atype != 0 && chref.atype != e2db::ATYPE::group)
 		chref.marker = true;
@@ -617,8 +617,8 @@ void editFavourite::retrieve(string chid)
 			val = to_string(chref.ref.dvbns);
 		else if (key == "onid")
 			val = to_string(chref.ref.onid);
-		else if (key == "uri")
-			val = chref.uri;
+		else if (key == "url")
+			val = chref.url;
 		else if (key == "value")
 			val = chref.value;
 

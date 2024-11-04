@@ -1275,7 +1275,6 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 
 	switch (atype)
 	{
-		// marker
 		case ATYPE::marker_regular:
 		case ATYPE::marker_numbered:
 		case ATYPE::marker_hidden_512:
@@ -1286,68 +1285,57 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 		case ATYPE::group:
 			error("parse_channel_reference", "Parser Error", "Not supported yet.");
 		break;
-		// service
-		default:
-			chref.marker = false;
 	}
 
 	if (xdata != 0)
 	{
-		size_t pos = str.rfind(':');
+		int j = 10;
+		size_t pos = 0, n, len;
+
+		while (j--)
+		{
+			pos = str.find(':', pos + 1);
+		}
 
 		if (pos != string::npos)
 		{
-			string s10, s11;
+			string url, value;
 
-			s11 = str.substr(pos + 1);
-			pos = str.rfind(':', pos - 1);
+			n = str.find(':', pos + 1);
+			len = n - pos - 1;
+
+			if (n != pos)
+				url = str.substr(pos + 1, len);
+
+			pos = str.find(':', n);
 
 			if (pos != string::npos)
 			{
-				s10 = str.substr(pos + 1);
-				pos = s10.rfind(':');
+				n = str.find(':', pos + 1);
+				len = n - pos - 1;
 
-				if (pos != string::npos)
-					s10 = s10.substr(0, pos);
-				if (s10.size() == 1) // zero
-					s10 = "";
+				if (n != pos)
+					value = str.substr(pos + 1, len);
 			}
 
-			if (! s11.empty() && ! s10.empty())
+			if (url.size() > 1)
 			{
-				conv_uri_value(s10);
-				conv_uri_value(s11);
+				conv_uri_value(url);
 
-				if (s10.size() > 1 && s10.find("%3a") != string::npos)
+				if (! chref.marker && url.find(':') != string::npos)
 				{
-					chref.uri = s10;
+					chref.url = url;
 					chref.stream = true;
 				}
-				else
-				{
-					chref.stream = ! chref.marker && ! s11.empty();
-				}
+			}
 
-				chref.value = s11;
-				chref.valverb = false;
+			if (! value.empty())
+			{
+				conv_uri_value(value);
+
+				chref.value = value;
+				chref.descrval = false;
 				chref.inlineval = true;
-			}
-			else if (! s11.empty())
-			{
-				conv_uri_value(s11);
-
-				if (s11.size() > 1 && s11.find("%3a") != string::npos)
-				{
-					chref.uri = s11;
-					chref.stream = true;
-				}
-				else
-				{
-					chref.value = s11;
-					chref.valverb = false;
-					chref.inlineval = true;
-					chref.stream = ! chref.marker && ! s11.empty();
-				}
 			}
 		}
 	}

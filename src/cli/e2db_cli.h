@@ -92,7 +92,7 @@ class e2db_cli
 			tname, country, feed, 
 			bname, pname, rname, qname, nname, btype, hidden, locked, 
 			mname, fname, itype, 
-			chvalue, churi, etype, atype, mnum, 
+			churl, chvalue, etype, atype, mnum, 
 		};
 
 		enum VALUE {

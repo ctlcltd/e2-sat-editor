@@ -104,9 +104,9 @@ struct e2db_abstract : protected e2se::log_factory
 
 		// status
 		enum DSTAT {
-			d_zero,
+			d_null,
 			d_read,
-			d_written
+			d_write
 		};
 
 		// tuner settings type
@@ -127,7 +127,7 @@ struct e2db_abstract : protected e2se::log_factory
 		// fav entry type
 		enum ETYPE {
 			ecast = 1,
-			efile = 2, // file enigma 1
+			efile = 2,   // file enigma 1
 			evod = 4097, // default player
 			eraw = 4114, // raw service
 			egstplayer = 5001,
@@ -410,9 +410,9 @@ struct e2db_abstract : protected e2se::log_factory
 			bool stream = false;
 			int atype = 0;
 			int anum = 0; // service: stype, marker: num || 0, stream: stype || 0
-			string uri;
+			string url;
 			string value;
-			bool valverb = true;
+			bool descrval = true;
 			bool inlineval = false;
 			service_reference ref;
 			int x7 = 0;
@@ -541,7 +541,7 @@ struct e2db_abstract : protected e2se::log_factory
 			int iservices = 0;
 			int imarkers = 0;
 			int istreams = 0;
-			DSTAT dstat = DSTAT::d_zero;
+			DSTAT dstat = DSTAT::d_null;
 		};
 
 		struct comment

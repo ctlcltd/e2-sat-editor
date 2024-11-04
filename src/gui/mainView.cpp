@@ -897,7 +897,7 @@ void mainView::populate(QTreeWidget* tw)
 			QString idx;
 			QString chid = QString::fromStdString(chi.second);
 			QString refid;
-			QString uri;
+			QString url;
 			QStringList entry;
 			bool ref_error = false;
 
@@ -935,7 +935,7 @@ void mainView::populate(QTreeWidget* tw)
 					idx = QString::number(chi.first);
 					parental = entry[1].size() || ub_parental;
 					refid = QString::fromStdString(dbih->get_reference_id(chref));
-					uri = entry[11];
+					url = entry[11];
 					entry.prepend(idx);
 					entry.prepend(x);
 				}
@@ -947,7 +947,7 @@ void mainView::populate(QTreeWidget* tw)
 					refid = QString::fromStdString(dbih->get_reference_id(chref));
 					entry = dbih->entryFavourite(chref);
 					parental = entry[1].size() || ub_parental;
-					uri = entry[11];
+					url = entry[11];
 					entry.prepend(idx);
 					entry.prepend(x);
 				}
@@ -973,7 +973,7 @@ void mainView::populate(QTreeWidget* tw)
 			item->setData(ITEM_DATA_ROLE::parental, Qt::UserRole, parental);
 			item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
 			item->setData(ITEM_DATA_ROLE::refid, Qt::UserRole, refid);
-			item->setData(ITEM_DATA_ROLE::uri, Qt::UserRole, uri);
+			item->setData(ITEM_DATA_ROLE::url, Qt::UserRole, url);
 			if (parental)
 			{
 				item->setIcon(ITEM_ROW_ROLE::chlock, theme::icon(parentalicon));
@@ -2119,7 +2119,7 @@ void mainView::addService()
 		QString refid = QString::fromStdString(dbih->get_reference_id(chref));
 		QStringList entry = dbih->entryFavourite(chref);
 		bool parental = entry[1].size() || ub_parental;
-		QString uri = entry[11];
+		QString url = entry[11];
 		entry.prepend(idx);
 		entry.prepend(x);
 
@@ -2131,7 +2131,7 @@ void mainView::addService()
 		item->setData(ITEM_DATA_ROLE::parental, Qt::UserRole, parental);
 		item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
 		item->setData(ITEM_DATA_ROLE::refid, Qt::UserRole, refid);
-		item->setData(ITEM_DATA_ROLE::uri, Qt::UserRole, uri);
+		item->setData(ITEM_DATA_ROLE::url, Qt::UserRole, url);
 		item->setIcon(ITEM_ROW_ROLE::chlock, parental ? theme::icon(parentalicon) : QIcon());
 		item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
 		item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
@@ -2281,7 +2281,7 @@ void mainView::editService()
 		QString refid = QString::fromStdString(dbih->get_reference_id(chref));
 		QStringList entry = dbih->entryFavourite(chref);
 		bool parental = entry[1].size() || ub_parental;
-		QString uri = entry[11];
+		QString url = entry[11];
 		entry.prepend(item->text(ITEM_ROW_ROLE::chnum));
 		entry.prepend(item->text(ITEM_ROW_ROLE::x));
 		for (int i = 0; i < entry.count(); i++)
@@ -2291,7 +2291,7 @@ void mainView::editService()
 		item->setData(ITEM_DATA_ROLE::parental, Qt::UserRole, parental);
 		item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
 		item->setData(ITEM_DATA_ROLE::refid, Qt::UserRole, refid);
-		item->setData(ITEM_DATA_ROLE::uri, Qt::UserRole, uri);
+		item->setData(ITEM_DATA_ROLE::url, Qt::UserRole, url);
 		item->setIcon(ITEM_ROW_ROLE::chlock, parental ? theme::icon(parentalicon) : QIcon());
 		item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
 		item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
@@ -2384,7 +2384,7 @@ void mainView::addFavourite()
 	QString refid = QString::fromStdString(dbih->get_reference_id(chref));
 	QStringList entry = dbih->entryFavourite(chref);
 	bool parental = entry[1].size() || ub_parental;
-	QString uri = entry[11];
+	QString url = entry[11];
 	entry.prepend(idx);
 	entry.prepend(x);
 
@@ -2396,7 +2396,7 @@ void mainView::addFavourite()
 	item->setData(ITEM_DATA_ROLE::parental, Qt::UserRole, parental);
 	item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
 	item->setData(ITEM_DATA_ROLE::refid, Qt::UserRole, refid);
-	item->setData(ITEM_DATA_ROLE::uri, Qt::UserRole, uri);
+	item->setData(ITEM_DATA_ROLE::url, Qt::UserRole, url);
 	item->setIcon(ITEM_ROW_ROLE::chlock, parental ? theme::icon(parentalicon) : QIcon());
 	item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
 	item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
@@ -2491,7 +2491,7 @@ void mainView::editFavourite()
 	QString refid = QString::fromStdString(dbih->get_reference_id(chref));
 	QStringList entry = dbih->entryFavourite(chref);
 	bool parental = entry[1].size() || ub_parental;
-	QString uri = entry[11];
+	QString url = entry[11];
 	entry.prepend(item->text(ITEM_ROW_ROLE::chnum));
 	entry.prepend(item->text(ITEM_ROW_ROLE::x));
 	for (int i = 0; i < entry.count(); i++)
@@ -2501,7 +2501,7 @@ void mainView::editFavourite()
 	item->setData(ITEM_DATA_ROLE::parental, Qt::UserRole, parental);
 	item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
 	item->setData(ITEM_DATA_ROLE::refid, Qt::UserRole, refid);
-	item->setData(ITEM_DATA_ROLE::uri, Qt::UserRole, uri);
+	item->setData(ITEM_DATA_ROLE::url, Qt::UserRole, url);
 	item->setIcon(ITEM_ROW_ROLE::chlock, parental ? theme::icon(parentalicon) : QIcon());
 	item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
 	item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
@@ -3055,9 +3055,9 @@ void mainView::listItemCopy(bool cut)
 					qstr = "\t";
 				}
 			}
-			// uri
+			// url
 			else if (i == ITEM_ROW_ROLE::chtname && stream)
-				qstr = item->data(ITEM_DATA_ROLE::uri, Qt::UserRole).toString();
+				qstr = item->data(ITEM_DATA_ROLE::url, Qt::UserRole).toString();
 			// fec
 			else if (i == ITEM_ROW_ROLE::chfec)
 				qstr.remove(" ").squeeze();
@@ -3314,7 +3314,7 @@ void mainView::putListItems(vector<QString> items)
 		QString idx = QString::number(i);
 		QString ch_chid;
 		QString ch_refid;
-		QString ch_uri;
+		QString ch_url;
 
 		bool numbered = true;
 		int reftype = REF_TYPE::service;
@@ -3423,7 +3423,7 @@ void mainView::putListItems(vector<QString> items)
 				chref.stream = true;
 				chref.chid = chid;
 				chref.value = value;
-				chref.uri = qs[12].toStdString();
+				chref.url = qs[12].toStdString();
 				chref.ref = ref;
 				chref.index = idx.toInt();
 
@@ -3431,7 +3431,7 @@ void mainView::putListItems(vector<QString> items)
 				parental = (qs[3] == "0" ? false : true) || ub_parental;
 				ch_chid = QString::fromStdString(chid);
 				ch_refid = QString::fromStdString(dbih->get_reference_id(chref));
-				ch_uri = qs[12];
+				ch_url = qs[12];
 
 				entry = dbih->entryFavourite(chref);
 				entry.prepend(idx);
@@ -3541,7 +3541,7 @@ void mainView::putListItems(vector<QString> items)
 		item->setData(ITEM_DATA_ROLE::parental, Qt::UserRole, parental);
 		item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
 		item->setData(ITEM_DATA_ROLE::refid, Qt::UserRole, ch_refid);
-		item->setData(ITEM_DATA_ROLE::uri, Qt::UserRole, ch_uri);
+		item->setData(ITEM_DATA_ROLE::url, Qt::UserRole, ch_url);
 
 		if (parental)
 		{
@@ -4009,22 +4009,22 @@ void mainView::updateReferenceBox()
 			ssid = QString::number(chref.ref.ssid);
 
 			QString psys;
-			QString uri = QString::fromStdString(chref.uri);
+			QString ch_url = QString::fromStdString(chref.url);
 
-			QUrl url = QUrl (uri);
-			QString puri = QString(uri);
+			QUrl url = QUrl (ch_url);
+			QString purl = QString(ch_url);
 
 			int chunk = 76;
 			int a = chunk + 1;
-			for (qsizetype i = 0; i <= puri.size(); i++)
+			for (qsizetype i = 0; i <= purl.size(); i++)
 			{
 				if (! --a)
 				{
-					puri.insert(i, "<br>");
+					purl.insert(i, "<br>");
 					a = chunk + 1;
 				}
 			}
-			puri = QString("<a href=\"%1\">%2</a>").arg(url.toString()).arg(puri);
+			purl = QString("<a href=\"%1\">%2</a>").arg(url.toString()).arg(purl);
 
 			switch (chref.etype)
 			{
@@ -4082,7 +4082,7 @@ void mainView::updateReferenceBox()
 				txp = "< >";
 			}
 
-			tns = "<p style=\"line-height: 125%\">" + psys + "</p><p>" + puri + "</p>";
+			tns = "<p style=\"line-height: 125%\">" + psys + "</p><p>" + purl + "</p>";
 		}
 		else
 		{
@@ -4309,7 +4309,7 @@ void mainView::updateListReferences(QTreeWidgetItem* current, QList<QTreeWidgetI
 
 				string refid = item->data(ITEM_DATA_ROLE::refid, Qt::UserRole).toString().toStdString();
 				string value = item->text(ITEM_ROW_ROLE::chname).toStdString();
-				string uri = item->data(ITEM_DATA_ROLE::uri, Qt::UserRole).toString().toStdString();
+				string url = item->data(ITEM_DATA_ROLE::url, Qt::UserRole).toString().toStdString();
 				int etype = 0;
 				int atype = 0;
 				int inum = dbih->db.istreams + 1;
@@ -4331,7 +4331,7 @@ void mainView::updateListReferences(QTreeWidgetItem* current, QList<QTreeWidgetI
 				chref.inum = inum;
 				chref.anum = anum;
 				chref.value = value;
-				chref.uri = uri;
+				chref.url = url;
 				chref.ref = ref;
 				chref.index = idx;
 			}
@@ -4341,7 +4341,7 @@ void mainView::updateListReferences(QTreeWidgetItem* current, QList<QTreeWidgetI
 
 				string refid = item->data(ITEM_DATA_ROLE::refid, Qt::UserRole).toString().toStdString();
 				string value = item->text(ITEM_ROW_ROLE::chname).toStdString();
-				string uri = item->data(ITEM_DATA_ROLE::uri, Qt::UserRole).toString().toStdString();
+				string url = item->data(ITEM_DATA_ROLE::url, Qt::UserRole).toString().toStdString();
 				int etype = 0;
 				int atype = 0;
 				int anum = 0;
@@ -4362,7 +4362,7 @@ void mainView::updateListReferences(QTreeWidgetItem* current, QList<QTreeWidgetI
 				chref.inum = -1;
 				chref.anum = anum;
 				chref.value = value;
-				chref.uri = uri;
+				chref.url = url;
 				chref.ref = ref;
 				chref.index = idx;
 			}

@@ -476,7 +476,7 @@ void printable::pageBodyChannelList(html_page& page, string bname, DOC_VIEW view
 				sys = QString::fromStdString(dbih->value_favourite_type(chref));
 			QString tname;
 			if (chref.stream)
-				tname = QString::fromStdString(chref.uri);
+				tname = QString::fromStdString(chref.url);
 
 			page.body += "<tr class=\"" + cssname + "\">";
 			page.body += "<td class=\"trid\">" + idx + "</td>";
