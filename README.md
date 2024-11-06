@@ -16,12 +16,12 @@ And it supports also Neutrino xml (api v1, v2, v3, v4).
 
 📡 **Download new releases from [Releases](https://github.com/ctlcltd/e2-sat-editor/releases)**  
 
-💡 **Try now online DEMO: https://ctlcltd.github.io/e2se-wasm-demo/**  
-
 &nbsp;
 
+💡 **Try now online DEMO: https://ctlcltd.github.io/e2se-wasm-demo/**  
+
 > [!NOTE]
-> Demo has limitations imposed by remote use, you cannot open and save files other than the demo ones included.
+> Online demo has limitations imposed by remote use, you cannot open and save files other than the demo ones included.
 
 
 ## Screenshot
