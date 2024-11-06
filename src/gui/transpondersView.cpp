@@ -764,6 +764,8 @@ void transpondersView::putListItems(vector<QString> items)
 
 		updateListIndex();
 
+		listFindClear();
+
 		updateFlags();
 		updateStatusBar();
 

@@ -1358,6 +1358,8 @@ void tunersetsView::putListItems(vector<QString> items)
 
 		setPendingUpdateListIndex();
 
+		listFindClear();
+
 		updateFlags();
 		updateStatusBar();
 

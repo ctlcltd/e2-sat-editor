@@ -2014,7 +2014,12 @@ void mainView::addChannel()
 	}
 
 	this->dialchbook = new e2se_gui::dialChannelBook(this->data, stype);
-	dialchbook->setEventCallback([=](vector<QString> items) { this->putListItems(items); });
+	dialchbook->setEventCallback([=](vector<QString> items) {
+		this->putListItems(items);
+
+		if (list->currentItem() == nullptr)
+			list->scrollToBottom();
+	});
 	dialchbook->display(cwid);
 }
 
@@ -3132,32 +3137,10 @@ void mainView::listItemPaste()
 
 	if (! items.empty())
 	{
-		auto* dbih = this->data->dbih;
-
 		putListItems(items);
-
-		//TODO tree item selection position
 
 		if (list->currentItem() == nullptr)
 			list->scrollToBottom();
-
-		// bouquets tree
-		if (this->state.tc)
-		{
-			string bname = this->state.curr;
-			if (dbih->userbouquets.count(bname))
-			{
-				e2db::userbouquet uboq = dbih->userbouquets[bname];
-				string pname = uboq.pname;
-
-				cache[pname].clear();
-			}
-		}
-
-		cache["chs"].clear();
-		cache["chs:0"].clear();
-		cache["chs:1"].clear();
-		cache["chs:2"].clear();
 	}
 }
 
@@ -3585,6 +3568,26 @@ void mainView::putListItems(vector<QString> items)
 			this->state.vlx_pending = true;
 
 		setPendingUpdateListIndex();
+
+		// bouquets tree
+		if (this->state.tc)
+		{
+			string bname = this->state.curr;
+			if (dbih->userbouquets.count(bname))
+			{
+				e2db::userbouquet uboq = dbih->userbouquets[bname];
+				string pname = uboq.pname;
+
+				cache[pname].clear();
+			}
+		}
+
+		cache["chs"].clear();
+		cache["chs:0"].clear();
+		cache["chs:1"].clear();
+		cache["chs:2"].clear();
+
+		listFindClear();
 
 		updateFlags();
 		updateStatusBar();
@@ -4368,11 +4371,20 @@ void mainView::updateListReferences(QTreeWidgetItem* current, QList<QTreeWidgetI
 			}
 			else
 			{
-				if (dbih->userbouquets["chs"].channels.count(chid))
-					chref = dbih->userbouquets["chs"].channels[chid];
-				else
-					chref.etype = 1;
+				if (dbih->db.services.count(chid))
+				{
+					e2db::service ch = dbih->db.services[chid];
+					e2db::service_reference ref;
 
+					ref.ssid = ch.ssid;
+					ref.tsid = ch.tsid;
+					ref.onid = ch.onid;
+					ref.dvbns = ch.dvbns;
+
+					chref.anum = ch.stype;
+				}
+
+				chref.etype = e2db::ETYPE::ecast;
 				chref.chid = chid;
 				chref.index = idx;
 			}
