@@ -192,12 +192,18 @@ if(UNIX AND NOT APPLE)
 
 	install(FILES "../dist/xdg/icons/scalable/e2-sat-editor.svg"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps)
+	install(FILES "../dist/xdg/icons/512x512/e2-sat-editor.png"
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/512x512/apps)
 	install(FILES "../dist/xdg/icons/256x256/e2-sat-editor.png"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/256x256/apps)
 	install(FILES "../dist/xdg/icons/128x128/e2-sat-editor.png"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/128x128/apps)
 	install(FILES "../dist/xdg/icons/64x64/e2-sat-editor.png"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/64x64/apps)
+	install(FILES "../dist/xdg/icons/48x48/e2-sat-editor.png"
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/48x48/apps)
+	install(FILES "../dist/xdg/icons/32x32/e2-sat-editor.png"
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/32x32/apps)
 
 	install(DIRECTORY "../dist/translations"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor

@@ -78,10 +78,7 @@ body:
       description: What operating system are you using?
       options:
         - I don't know
-        - Linux Gnome
-        - Linux KDE
-        - Linux Xfce
-        - Linux other DE
+        - Linux
         - BSD-like
         - Windows 11
         - Windows 10

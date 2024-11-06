@@ -54,17 +54,23 @@ unix:!mac {
 	metainfo.files += ../dist/xdg/io.github.ctlcltd.e2se.desktop
 	icon.path = $$PREFIX/share/icons/hicolor/scalable/apps
 	icon.files += ../dist/xdg/icons/scalable/e2-sat-editor.svg
+	icon_512.path = $$PREFIX/share/icons/hicolor/512x512/apps
+	icon_512.files += ../dist/xdg/icons/512x512/e2-sat-editor.png
 	icon_256.path = $$PREFIX/share/icons/hicolor/256x256/apps
 	icon_256.files += ../dist/xdg/icons/256x256/e2-sat-editor.png
 	icon_128.path = $$PREFIX/share/icons/hicolor/128x128/apps
 	icon_128.files += ../dist/xdg/icons/128x128/e2-sat-editor.png
 	icon_64.path = $$PREFIX/share/icons/hicolor/64x64/apps
 	icon_64.files += ../dist/xdg/icons/64x64/e2-sat-editor.png
+	icon_48.path = $$PREFIX/share/icons/hicolor/48x48/apps
+	icon_48.files += ../dist/xdg/icons/48x48/e2-sat-editor.png
+	icon_32.path = $$PREFIX/share/icons/hicolor/32x32/apps
+	icon_32.files += ../dist/xdg/icons/32x32/e2-sat-editor.png
 	translations.path = $$PREFIX/share/e2-sat-editor/translations
 	translations.files += ../res/locale/*.qm
 	license.path = $$PREFIX/share/e2-sat-editor
 	license.files += COPYING
 
-	INSTALLS += target desktop metainfo icon icon_256 icon_128 icon_64 translations license
+	INSTALLS += target desktop metainfo icon icon_512 icon_256 icon_128 icon_64 icon_48 icon_32 translations license
 }
 

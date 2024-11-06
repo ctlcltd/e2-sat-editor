@@ -4382,6 +4382,7 @@ void mainView::updateListReferences(QTreeWidgetItem* current, QList<QTreeWidgetI
 					ref.dvbns = ch.dvbns;
 
 					chref.anum = ch.stype;
+					chref.ref = ref;
 				}
 
 				chref.etype = e2db::ETYPE::ecast;
