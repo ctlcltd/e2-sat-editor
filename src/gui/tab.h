@@ -153,6 +153,10 @@ class tab : protected e2se::log_factory
 		void noticeMessage(vector<pair<string, string>> errors, MSG_CODE code);
 		void demoMessage();
 
+#ifdef E2SE_DEMO
+		void demoLaunch() { this->loadSeeds(); }
+#endif
+
 		QWidget* widget = nullptr;
 		dataHandler* data = nullptr;
 		ftpHandler* ftph = nullptr;

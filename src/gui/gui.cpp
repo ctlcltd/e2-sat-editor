@@ -2208,7 +2208,21 @@ void gui::launcher()
 	else
 		newTab();
 
+#ifdef E2SE_DEMO
+	if (this->mlaunch == 0)
+	{
+		for (auto & x : ttabs)
+		{
+			tab* ttab = x.second;
+			ttab->demoLaunch();
+			break;
+		}
+	}
+#endif
+
 	tabChanged(0);
+
+	this->mlaunch = 1;
 }
 
 bool gui::getFlag(GUI_CXE bit)

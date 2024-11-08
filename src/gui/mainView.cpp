@@ -1206,7 +1206,7 @@ void mainView::treeItemChanged(QTreeWidgetItem* current)
 
 void mainView::treeItemSelectionChanged(bool update)
 {
-	debug("treeItemSelectionChanged");
+	// debug("treeItemSelectionChanged");
 
 	QList<QTreeWidgetItem*> selected = tree->selectedItems();
 
@@ -1249,7 +1249,7 @@ void mainView::treeItemDoubleClicked()
 
 void mainView::listItemChanged()
 {
-	debug("listItemChanged");
+	// debug("listItemChanged");
 
 	if (list_evto->isChanged())
 		listPendingUpdate();
@@ -1257,7 +1257,7 @@ void mainView::listItemChanged()
 
 void mainView::listItemSelectionChanged()
 {
-	debug("listItemSelectionChanged");
+	// debug("listItemSelectionChanged");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
@@ -2037,6 +2037,10 @@ void mainView::addChannel()
 
 	this->dialchbook = new e2se_gui::dialChannelBook(this->data, stype);
 	dialchbook->setEventCallback([=](vector<QString> items) {
+		// userbouquet
+		if (! this->state.tc || this->state.ti != -1)
+			return;
+
 		this->putListItems(items);
 
 		if (list->currentItem() == nullptr)

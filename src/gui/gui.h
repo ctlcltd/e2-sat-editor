@@ -480,6 +480,7 @@ class gui : protected e2se::log_factory
 		QMenu* mwind;
 		QActionGroup* mwtabs;
 		bool wstatus = 1; // 0 = idle, 1 = busy
+		bool mlaunch = 0;
 		string ifpath;
 		unordered_map<int, QAction*> gmenu;
 		unordered_map<int, QAction*> ttmenu;
