@@ -550,8 +550,7 @@ bool tools::handleSortContext(SORT_ITEM model, bool contextual, e2db::uoopts& op
 	// menu->exec(wid->mapToGlobal(pos));
 	platform::osMenu(menu, wid, pos);
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 1)
-#ifdef Q_OS_MAC
+#if defined Q_OS_MAC && QT_VERSION >= QT_VERSION_CHECK(6, 5, 1)
 	if (platform::osExperiment())
 	{
 		// note: trick to re-gain window focus
@@ -563,7 +562,6 @@ bool tools::handleSortContext(SORT_ITEM model, bool contextual, e2db::uoopts& op
 		wid->topLevelWidget()->windowHandle()->requestActivate();
 		wnd->destroy();
 	}
-#endif
 #endif
 
 	return sortContext(model, opts);

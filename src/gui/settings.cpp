@@ -217,15 +217,13 @@ void settings::connectionsLayout()
 		// menu->popup(wid->mapToGlobal(pos)));
 		platform::osMenuPopup(menu, wid, pos);
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 1)
-#ifdef Q_OS_MAC
+#if defined Q_OS_MAC && QT_VERSION >= QT_VERSION_CHECK(6, 5, 1)
 		if (platform::osExperiment())
 		{
 			// note: trick to re-gain window focus
 			wid->topLevelWidget()->parentWidget()->windowHandle()->requestActivate();
 			wid->topLevelWidget()->windowHandle()->requestActivate();
 		}
-#endif
 #endif
 	});
 

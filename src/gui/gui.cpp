@@ -1427,7 +1427,10 @@ string gui::saveFileDialog(string path)
 	// fdial.setAcceptMode(QFileDialog::AcceptOpen);
 	fdial.setFileMode(QFileDialog::Directory);
 	fdial.setFilter(QDir::AllDirs | QDir::NoSymLinks);
-	fdial.setLabelText(QFileDialog::Accept, QFileDialog::tr("&Save"));
+#ifdef Q_OS_MAC
+	if (! mroot->testAttribute(Qt::AA_DontUseNativeDialogs))
+		fdial.setLabelText(QFileDialog::Accept, QFileDialog::tr("&Save"));
+#endif
 	if (fdial.exec() == QDialog::Accepted)
 	{
 		QUrl url = fdial.selectedUrls().value(0);

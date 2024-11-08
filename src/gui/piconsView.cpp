@@ -11,6 +11,7 @@
 
 #include <QTimer>
 #include <QRegularExpression>
+#include <QWindow>
 #include <QSettings>
 #include <QMessageBox>
 #include <QGridLayout>
@@ -148,6 +149,20 @@ void piconsView::layout()
 		this->tabLastPopupFocusWidget(this->action.acrn_prefs, this->action.acrn_prefs->pos());
 		// menu->popup(this->action.acrn_prefs->mapToGlobal(this->action.acrn_prefs->pos()));
 		platform::osMenuPopup(menu, this->action.acrn_prefs, this->action.acrn_prefs->pos());
+
+#if defined Q_OS_MAC && QT_VERSION >= QT_VERSION_CHECK(6, 5, 1)
+		if (platform::osExperiment())
+		{
+			// note: trick to re-gain window focus
+			QWindow* wnd = new QWindow(this->action.acrn_prefs->topLevelWidget()->windowHandle());
+			wnd->setFlags(Qt::Drawer);
+			wnd->show();
+			wnd->requestActivate();
+			wnd->close();
+			this->action.acrn_prefs->topLevelWidget()->windowHandle()->requestActivate();
+			wnd->destroy();
+		}
+#endif
 
 		QMouseEvent mouseRelease(QEvent::MouseButtonRelease, this->action.acrn_prefs->pos(), this->action.acrn_prefs->mapToGlobal(QPoint(0, 0)), Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
 		QCoreApplication::sendEvent(this->action.acrn_prefs, &mouseRelease);

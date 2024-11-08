@@ -323,6 +323,20 @@ void mainView::layout()
 		// menu->popup(this->action.lcrn_prefs->mapToGlobal(this->action.lcrn_prefs->pos()));
 		platform::osMenuPopup(menu, this->action.lcrn_prefs, this->action.lcrn_prefs->pos());
 
+#if defined Q_OS_MAC && QT_VERSION >= QT_VERSION_CHECK(6, 5, 1)
+		if (platform::osExperiment())
+		{
+			// note: trick to re-gain window focus
+			QWindow* wnd = new QWindow(this->action.lcrn_prefs->topLevelWidget()->windowHandle());
+			wnd->setFlags(Qt::Drawer);
+			wnd->show();
+			wnd->requestActivate();
+			wnd->close();
+			this->action.lcrn_prefs->topLevelWidget()->windowHandle()->requestActivate();
+			wnd->destroy();
+		}
+#endif
+
 		QMouseEvent mouseRelease(QEvent::MouseButtonRelease, this->action.lcrn_prefs->pos(), this->action.lcrn_prefs->mapToGlobal(QPoint(0, 0)), Qt::LeftButton, Qt::MouseButtons(Qt::LeftButton), {});
 		QCoreApplication::sendEvent(this->action.lcrn_prefs, &mouseRelease);
 	});
@@ -1035,6 +1049,10 @@ void mainView::servicesItemChanged(QTreeWidgetItem* current)
 {
 	debug("servicesItemChanged");
 
+	//TODO TEST focus on side with not selected item bug
+	if (side->selectedItems().isEmpty())
+		return;
+
 	this->state.tc = 0;
 
 	if (current != NULL)
@@ -1106,6 +1124,10 @@ void mainView::servicesItemChanged(QTreeWidgetItem* current)
 void mainView::treeItemChanged(QTreeWidgetItem* current)
 {
 	debug("treeItemChanged");
+
+	//TODO TEST focus on tree with not selected item bug
+	if (tree->selectedItems().isEmpty())
+		return;
 
 	this->state.tc = 1;
 
@@ -1184,7 +1206,7 @@ void mainView::treeItemChanged(QTreeWidgetItem* current)
 
 void mainView::treeItemSelectionChanged(bool update)
 {
-	// debug("treeItemSelectionChanged");
+	debug("treeItemSelectionChanged");
 
 	QList<QTreeWidgetItem*> selected = tree->selectedItems();
 
@@ -1227,7 +1249,7 @@ void mainView::treeItemDoubleClicked()
 
 void mainView::listItemChanged()
 {
-	// debug("listItemChanged");
+	debug("listItemChanged");
 
 	if (list_evto->isChanged())
 		listPendingUpdate();
@@ -1235,7 +1257,7 @@ void mainView::listItemChanged()
 
 void mainView::listItemSelectionChanged()
 {
-	// debug("listItemSelectionChanged");
+	debug("listItemSelectionChanged");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
