@@ -24,12 +24,11 @@ Libraries required as dependencies:
 Additional requirements for *Qt6PrintSupport* in Linux hosts:
 - `cups-dev`
 
-Additional requirements for *WebAssembly*:
+Additional requirements for *Qt for WebAssembly*:
 - *Qt for WebAssembly* to cross-compile
-- `emscripten`
-- `emsdk`
-- `ninja`
-- `python3`
+- `emsdk` `emscripten`
+- `qt6-base`
+- `cmake`
 
 
 ## Windows – MinGW-64
@@ -120,23 +119,24 @@ cmake --build build
 ```
 
 
-## WebAssembly – Qt Wasm
+## Qt for WebAssembly
 
 Compiling with CMake for *Qt for WebAssembly* on supported host.
 
 In order to cross-compile, the following packages are required:  
-`gcc`, `clang`, `llvm`, `cmake`, `ninja`, `qt6-base`, `emscripten`, `emsdk`, `python3`
+`emsdk`, `emscripten`, `qt6-base`, `cmake`
 
 Follow the instructions from the Qt Documentation website to obtain or build Qt Wasm in your host.
 
 Clone the repository, then from the source directory, execute commands:
 ```
-export EMSDK=/path/to/emsdk
+source /path/to/emsdk/emsdk_env.sh
+cd e2-sat-editor
 cp -R e2se-seeds/enigma_db res/enigma_db
 mv src/CMakeLists.txt src/CMakeLists.txt.bak
 cp dist/wasm/CMakeLists.txt src/CMakeLists.txt
 cd src
-./qt-everywhere-src/qtbase/bin/qt-cmake .
+./path/to/Qt/wasm_singlethread/bin/qt-cmake .
 cmake --build .
 ```
 

@@ -5,7 +5,6 @@
 	<file compress="0" compress-algo="none">enigma_db/bouquets.radio</file>
 	<file compress="0" compress-algo="none">enigma_db/bouquets.tv</file>
 	<file compress="0" compress-algo="none">enigma_db/lamedb</file>
-	<file compress="0" compress-algo="none">enigma_db/lamedb5</file>
 	<file compress="0" compress-algo="none">enigma_db/userbouquet.dbe01.radio</file>
 	<file compress="0" compress-algo="none">enigma_db/userbouquet.dbe01.tv</file>
 	<file compress="0" compress-algo="none">enigma_db/userbouquet.dbe02.radio</file>

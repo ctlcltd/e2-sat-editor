@@ -3199,7 +3199,6 @@ void tab::loadSeeds()
 			":/e2se-seeds/enigma_db/bouquets.radio",
 			":/e2se-seeds/enigma_db/bouquets.tv",
 			":/e2se-seeds/enigma_db/lamedb",
-			":/e2se-seeds/enigma_db/lamedb5",
 			":/e2se-seeds/enigma_db/userbouquet.dbe01.radio",
 			":/e2se-seeds/enigma_db/userbouquet.dbe01.tv",
 			":/e2se-seeds/enigma_db/userbouquet.dbe02.radio",
