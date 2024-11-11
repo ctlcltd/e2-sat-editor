@@ -799,7 +799,6 @@ void tunersetsView::editSettings()
 	e2se_gui::editTunersets* dialog = new e2se_gui::editTunersets(this->data, tvid);
 	dialog->setEditId(tvid);
 	dialog->display(cwid);
-	// this->state.yx = dialog->getEditId();
 	if (dialog->destroy()) return;
 
 	this->data->setChanged(true);
@@ -822,9 +821,9 @@ void tunersetsView::addPosition()
 	string tnid = dialog->getEditId();
 	if (dialog->destroy()) return;
 
-	if (dbih->tuners[tvid].tables.count(tnid))
-		debug("addPosition", "tnid", tnid);
-	else
+	debug("addPosition", "new tnid", tnid);
+
+	if (! dbih->tuners[tvid].tables.count(tnid))
 		return error("addPosition", tr("Error", "error").toStdString(), tr("Missing tuner settings table key \"%1\".", "error").arg(tnid.data()).toStdString());
 
 	tree->header()->setSectionsClickable(false);
@@ -895,9 +894,9 @@ void tunersetsView::editPosition()
 	string nw_tnid = dialog->getEditId();
 	if (dialog->destroy()) return;
 
-	if (dbih->tuners[tvid].tables.count(nw_tnid))
-		debug("editPosition", "new tnid", nw_tnid);
-	else
+	debug("editPosition", "new tnid", nw_tnid);
+
+	if (! dbih->tuners[tvid].tables.count(nw_tnid))
 		return error("editPosition", tr("Error", "error").toStdString(), tr("Missing tuner settings table key \"%1\".", "error").arg(nw_tnid.data()).toStdString());
 
 	e2db::tunersets_table tns = dbih->tuners[tvid].tables[nw_tnid];
@@ -936,9 +935,9 @@ void tunersetsView::addTransponder()
 	string trid = dialog->getEditId();
 	if (dialog->destroy()) return;
 
-	if (dbih->tuners[tvid].tables[tnid].transponders.count(trid))
-		debug("addTransponder", "trid", trid);
-	else
+	debug("addTransponder", "new trid", trid);
+
+	if (! dbih->tuners[tvid].tables[tnid].transponders.count(trid))
 		return error("addTransponder", tr("Error", "error").toStdString(), tr("Missing tuner settings transponder key \"%1\".", "error").arg(trid.data()).toStdString());
 
 	list->header()->setSectionsClickable(false);
@@ -1017,9 +1016,9 @@ void tunersetsView::editTransponder()
 	string nw_trid = dialog->getEditId();
 	if (dialog->destroy()) return;
 
-	if (dbih->tuners[tvid].tables[tnid].transponders.count(nw_trid))
-		debug("editTransponder", "new trid", nw_trid);
-	else
+	debug("editTransponder", "new trid", nw_trid);
+
+	if (! dbih->tuners[tvid].tables[tnid].transponders.count(nw_trid))
 		return error("editTransponder", tr("Error", "error").toStdString(), tr("Missing tuner settings transponder key \"%1\".", "error").arg(nw_trid.data()).toStdString());
 
 	e2db::tunersets_table tns = dbih->tuners[tvid].tables[tnid];

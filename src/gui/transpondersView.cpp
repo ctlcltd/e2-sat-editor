@@ -419,9 +419,9 @@ void transpondersView::addTransponder()
 	string txid = dialog->getEditId();
 	if (dialog->destroy()) return;
 
-	if (dbih->db.transponders.count(txid))
-		debug("addTransponder", "txid", txid);
-	else
+	debug("addTransponder", "new txid", txid);
+
+	if (! dbih->db.transponders.count(txid))
 		return error("addTransponder", tr("Error", "error").toStdString(), tr("Missing transponder key \"%1\".", "error").arg(txid.data()).toStdString());
 
 	list->header()->setSectionsClickable(false);
@@ -492,9 +492,9 @@ void transpondersView::editTransponder()
 	string nw_txid = dialog->getEditId();
 	if (dialog->destroy()) return;
 
-	if (dbih->db.transponders.count(nw_txid))
-		debug("editTransponder", "new txid", nw_txid);
-	else
+	debug("editTransponder", "new txid", nw_txid);
+
+	if (! dbih->db.transponders.count(nw_txid))
 		return error("editTransponder", tr("Error", "error").toStdString(), tr("Missing transponder key \"%1\".", "error").arg(nw_txid.data()).toStdString());
 
 	e2db::transponder tx = dbih->db.transponders[nw_txid];

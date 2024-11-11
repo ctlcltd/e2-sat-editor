@@ -808,6 +808,13 @@ void mainView::unpack()
 
 	for (auto & x : dbih->index["bss"])
 	{
+		if (! dbih->bouquets.count(x.second))
+		{
+			error("unpack", tr("Error", "error").toStdString(), tr("Missing bouquet key \"%1\".", "error").arg(x.second.data()).toStdString());
+
+			continue;
+		}
+
 		e2db::bouquet gboq = dbih->bouquets[x.second];
 		QString qbs = QString::fromStdString(x.second);
 		QString name = gboq.nname.empty() ? e2db::fixUnicodeChars(gboq.name) : QString::fromStdString(gboq.nname);
@@ -816,6 +823,8 @@ void mainView::unpack()
 		bitem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 		bitem->setData(0, Qt::UserRole, qbs);
 		bitem->setText(0, name);
+		if (! dbih->index.count(x.second))
+			bitem->setFont(0, QFont(theme::fontFamily(), -1, -1, QFont::Style::StyleItalic));
 		tree->addTopLevelItem(bitem);
 		tree->expandItem(bitem);
 
@@ -824,6 +833,13 @@ void mainView::unpack()
 	}
 	for (auto & x : dbih->index["ubs"])
 	{
+		if (! dbih->userbouquets.count(x.second))
+		{
+			error("unpack", tr("Error", "error").toStdString(), tr("Missing userbouquet key \"%1\".", "error").arg(x.second.data()).toStdString());
+
+			continue;
+		}
+
 		e2db::userbouquet uboq = dbih->userbouquets[x.second];
 		QString qub = QString::fromStdString(x.second);
 		QTreeWidgetItem* pgroup = bgroups[x.second];
@@ -833,6 +849,8 @@ void mainView::unpack()
 		bitem->setText(0, e2db::fixUnicodeChars(uboq.name));
 		if (uboq.utype == e2db::ATYPE::bouquet_hidden_519)
 			bitem->setText(0, bitem->text(0).prepend("• "));
+		if (! dbih->index.count(x.second))
+			bitem->setFont(0, QFont(theme::fontFamily(), -1, -1, QFont::Style::StyleItalic));
 		tree->addTopLevelItem(bitem);
 	}
 }
@@ -873,9 +891,15 @@ void mainView::populate(QTreeWidget* tw)
 	auto* dbih = this->data->dbih;
 
 	if (dbih->index.count(bname))
+	{
 		debug("populate", "current", bname);
+	}
 	else
+	{
 		error("populate", tr("Error", "error").toStdString(), tr("Missing index key \"%1\".", "error").arg(bname.data()).toStdString());
+
+		selected->setFont(0, QFont(theme::fontFamily(), -1, -1, QFont::Style::StyleNormal));
+	}
 
 	list->header()->setSortIndicatorShown(true);
 	list->header()->setSectionsClickable(false);
@@ -915,15 +939,7 @@ void mainView::populate(QTreeWidget* tw)
 			QStringList entry;
 			bool ref_error = false;
 
-			if (dbih->db.services.count(chi.second))
-			{
-				entry = dbih->entries.services[chi.second];
-				idx = QString::number(chi.first);
-				parental = entry[1].size() || ub_parental;
-				entry.prepend(idx);
-				entry.prepend(x);
-			}
-			else if (dbih->userbouquets.count(bname) && dbih->userbouquets[bname].channels.count(chi.second))
+			if (dbih->userbouquets.count(bname) && dbih->userbouquets[bname].channels.count(chi.second))
 			{
 				e2db::channel_reference chref = dbih->userbouquets[bname].channels[chi.second];
 
@@ -953,6 +969,23 @@ void mainView::populate(QTreeWidget* tw)
 					entry.prepend(idx);
 					entry.prepend(x);
 				}
+				else if (dbih->db.services.count(chi.second))
+				{
+					entry = dbih->entries.services[chi.second];
+					idx = QString::number(chi.first);
+					parental = entry[1].size() || ub_parental;
+
+					if (! chref.value.empty())
+					{
+						reftype = REF_TYPE::favourite;
+						entry = QStringList(entry);
+						QString value = QString::fromStdString(chref.value);
+						entry[0] = value;
+					}
+
+					entry.prepend(idx);
+					entry.prepend(x);
+				}
 				else
 				{
 					ref_error = true;
@@ -965,6 +998,14 @@ void mainView::populate(QTreeWidget* tw)
 					entry.prepend(idx);
 					entry.prepend(x);
 				}
+			}
+			else if (dbih->db.services.count(chi.second))
+			{
+					entry = dbih->entries.services[chi.second];
+					idx = QString::number(chi.first);
+					parental = entry[1].size() || ub_parental;
+					entry.prepend(idx);
+					entry.prepend(x);
 			}
 			else
 			{
@@ -1344,13 +1385,12 @@ void mainView::listItemDoubleClicked()
 		return;
 
 	QTreeWidgetItem* item = selected.first();
-	bool favourite = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::favourite;
 	bool marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
 	bool stream = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::stream;
 
 	if (marker)
 		editMarker();
-	else if (stream || favourite)
+	else if (stream)
 		editFavourite();
 	else
 		editService();
@@ -1455,20 +1495,6 @@ void mainView::visualReloadList()
 		if (chs_changed && dbih->changes.count(chid))
 			nw_chid = dbih->changes[chid];
 
-		if (dbih->entries.services.count(nw_chid))
-		{
-			QStringList entry = dbih->entries.services[nw_chid];
-			bool parental = entry[1].size() || ub_parental;
-			entry.prepend(item->text(ITEM_ROW_ROLE::chnum));
-			entry.prepend(item->text(ITEM_ROW_ROLE::x));
-			for (int i = 0; i < entry.count(); i++)
-				item->setText(i, entry[i]);
-			item->setIcon(ITEM_ROW_ROLE::chlock, parental ? theme::icon(parentalicon) : QIcon());
-			item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
-			item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
-			if (chs_changed)
-				item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
-		}
 		// userbouquet
 		else if (this->state.tc && this->state.ti == -1)
 		{
@@ -1498,6 +1524,25 @@ void mainView::visualReloadList()
 					item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
 					item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
 				}
+				else if (dbih->entries.services.count(nw_chid))
+				{
+					QStringList entry = dbih->entries.services[nw_chid];
+					bool parental = entry[1].size() || ub_parental;
+					entry.prepend(item->text(ITEM_ROW_ROLE::chnum));
+					entry.prepend(item->text(ITEM_ROW_ROLE::x));
+					for (int i = 0; i < entry.count(); i++)
+						item->setText(i, entry[i]);
+					if (! chref.value.empty())
+					{
+						QString value = QString::fromStdString(chref.value);
+						item->setText(ITEM_ROW_ROLE::chname, value);
+					}
+					item->setIcon(ITEM_ROW_ROLE::chlock, parental ? theme::icon(parentalicon) : QIcon());
+					item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
+					item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
+					if (chs_changed)
+						item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
+				}
 				else
 				{
 					ref_error = true;
@@ -1524,6 +1569,20 @@ void mainView::visualReloadList()
 					item->setText(i, entry[i]);
 				item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, REF_TYPE::favourite);
 			}
+		}
+		else if (dbih->entries.services.count(nw_chid))
+		{
+			QStringList entry = dbih->entries.services[nw_chid];
+			bool parental = entry[1].size() || ub_parental;
+			entry.prepend(item->text(ITEM_ROW_ROLE::chnum));
+			entry.prepend(item->text(ITEM_ROW_ROLE::x));
+			for (int i = 0; i < entry.count(); i++)
+				item->setText(i, entry[i]);
+			item->setIcon(ITEM_ROW_ROLE::chlock, parental ? theme::icon(parentalicon) : QIcon());
+			item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
+			item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
+			if (chs_changed)
+				item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
 		}
 		else
 		{
@@ -1806,9 +1865,9 @@ void mainView::addBouquet()
 
 	auto* dbih = this->data->dbih;
 
-	if (dbih->bouquets.count(bname))
-		debug("addBouquet", "bname", bname);
-	else
+	debug("addBouquet", "new bname", bname);
+
+	if (! dbih->bouquets.count(bname))
 		return error("addBouquet", tr("Error", "error").toStdString(), tr("Missing bouquet key \"%1\".", "error").arg(bname.data()).toStdString());
 
 	tree->setDragEnabled(false);
@@ -1866,13 +1925,14 @@ void mainView::editBouquet()
 	string nw_bname = dialog->getEditId();
 	if (dialog->destroy()) return;
 
-	if (dbih->bouquets.count(nw_bname))
-		debug("ediBouquet", "new bname", nw_bname);
-	else
+	debug("ediBouquet", "new bname", nw_bname);
+
+	if (! dbih->bouquets.count(nw_bname))
 		return error("editBouquet", tr("Error", "error").toStdString(), tr("Missing bouquet key \"%1\".", "error").arg(nw_bname.data()).toStdString());
 
 	e2db::bouquet gboq = dbih->bouquets[nw_bname];
 	item->setText(0, gboq.nname.empty() ? e2db::fixUnicodeChars(gboq.name) : QString::fromStdString(gboq.nname));
+	item->setFont(0, QFont(theme::fontFamily(), -1, -1, QFont::Style::StyleNormal));
 
 	treeItemSelectionChanged();
 
@@ -1894,9 +1954,9 @@ void mainView::addUserbouquet()
 
 	auto* dbih = this->data->dbih;
 
-	if (dbih->userbouquets.count(bname))
-		debug("addUserbouquet", "bname", bname);
-	else
+	debug("addUserbouquet", "new bname", bname);
+
+	if (! dbih->userbouquets.count(bname))
 		return error("addUserbouquet", tr("Error", "error").toStdString(), tr("Missing userbouquet key \"%1\".", "error").arg(bname.data()).toStdString());
 
 	tree->setDragEnabled(false);
@@ -1916,6 +1976,8 @@ void mainView::addUserbouquet()
 	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemNeverHasChildren);
 	item->setData(0, Qt::UserRole, QString::fromStdString(uboq.bname));
 	item->setText(0, e2db::fixUnicodeChars(uboq.name));
+	if (uboq.utype == e2db::ATYPE::bouquet_hidden_519)
+		item->setText(0, item->text(0).prepend("• "));
 
 	parent->insertChild(y, item);
 
@@ -1955,15 +2017,16 @@ void mainView::editUserbouquet()
 	string nw_bname = dialog->getEditId();
 	if (dialog->destroy()) return;
 
-	if (dbih->userbouquets.count(nw_bname))
-		debug("editUserbouquet", "new bname", nw_bname);
-	else
+	debug("editUserbouquet", "new bname", nw_bname);
+
+	if (! dbih->userbouquets.count(nw_bname))
 		return error("editUserbouquet", tr("Error", "error").toStdString(), tr("Missing userbouquet key \"%1\".", "error").arg(nw_bname.data()).toStdString());
 
 	e2db::userbouquet uboq = dbih->userbouquets[nw_bname];
 	item->setText(0, e2db::fixUnicodeChars(uboq.name));
 	if (uboq.utype == e2db::ATYPE::bouquet_hidden_519)
 		item->setText(0, item->text(0).prepend("• "));
+	item->setFont(0, QFont(theme::fontFamily(), -1, -1, QFont::Style::StyleNormal));
 
 	treeItemSelectionChanged();
 
@@ -2053,7 +2116,6 @@ void mainView::addService()
 {
 	debug("addService");
 
-	bool is_fav = false;
 	bool stream = false;
 	bool favourite = false;
 	string bname;
@@ -2066,10 +2128,8 @@ void mainView::addService()
 	{
 		bname = this->state.curr;
 
-		if (dbih->userbouquets.count(bname))
-			is_fav = true;
-		else
-			return;
+		if (! dbih->userbouquets.count(bname))
+			return error("addService", tr("Error", "error").toStdString(), tr("Userbouquet \"%1\" not exists.", "error").arg(bname.data()).toStdString());
 	}
 
 	e2se_gui::editService* dialog = new e2se_gui::editService(this->data);
@@ -2081,30 +2141,33 @@ void mainView::addService()
 
 	e2db::channel_reference chref;
 
-	if (dbih->db.services.count(chid))
+	debug("addService", "new chid", chid);
+
+	// userbouquet
+	if (this->state.tc && this->state.ti == -1)
 	{
-		debug("addService", "chid", chid);
-	}
-	else
-	{
-		if (is_fav && dbih->userbouquets[bname].channels.count(chid))
+		if (dbih->userbouquets[bname].channels.count(chid))
 		{
 			chref = dbih->userbouquets[bname].channels[chid];
 
 			stream = chref.stream;
-			favourite = ! stream;
+			favourite = ! chref.value.empty();
 
 			if (chref.stream)
 				reftype = REF_TYPE::stream;
 			else if (chref.marker)
 				reftype = REF_TYPE::marker;
-			else
+			else if (favourite)
 				reftype = REF_TYPE::favourite;
 		}
 		else
 		{
-			return error("addService", tr("Error", "error").toStdString(), tr("Missing service key \"%1\".", "error").arg(chid.data()).toStdString());
+			return error("addService", tr("Error", "error").toStdString(), tr("Missing channel reference key \"%1\".", "error").arg(chid.data()).toStdString());
 		}
+	}
+	else if (! dbih->db.services.count(chid))
+	{
+		return error("addService", tr("Error", "error").toStdString(), tr("Missing service key \"%1\".", "error").arg(chid.data()).toStdString());
 	}
 
 	for (auto & q : cache)
@@ -2145,7 +2208,7 @@ void mainView::addService()
 
 	QTreeWidgetItem* item;
 
-	if (favourite || stream)
+	if (stream)
 	{
 		QString refid = QString::fromStdString(dbih->get_reference_id(chref));
 		QStringList entry = dbih->entryFavourite(chref);
@@ -2175,6 +2238,11 @@ void mainView::addService()
 		entry.prepend(x);
 
 		item = new QTreeWidgetItem(entry);
+		if (favourite)
+		{
+			QString value = QString::fromStdString(chref.value);
+			item->setText(ITEM_ROW_ROLE::chname, value);
+		}
 		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemNeverHasChildren);
 		item->setData(ITEM_DATA_ROLE::idx, Qt::UserRole, idx);
 		item->setData(ITEM_DATA_ROLE::numbered, Qt::UserRole, true);
@@ -2225,7 +2293,6 @@ void mainView::editService()
 	QTreeWidgetItem* item = selected.first();
 	string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
 
-	bool is_fav = false;
 	int reftype = REF_TYPE::service;
 	bool favourite = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::favourite;
 	bool marker = item->data(ITEM_DATA_ROLE::reftype, Qt::UserRole).toInt() == REF_TYPE::marker;
@@ -2244,14 +2311,14 @@ void mainView::editService()
 	{
 		bname = this->state.curr;
 
-		if (dbih->userbouquets.count(bname) && dbih->userbouquets[bname].channels.count(chid))
-			is_fav = true;
-		else
+		if (! dbih->userbouquets.count(bname))
+			return error("editService", tr("Error", "error").toStdString(), tr("Userbouquet \"%1\" not exists.", "error").arg(bname.data()).toStdString());
+		if (! dbih->userbouquets[bname].channels.count(chid))
 			return error("editService", tr("Error", "error").toStdString(), tr("Missing channel reference key \"%1\".", "error").arg(chid.data()).toStdString());
 	}
 
 	e2se_gui::editService* dialog = new e2se_gui::editService(this->data);
-	dialog->setEditId(chid, bname, stream);
+	dialog->setEditId(chid, bname, stream || favourite);
 	dialog->display(cwid);
 	string nw_chid = dialog->getEditId();
 	bool reload = dialog->getReload();
@@ -2266,30 +2333,33 @@ void mainView::editService()
 
 	e2db::channel_reference chref;
 
-	if (dbih->db.services.count(nw_chid))
+	debug("editService", "new chid", nw_chid);
+
+	// userbouquet
+	if (this->state.tc && this->state.ti == -1)
 	{
-		debug("editService", "new chid", nw_chid);
-	}
-	else
-	{
-		if (is_fav && dbih->userbouquets[bname].channels.count(nw_chid))
+		if (dbih->userbouquets[bname].channels.count(nw_chid))
 		{
 			chref = dbih->userbouquets[bname].channels[nw_chid];
 
 			stream = chref.stream;
-			favourite = ! stream;
+			favourite = ! chref.value.empty();
 
 			if (chref.stream)
 				reftype = REF_TYPE::stream;
 			else if (chref.marker)
 				reftype = REF_TYPE::marker;
-			else
+			else if (favourite)
 				reftype = REF_TYPE::favourite;
 		}
 		else
 		{
-			return error("editService", tr("Error", "error").toStdString(), tr("Missing service key \"%1\".", "error").arg(nw_chid.data()).toStdString());
+			return error("editService", tr("Error", "error").toStdString(), tr("Missing channel reference key \"%1\".", "error").arg(nw_chid.data()).toStdString());
 		}
+	}
+	else if (! dbih->db.services.count(nw_chid))
+	{
+		return error("editService", tr("Error", "error").toStdString(), tr("Missing service key \"%1\".", "error").arg(nw_chid.data()).toStdString());
 	}
 
 	bool ub_parental = false;
@@ -2307,7 +2377,7 @@ void mainView::editService()
 
 	QString parentalicon = QSettings().value("engine/parentalLockInvert", false).toBool() || dbih->db.parental ? "service-whitelist" : "service-blacklist";
 
-	if (favourite || stream)
+	if (stream)
 	{
 		QString refid = QString::fromStdString(dbih->get_reference_id(chref));
 		QStringList entry = dbih->entryFavourite(chref);
@@ -2335,6 +2405,11 @@ void mainView::editService()
 		entry.prepend(item->text(ITEM_ROW_ROLE::x));
 		for (int i = 0; i < entry.count(); i++)
 			item->setText(i, entry[i]);
+		if (favourite)
+		{
+			QString value = QString::fromStdString(chref.value);
+			item->setText(ITEM_ROW_ROLE::chname, value);
+		}
 		item->setData(ITEM_DATA_ROLE::numbered, Qt::UserRole, true);
 		item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
 		item->setData(ITEM_DATA_ROLE::parental, Qt::UserRole, parental);
@@ -2574,9 +2649,9 @@ void mainView::addMarker()
 	else
 		return error("addMarker", tr("Error", "error").toStdString(), tr("Missing channel reference key \"%1\".", "error").arg(chid.data()).toStdString());
 
-	if (chref.marker)
-		debug("addMarker", "chid", chid);
-	else
+	debug("addMarker", "new chid", chid);
+
+	if (! chref.marker)
 		return error("addMarker", tr("Error", "error").toStdString(), tr("Channel reference \"%1\" is not a valid marker.", "error").arg(chid.data()).toStdString());
 
 	cache[bname].clear();
@@ -2680,9 +2755,9 @@ void mainView::editMarker()
 	if (! dbih->userbouquets[bname].channels.count(nw_chid))
 		return error("editMarker", tr("Error", "error").toStdString(), tr("Missing channel reference key \"%1\".", "error").arg(nw_chid.data()).toStdString());
 
-	if (chref.marker)
-		debug("editMarker", "new chid", nw_chid);
-	else
+	debug("editMarker", "new chid", nw_chid);
+
+	if (! chref.marker)
 		return error("editMarker", tr("Error", "error").toStdString(), tr("Channel reference \"%1\" is not a valid marker.", "error").arg(nw_chid.data()).toStdString());
 
 	chref = dbih->userbouquets[bname].channels[nw_chid];

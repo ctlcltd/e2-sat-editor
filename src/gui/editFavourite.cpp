@@ -547,8 +547,9 @@ void editFavourite::store()
 		chref.stream = true;
 	else if (chref.atype != 0 && chref.atype != e2db::ATYPE::group)
 		chref.marker = true;
-	else
-		chref.chid = "";
+	//TODO TEST
+	// else
+		// chref.chid = "";
 	//TODO FIX db.services[chref.chid] exists and collision x:x:x:X
 	// else if (dbih->db.services.count(chref.chid))
 		// chref.chid = "";
