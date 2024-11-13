@@ -117,7 +117,8 @@ class tab : protected e2se::log_factory
 		void infoFile();
 		void convertFormat(gui::GUI_CXE bit);
 		void convertFormat(int bit);
-		void toolsInspector();
+		void toolsLogInspector();
+		void toolsErrorChecker();
 		void toolsImportFromFile(TOOLS_FILE ftype, e2db::FCONVS fci);
 		void toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco);
 		void toolsAutofixMacro();

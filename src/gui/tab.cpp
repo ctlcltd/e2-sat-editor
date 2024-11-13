@@ -1658,7 +1658,8 @@ QMenu* tab::toolsMenu()
 		menuAction(tmexporthtml, tr("Export Userbouquets", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_userbouquets); });
 		menuAction(tmexporthtml, tr("Export Tuner settings", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_tunersets); });
 		menuSeparator(menu);
-		menuAction(menu, tr("Log Inspector", "menu"), [=]() { this->toolsInspector(); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
+		menuAction(menu, tr("Error Checker", "menu"), [=]() { this->toolsErrorChecker(); });
+		menuAction(menu, tr("Log Inspector", "menu"), [=]() { this->toolsLogInspector(); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
 	}
 
 	QMenu* menu = this->tools_menu;
@@ -1666,22 +1667,29 @@ QMenu* tab::toolsMenu()
 	return menu;
 }
 
-void tab::toolsInspector()
+void tab::toolsLogInspector()
 {
 	for (auto & q : QGuiApplication::allWindows())
 	{
-		if (q->isWindowType() && q->objectName() == "inspectorWindow")
+		if (q->isWindowType() && q->objectName() == "logInspectorWindow")
 		{
-			debug("toolsInspector", "hit", 1);
+			debug("toolsLogInspector", "hit", 1);
 
 			q->requestActivate();
 			return q->raise();
 		}
 	}
 
-	debug("toolsInspector");
+	debug("toolsLogInspector");
 
-	tools->inspector();
+	tools->logInspector();
+}
+
+void tab::toolsErrorChecker()
+{
+	debug("toolsErrorChecker");
+
+	tools->errorChecker();
 }
 
 void tab::toolsImportFromFile(TOOLS_FILE ftype, e2db::FCONVS fci)
@@ -2182,8 +2190,8 @@ void tab::actionCall(int bit)
 			toolsUtils(bit);
 		break;
 
-		case gui::TAB_ATS::Inspector:
-			toolsInspector();
+		case gui::TAB_ATS::Inspect:
+			toolsLogInspector();
 		break;
 	}
 }

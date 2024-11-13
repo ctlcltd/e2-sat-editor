@@ -148,7 +148,7 @@ class gui : protected e2se::log_factory
 			ToolsExportHTML_bouquets = 160,
 			ToolsExportHTML_userbouquets = 161,
 			ToolsExportHTML_tunersets = 162,
-			ToolsInspector = 0xfe,
+			ToolsLogInspector = 0xfe,
 			init = 0 // preset
 		};
 
@@ -220,7 +220,7 @@ class gui : protected e2se::log_factory
 			GUI_CXE::ToolsExportHTML_bouquets,
 			GUI_CXE::ToolsExportHTML_userbouquets,
 			GUI_CXE::ToolsExportHTML_tunersets,
-			GUI_CXE::ToolsInspector
+			GUI_CXE::ToolsLogInspector
 		};
 
 		inline static const vector<int> GUI_CXE__idle = {
@@ -312,7 +312,7 @@ class gui : protected e2se::log_factory
 			ExportHTML_bouquets = GUI_CXE::ToolsExportHTML_bouquets,
 			ExportHTML_userbouquets = GUI_CXE::ToolsExportHTML_userbouquets,
 			ExportHTML_tunersets = GUI_CXE::ToolsExportHTML_tunersets,
-			Inspector = GUI_CXE::ToolsInspector
+			Inspect = GUI_CXE::ToolsLogInspector
 		};
 
 		enum TAB_VIEW {

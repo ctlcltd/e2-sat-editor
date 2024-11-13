@@ -65,12 +65,12 @@ tools::~tools()
 	delete this->log;
 }
 
-void tools::inspector()
+void tools::logInspector()
 {
-	debug("inspector");
+	debug("logInspector");
 
 	QDialog* dial = new QDialog(nullptr, Qt::WindowStaysOnTopHint);
-	dial->setObjectName("inspector");
+	dial->setObjectName("logInspector");
 	dial->setWindowTitle(tr("Log Inspector", "dialog"));
 	dial->setMinimumSize(450, 520);
 
@@ -210,6 +210,14 @@ void tools::inspectReset()
 {
 	this->inspect_pos = 0;
 	this->inspect_curr = INSPECT_FILTER::AllLog;
+}
+
+//TODO
+void tools::errorChecker()
+{
+	auto* dbih = this->data->dbih;
+
+	dbih->error_checker();
 }
 
 void tools::status(QString message)

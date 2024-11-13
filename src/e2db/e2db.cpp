@@ -1896,6 +1896,213 @@ map<string, vector<pair<int, string>>> e2db::get_az_index()
 	return _index;
 }
 
+//TODO
+void e2db::error_checker()
+{
+	debug("error_checker");
+
+	map<string, vector<string>> chkerr;
+
+	stringstream ss (this->log->str());
+	string line;
+
+	while (std::getline(ss, line))
+	{
+		if (line.find("<Error>") != string::npos)
+		{
+			chkerr["error"].emplace_back(line);
+		}
+	}
+
+	if (! index.count("txs"))
+		chkerr["index"].emplace_back(msg("Missing index key \"%s\".", "txs (transponders)"));
+
+	if (! index.count("chs"))
+		chkerr["index"].emplace_back(msg("Missing index key \"%s\".", "chs (services)"));
+
+	if (! index.count("chs:0"))
+		chkerr["index"].emplace_back(msg("Missing index key \"%s\".", "chs:0 (services data)"));
+
+	if (! index.count("chs:1"))
+		chkerr["index"].emplace_back(msg("Missing index key \"%s\".", "chs:1 (services tv)"));
+
+	if (! index.count("chs:2"))
+		chkerr["index"].emplace_back(msg("Missing index key \"%s\".", "chs:2 (services radio)"));
+
+	if (! index.count("bss"))
+		chkerr["index"].emplace_back(msg("Missing index key \"%s\".", "bss (bouquets)"));
+
+	if (! index.count("ubs"))
+		chkerr["index"].emplace_back(msg("Missing index key \"%s\".", "ubs (userbouquets)"));
+
+	if (! index.count("mks"))
+		chkerr["index"].emplace_back(msg("Missing index key \"%s\".", "mks (markers)"));
+
+	if (index.count("txs"))
+	{
+		for (auto & x : index["txs"])
+		{
+			string txid = x.second;
+
+			if (! db.transponders.count(txid))
+				chkerr["txi"].emplace_back(msg("Transponder \"%s\" not exists.", txid));
+		}
+	}
+
+	if (index.count("chs"))
+	{
+		for (auto & x : index["chs"])
+		{
+			string chid = x.second;
+
+			if (db.services.count(chid))
+			{
+				service& ch = db.services[chid];
+
+				if (! db.transponders.count(ch.txid))
+					chkerr["txi"].emplace_back(msg("Transponder \"%s\" not exists.", ch.txid));
+			}
+			else
+			{
+				chkerr["index"].emplace_back(msg("Service \"%s\" not exists.", chid));
+			}
+		}
+	}
+
+	if (index.count("bss"))
+	{
+		for (auto & x : index["bss"])
+		{
+			string bname = x.second;
+
+			if (! bouquets.count(bname))
+				chkerr["bsi"].emplace_back(msg("Bouquet \"%s\" not exists.", bname));
+		}
+	}
+
+	if (index.count("ubs"))
+	{
+		for (auto & x : index["ubs"])
+		{
+			string bname = x.second;
+
+			if (! userbouquets.count(bname))
+				chkerr["ubi"].emplace_back(msg("Userbouquet \"%s\" not exists.", bname));
+		}
+	}
+
+	for (auto & x : bouquets)
+	{
+		bouquet& bs = x.second;
+		string bname = bs.bname;
+
+		if (! index.count(bname))
+			chkerr["index"].emplace_back(msg("Missing index key \"%s\".", bname));
+
+		for (string & ub_bname : bs.userbouquets)
+		{
+			if (! index.count(ub_bname))
+				chkerr["index"].emplace_back(msg("Missing index key \"%s\".", ub_bname));
+
+			if (! userbouquets.count(ub_bname))
+				chkerr["ubi"].emplace_back(msg("Userbouquet \"%s\" not exists.", ub_bname));
+		}
+	}
+
+	for (auto & x : userbouquets)
+	{
+		userbouquet& ub = x.second;
+		string bname = ub.bname;
+
+		if (! index.count(bname))
+		{
+			chkerr["index"].emplace_back(msg("Missing index key \"%s\".", bname));
+
+			continue;
+		}
+
+		for (auto & x : index[bname])
+		{
+			string chid = x.second;
+			bool ref_error = false;
+
+			if (ub.channels.count(chid))
+			{
+				channel_reference& chref = ub.channels[chid];
+
+				if (chref.marker)
+				{
+					if (chref.atype != ATYPE::marker && chref.atype != ATYPE::marker_hidden_512 && chref.atype != ATYPE::marker_hidden_832 && chref.atype != ATYPE::marker_numbered)
+						ref_error = true;
+				}
+				else if (chref.stream)
+				{
+					if (chref.url.empty())
+						ref_error = true;
+				}
+				else if (db.services.count(chid))
+				{
+					service& ch = db.services[chid];
+
+					/*if (ch.chid != chref.chid)
+						ref_error = true;
+					if (ch.txid.empty() || ch.tsid < 1 || ch.onid < 1)
+						ref_error = true;*/
+
+					if (! db.transponders.count(ch.txid))
+						chkerr["txi"].emplace_back(msg("Transponder \"%s\" not exists.", ch.txid));
+				}
+				else
+				{
+					ref_error = true;
+
+					chkerr["chi"].emplace_back(msg("Service \"%s\" not exists.", chid));
+				}
+			}
+			else
+			{
+				ref_error = true;
+			}
+
+			if (ref_error)
+			{
+				chkerr["ref"].emplace_back(msg("Channel reference mismatch \"%s\".", chid));
+			}
+		}
+	}
+
+	for (auto & x : tuners)
+	{
+		tunersets& tv = x.second;
+
+		for (auto & x : tv.tables)
+		{
+			tunersets_table& tn = x.second;
+			string tnid = tn.tnid;
+
+			string iname = "tns:";
+			char yname = value_transponder_type(tn.ytype);
+			iname += yname;
+
+			if (! index.count(iname))
+				chkerr["index"].emplace_back(msg("Missing index key \"%s\".", iname));
+
+			if (! index.count(tnid))
+				chkerr["index"].emplace_back(msg("Missing index key \"%s\".", tnid));
+
+			//TODO
+		}
+	}
+
+	for (auto & err : chkerr)
+	{
+		std::cout << err.first << '\n';
+		for (auto & str : err.second)
+			std::cout << '\t' << str << '\n';
+		std::cout << std::endl;
+	}
+}
+
 //TODO improve options
 void e2db::merge(e2db_abstract* dst)
 {

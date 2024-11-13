@@ -77,6 +77,7 @@ class e2db : public e2db_parser, public e2db_maker, public e2db_converter, publi
 		map<string, vector<pair<int, string>>> get_resolution_index();
 		map<string, vector<pair<int, string>>> get_encryption_index();
 		map<string, vector<pair<int, string>>> get_az_index();
+		void error_checker();
 		void merge(e2db_abstract* dst);
 
 	protected:

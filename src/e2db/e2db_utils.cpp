@@ -151,7 +151,17 @@ void e2db_utils::fix_remove_references()
 			{
 				channel_reference& chref = ub.channels[chid];
 
-				if (db.services.count(chid))
+				if (chref.marker)
+				{
+					if (chref.atype != ATYPE::marker && chref.atype != ATYPE::marker_hidden_512 && chref.atype != ATYPE::marker_hidden_832 && chref.atype != ATYPE::marker_numbered)
+						ref_error = true;
+				}
+				else if (chref.stream)
+				{
+					if (chref.url.empty())
+						ref_error = true;
+				}
+				else if (db.services.count(chid))
 				{
 					service& ch = db.services[chid];
 
@@ -162,20 +172,7 @@ void e2db_utils::fix_remove_references()
 				}
 				else
 				{
-					if (chref.marker)
-					{
-						if (chref.atype != ATYPE::marker && chref.atype != ATYPE::marker_hidden_512 && chref.atype != ATYPE::marker_hidden_832 && chref.atype != ATYPE::marker_numbered)
-							ref_error = true;
-					}
-					else if (chref.stream)
-					{
-						if (chref.url.empty())
-							ref_error = true;
-					}
-					else
-					{
-						ref_error = true;
-					}
+					ref_error = true;
 				}
 			}
 			else

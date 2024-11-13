@@ -56,7 +56,8 @@ class tools : protected e2se::log_factory
 
 		tools(tab* tid, gui* gid, QWidget* cwid, dataHandler* data);
 		virtual ~tools();
-		void inspector();
+		void logInspector();
+		void errorChecker();
 		void applyUtils(int bit, e2db::uoopts& opts, bool contextual = false);
 		void execMacro(vector<string> pattern);
 		void macroAutofix();

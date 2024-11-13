@@ -509,7 +509,7 @@ std::pair<int, int> e2db_termctl::screensize()
 void e2db_termctl::debugger()
 {
 	std::ofstream log ("./e2se-cli_log.txt");
-	log.exceptions(std::ofstream::failbit | std::ofstream::failbit | ofstream::badbit);
+	log.exceptions(std::ofstream::failbit | std::ofstream::badbit);
 	std::string line;
 
 	log << "--- begin is      ---" << std::endl;
@@ -534,7 +534,7 @@ void e2db_termctl::debugger()
 void e2db_termctl::tmp_history()
 {
 	std::ofstream log ("./e2se-cli_history");
-	log.exceptions(std::ofstream::failbit | std::ofstream::failbit | ofstream::badbit);
+	log.exceptions(std::ofstream::failbit | std::ofstream::badbit);
 	std::string line;
 
 	history->clear();

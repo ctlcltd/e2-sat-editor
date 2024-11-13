@@ -458,7 +458,7 @@ void gui::menuBarLayout()
 	menuBarSeparator(mtools);
 	gmenu[GUI_CXE::ToolsAutofixMacro] = menuBarAction(mtools, tr("Autofix", "menu"), [=]() { this->tabAction(TAB_ATS::AutofixMacro); });
 	menuBarSeparator(mtools);
-	gmenu[GUI_CXE::ToolsInspector] = menuBarAction(mtools, tr("Log Inspector", "menu"), [=]() { this->tabAction(TAB_ATS::Inspector); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
+	gmenu[GUI_CXE::ToolsLogInspector] = menuBarAction(mtools, tr("Log Inspector", "menu"), [=]() { this->tabAction(TAB_ATS::Inspect); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
 
 	QMenu* meditor = menuBarMenu(menubar, tr("Edit&or", "menu"));
 	gmenu[GUI_CXE::Transponders] = menuBarAction(meditor, tr("Edit Transponders", "menu"), [=]() { this->tabAction(TAB_ATS::EditTransponders); });
