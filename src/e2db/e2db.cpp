@@ -63,6 +63,8 @@ void e2db::import_file(FPORTS fpi, vector<string> paths)
 	debug("import_file", "file path", "multiple");
 	debug("import_file", "file input", fpi);
 
+	string ifpath;
+
 	try
 	{
 		bool merge = this->get_input().size() != 0 ? true : false;
@@ -105,11 +107,13 @@ void e2db::import_file(FPORTS fpi, vector<string> paths)
 				file.path = path;
 				file.filename = filename;
 				file.mime = mime;
+				ifpath = path;
 
 				//TODO improve
 				if (fpi != FPORTS::directory)
 				{
 					ifstream ifile (path);
+					ifile.exceptions(ifstream::badbit);
 					string line;
 					while (std::getline(ifile, line))
 						file.data.append(line + '\n');
@@ -151,6 +155,10 @@ void e2db::import_file(FPORTS fpi, vector<string> paths)
 	catch (const std::filesystem::filesystem_error& err)
 	{
 		exception("import_file", "Error", msg(MSG::except_filesystem, err.what()));
+	}
+	catch (const std::ifstream::failure& err)
+	{
+		exception("import_file", "Error", msg("File \"%s\" is not readable.", ifpath));
 	}
 	catch (...)
 	{
@@ -316,6 +324,8 @@ void e2db::export_file(FPORTS fpo, string path, string filename)
 
 	auto t_start = std::chrono::high_resolution_clock::now();
 
+	string ofpath;
+
 	try
 	{
 		e2db_file file;
@@ -456,6 +466,8 @@ void e2db::export_file(FPORTS fpo, string path, string filename)
 		if (MAKER_FIX_CRLF && check_crlf()) fmode |= std::ios_base::binary;
 
 		ofstream out (fpath, fmode);
+		ofpath = fpath;
+		out.exceptions(ofstream::failbit | ofstream::badbit);
 		out << file.data;
 		out.close();
 	}
@@ -470,6 +482,10 @@ void e2db::export_file(FPORTS fpo, string path, string filename)
 	catch (const std::filesystem::filesystem_error& err)
 	{
 		exception("export_file", "Error", msg(MSG::except_filesystem, err.what()));
+	}
+	catch (const std::ofstream::failure& err)
+	{
+		exception("export_file", "Error", msg("File \"%s\" is not writable.", ofpath));
 	}
 	catch (...)
 	{

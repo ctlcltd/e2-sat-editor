@@ -1131,6 +1131,10 @@ void e2db_cli::shell_file_read(string path)
 	{
 		cerr << "Error: " << msg(MSG::except_filesystem, err.what()) << endl;
 	}
+	catch (const std::ifstream::failure& err)
+	{
+		cerr << "Error" << msg("File \"%s\" is not readable.", path) << endl;
+	}
 	catch (const std::runtime_error& err)
 	{
 		cerr << "Error: " << err.what() << endl;
@@ -1159,6 +1163,10 @@ void e2db_cli::shell_file_write(string path)
 	catch (const std::filesystem::filesystem_error& err)
 	{
 		cerr << "Error: " << msg(MSG::except_filesystem, err.what()) << endl;
+	}
+	catch (const std::ofstream::failure& err)
+	{
+		cerr << "Error" << msg("File \"%s\" is not writable.", path) << endl;
 	}
 	catch (const std::runtime_error& err)
 	{
@@ -1225,6 +1233,7 @@ void e2db_cli::shell_e2db_parse(ENTRY entry_type, string path, int ver, bool dir
 		else if (entry_type == ENTRY::lamedb_services)
 		{
 			ifstream iservices (path);
+			iservices.exceptions(ifstream::badbit);
 			try
 			{
 				if (ver == 5)
@@ -1249,6 +1258,7 @@ void e2db_cli::shell_e2db_parse(ENTRY entry_type, string path, int ver, bool dir
 				throw std::runtime_error (msg("Unknown Bouquet file."));
 
 			ifstream ibouquet (path);
+			ibouquet.exceptions(ifstream::badbit);
 			try
 			{
 				dbih->parse_e2db_bouquet(ibouquet, filename, fext == "epl");
@@ -1263,6 +1273,7 @@ void e2db_cli::shell_e2db_parse(ENTRY entry_type, string path, int ver, bool dir
 		else if (entry_type == ENTRY::userbouquet)
 		{
 			ifstream iuserbouquet (path);
+			iuserbouquet.exceptions(ifstream::badbit);
 			try
 			{
 				dbih->parse_e2db_userbouquet(iuserbouquet, filename);
@@ -1277,6 +1288,7 @@ void e2db_cli::shell_e2db_parse(ENTRY entry_type, string path, int ver, bool dir
 		else if (entry_type == ENTRY::zapit_services)
 		{
 			ifstream iservicesxml (path);
+			iservicesxml.exceptions(ifstream::badbit);
 			try
 			{
 				if (ver != -1)
@@ -1296,6 +1308,7 @@ void e2db_cli::shell_e2db_parse(ENTRY entry_type, string path, int ver, bool dir
 			ver = ver != -1 ? ver : dbih->get_zapit_version();
 
 			ifstream ibouquetsxml (path);
+			ibouquetsxml.exceptions(ifstream::badbit);
 			try
 			{
 				dbih->parse_zapit_bouquets_apix_xml(ibouquetsxml, filename, ver);
@@ -1323,6 +1336,7 @@ void e2db_cli::shell_e2db_parse(ENTRY entry_type, string path, int ver, bool dir
 				throw std::runtime_error (msg("Unknown Tuner settings type."));
 
 			ifstream itunxml (path);
+			itunxml.exceptions(ifstream::badbit);
 			try
 			{
 				dbih->parse_tunersets_xml(ytype, itunxml);
@@ -1337,6 +1351,7 @@ void e2db_cli::shell_e2db_parse(ENTRY entry_type, string path, int ver, bool dir
 		else if (entry_type == ENTRY::parentallock_locked)
 		{
 			ifstream iparental (path);
+			iparental.exceptions(ifstream::badbit);
 			try
 			{
 				dbih->parse_e2db_parentallock_list(e2db::PARENTALLOCK::locked, iparental);
@@ -1351,6 +1366,7 @@ void e2db_cli::shell_e2db_parse(ENTRY entry_type, string path, int ver, bool dir
 		else if (entry_type == ENTRY::parentallock_blacklist)
 		{
 			ifstream iparental (path);
+			iparental.exceptions(ifstream::badbit);
 			try
 			{
 				dbih->parse_e2db_parentallock_list(e2db::PARENTALLOCK::blacklist, iparental);
@@ -1365,6 +1381,7 @@ void e2db_cli::shell_e2db_parse(ENTRY entry_type, string path, int ver, bool dir
 		else if (entry_type == ENTRY::parentallock_whitelist)
 		{
 			ifstream iparental (path);
+			iparental.exceptions(ifstream::badbit);
 			try
 			{
 				dbih->parse_e2db_parentallock_list(e2db::PARENTALLOCK::whitelist, iparental);
@@ -1389,6 +1406,10 @@ void e2db_cli::shell_e2db_parse(ENTRY entry_type, string path, int ver, bool dir
 	{
 		cerr << "Error: " << msg(MSG::except_filesystem, err.what()) << endl;
 	}
+	catch (const std::ifstream::failure& err)
+	{
+		cerr << "Error" << msg("File \"%s\" is not readable.", path) << endl;
+	}
 	catch (const std::runtime_error& err)
 	{
 		cerr << "Error: " << err.what() << endl;
@@ -1399,6 +1420,7 @@ void e2db_cli::shell_e2db_parse(ENTRY entry_type, string path, int ver, bool dir
 	}
 }
 
+//TODO TEST ofstream path
 void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir, string bname)
 {
 	if (path.empty())
@@ -1463,6 +1485,7 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 			dbih->make_lamedb(filename, file, ver);
 
 			ofstream out (path);
+			out.exceptions(ofstream::failbit | ofstream::badbit);
 			out << file.data;
 			out.close();
 		}
@@ -1496,6 +1519,7 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 					dbih->make_bouquet(filename, file, ver);
 
 				ofstream out (path);
+				out.exceptions(ofstream::failbit | ofstream::badbit);
 				out << file.data;
 				out.close();
 			}
@@ -1525,6 +1549,7 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 				dbih->make_userbouquet(bname, file, ver);
 
 				ofstream out (path);
+				out.exceptions(ofstream::failbit | ofstream::badbit);
 				out << file.data;
 				out.close();
 			}
@@ -1536,6 +1561,7 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 			dbih->make_bouquets_xml(filename, file, ver);
 
 			ofstream out (path);
+			out.exceptions(ofstream::failbit | ofstream::badbit);
 			out << file.data;
 			out.close();
 		}
@@ -1546,6 +1572,7 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 			dbih->make_bouquets_xml(filename, file, ver);
 
 			ofstream out (path);
+			out.exceptions(ofstream::failbit | ofstream::badbit);
 			out << file.data;
 			out.close();
 		}
@@ -1606,6 +1633,7 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 				dbih->make_tunersets_xml(filename, ytype, file);
 
 				ofstream out (path);
+				out.exceptions(ofstream::failbit | ofstream::badbit);
 				out << file.data;
 				out.close();
 			}
@@ -1617,6 +1645,7 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 			dbih->make_parentallock_list(filename, e2db::PARENTALLOCK::locked, file);
 
 			ofstream out (path);
+			out.exceptions(ofstream::failbit | ofstream::badbit);
 			out << file.data;
 			out.close();
 		}
@@ -1627,6 +1656,7 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 			dbih->make_parentallock_list(filename, e2db::PARENTALLOCK::blacklist, file);
 
 			ofstream out (path);
+			out.exceptions(ofstream::failbit | ofstream::badbit);
 			out << file.data;
 			out.close();
 		}
@@ -1637,6 +1667,7 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 			dbih->make_parentallock_list(filename, e2db::PARENTALLOCK::whitelist, file);
 
 			ofstream out (path);
+			out.exceptions(ofstream::failbit | ofstream::badbit);
 			out << file.data;
 			out.close();
 		}
@@ -1651,6 +1682,7 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 				dbih->make_parentallock_list(filename, e2db::PARENTALLOCK::locked, file);
 
 				ofstream out (path);
+				out.exceptions(ofstream::failbit | ofstream::badbit);
 				out << file.data;
 				out.close();
 			}
@@ -1661,6 +1693,7 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 				dbih->make_parentallock_list(filename, dbih->db.parental, file);
 
 				ofstream out (path);
+				out.exceptions(ofstream::failbit | ofstream::badbit);
 				out << file.data;
 				out.close();
 
@@ -1673,6 +1706,7 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 					empty.size = 0;
 
 					ofstream out (path);
+					out.exceptions(ofstream::failbit | ofstream::badbit);
 					out << empty.data;
 					out.close();
 				}
@@ -1690,6 +1724,10 @@ void e2db_cli::shell_e2db_make(ENTRY entry_type, string path, int ver, bool dir,
 	catch (const std::filesystem::filesystem_error& err)
 	{
 		cerr << "Error: " << msg(MSG::except_filesystem, err.what()) << endl;
+	}
+	catch (const std::ofstream::failure& err)
+	{
+		cerr << "Error: " << msg("File \"%s\" is not writable.", path) << endl;
 	}
 	catch (const std::runtime_error& err)
 	{
@@ -1794,6 +1832,14 @@ void e2db_cli::shell_e2db_convert(ENTRY entry_type, int fopt, int ftype, string 
 	catch (const std::filesystem::filesystem_error& err)
 	{
 		cerr << "Error: " << msg(MSG::except_filesystem, err.what()) << endl;
+	}
+	catch (const std::ifstream::failure& err)
+	{
+		cerr << "Error" << msg("File \"%s\" is not readable.", path) << endl;
+	}
+	catch (const std::ofstream::failure& err)
+	{
+		cerr << "Error" << msg("File \"%s\" is not writable.", path) << endl;
 	}
 	catch (const std::runtime_error& err)
 	{
@@ -1914,6 +1960,10 @@ void e2db_cli::shell_e2db_merge(ENTRY entry_type, string path, int ver, bool dir
 	{
 		cerr << "Error: " << msg(MSG::except_filesystem, err.what()) << endl;
 	}
+	catch (const std::ifstream::failure& err)
+	{
+		cerr << "Error" << msg("File \"%s\" is not readable.", path) << endl;
+	}
 	catch (const std::runtime_error& err)
 	{
 		cerr << "Error: " << err.what() << endl;
@@ -1927,37 +1977,7 @@ void e2db_cli::shell_e2db_merge(ENTRY entry_type, string path, int ver, bool dir
 //TODO
 void e2db_cli::shell_e2db_merge(ENTRY entry_type, int ver, string bname0, string bname1)
 {
-	try
-	{
-		if (entry_type == ENTRY::bouquet)
-		{
-		}
-		else if (entry_type == ENTRY::userbouquet)
-		{
-		}
-
-		cout << "TODO" << endl;
-	}
-	catch (const std::invalid_argument& err)
-	{
-		cerr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << endl;
-	}
-	catch (const std::out_of_range& err)
-	{
-		cerr << "Error: " << msg(MSG::except_out_of_range, err.what()) << endl;
-	}
-	catch (const std::filesystem::filesystem_error& err)
-	{
-		cerr << "Error: " << msg(MSG::except_filesystem, err.what()) << endl;
-	}
-	catch (const std::runtime_error& err)
-	{
-		cerr << "Error: " << err.what() << endl;
-	}
-	catch (...)
-	{
-		cerr << "Error: " << msg(MSG::except_uncaught) << endl;
-	}
+	cout << "TODO" << endl;
 }
 
 void e2db_cli::shell_e2db_import(ENTRY entry_type, vector<string> paths, int ver, bool dir)
@@ -2061,6 +2081,10 @@ void e2db_cli::shell_e2db_import(ENTRY entry_type, vector<string> paths, int ver
 	catch (const std::filesystem::filesystem_error& err)
 	{
 		cerr << "Error: " << msg(MSG::except_filesystem, err.what()) << endl;
+	}
+	catch (const std::ifstream::failure& err)
+	{
+		cerr << "Error" << msg("File Error") << endl;
 	}
 	catch (const std::runtime_error& err)
 	{
@@ -2217,6 +2241,10 @@ void e2db_cli::shell_e2db_export(ENTRY entry_type, vector<string> paths, int ver
 	catch (const std::filesystem::filesystem_error& err)
 	{
 		cerr << "Error: " << msg(MSG::except_filesystem, err.what()) << endl;
+	}
+	catch (const std::ofstream::failure& err)
+	{
+		cerr << "Error" << msg("File Error") << endl;
 	}
 	catch (const std::runtime_error& err)
 	{

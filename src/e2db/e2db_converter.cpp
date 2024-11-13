@@ -40,6 +40,8 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, vector<string> pat
 	debug("import_csv_file", "file path", "multiple");
 	debug("import_csv_file", "file input", fci);
 
+	string ifpath;
+
 	try
 	{
 		auto* dst = newptr();
@@ -48,6 +50,7 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, vector<string> pat
 		{
 			for (string & path : paths)
 			{
+				ifpath = path;
 				import_csv_file(fci, opts, dst, path);
 			}
 
@@ -72,6 +75,10 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, vector<string> pat
 	catch (const std::filesystem::filesystem_error& err)
 	{
 		exception("import_csv_file", "Error", msg(MSG::except_filesystem, err.what()));
+	}
+	catch (const std::ifstream::failure& err)
+	{
+		exception("import_csv_file", "Error", msg("File \"%s\" is not readable.", ifpath));
 	}
 	catch (...)
 	{
@@ -114,6 +121,10 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, string path)
 	{
 		exception("import_csv_file", "Error", msg(MSG::except_filesystem, err.what()));
 	}
+	catch (const std::ifstream::failure& err)
+	{
+		exception("import_csv_file", "Error", msg("File \"%s\" is not readable.", path));
+	}
 	catch (...)
 	{
 		exception("import_csv_file", "Error", msg(MSG::except_uncaught));
@@ -147,6 +158,7 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, e2db_abstract* dst
 		}
 
 		ifstream ifile (path);
+		ifile.exceptions(ifstream::badbit);
 
 		try
 		{
@@ -190,6 +202,10 @@ void e2db_converter::import_csv_file(FCONVS fci, fcopts opts, e2db_abstract* dst
 	{
 		exception("import_csv_file", "Error", msg(MSG::except_filesystem, err.what()));
 	}
+	catch (const std::ifstream::failure& err)
+	{
+		exception("import_csv_file", "Error", msg("File \"%s\" is not readable.", path));
+	}
 	catch (...)
 	{
 		exception("import_csv_file", "Error", msg(MSG::except_uncaught));
@@ -207,6 +223,7 @@ void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
 	debug("export_csv_file", "file output", fco);
 
 	auto t_start = std::chrono::high_resolution_clock::now();
+	string ofpath;
 
 	try
 	{
@@ -254,6 +271,7 @@ void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
 		}
 
 		bool once = !! files.size();
+
 		for (auto & file : files)
 		{
 			string fpath;
@@ -280,6 +298,8 @@ void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
 			if (CONVERTER_OUT_CSV_FIX_CRLF && check_crlf()) fmode |= std::ios_base::binary;
 
 			ofstream out (fpath, fmode);
+			ofpath = fpath;
+			out.exceptions(ofstream::failbit | ofstream::badbit);
 			out << file.data;
 			out.close();
 		}
@@ -295,6 +315,10 @@ void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
 	catch (const std::filesystem::filesystem_error& err)
 	{
 		exception("export_csv_file", "Error", msg(MSG::except_filesystem, err.what()));
+	}
+	catch (const std::ofstream::failure& err)
+	{
+		exception("export_csv_file", "Error", msg("File \"%s\" is not writable.", ofpath));
 	}
 	catch (...)
 	{
@@ -313,6 +337,7 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 	debug("export_html_file", "file output", fco);
 
 	auto t_start = std::chrono::high_resolution_clock::now();
+	string ofpath;
 
 	try
 	{
@@ -363,6 +388,7 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 		}
 
 		bool once = !! files.size();
+
 		for (e2db_file & file : files)
 		{
 			string fpath;
@@ -389,6 +415,8 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 			if (CONVERTER_OUT_HTML_FIX_CRLF && check_crlf()) fmode |= std::ios_base::binary;
 
 			ofstream out (fpath, fmode);
+			ofpath = fpath;
+			out.exceptions(ofstream::failbit | ofstream::badbit);
 			out << file.data;
 			out.close();
 		}
@@ -404,6 +432,10 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 	catch (const std::filesystem::filesystem_error& err)
 	{
 		exception("export_html_file", "Error", msg(MSG::except_filesystem, err.what()));
+	}
+	catch (const std::ofstream::failure& err)
+	{
+		exception("export_html_file", "Error", msg("File \"%s\" is not writable.", ofpath));
 	}
 	catch (...)
 	{
@@ -421,6 +453,8 @@ void e2db_converter::import_m3u_file(FCONVS fci, fcopts opts, vector<string> pat
 	debug("import_m3u_file", "file path", "multiple");
 	debug("import_m3u_file", "file input", fci);
 
+	string ifpath;
+
 	try
 	{
 		auto* dst = newptr();
@@ -429,6 +463,7 @@ void e2db_converter::import_m3u_file(FCONVS fci, fcopts opts, vector<string> pat
 		{
 			for (string & path : paths)
 			{
+				ifpath = path;
 				import_m3u_file(fci, opts, dst, path);
 			}
 
@@ -453,6 +488,10 @@ void e2db_converter::import_m3u_file(FCONVS fci, fcopts opts, vector<string> pat
 	catch (const std::filesystem::filesystem_error& err)
 	{
 		exception("import_m3u_file", "Error", msg(MSG::except_filesystem, err.what()));
+	}
+	catch (const std::ifstream::failure& err)
+	{
+		exception("import_m3u_file", "Error", msg("File \"%s\" is not readable.", ifpath));
 	}
 	catch (...)
 	{
@@ -495,6 +534,10 @@ void e2db_converter::import_m3u_file(FCONVS fci, fcopts opts, string path)
 	{
 		exception("import_m3u_file", "Error", msg(MSG::except_filesystem, err.what()));
 	}
+	catch (const std::ifstream::failure& err)
+	{
+		exception("import_m3u_file", "Error", msg("File \"%s\" is not readable.", path));
+	}
 	catch (...)
 	{
 		exception("import_m3u_file", "Error", msg(MSG::except_uncaught));
@@ -528,6 +571,7 @@ void e2db_converter::import_m3u_file(FCONVS fci, fcopts opts, e2db_abstract* dst
 		}
 
 		ifstream ifile (path);
+		ifile.exceptions(ifstream::badbit);
 
 		try
 		{
@@ -555,6 +599,10 @@ void e2db_converter::import_m3u_file(FCONVS fci, fcopts opts, e2db_abstract* dst
 	catch (const std::filesystem::filesystem_error& err)
 	{
 		exception("import_m3u_file", "Error", msg(MSG::except_filesystem, err.what()));
+	}
+	catch (const std::ifstream::failure& err)
+	{
+		exception("import_m3u_file", "Error", msg("File \"%s\" is not readable.", path));
 	}
 	catch (...)
 	{
@@ -618,6 +666,7 @@ void e2db_converter::export_m3u_file(FCONVS fco, fcopts opts, vector<string> ubo
 	debug("export_m3u_file", "file output", fco);
 
 	auto t_start = std::chrono::high_resolution_clock::now();
+	string ofpath;
 
 	try
 	{
@@ -670,6 +719,8 @@ void e2db_converter::export_m3u_file(FCONVS fco, fcopts opts, vector<string> ubo
 			}
 
 			ofstream out (fpath, fmode);
+			ofpath = fpath;
+			out.exceptions(ofstream::failbit | ofstream::badbit);
 			out << file.data;
 			out.close();
 		}
@@ -685,6 +736,10 @@ void e2db_converter::export_m3u_file(FCONVS fco, fcopts opts, vector<string> ubo
 	catch (const std::filesystem::filesystem_error& err)
 	{
 		exception("export_m3u_file", "Error", msg(MSG::except_filesystem, err.what()));
+	}
+	catch (const std::ofstream::failure& err)
+	{
+		exception("export_m3u_file", "Error", msg("File \"%s\" is not writable.", ofpath));
 	}
 	catch (...)
 	{

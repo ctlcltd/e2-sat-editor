@@ -1808,6 +1808,7 @@ bool e2db_maker::push_file(string path)
 		if (MAKER_FIX_CRLF && check_crlf()) fmode |= std::ios_base::binary;
 
 		ofstream out (fpath, fmode);
+		out.exceptions(ofstream::failbit | ofstream::badbit);
 		out << o.second.data;
 		out.close();
 
@@ -1869,6 +1870,10 @@ bool e2db_maker::write(string path)
 	catch (const std::filesystem::filesystem_error& err)
 	{
 		exception("write", "Maker Error", msg(MSG::except_filesystem, err.what()));
+	}
+	catch (const std::ofstream::failure& err)
+	{
+		exception("write", "Maker Error", msg("File \"%s\" is not writable.", path));
 	}
 	catch (...)
 	{

@@ -44,23 +44,18 @@ void e2db_parser::parse_e2db()
 		return error("parse_e2db", "Error", "Services file not found.");
 
 	ifstream iservices (this->e2db[this->services_filename].path);
-	try
+	iservices.exceptions(ifstream::badbit);
+
+	if (this->e2db.count("services.xml"))
 	{
-		if (this->e2db.count("services.xml"))
-		{
-			db.type = 1;
-			parse_zapit_services_xml(iservices, "services.xml");
-		}
-		else
-		{
-			parse_e2db_lamedb(iservices);
-		}
+		db.type = 1;
+		parse_zapit_services_xml(iservices, "services.xml");
 	}
-	catch (...)
+	else
 	{
-		iservices.close();
-		throw;
+		parse_e2db_lamedb(iservices);
 	}
+
 	iservices.close();
 
 	if (PARSER_TUNERSETS)
@@ -68,58 +63,38 @@ void e2db_parser::parse_e2db()
 		if (this->e2db.count("satellites.xml"))
 		{
 			ifstream itunxml (this->e2db["satellites.xml"].path);
-			try
-			{
-				parse_tunersets_xml(YTYPE::satellite, itunxml);
-			}
-			catch (...)
-			{
-				itunxml.close();
-				throw;
-			}
+			itunxml.exceptions(ifstream::badbit);
+
+			parse_tunersets_xml(YTYPE::satellite, itunxml);
+
 			itunxml.close();
 		}
 		if (this->e2db.count("terrestrial.xml"))
 		{
 			ifstream itunxml (this->e2db["terrestrial.xml"].path);
-			try
-			{
-				parse_tunersets_xml(YTYPE::terrestrial, itunxml);
-			}
-			catch (...)
-			{
-				itunxml.close();
-				throw;
-			}
+			itunxml.exceptions(ifstream::badbit);
+
+			parse_tunersets_xml(YTYPE::terrestrial, itunxml);
+
 			itunxml.close();
 
 		}
 		if (this->e2db.count("cables.xml"))
 		{
 			ifstream itunxml (this->e2db["cables.xml"].path);
-			try
-			{
-				parse_tunersets_xml(YTYPE::cable, itunxml);
-			}
-			catch (...)
-			{
-				itunxml.close();
-				throw;
-			}
+			itunxml.exceptions(ifstream::badbit);
+
+			parse_tunersets_xml(YTYPE::cable, itunxml);
+
 			itunxml.close();
 		}
 		if (this->e2db.count("atsc.xml"))
 		{
 			ifstream itunxml (this->e2db["atsc.xml"].path);
-			try
-			{
-				parse_tunersets_xml(YTYPE::atsc, itunxml);
-			}
-			catch (...)
-			{
-				itunxml.close();
-				throw;
-			}
+			itunxml.exceptions(ifstream::badbit);
+
+			parse_tunersets_xml(YTYPE::atsc, itunxml);
+
 			itunxml.close();
 		}
 	}
@@ -129,29 +104,19 @@ void e2db_parser::parse_e2db()
 		if (this->e2db.count("ubouquets.xml"))
 		{
 			ifstream ibouquetsxml (this->e2db["ubouquets.xml"].path);
-			try
-			{
-				parse_zapit_bouquets_apix_xml(ibouquetsxml, "ubouquets.xml", ZAPIT_VER);
-			}
-			catch (...)
-			{
-				ibouquetsxml.close();
-				throw;
-			}
+			ibouquetsxml.exceptions(ifstream::badbit);
+
+			parse_zapit_bouquets_apix_xml(ibouquetsxml, "ubouquets.xml", ZAPIT_VER);
+
 			ibouquetsxml.close();
 		}
 		if (this->e2db.count("bouquets.xml"))
 		{
 			ifstream ibouquetsxml (this->e2db["bouquets.xml"].path);
-			try
-			{
-				parse_zapit_bouquets_apix_xml(ibouquetsxml, "bouquets.xml", ZAPIT_VER);
-			}
-			catch (...)
-			{
-				ibouquetsxml.close();
-				throw;
-			}
+			ibouquetsxml.exceptions(ifstream::badbit);
+
+			parse_zapit_bouquets_apix_xml(ibouquetsxml, "bouquets.xml", ZAPIT_VER);
+
 			ibouquetsxml.close();
 		}
 	}
@@ -185,31 +150,22 @@ void e2db_parser::parse_e2db()
 			bool epl = x.second;
 
 			ifstream ibouquet (this->e2db[fname].path);
-			try
-			{
-				parse_e2db_bouquet(ibouquet, fname, epl);
-			}
-			catch (...)
-			{
-				ibouquet.close();
-				throw;
-			}
+			ibouquet.exceptions(ifstream::badbit);
+
+			parse_e2db_bouquet(ibouquet, fname, epl);
+
 			ibouquet.close();
+
 
 			bouquet& bs = bouquets[fname];
 
 			for (string & fname : bs.userbouquets)
 			{
 				ifstream iuserbouquet (this->e2db[fname].path);
-				try
-				{
-					parse_e2db_userbouquet(iuserbouquet, fname);
-				}
-				catch (...)
-				{
-					iuserbouquet.close();
-					throw;
-				}
+				iuserbouquet.exceptions(ifstream::badbit);
+
+				parse_e2db_userbouquet(iuserbouquet, fname);
+
 				iuserbouquet.close();
 			}
 
@@ -226,15 +182,10 @@ void e2db_parser::parse_e2db()
 				if (this->e2db.count("services.locked"))
 				{
 					ifstream iparental (this->e2db["services.locked"].path);
-					try
-					{
-						parse_e2db_parentallock_list(PARENTALLOCK::locked, iparental);
-					}
-					catch (...)
-					{
-						iparental.close();
-						throw;
-					}
+					iparental.exceptions(ifstream::badbit);
+
+					parse_e2db_parentallock_list(PARENTALLOCK::locked, iparental);
+
 					iparental.close();
 				}
 			}
@@ -243,29 +194,19 @@ void e2db_parser::parse_e2db()
 				if (this->e2db.count("blacklist"))
 				{
 					ifstream iparental (this->e2db["blacklist"].path);
-					try
-					{
-						parse_e2db_parentallock_list(PARENTALLOCK::blacklist, iparental);
-					}
-					catch (...)
-					{
-						iparental.close();
-						throw;
-					}
+					iparental.exceptions(ifstream::badbit);
+
+					parse_e2db_parentallock_list(PARENTALLOCK::blacklist, iparental);
+
 					iparental.close();
 				}
 				if (this->e2db.count("whitelist"))
 				{
 					ifstream iparental (this->e2db["whitelist"].path);
-					try
-					{
-						parse_e2db_parentallock_list(PARENTALLOCK::whitelist, iparental);
-					}
-					catch (...)
-					{
-						iparental.close();
-						throw;
-					}
+					iparental.exceptions(ifstream::badbit);
+
+					parse_e2db_parentallock_list(PARENTALLOCK::whitelist, iparental);
+
 					iparental.close();
 				}
 			}
@@ -2598,6 +2539,10 @@ bool e2db_parser::read(string path)
 	catch (const std::filesystem::filesystem_error& err)
 	{
 		exception("read", "Parser Error", msg(MSG::except_filesystem, err.what()));
+	}
+	catch (const std::ifstream::failure& err)
+	{
+		exception("read", "Parser Error", msg("File \"%s\" is not readable.", path));
 	}
 	catch (...)
 	{
