@@ -456,6 +456,7 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::ToolsUtilsSort_transponders] = menuBarAction(tmsort, tr("Sort transponders…", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsSort_transponders); });
 	gmenu[GUI_CXE::ToolsUtilsSort_userbouquets] = menuBarAction(tmsort, tr("Sort userbouquets…", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsSort_userbouquets); });
 	menuBarSeparator(mtools);
+	gmenu[GUI_CXE::ToolsErrorChecker] = menuBarAction(mtools, tr("Error Checker", "menu"), [=]() { this->tabAction(TAB_ATS::ErrorChecker); });
 	gmenu[GUI_CXE::ToolsAutofixMacro] = menuBarAction(mtools, tr("Autofix", "menu"), [=]() { this->tabAction(TAB_ATS::AutofixMacro); });
 	menuBarSeparator(mtools);
 	gmenu[GUI_CXE::ToolsLogInspector] = menuBarAction(mtools, tr("Log Inspector", "menu"), [=]() { this->tabAction(TAB_ATS::Inspect); }, Qt::CTRL | Qt::ALT | Qt::Key_J);

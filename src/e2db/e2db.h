@@ -28,6 +28,68 @@ class e2db : public e2db_parser, public e2db_maker, public e2db_converter, publi
 
 		inline static bool FIX_CRLF = true;
 
+		enum ERRID {
+			ees,
+			ixe,
+			txi,
+			chi,
+			bsi,
+			ubi,
+			tni,
+			rff
+		};
+
+		struct errmsg
+		{
+			ERRID group;
+			string name;
+			string message;
+			string detail;
+			int i = -1;
+
+			errmsg(ERRID id, string key, string msg, string dsc = "", int ln = -1)
+			{
+				group = id;
+				name = key;
+				message = msg;
+				detail = dsc;
+				i = ln;
+			}
+			errmsg(ERRID id, string line)
+			{
+				group = id;
+				size_t pos, n, len;
+
+				pos = line.find("] ");
+
+				if (pos != string::npos)
+				{
+					n = line.find("  ", pos + 2);
+					len = n != string::npos ? n - pos - 2 : n;
+					name = line.substr(pos + 2, len);
+					detail.append(name);
+
+					if (n != string::npos)
+						message = line.substr(n + 2);
+
+					n = line.find(" <");
+
+					if (n != string::npos)
+					{
+						string t = line.substr(0, n);
+						pos = t.find(' ');
+
+						if (pos != string::npos)
+							t.replace(pos, 1, "T");
+
+						detail.append(" ");
+						detail.append("t=");
+						detail.append(t);
+					}
+				}
+			}
+		};
+
 		e2db();
 		virtual ~e2db() = default;
 		void import_file(vector<string> paths);
@@ -77,8 +139,9 @@ class e2db : public e2db_parser, public e2db_maker, public e2db_converter, publi
 		map<string, vector<pair<int, string>>> get_resolution_index();
 		map<string, vector<pair<int, string>>> get_encryption_index();
 		map<string, vector<pair<int, string>>> get_az_index();
-		void error_checker();
+		map<ERRID, vector<errmsg>> error_checker();
 		void merge(e2db_abstract* dst);
+		void debugger();
 
 	protected:
 		virtual e2db* newptr() { return new e2db; }

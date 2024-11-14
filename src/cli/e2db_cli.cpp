@@ -922,7 +922,7 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 	{
 		cout << "  ", cout.width(7), cout << left << "print", cout << ' ';
 		cout.width(24), cout << left << "debug", cout << ' ' << "Print debug informations." << endl;
-		cout.width(10), cout << ' ', cout << "index" << endl;
+		// cout.width(10), cout << ' ', cout << "index" << endl;
 		cout << endl;
 	}
 	else if (hint == COMMAND::fimport)
@@ -3509,7 +3509,7 @@ void e2db_cli::shell_print(int opt)
 		if (opt)
 			cout << "TODO" << endl;
 		else
-			dbih->debugger();
+			dbih->dump();
 	}
 	catch (const std::invalid_argument& err)
 	{

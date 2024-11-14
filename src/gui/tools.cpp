@@ -215,9 +215,85 @@ void tools::inspectReset()
 //TODO
 void tools::errorChecker()
 {
-	auto* dbih = this->data->dbih;
+	debug("errorChecker");
 
-	dbih->error_checker();
+	QDialog* dial = new QDialog(nullptr);
+	dial->setObjectName("errorChecker");
+	dial->setWindowTitle(tr("Error Checker", "dialog"));
+	dial->setMinimumSize(450, 520);
+
+#ifdef Q_OS_WIN
+	theme->win_flavor_fix(dial);
+#endif
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+	dial->connect(dial, &QDialog::finished, [=]() { QTimer::singleShot(0, [=]() { delete dial; }); });
+#else
+	dial->connect(dial, &QDialog::finished, [=]() { delete dial; });
+#endif
+
+	QGridLayout* dfrm = new QGridLayout(dial);
+
+	QTextEdit* dcnt = new QTextEdit;
+	dcnt->setReadOnly(true);
+	//TODO i18n rtl QTextDocument
+	QString textAlign = QApplication::layoutDirection() == Qt::LeftToRight ? "left" : "right";
+	dcnt->document()->setDefaultStyleSheet("div { text-align: " + textAlign + " } .h { width: 100%; font-size: 14px; font-weight: bold } p { font-size: 12px }");
+#ifdef Q_OS_WIN
+	if (! theme::isOverridden() && (theme::isFluentWin() || theme::absLuma() || ! theme::isDefault()))
+	{
+		QStyle* style;
+
+		if (theme::isFluentWin())
+			style = QStyleFactory::create("windows11");
+		else
+			style = QStyleFactory::create("fusion");
+
+		dcnt->verticalScrollBar()->setStyle(style);
+		dcnt->horizontalScrollBar()->setStyle(style);
+	}
+#endif
+	platform::osTextEdit(dcnt);
+
+	auto* dbih = this->data->dbih;
+	QString s;
+	QTextStream str (&s);
+
+	for (auto & err : dbih->error_checker())
+	{
+		str << "<div>";
+		str << "<span class=\"h\">";
+		switch (err.first)
+		{
+			case e2db::ERRID::ees: str << "Log"; break;
+			case e2db::ERRID::ixe: str << "Index"; break;
+			case e2db::ERRID::txi: str << "Transponders"; break;
+			case e2db::ERRID::chi: str << "Channels"; break;
+			case e2db::ERRID::bsi: str << "Bouquets"; break;
+			case e2db::ERRID::ubi: str << "Userbouquets"; break;
+			case e2db::ERRID::tni: str << "Tunersets"; break;
+			case e2db::ERRID::rff: str << "References"; break;
+		}
+		str << "</span>";
+		for (auto & x : err.second)
+		{
+			str << "<p>";
+			str << QString::fromStdString(x.message);
+			if (! x.detail.empty())
+				str << ' ' << '(' << QString::fromStdString(x.detail) << ')';
+			if (x.i != -1)
+				str << ' ' << '(' << "i=" << x.i << ')';
+			str << "</p>" << '\n';
+		}
+		str << "</div>" << '\n';
+	}
+
+	dcnt->setHtml(*str.string());
+
+	dfrm->setContentsMargins(0, 0, 0, 0);
+	dfrm->addWidget(dcnt);
+	dial->setLayout(dfrm);
+	dial->exec();
 }
 
 void tools::status(QString message)

@@ -1627,6 +1627,7 @@ QMenu* tab::toolsMenu()
 		menuAction(tmsort, tr("Sort transponders…", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsSort_transponders); });
 		menuAction(tmsort, tr("Sort userbouquets…", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsSort_userbouquets); });
 		menuSeparator(menu);
+		menuAction(menu, tr("Error Checker", "menu"), [=]() { this->toolsErrorChecker(); });
 		menuAction(menu, tr("Autofix", "menu"), [=]() { this->toolsAutofixMacro(); });
 		menuSeparator(menu);
 		QMenu* tmimport = menuMenu(menu, tr("Import", "menu"));
@@ -1658,7 +1659,6 @@ QMenu* tab::toolsMenu()
 		menuAction(tmexporthtml, tr("Export Userbouquets", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_userbouquets); });
 		menuAction(tmexporthtml, tr("Export Tuner settings", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_tunersets); });
 		menuSeparator(menu);
-		menuAction(menu, tr("Error Checker", "menu"), [=]() { this->toolsErrorChecker(); });
 		menuAction(menu, tr("Log Inspector", "menu"), [=]() { this->toolsLogInspector(); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
 	}
 
@@ -2159,6 +2159,9 @@ void tab::actionCall(int bit)
 			toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_tunersets);
 		break;
 
+		case gui::TAB_ATS::ErrorChecker:
+			toolsErrorChecker();
+		break; 
 		case gui::TAB_ATS::AutofixMacro:
 			toolsAutofixMacro();
 		break;

@@ -1897,60 +1897,63 @@ map<string, vector<pair<int, string>>> e2db::get_az_index()
 }
 
 //TODO
-void e2db::error_checker()
+map<e2db::ERRID, vector<e2db::errmsg>> e2db::error_checker()
 {
-	debug("error_checker");
+	// debug("error_checker");
 
-	map<string, vector<string>> chkerr;
+	map<ERRID, vector<errmsg>> chkerr;
 
 	stringstream ss (this->log->str());
 	string line;
 
 	while (std::getline(ss, line))
 	{
-		if (line.find("<Error>") != string::npos)
-		{
-			chkerr["error"].emplace_back(line);
-		}
+		if (line.find("] e2db") != string::npos && line.find("<Error>") != string::npos)
+			chkerr[ERRID::ees].emplace_back(errmsg(ERRID::ees, line));
 	}
 
 	if (! index.count("txs"))
-		chkerr["index"].emplace_back(msg("Missing index key \"%s\".", "txs (transponders)"));
-
+		chkerr[ERRID::ixe].emplace_back(errmsg(ERRID::ixe, "txs", msg("Missing index key \"%s\".", "txs"), "transponders"));
 	if (! index.count("chs"))
-		chkerr["index"].emplace_back(msg("Missing index key \"%s\".", "chs (services)"));
-
+		chkerr[ERRID::ixe].emplace_back(errmsg(ERRID::ixe, "chs", msg("Missing index key \"%s\".", "chs"), "services"));
 	if (! index.count("chs:0"))
-		chkerr["index"].emplace_back(msg("Missing index key \"%s\".", "chs:0 (services data)"));
-
+		chkerr[ERRID::ixe].emplace_back(errmsg(ERRID::ixe, "chs:0", msg("Missing index key \"%s\".", "chs:0"), "services data"));
 	if (! index.count("chs:1"))
-		chkerr["index"].emplace_back(msg("Missing index key \"%s\".", "chs:1 (services tv)"));
-
+		chkerr[ERRID::ixe].emplace_back(errmsg(ERRID::ixe, "chs:1", msg("Missing index key \"%s\".", "chs:1"), "services tv"));
 	if (! index.count("chs:2"))
-		chkerr["index"].emplace_back(msg("Missing index key \"%s\".", "chs:2 (services radio)"));
-
+		chkerr[ERRID::ixe].emplace_back(errmsg(ERRID::ixe, "chs:2", msg("Missing index key \"%s\".", "chs:2"), "services radio"));
 	if (! index.count("bss"))
-		chkerr["index"].emplace_back(msg("Missing index key \"%s\".", "bss (bouquets)"));
-
+		chkerr[ERRID::ixe].emplace_back(errmsg(ERRID::ixe, "bss", msg("Missing index key \"%s\".", "bss"), "bouquets"));
 	if (! index.count("ubs"))
-		chkerr["index"].emplace_back(msg("Missing index key \"%s\".", "ubs (userbouquets)"));
-
+		chkerr[ERRID::ixe].emplace_back(errmsg(ERRID::ixe, "ubs", msg("Missing index key \"%s\".", "ubs"), "userbouquets"));
 	if (! index.count("mks"))
-		chkerr["index"].emplace_back(msg("Missing index key \"%s\".", "mks (markers)"));
+		chkerr[ERRID::ixe].emplace_back(errmsg(ERRID::ixe, "mks", msg("Missing index key \"%s\".", "mks"), "markers"));
 
 	if (index.count("txs"))
 	{
+		int i = 2;
 		for (auto & x : index["txs"])
 		{
 			string txid = x.second;
 
 			if (! db.transponders.count(txid))
-				chkerr["txi"].emplace_back(msg("Transponder \"%s\" not exists.", txid));
+			{
+				int tsid = 0;
+				int dvbns = 0;
+				char dsc[255];
+
+				std::sscanf(txid.c_str(), "%x:%x", &tsid, &dvbns);
+				std::snprintf(dsc, 255, "TSID: %d DVBNS: %x", tsid, dvbns);
+
+				chkerr[ERRID::txi].emplace_back(errmsg(ERRID::txi, txid, msg("Transponder \"%s\" not exists.", txid), dsc, i));
+			}
+			i += 3;
 		}
 	}
 
 	if (index.count("chs"))
 	{
+		int i = index.count("txs") ? int (index["txs"].size() * 3) + 4 : 0;
 		for (auto & x : index["chs"])
 		{
 			string chid = x.second;
@@ -1960,71 +1963,117 @@ void e2db::error_checker()
 				service& ch = db.services[chid];
 
 				if (! db.transponders.count(ch.txid))
-					chkerr["txi"].emplace_back(msg("Transponder \"%s\" not exists.", ch.txid));
+				{
+					char dsc[255];
+
+					std::snprintf(dsc, 255, "reference: %s SID: %d TSID: %d ONID: %d DVBNS: %x", chid.c_str(), ch.ssid, ch.tsid, ch.onid, ch.dvbns);
+
+					chkerr[ERRID::chi].emplace_back(errmsg(ERRID::chi, chid, msg("Transponder \"%s\" not exists.", ch.txid),  dsc, i));
+				}
 			}
 			else
 			{
-				chkerr["index"].emplace_back(msg("Service \"%s\" not exists.", chid));
+				int ssid = 0;
+				int tsid = 0;
+				int dvbns = 0;
+				char dsc[255];
+
+				std::sscanf(chid.c_str(), "%x:%x:%x", &ssid, &tsid, &dvbns);
+				std::snprintf(dsc, 255, "SID: %d TSID: %d DVBNS: %x", ssid, tsid, dvbns);
+
+				chkerr[ERRID::chi].emplace_back(errmsg(ERRID::chi, chid, msg("Service \"%s\" not exists.", chid), dsc, i));
 			}
+			i += 3;
 		}
 	}
 
 	if (index.count("bss"))
 	{
+		int i = 0;
 		for (auto & x : index["bss"])
 		{
-			string bname = x.second;
+			string bs_bname = x.second;
 
-			if (! bouquets.count(bname))
-				chkerr["bsi"].emplace_back(msg("Bouquet \"%s\" not exists.", bname));
+			if (! bouquets.count(bs_bname))
+				chkerr[ERRID::bsi].emplace_back(errmsg(ERRID::bsi, bs_bname, msg("Bouquet \"%s\" not exists.", bs_bname), "", i));
+			i++;
 		}
 	}
 
 	if (index.count("ubs"))
 	{
+		int i = 2;
 		for (auto & x : index["ubs"])
 		{
-			string bname = x.second;
+			string ub_bname = x.second;
 
-			if (! userbouquets.count(bname))
-				chkerr["ubi"].emplace_back(msg("Userbouquet \"%s\" not exists.", bname));
+			if (! userbouquets.count(ub_bname))
+			{
+				string dsc;
+
+				for (auto & x : bouquets)
+				{
+					for (string & bname : x.second.userbouquets)
+					{
+						if (bname == ub_bname)
+						{
+							bouquet& bs = x.second;
+							string bs_bname = bs.bname;
+							dsc = "bouquet: ";
+							dsc.append(bs_bname);
+							break;
+							break;
+						}
+					}
+				}
+
+				chkerr[ERRID::ubi].emplace_back(errmsg(ERRID::ubi, ub_bname, msg("Userbouquet \"%s\" not exists.", ub_bname), dsc, i));
+			}
+			i++;
 		}
 	}
 
 	for (auto & x : bouquets)
 	{
 		bouquet& bs = x.second;
-		string bname = bs.bname;
+		string bs_bname = bs.bname;
 
-		if (! index.count(bname))
-			chkerr["index"].emplace_back(msg("Missing index key \"%s\".", bname));
+		if (! index.count(bs_bname))
+			chkerr[ERRID::ixe].emplace_back(errmsg(ERRID::ixe, bs_bname, msg("Missing index key \"%s\".", bs_bname), "bouquet"));
 
+		int i = 2;
 		for (string & ub_bname : bs.userbouquets)
 		{
 			if (! index.count(ub_bname))
-				chkerr["index"].emplace_back(msg("Missing index key \"%s\".", ub_bname));
+				chkerr[ERRID::ixe].emplace_back(errmsg(ERRID::ixe, ub_bname, msg("Missing index key \"%s\".", ub_bname), "userbouquet"));
 
 			if (! userbouquets.count(ub_bname))
-				chkerr["ubi"].emplace_back(msg("Userbouquet \"%s\" not exists.", ub_bname));
+			{
+				string dsc = "bouquet: ";
+				dsc.append(bs_bname);
+
+				chkerr[ERRID::bsi].emplace_back(errmsg(ERRID::bsi, ub_bname, msg("Userbouquet \"%s\" not exists.", ub_bname), dsc, i));
+			}
+			i++;
 		}
 	}
 
 	for (auto & x : userbouquets)
 	{
 		userbouquet& ub = x.second;
-		string bname = ub.bname;
+		string ub_bname = ub.bname;
 
-		if (! index.count(bname))
+		if (! index.count(ub_bname))
 		{
-			chkerr["index"].emplace_back(msg("Missing index key \"%s\".", bname));
+			chkerr[ERRID::ixe].emplace_back(errmsg(ERRID::ixe, ub_bname, msg("Missing index key \"%s\".", ub_bname), "userbouquet"));
 
 			continue;
 		}
 
-		for (auto & x : index[bname])
+		int i = 2;
+		for (auto & x : index[ub_bname])
 		{
 			string chid = x.second;
-			bool ref_error = false;
 
 			if (ub.channels.count(chid))
 			{
@@ -2033,41 +2082,76 @@ void e2db::error_checker()
 				if (chref.marker)
 				{
 					if (chref.atype != ATYPE::marker && chref.atype != ATYPE::marker_hidden_512 && chref.atype != ATYPE::marker_hidden_832 && chref.atype != ATYPE::marker_numbered)
-						ref_error = true;
+					{
+						char dsc[255];
+
+						std::snprintf(dsc, 255, "reference: %s type: %d flag: %d num: %d", chid.c_str(), chref.etype, chref.atype, chref.anum);
+
+						chkerr[ERRID::rff].emplace_back(errmsg(ERRID::rff, chid, msg("Channel reference \"%s\" is not a valid marker.", chid), dsc, i));
+					}
 				}
 				else if (chref.stream)
 				{
-					if (chref.url.empty())
-						ref_error = true;
+					if (chref.url.find("//") == string::npos)
+					{
+						char dsc[255];
+
+						std::snprintf(dsc, 255, "reference: %s type: %d flag: %d SID: %d TSID: %d DVBNS: %x", chid.c_str(), chref.etype, chref.atype, chref.ref.ssid, chref.ref.tsid, chref.ref.dvbns);
+
+						chkerr[ERRID::rff].emplace_back(errmsg(ERRID::rff, chid, msg("Channel reference \"%s\" is not a valid stream.", chid), dsc, i));
+					}
 				}
 				else if (db.services.count(chid))
 				{
 					service& ch = db.services[chid];
 
-					/*if (ch.chid != chref.chid)
-						ref_error = true;
-					if (ch.txid.empty() || ch.tsid < 1 || ch.onid < 1)
-						ref_error = true;*/
+					if (ch.chid != chref.chid)
+					{
+						char dsc[255];
+
+						std::snprintf(dsc, 255, "reference: %s type: %d flag: %d SID: %d TSID: %d DVBNS: %x", chref.chid.c_str(), chref.etype, chref.atype, chref.ref.ssid, chref.ref.tsid, chref.ref.dvbns);
+
+						chkerr[ERRID::rff].emplace_back(errmsg(ERRID::rff, chid, msg("Channel reference mismatch \"%s\".", chid), dsc, i));
+					}
 
 					if (! db.transponders.count(ch.txid))
-						chkerr["txi"].emplace_back(msg("Transponder \"%s\" not exists.", ch.txid));
+					{
+						char dsc[255];
+
+						std::snprintf(dsc, 255, "reference: %s SID: %d TSID: %d ONID: %d DVBNS: %x", chid.c_str(), ch.ssid, ch.tsid, ch.onid, ch.dvbns);
+
+						chkerr[ERRID::rff].emplace_back(errmsg(ERRID::rff, chid, msg("Transponder \"%s\" not exists.", ch.txid), dsc, i));
+					}
 				}
 				else
 				{
-					ref_error = true;
+					int ssid = 0;
+					int tsid = 0;
+					int dvbns = 0;
+					char dsc[255];
 
-					chkerr["chi"].emplace_back(msg("Service \"%s\" not exists.", chid));
+					std::sscanf(chid.c_str(), "%x:%x:%x", &ssid, &tsid, &dvbns);
+					std::snprintf(dsc, 255, "SID: %d TSID: %d DVBNS: %x", ssid, tsid, dvbns);
+
+					chkerr[ERRID::rff].emplace_back(errmsg(ERRID::rff, chid, msg("Service \"%s\" not exists.", chid), dsc, i));
 				}
+
+				if (chref.descrval && ! chref.value.empty())
+					i++;
 			}
 			else
 			{
-				ref_error = true;
-			}
+				int ssid = 0;
+				int tsid = 0;
+				int dvbns = 0;
+				char dsc[255];
 
-			if (ref_error)
-			{
-				chkerr["ref"].emplace_back(msg("Channel reference mismatch \"%s\".", chid));
+				std::sscanf(chid.c_str(), "%x:%x:%x", &ssid, &tsid, &dvbns);
+				std::snprintf(dsc, 255, "SID: %d TSID: %d DVBNS: %x", ssid, tsid, dvbns);
+
+				chkerr[ERRID::rff].emplace_back(errmsg(ERRID::rff, chid, msg("Channel reference \"%s\" not exists.", chid), dsc, i));
 			}
+			i++;
 		}
 	}
 
@@ -2080,27 +2164,21 @@ void e2db::error_checker()
 			tunersets_table& tn = x.second;
 			string tnid = tn.tnid;
 
-			string iname = "tns:";
+			string tn_iname = "tns:";
 			char yname = value_transponder_type(tn.ytype);
-			iname += yname;
+			tn_iname += yname;
 
-			if (! index.count(iname))
-				chkerr["index"].emplace_back(msg("Missing index key \"%s\".", iname));
+			if (! index.count(tn_iname))
+				chkerr[ERRID::ixe].emplace_back(errmsg(ERRID::ixe, tn_iname, msg("Missing index key \"%s\".", tn_iname), "tunersets index"));
 
 			if (! index.count(tnid))
-				chkerr["index"].emplace_back(msg("Missing index key \"%s\".", tnid));
+				chkerr[ERRID::ixe].emplace_back(errmsg(ERRID::ixe, tnid, msg("Missing index key \"%s\".", tnid), "tunersets table"));
 
 			//TODO
 		}
 	}
 
-	for (auto & err : chkerr)
-	{
-		std::cout << err.first << '\n';
-		for (auto & str : err.second)
-			std::cout << '\t' << str << '\n';
-		std::cout << std::endl;
-	}
+	return chkerr;
 }
 
 //TODO improve options
@@ -2503,6 +2581,37 @@ void e2db::merge(e2db_abstract* dst)
 	int elapsed = std::chrono::duration<double, std::micro>(t_end - t_start).count();
 
 	info("merge", "elapsed time", to_string(elapsed) + " μs");
+}
+
+void e2db::debugger()
+{
+	debug("debugger");
+
+	for (auto & err : error_checker())
+	{
+		switch (err.first)
+		{
+			case ERRID::ees: std::cout << "[log]"; break;
+			case ERRID::ixe: std::cout << "[index]"; break;
+			case ERRID::txi: std::cout << "[transponders]"; break;
+			case ERRID::chi: std::cout << "[channels]"; break;
+			case ERRID::bsi: std::cout << "[bouquets]"; break;
+			case ERRID::ubi: std::cout << "[userbouquets]"; break;
+			case ERRID::tni: std::cout << "[tunersets]"; break;
+			case ERRID::rff: std::cout << "[references]"; break;
+		}
+		std::cout << '\n';
+		for (auto & x : err.second)
+		{
+			std::cout << x.message;
+			if (! x.detail.empty())
+				std::cout << ' ' << '(' << x.detail << ')';
+			if (x.i != -1)
+				std::cout << ' ' << '(' << "i=" << x.i << ')';
+			std::cout << '\n';
+		}
+		std::cout << std::endl;
+	}
 }
 
 }

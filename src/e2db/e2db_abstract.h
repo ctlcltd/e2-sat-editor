@@ -675,7 +675,7 @@ struct e2db_abstract : protected e2se::log_factory
 		virtual unordered_map<string, e2db_file> get_output() { return this->e2db_out; }
 		virtual void fix_bouquets(bool uniq_ubouquets = false);
 		virtual void merge(e2db_abstract* dst);
-		virtual void debugger();
+		virtual void dump();
 
 	protected:
 
