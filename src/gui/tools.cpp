@@ -89,8 +89,7 @@ void tools::logInspector()
 	QTextEdit* dcnt = new QTextEdit;
 	dcnt->setReadOnly(true);
 	//TODO i18n rtl QTextDocument
-	QString textAlign = QApplication::layoutDirection() == Qt::LeftToRight ? "left" : "right";
-	dcnt->document()->setDefaultStyleSheet("* { margin: 0; padding: 0 } i { font-style: normal } pre { font-size: 11px; text-align: " + textAlign + " }");
+	dcnt->document()->setDefaultStyleSheet("* { margin: 0; padding: 0 } i { font-style: normal } pre { font-size: 11px }");
 	dcnt->setHtml("</div>");
 #ifdef Q_OS_WIN
 	if (! theme::isOverridden() && (theme::isFluentWin() || theme::absLuma() || ! theme::isDefault()))
@@ -212,7 +211,6 @@ void tools::inspectReset()
 	this->inspect_curr = INSPECT_FILTER::AllLog;
 }
 
-//TODO
 void tools::errorChecker()
 {
 	debug("errorChecker");
@@ -236,9 +234,8 @@ void tools::errorChecker()
 
 	QTextEdit* dcnt = new QTextEdit;
 	dcnt->setReadOnly(true);
-	//TODO i18n rtl QTextDocument
 	QString textAlign = QApplication::layoutDirection() == Qt::LeftToRight ? "left" : "right";
-	dcnt->document()->setDefaultStyleSheet("div { text-align: " + textAlign + " } .h { width: 100%; font-size: 14px; font-weight: bold } p { font-size: 12px }");
+	dcnt->document()->setDefaultStyleSheet("body { margin: 0 10px } .t { letter-spacing: 5px } b { margin: 0 2px 0 } dl { margin: 0; text-align: " + textAlign + " } dt { margin: 4px 0 10px 0; font-size: 14px; font-weight: bold } dd { margin: 4px 0 5px 0; font-size: 12px } p { margin: 0 0 5px 0; font-size: 12px } .s { width: 100%; height: 15px; line-height: 30px }");
 #ifdef Q_OS_WIN
 	if (! theme::isOverridden() && (theme::isFluentWin() || theme::absLuma() || ! theme::isDefault()))
 	{
@@ -255,45 +252,86 @@ void tools::errorChecker()
 #endif
 	platform::osTextEdit(dcnt);
 
-	auto* dbih = this->data->dbih;
-	QString s;
-	QTextStream str (&s);
+	QHBoxLayout* dthbox = new QHBoxLayout;
+	dthbox->setContentsMargins(10, 8, 10, 16);
+	dthbox->setAlignment(Qt::AlignCenter);
 
-	for (auto & err : dbih->error_checker())
-	{
-		str << "<div>";
-		str << "<span class=\"h\">";
-		switch (err.first)
-		{
-			case e2db::ERRID::ees: str << "Log"; break;
-			case e2db::ERRID::ixe: str << "Index"; break;
-			case e2db::ERRID::txi: str << "Transponders"; break;
-			case e2db::ERRID::chi: str << "Channels"; break;
-			case e2db::ERRID::bsi: str << "Bouquets"; break;
-			case e2db::ERRID::ubi: str << "Userbouquets"; break;
-			case e2db::ERRID::tni: str << "Tunersets"; break;
-			case e2db::ERRID::rff: str << "References"; break;
-		}
-		str << "</span>";
-		for (auto & x : err.second)
-		{
-			str << "<p>";
-			str << QString::fromStdString(x.message);
-			if (! x.detail.empty())
-				str << ' ' << '(' << QString::fromStdString(x.detail) << ')';
-			if (x.i != -1)
-				str << ' ' << '(' << "i=" << x.i << ')';
-			str << "</p>" << '\n';
-		}
-		str << "</div>" << '\n';
-	}
+	QPushButton* dtbutton = new QPushButton;
+	dtbutton->setDefault(true);
+	dtbutton->setText(tr("Autofix", "dialog"));
+	dtbutton->connect(dtbutton, &QPushButton::pressed, [=]() {
+		this->macroAutofix();
+	});
+	dthbox->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
+	dthbox->addWidget(dtbutton);
+	dthbox->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
 
-	dcnt->setHtml(*str.string());
+	// delay async
+	QTimer* timer = new QTimer(dial);
+	timer->callOnTimeout([=]() { this->chkerrLoad(dcnt); });
+	timer->setSingleShot(true);
+	timer->start(500);
 
 	dfrm->setContentsMargins(0, 0, 0, 0);
 	dfrm->addWidget(dcnt);
+	dfrm->addLayout(dthbox, 1, 0);
 	dial->setLayout(dfrm);
 	dial->exec();
+}
+
+void tools::chkerrLoad(QTextEdit* view)
+{
+	auto* dbih = this->data->dbih;
+
+	QString s;
+	QTextStream str (&s);
+
+	str << "<body><div class=\"s\"></div>" << '\n';
+	for (auto & err : dbih->error_checker())
+	{
+		str << "<dl><dt>";
+		switch (err.first)
+		{
+			case e2db::ERRID::ees: str << tr("%1 errors").arg(tr("Log")); break;
+			case e2db::ERRID::ixe: str << tr("%1 errors").arg(tr("Index")); break;
+			case e2db::ERRID::txi: str << tr("%1 errors").arg(tr("Transponders")); break;
+			case e2db::ERRID::chi: str << tr("%1 errors").arg(tr("Channels")); break;
+			case e2db::ERRID::bsi: str << tr("%1 errors").arg(tr("Bouquets")); break;
+			case e2db::ERRID::ubi: str << tr("%1 errors").arg(tr("Userbouquets")); break;
+			case e2db::ERRID::tni: str << tr("%1 errors").arg(tr("Tunersets")); break;
+			case e2db::ERRID::rff: str << tr("%1 errors").arg(tr("References")); break;
+		}
+		str << "</dt>" << '\n';
+		if (! err.second.empty())
+		{
+			for (auto & x : err.second)
+			{
+				str << "<dd>";
+				str << QString::fromStdString(x.message);
+				if (! x.detail.empty())
+				{
+					str << "<span class=\"t\">  </span>";
+					str << '[' << QString::fromStdString(x.detail).replace(QRegularExpression("\\b \\b"), "<span class=\"t\"> </span>").replace(QRegularExpression("([^:]+): ([^<]+)"), "\\1: <b>\\2</b>") << ']';
+				}
+				if (x.i != -1)
+				{
+					str << "<span class=\"t\">  </span>";
+					str << '(' << "i=" << x.i << ')';
+				}
+				str << "</dd>" << '\n';
+			}
+		}
+		else
+		{
+			str << "<p>";
+			str << tr("No errors found.", "message");
+			str << "</p>" << '\n';
+		}
+		str << "</dl><table><tr><td></td></tr></table>" << '\n';
+	}
+	str << "</body>";
+
+	view->setHtml(*str.string());
 }
 
 void tools::status(QString message)

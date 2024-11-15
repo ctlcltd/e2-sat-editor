@@ -96,6 +96,7 @@ class e2db : public ::e2se_e2db::e2db
 		void setup();
 		void primer();
 		string msg(string str, string param) override;
+		string msg(string str) override;
 		void error(string msg, string optk, string optv) override;
 		void trace(string error);
 

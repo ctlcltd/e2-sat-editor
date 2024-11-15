@@ -124,8 +124,10 @@ void e2db::primer()
 {
 	debug("primer");
 
-	index["chs"]; // touch index["chs"]
-	index["txs"]; // touch index["txs"]
+	// touch
+	index["chs"]; 
+	index["txs"];
+	index["mks"];
 
 	// set parental lock type
 	int parental_invert = QSettings().value("engine/parentalLockInvert", false).toInt();
@@ -145,7 +147,7 @@ void e2db::primer()
 	bs.nname = "TV";
 	bs.index = int (index["bss"].size()) + 1;
 	this->::e2se_e2db::e2db_abstract::add_bouquet(bs.index, bs);
-	index[iname]; // touch index["bouquets.tv"]
+	index[iname]; // touch
 
 	bs = e2db::bouquet();
 	iname = ! bss_epl ? "bouquets.radio" : "userbouquets.radio.epl";
@@ -155,7 +157,7 @@ void e2db::primer()
 	bs.nname = "Radio";
 	bs.index = int (index["bss"].size()) + 1;
 	this->::e2se_e2db::e2db_abstract::add_bouquet(bs.index, bs);
-	index[iname]; // touch index["bouquets.radio"]
+	index[iname]; // touch
 }
 
 void e2db::didChange()
@@ -273,7 +275,7 @@ string e2db::addBouquet(bouquet& bs)
 	// debug("addBouquet");
 
 	this->::e2se_e2db::e2db::add_bouquet(bs);
-	index[bs.bname]; // touch index[bs.bname]
+	index[bs.bname]; // touch
 	return bs.bname;
 }
 
@@ -297,7 +299,7 @@ string e2db::addUserbouquet(userbouquet& ub)
 	// debug("addUserbouquet");
 
 	this->::e2se_e2db::e2db::add_userbouquet(ub);
-	index[ub.bname]; // touch index[ub.bname]
+	index[ub.bname]; // touch
 	return ub.bname;
 }
 
@@ -901,6 +903,13 @@ string e2db::msg(string str, string param)
 	std::snprintf(tstr, tsize, trstr.c_str(), param.c_str());
 
 	return string (tstr);
+}
+
+string e2db::msg(string str)
+{
+	string trstr = tr(str.data()).toStdString();
+
+	return trstr;
 }
 
 void e2db::error(string fn, string optk, string optv)

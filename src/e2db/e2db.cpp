@@ -45,8 +45,10 @@ e2db::e2db()
 		CONVERTER_OUT_HTML_FIX_CRLF = false;
 	}
 
-	index["chs"]; // touch index["chs"]
-	index["txs"]; // touch index["txs"]
+	// touch
+	index["chs"]; 
+	index["txs"];
+	index["mks"];
 }
 
 void e2db::import_file(vector<string> paths)
@@ -1896,12 +1898,22 @@ map<string, vector<pair<int, string>>> e2db::get_az_index()
 	return _index;
 }
 
-//TODO
+//TODO check tunersets, dvbns, onid
 map<e2db::ERRID, vector<e2db::errmsg>> e2db::error_checker()
 {
 	// debug("error_checker");
 
 	map<ERRID, vector<errmsg>> chkerr;
+
+	// touch
+	chkerr[ERRID::ees];
+	chkerr[ERRID::ixe];
+	chkerr[ERRID::txi];
+	chkerr[ERRID::chi];
+	chkerr[ERRID::bsi];
+	chkerr[ERRID::ubi];
+	chkerr[ERRID::tni];
+	chkerr[ERRID::rff];
 
 	stringstream ss (this->log->str());
 	string line;
@@ -2173,8 +2185,6 @@ map<e2db::ERRID, vector<e2db::errmsg>> e2db::error_checker()
 
 			if (! index.count(tnid))
 				chkerr[ERRID::ixe].emplace_back(errmsg(ERRID::ixe, tnid, msg("Missing index key \"%s\".", tnid), "tunersets table"));
-
-			//TODO
 		}
 	}
 
@@ -2591,24 +2601,31 @@ void e2db::debugger()
 	{
 		switch (err.first)
 		{
-			case ERRID::ees: std::cout << "[log]"; break;
-			case ERRID::ixe: std::cout << "[index]"; break;
-			case ERRID::txi: std::cout << "[transponders]"; break;
-			case ERRID::chi: std::cout << "[channels]"; break;
-			case ERRID::bsi: std::cout << "[bouquets]"; break;
-			case ERRID::ubi: std::cout << "[userbouquets]"; break;
-			case ERRID::tni: std::cout << "[tunersets]"; break;
-			case ERRID::rff: std::cout << "[references]"; break;
+			case ERRID::ees: std::cout << '[' << msg("%s errors", "Log") << ']'; break;
+			case ERRID::ixe: std::cout << '[' << msg("%s errors", "Index") << ']'; break;
+			case ERRID::txi: std::cout << '[' << msg("%s errors", "Transponders") << ']'; break;
+			case ERRID::chi: std::cout << '[' << msg("%s errors", "Channels") << ']'; break;
+			case ERRID::bsi: std::cout << '[' << msg("%s errors", "Bouquets") << ']'; break;
+			case ERRID::ubi: std::cout << '[' << msg("%s errors", "Userbouquets") << ']'; break;
+			case ERRID::tni: std::cout << '[' << msg("%s errors", "Tunersets") << ']'; break;
+			case ERRID::rff: std::cout << '[' << msg("%s errors", "References") << ']'; break;
 		}
 		std::cout << '\n';
-		for (auto & x : err.second)
+		if (! err.second.empty())
 		{
-			std::cout << x.message;
-			if (! x.detail.empty())
-				std::cout << ' ' << '(' << x.detail << ')';
-			if (x.i != -1)
-				std::cout << ' ' << '(' << "i=" << x.i << ')';
-			std::cout << '\n';
+			for (auto & x : err.second)
+			{
+				std::cout << x.message;
+				if (! x.detail.empty())
+					std::cout << ' ' << '(' << x.detail << ')';
+				if (x.i != -1)
+					std::cout << ' ' << '(' << "i=" << x.i << ')';
+				std::cout << '\n';
+			}
+		}
+		else
+		{
+			std::cout << msg("No errors found.") << '\n';
 		}
 		std::cout << std::endl;
 	}

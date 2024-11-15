@@ -699,6 +699,7 @@ struct e2db_abstract : protected e2se::log_factory
 
 		using MSG = e2se::logger::MSG;
 		virtual string msg(string str, string param) { return e2se::logger::msg(str, param); }
+		virtual string msg(string str) { return e2se::logger::msg(str); }
 		virtual string msg(e2se::logger::MSG msg, const char* param) { return e2se::logger::msg(msg, param); }
 		virtual string msg(e2se::logger::MSG msg) { return e2se::logger::msg(msg); }
 

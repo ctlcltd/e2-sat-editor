@@ -1792,7 +1792,7 @@ void e2db_abstract::fix_bouquets(bool uniq_ubouquets)
 			bs.nname = "TV";
 			bs.index = int (index["bss"].size()) + 1;
 			add_bouquet(bs.index, bs);
-			index[iname]; // touch index["bouquets.tv"]
+			index[iname]; // touch
 
 			bs = bouquet();
 			iname = ! bss_epl ? "bouquets.radio" : "userbouquets.radio.epl";
@@ -1802,7 +1802,7 @@ void e2db_abstract::fix_bouquets(bool uniq_ubouquets)
 			bs.nname = "Radio";
 			bs.index = int (index["bss"].size()) + 1;
 			add_bouquet(bs.index, bs);
-			index[iname]; // touch index["bouquets.radio"]
+			index[iname]; // touch
 
 			reparenting = true;
 		}
