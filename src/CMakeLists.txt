@@ -153,8 +153,14 @@ target_link_libraries(e2-sat-editor PUBLIC
 )
 
 if(APPLE)
+	set(MACOSX_INFO_PLIST_TEMPLATE "Info.plist.arm64.in")
+
+	if(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
+		set(MACOSX_INFO_PLIST_TEMPLATE "Info.plist.x86_64.in")
+	endif()
+
 	set_target_properties(e2-sat-editor PROPERTIES
-		MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/../dist/macos/Info.plist.in
+		MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/../dist/macos/${MACOSX_INFO_PLIST_TEMPLATE}"
 		OUTPUT_NAME "e2 SAT Editor"
 	)
 

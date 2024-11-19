@@ -2617,7 +2617,7 @@ void e2db::debugger()
 			{
 				std::cout << x.message;
 				if (! x.detail.empty())
-					std::cout << ' ' << '(' << x.detail << ')';
+					std::cout << ' ' << '[' << x.detail << ']';
 				if (x.i != -1)
 					std::cout << ' ' << '(' << "i=" << x.i << ')';
 				std::cout << '\n';

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleExecutable</key>
+	<string>e2 SAT Editor</string>
+	<key>CFBundleIconFile</key>
+	<string>e2-sat-editor.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>io.github.ctlcltd.e2se</string>
+	<key>CFBundleName</key>
+	<string>e2 SAT Editor</string>
+    <key>CFBundleVersion</key>
+    <string>1.7.0</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.7</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>14.0</string>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+	<key>NSSupportsAutomaticGraphicsSwitching</key>
+	<true/>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>ar</string>
+		<string>bg</string>
+		<string>ca</string>
+		<string>cs</string>
+		<string>da</string>
+		<string>de</string>
+		<string>en_EN</string>
+		<string>en_US</string>
+		<string>es</string>
+		<string>fa</string>
+		<string>fi</string>
+		<string>fr</string>
+		<string>gd</string>
+		<string>gl</string>
+		<string>he</string>
+		<string>hr</string>
+		<string>hu</string>
+		<string>it</string>
+		<string>ja</string>
+		<string>ko</string>
+		<string>lt</string>
+		<string>lv</string>
+		<string>nl</string>
+		<string>nn</string>
+		<string>pl</string>
+		<string>pt_BR</string>
+		<string>pt_PT</string>
+		<string>ru</string>
+		<string>sk</string>
+		<string>sl</string>
+		<string>sv</string>
+		<string>tr</string>
+		<string>uk</string>
+		<string>zh_CN</string>
+		<string>zh_TW</string>
+	</array>
+</dict>
+</plist>

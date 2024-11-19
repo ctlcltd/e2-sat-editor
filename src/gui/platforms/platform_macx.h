@@ -138,7 +138,7 @@ class _platform_macx
 		// due to cocoa plug-in needs, as workaround use fusion style
 		static bool osExperiment()
 		{
-			if (QGuiApplication::platformName() != "cocoa")
+			if (QApplication::style()->name() != "macos")
 				return false;
 			else
 				return QSettings().value("preference/osExperiment", true).toBool();

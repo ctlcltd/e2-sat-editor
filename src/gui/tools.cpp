@@ -235,7 +235,7 @@ void tools::errorChecker()
 	QTextEdit* dcnt = new QTextEdit;
 	dcnt->setReadOnly(true);
 	QString textAlign = QApplication::layoutDirection() == Qt::LeftToRight ? "left" : "right";
-	dcnt->document()->setDefaultStyleSheet("body { margin: 0 10px } .t { letter-spacing: 5px } b { margin: 0 2px 0 } dl { margin: 0; text-align: " + textAlign + " } dt { margin: 4px 0 10px 0; font-size: 14px; font-weight: bold } dd { margin: 4px 0 5px 0; font-size: 12px } p { margin: 0 0 5px 0; font-size: 12px } .s { width: 100%; height: 15px; line-height: 30px }");
+	dcnt->document()->setDefaultStyleSheet("body { margin: 0 10px } .t { letter-spacing: 5px } dl { margin: 0; text-align: " + textAlign + " } dt { margin: 4px 0 10px 0; font-size: 14px; font-weight: bold } dd { margin: 4px 0 5px 0; font-size: 12px } p { margin: 0 0 5px 0; font-size: 12px } .s { width: 100%; height: 15px; line-height: 30px }");
 #ifdef Q_OS_WIN
 	if (! theme::isOverridden() && (theme::isFluentWin() || theme::absLuma() || ! theme::isDefault()))
 	{
@@ -270,7 +270,7 @@ void tools::errorChecker()
 	QTimer* timer = new QTimer(dial);
 	timer->callOnTimeout([=]() { this->chkerrLoad(dcnt); });
 	timer->setSingleShot(true);
-	timer->start(500);
+	timer->start(400);
 
 	dfrm->setContentsMargins(0, 0, 0, 0);
 	dfrm->addWidget(dcnt);
