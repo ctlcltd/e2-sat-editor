@@ -325,6 +325,21 @@ struct e2db_abstract : protected e2se::log_factory
 			string data;
 			string mime;
 			size_t size;
+			string t;
+
+			e2db_file()
+			{
+				t = timestamp();
+			}
+			e2db_file(const e2db_file& file)
+			{
+				origin = file.origin;
+				path = file.path;
+				filename = file.filename;
+				mime = file.mime;
+				size = file.size;
+				t = file.t;
+			}
 		};
 
 		struct service
@@ -576,6 +591,7 @@ struct e2db_abstract : protected e2se::log_factory
 		virtual ~e2db_abstract() = default;
 		static string editor_string(int html = 0);
 		static string editor_timestamp();
+		static string timestamp();
 		static FPORTS file_type_detect(string path);
 		static string file_mime_value(FPORTS fpi, string path);
 		static bool is_valid_transponder(transponder tx);
@@ -685,7 +701,7 @@ struct e2db_abstract : protected e2se::log_factory
 		void set_services(unordered_map<string, service> services);
 		void set_bouquets(pair<unordered_map<string, bouquet>, unordered_map<string, userbouquet>> bouquets);
 		pair<unordered_map<string, bouquet>, unordered_map<string, userbouquet>> get_bouquets();
-		virtual unordered_map<string, e2db_file> get_input() { return this->e2db; }
+		virtual unordered_map<string, e2db_file> get_input() { return this->e2db_in; }
 		virtual unordered_map<string, e2db_file> get_output() { return this->e2db_out; }
 		virtual void fix_bouquets(bool uniq_ubouquets = false);
 		virtual void merge(e2db_abstract* dst);
@@ -717,8 +733,10 @@ struct e2db_abstract : protected e2se::log_factory
 		virtual string msg(e2se::logger::MSG msg, const char* param) { return e2se::logger::msg(msg, param); }
 		virtual string msg(e2se::logger::MSG msg) { return e2se::logger::msg(msg); }
 
-		// e2db <filename string, e2db_file>
-		unordered_map<string, e2db_file> e2db;
+		// e2db_files <e2db_file>
+		vector<e2db_file> e2db_files;
+		// e2db_in <filename string, e2db_file>
+		unordered_map<string, e2db_file> e2db_in;
 		// e2db_out <filename string, e2db_file>
 		unordered_map<string, e2db_file> e2db_out;
 		string filepath;

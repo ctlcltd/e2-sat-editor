@@ -47,6 +47,7 @@ class e2db : public e2db_parser, public e2db_maker, public e2db_converter, publi
 			string detail;
 			int i = -1;
 
+			errmsg() = default;
 			errmsg(ERRID id, string key, string msg, string dsc = "", int ln = -1)
 			{
 				group = id;
@@ -130,6 +131,7 @@ class e2db : public e2db_parser, public e2db_maker, public e2db_converter, publi
 		void unset_userbouquet_parentallock(string bname);
 		string get_filepath();
 		string get_services_filename();
+		vector<e2db_file> get_file_list();
 		map<string, vector<pair<int, string>>> get_channels_index();
 		map<string, vector<pair<int, string>>> get_transponders_index();
 		map<string, vector<pair<int, string>>> get_services_index();

@@ -63,6 +63,25 @@ string e2db_abstract::editor_timestamp()
 	return string (dt) + string (tz);
 }
 
+string e2db_abstract::timestamp()
+{
+#ifdef TIME_UTC
+	std::timespec ct;
+	std::timespec_get(&ct, TIME_UTC);
+#else
+	timespec ct;
+	clock_gettime(CLOCK_REALTIME, &ct);
+#endif
+	std::tm* lct = std::localtime(&ct.tv_sec);
+	char t[80];
+	std::strftime(t, 80, "%Y-%m-%d %H:%M:%S", lct);
+
+	char c[8];
+	std::snprintf(c, 8, ".%06d", int (float (ct.tv_nsec) / 1e9 * 1e6));
+
+	return string (t) + string (c);
+}
+
 e2db_abstract::FPORTS e2db_abstract::file_type_detect(string path)
 {
 	string filename = std::filesystem::path(path).filename().u8string();

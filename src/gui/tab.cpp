@@ -1290,8 +1290,6 @@ void tab::infoFile()
 	if (dstver != 0 && srcver != dstver)
 		fconvert = gid->getFileFormatName(dstver);
 
-	auto flist = dbih->get_input();
-
 	QString fpath = QString::fromStdString(filepath);
 	QString fname = QString::fromStdString(filename);
 	QUrl furl = QUrl::fromLocalFile(fpath);
@@ -1365,17 +1363,25 @@ void tab::infoFile()
 	platform::osLabel(dtf1tt);
 	dtf1->addRow(QString(QApplication::layoutDirection() == Qt::RightToLeft ? ":%1" : "%1:").arg(tr("Total")), dtf1tt);
 
+	QLabel* dtf1bt = new QLabel;
+	dtf1bt->setText(QString::number(int (dbih->index["ubs"].size())));
+	dtf1bt->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+	platform::osLabel(dtf1bt);
+	dtf1->addRow(QString(QApplication::layoutDirection() == Qt::RightToLeft ? ":%1" : "%1:").arg(tr("Bouquets")), dtf1bt);
+
 	QGroupBox* dtl2 = new QGroupBox(tr("File Tree"));
 	QVBoxLayout* dtb2 = new QVBoxLayout;
 
 	QTreeWidget* dtw2ft = new QTreeWidget;
-	dtw2ft->setHeaderLabels({tr("Filename"), tr("Size"), tr("Origin")});
+	dtw2ft->setHeaderLabels({tr("Filename"), tr("Size"), tr("Origin"), tr("Time")});
 	dtw2ft->setSortingEnabled(true);
 #if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
 	dtw2ft->header()->setDefaultSectionSize(0);
 #endif
 	dtw2ft->setColumnWidth(0, 200);
 	dtw2ft->setColumnWidth(1, 100);
+	dtw2ft->setColumnWidth(2, 75);
+	dtw2ft->setColumnWidth(3, 150);
 #ifdef Q_OS_WIN
 	if (! theme::isOverridden() && (theme::isFluentWin() || theme::absLuma() || ! theme::isDefault()))
 	{
@@ -1392,30 +1398,32 @@ void tab::infoFile()
 	}
 #endif
 
+	auto flist = dbih->get_file_list();
+	QLocale appLocale = gid->getLocale();
+
 	QList<QTreeWidgetItem*> ftree;
 	for (auto & x : flist)
 	{
-		QString filename = QString::fromStdString(x.second.filename);
-		QString filesize = "–";
+		QString filename = QString::fromStdString(x.filename);
+		QString filesize = appLocale.formattedDataSize(qint64 (x.size), 2, QLocale::DataSizeTraditionalFormat);
 		QString fileorigin = "–";
-		switch (x.second.origin)
+		QString filetime = QString::fromStdString(x.t).section(' ', 1);
+		switch (x.origin)
 		{
 			case e2db::FORG::filesys: fileorigin = tr("local", "file"); break;
 			case e2db::FORG::fileport: fileorigin = tr("remote", "file"); break;
 			case e2db::FORG::fileblob: fileorigin = tr("blob", "file"); break;
-		}
-		{
-			QLocale appLocale = gid->getLocale();
-			filesize = appLocale.formattedDataSize(qint64 (x.second.size), 2, QLocale::DataSizeTraditionalFormat);
 		}
 
 		QTreeWidgetItem* item = new QTreeWidgetItem;
 		item->setText(0, filename);
 		item->setText(1, filesize);
 		item->setText(2, fileorigin);
+		item->setText(3, filetime);
 		ftree.append(item);
 	}
 	dtw2ft->addTopLevelItems(ftree);
+	dtw2ft->sortItems(3, Qt::AscendingOrder);
 
 	dtb2->addWidget(dtw2ft);
 

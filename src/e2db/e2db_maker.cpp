@@ -1850,6 +1850,13 @@ bool e2db_maker::write(string path)
 
 		if (push_file(path))
 		{
+			this->e2db_in = this->e2db_out;
+			this->e2db_out.clear();
+			this->e2db_files.clear();
+
+			for (auto & x : this->e2db_in)
+				this->e2db_files.emplace_back(x.second);
+
 			db.dstat = DSTAT::d_write;
 
 			return true;

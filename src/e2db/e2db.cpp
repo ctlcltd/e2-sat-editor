@@ -290,6 +290,8 @@ void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 		exception("import_file", "Error", msg(MSG::except_uncaught));
 	}
 
+	this->e2db_files.emplace_back(e2db_file(file));
+
 	auto t_end = std::chrono::high_resolution_clock::now();
 	int elapsed = std::chrono::duration<double, std::micro>(t_end - t_start).count();
 
@@ -575,6 +577,9 @@ void e2db::import_blob(unordered_map<string, e2db_file> files)
 	}
 
 	blobctx_crlf = false;
+
+	for (auto & x : files)
+		this->e2db_files.emplace_back(e2db_file(x.second));
 
 	auto t_end = std::chrono::high_resolution_clock::now();
 	int elapsed = std::chrono::duration<double, std::micro>(t_end - t_start).count();
@@ -1655,6 +1660,29 @@ void e2db::edit_tunersets_transponder(string trid, tunersets_transponder& tntxp,
 	}
 }
 
+void e2db::remove_tunersets_transponder(string trid, tunersets_table tn)
+{
+	debug("remove_tunersets_transponder", "trid", trid);
+
+	tuners[tn.ytype].tables[tn.tnid].transponders.erase(trid);
+
+	bool found = false;
+	vector<pair<int, string>>::iterator pos;
+	for (auto it = index[tn.tnid].begin(); it != index[tn.tnid].end(); it++)
+	{
+		if (it->second == trid)
+		{
+			found = true;
+			pos = it;
+			break;
+		}
+	}
+	if (found && pos != index[tn.tnid].end())
+	{
+		index[tn.tnid].erase(pos);
+	}
+}
+
 void e2db::set_service_parentallock(string chid)
 {
 	debug("set_service_parentallock", "chid", chid);
@@ -1713,27 +1741,11 @@ string e2db::get_services_filename()
 	return this->services_filename;
 }
 
-void e2db::remove_tunersets_transponder(string trid, tunersets_table tn)
+vector<e2db_abstract::e2db_file> e2db::get_file_list()
 {
-	debug("remove_tunersets_transponder", "trid", trid);
+	debug("get_file_list");
 
-	tuners[tn.ytype].tables[tn.tnid].transponders.erase(trid);
-
-	bool found = false;
-	vector<pair<int, string>>::iterator pos;
-	for (auto it = index[tn.tnid].begin(); it != index[tn.tnid].end(); it++)
-	{
-		if (it->second == trid)
-		{
-			found = true;
-			pos = it;
-			break;
-		}
-	}
-	if (found && pos != index[tn.tnid].end())
-	{
-		index[tn.tnid].erase(pos);
-	}
+	return this->e2db_files;
 }
 
 map<string, vector<pair<int, string>>> e2db::get_channels_index()
