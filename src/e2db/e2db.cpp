@@ -1898,7 +1898,6 @@ map<string, vector<pair<int, string>>> e2db::get_az_index()
 	return _index;
 }
 
-//TODO check tunersets, dvbns, onid
 map<e2db::ERRID, vector<e2db::errmsg>> e2db::error_checker()
 {
 	// debug("error_checker");
@@ -1948,7 +1947,20 @@ map<e2db::ERRID, vector<e2db::errmsg>> e2db::error_checker()
 		{
 			string txid = x.second;
 
-			if (! db.transponders.count(txid))
+			if (db.transponders.count(txid))
+			{
+				transponder tx = db.transponders[txid];
+
+				if (! is_valid_transponder(tx))
+				{
+					char dsc[255];
+
+					std::snprintf(dsc, 255, "TSID: %d ONID: %d DVBNS: %x", tx.tsid, tx.onid, tx.dvbns);
+
+					chkerr[ERRID::txi].emplace_back(errmsg(ERRID::txi, txid, msg("Transponder \"%s\" is not valid.", txid), dsc, i));
+				}
+			}
+			else
 			{
 				int tsid = 0;
 				int dvbns = 0;
@@ -1974,6 +1986,14 @@ map<e2db::ERRID, vector<e2db::errmsg>> e2db::error_checker()
 			{
 				service& ch = db.services[chid];
 
+				if (! is_valid_service(ch))
+				{
+					char dsc[255];
+					
+					std::snprintf(dsc, 255, "SID: %d TSID: %d ONID: %d DVBNS: %x", ch.ssid, ch.tsid, ch.onid, ch.dvbns);
+					
+					chkerr[ERRID::chi].emplace_back(errmsg(ERRID::chi, chid, msg("Service \"%s\" is not valid.", chid), dsc, i));
+				}
 				if (! db.transponders.count(ch.txid))
 				{
 					char dsc[255];
@@ -2021,7 +2041,7 @@ map<e2db::ERRID, vector<e2db::errmsg>> e2db::error_checker()
 
 			if (! userbouquets.count(ub_bname))
 			{
-				string dsc;
+				string descr;
 
 				for (auto & x : bouquets)
 				{
@@ -2031,15 +2051,14 @@ map<e2db::ERRID, vector<e2db::errmsg>> e2db::error_checker()
 						{
 							bouquet& bs = x.second;
 							string bs_bname = bs.bname;
-							dsc = "bouquet: ";
-							dsc.append(bs_bname);
+							descr = string ("bouquet: ").append(bs_bname);
 							break;
 							break;
 						}
 					}
 				}
 
-				chkerr[ERRID::ubi].emplace_back(errmsg(ERRID::ubi, ub_bname, msg("Userbouquet \"%s\" not exists.", ub_bname), dsc, i));
+				chkerr[ERRID::ubi].emplace_back(errmsg(ERRID::ubi, ub_bname, msg("Userbouquet \"%s\" not exists.", ub_bname), descr, i));
 			}
 			i++;
 		}
@@ -2061,10 +2080,9 @@ map<e2db::ERRID, vector<e2db::errmsg>> e2db::error_checker()
 
 			if (! userbouquets.count(ub_bname))
 			{
-				string dsc = "bouquet: ";
-				dsc.append(bs_bname);
+				string descr = string ("bouquet: ").append(bs_bname);
 
-				chkerr[ERRID::bsi].emplace_back(errmsg(ERRID::bsi, ub_bname, msg("Userbouquet \"%s\" not exists.", ub_bname), dsc, i));
+				chkerr[ERRID::bsi].emplace_back(errmsg(ERRID::bsi, ub_bname, msg("Userbouquet \"%s\" not exists.", ub_bname), descr, i));
 			}
 			i++;
 		}
@@ -2093,24 +2111,26 @@ map<e2db::ERRID, vector<e2db::errmsg>> e2db::error_checker()
 
 				if (chref.marker)
 				{
-					if (chref.atype != ATYPE::marker && chref.atype != ATYPE::marker_hidden_512 && chref.atype != ATYPE::marker_hidden_832 && chref.atype != ATYPE::marker_numbered)
+					if (! is_valid_marker(chref))
 					{
 						char dsc[255];
 
 						std::snprintf(dsc, 255, "reference: %s type: %d flag: %d num: %d", chid.c_str(), chref.etype, chref.atype, chref.anum);
+						string descr = string ("userbouquet: ").append(ub_bname).append(" ").append(dsc);
 
-						chkerr[ERRID::rff].emplace_back(errmsg(ERRID::rff, chid, msg("Channel reference \"%s\" is not a valid marker.", chid), dsc, i));
+						chkerr[ERRID::rff].emplace_back(errmsg(ERRID::rff, chid, msg("Channel reference \"%s\" is not a valid marker.", chid), descr, i));
 					}
 				}
 				else if (chref.stream)
 				{
-					if (chref.url.find("//") == string::npos)
+					if (! is_valid_stream(chref))
 					{
 						char dsc[255];
 
 						std::snprintf(dsc, 255, "reference: %s type: %d flag: %d SID: %d TSID: %d DVBNS: %x", chid.c_str(), chref.etype, chref.atype, chref.ref.ssid, chref.ref.tsid, chref.ref.dvbns);
+						string descr = string ("userbouquet: ").append(ub_bname).append(" ").append(dsc);
 
-						chkerr[ERRID::rff].emplace_back(errmsg(ERRID::rff, chid, msg("Channel reference \"%s\" is not a valid stream.", chid), dsc, i));
+						chkerr[ERRID::rff].emplace_back(errmsg(ERRID::rff, chid, msg("Channel reference \"%s\" is not a valid stream.", chid), descr, i));
 					}
 				}
 				else if (db.services.count(chid))
@@ -2122,17 +2142,27 @@ map<e2db::ERRID, vector<e2db::errmsg>> e2db::error_checker()
 						char dsc[255];
 
 						std::snprintf(dsc, 255, "reference: %s type: %d flag: %d SID: %d TSID: %d DVBNS: %x", chref.chid.c_str(), chref.etype, chref.atype, chref.ref.ssid, chref.ref.tsid, chref.ref.dvbns);
+						string descr = string ("userbouquet: ").append(ub_bname).append(" ").append(dsc);
 
-						chkerr[ERRID::rff].emplace_back(errmsg(ERRID::rff, chid, msg("Channel reference mismatch \"%s\".", chid), dsc, i));
+						chkerr[ERRID::rff].emplace_back(errmsg(ERRID::rff, chid, msg("Channel reference mismatch \"%s\".", chid), descr, i));
 					}
-
+					if (! is_valid_service(ch))
+					{
+						char dsc[255];
+						
+						std::snprintf(dsc, 255, "reference: %s SID: %d TSID: %d ONID: %d DVBNS: %x", chid.c_str(), ch.ssid, ch.tsid, ch.onid, ch.dvbns);
+						string descr = string ("userbouquet: ").append(ub_bname).append(" ").append(dsc);
+						
+						chkerr[ERRID::rff].emplace_back(errmsg(ERRID::rff, chid, msg("Channel reference \"%s\" is not a valid service.", chid), descr, i));
+					}
 					if (! db.transponders.count(ch.txid))
 					{
 						char dsc[255];
 
 						std::snprintf(dsc, 255, "reference: %s SID: %d TSID: %d ONID: %d DVBNS: %x", chid.c_str(), ch.ssid, ch.tsid, ch.onid, ch.dvbns);
+						string descr = string ("userbouquet: ").append(ub_bname).append(" ").append(dsc);
 
-						chkerr[ERRID::rff].emplace_back(errmsg(ERRID::rff, chid, msg("Transponder \"%s\" not exists.", ch.txid), dsc, i));
+						chkerr[ERRID::rff].emplace_back(errmsg(ERRID::rff, chid, msg("Transponder \"%s\" not exists.", ch.txid), descr, i));
 					}
 				}
 				else
@@ -2144,8 +2174,9 @@ map<e2db::ERRID, vector<e2db::errmsg>> e2db::error_checker()
 
 					std::sscanf(chid.c_str(), "%x:%x:%x", &ssid, &tsid, &dvbns);
 					std::snprintf(dsc, 255, "SID: %d TSID: %d DVBNS: %x", ssid, tsid, dvbns);
+					string descr = string ("userbouquet: ").append(ub_bname).append(" ").append(dsc);
 
-					chkerr[ERRID::rff].emplace_back(errmsg(ERRID::rff, chid, msg("Service \"%s\" not exists.", chid), dsc, i));
+					chkerr[ERRID::rff].emplace_back(errmsg(ERRID::rff, chid, msg("Service \"%s\" not exists.", chid), descr, i));
 				}
 
 				if (chref.descrval && ! chref.value.empty())
@@ -2160,8 +2191,9 @@ map<e2db::ERRID, vector<e2db::errmsg>> e2db::error_checker()
 
 				std::sscanf(chid.c_str(), "%x:%x:%x", &ssid, &tsid, &dvbns);
 				std::snprintf(dsc, 255, "SID: %d TSID: %d DVBNS: %x", ssid, tsid, dvbns);
+				string descr = string ("userbouquet: ").append(ub_bname).append(" ").append(dsc);
 
-				chkerr[ERRID::rff].emplace_back(errmsg(ERRID::rff, chid, msg("Channel reference \"%s\" not exists.", chid), dsc, i));
+				chkerr[ERRID::rff].emplace_back(errmsg(ERRID::rff, chid, msg("Channel reference \"%s\" not exists.", chid), descr, i));
 			}
 			i++;
 		}
@@ -2170,6 +2202,10 @@ map<e2db::ERRID, vector<e2db::errmsg>> e2db::error_checker()
 	for (auto & x : tuners)
 	{
 		tunersets& tv = x.second;
+		string tvid = to_string(tv.ytype);
+
+		if (! is_valid_tunersets(tv))
+			chkerr[ERRID::tni].emplace_back(errmsg(ERRID::tni, tvid, msg("Tunersets \"%s\" is not valid.", tvid)));
 
 		for (auto & x : tv.tables)
 		{
@@ -2180,11 +2216,51 @@ map<e2db::ERRID, vector<e2db::errmsg>> e2db::error_checker()
 			char yname = value_transponder_type(tn.ytype);
 			tn_iname += yname;
 
+			if (! is_valid_tunersets_table(tn))
+				chkerr[ERRID::tni].emplace_back(errmsg(ERRID::tni, tnid, msg("Tunersets table \"%s\" is not valid.", tnid)));
+
 			if (! index.count(tn_iname))
 				chkerr[ERRID::ixe].emplace_back(errmsg(ERRID::ixe, tn_iname, msg("Missing index key \"%s\".", tn_iname), "tunersets index"));
 
-			if (! index.count(tnid))
+			if (index.count(tnid))
+			{
+				for (auto & x : index[tnid])
+				{
+					string trid = x.second;
+
+					if (tn.transponders.count(trid))
+					{
+						tunersets_transponder& tntxp = tn.transponders[trid];
+
+						if (! is_valid_tunersets_transponder(tn, tntxp))
+						{
+							char dsc[255];
+
+							std::snprintf(dsc, 255, "reference: %s type: %d freq: %d sr: %d", trid.c_str(), tn.ytype, tntxp.freq, tntxp.sr);
+							string descr = string ("table: ").append(tnid).append(" ").append(dsc);
+
+							chkerr[ERRID::tni].emplace_back(errmsg(ERRID::tni, trid, msg("Tunersets transponder \"%s\" is not valid.", trid), descr));
+						}
+					}
+					else
+					{
+						char yname;
+						int freq = 0;
+						int sr = 0;
+						char dsc[255];
+
+						std::sscanf(trid.c_str(), "%c:%d:%d", &yname, &freq, &sr);
+						std::snprintf(dsc, 255, "type: %d freq: %d sr: %d", value_transponder_type(yname), freq, sr);
+						string descr = string ("table: ").append(tnid).append(" ").append(dsc);
+
+						chkerr[ERRID::tni].emplace_back(errmsg(ERRID::tni, trid, msg("Tunersets transponder \"%s\" not exists.", trid), descr));
+					}
+				}
+			}
+			else
+			{
 				chkerr[ERRID::ixe].emplace_back(errmsg(ERRID::ixe, tnid, msg("Missing index key \"%s\".", tnid), "tunersets table"));
+			}
 		}
 	}
 
@@ -2604,7 +2680,7 @@ void e2db::debugger()
 			case ERRID::ees: std::cout << '[' << msg("%s errors", "Log") << ']'; break;
 			case ERRID::ixe: std::cout << '[' << msg("%s errors", "Index") << ']'; break;
 			case ERRID::txi: std::cout << '[' << msg("%s errors", "Transponders") << ']'; break;
-			case ERRID::chi: std::cout << '[' << msg("%s errors", "Channels") << ']'; break;
+			case ERRID::chi: std::cout << '[' << msg("%s errors", "Services") << ']'; break;
 			case ERRID::bsi: std::cout << '[' << msg("%s errors", "Bouquets") << ']'; break;
 			case ERRID::ubi: std::cout << '[' << msg("%s errors", "Userbouquets") << ']'; break;
 			case ERRID::tni: std::cout << '[' << msg("%s errors", "Tunersets") << ']'; break;

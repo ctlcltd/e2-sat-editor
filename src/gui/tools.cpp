@@ -295,7 +295,7 @@ void tools::chkerrLoad(QTextEdit* view)
 			case e2db::ERRID::ees: str << tr("%1 errors").arg(tr("Log")); break;
 			case e2db::ERRID::ixe: str << tr("%1 errors").arg(tr("Index")); break;
 			case e2db::ERRID::txi: str << tr("%1 errors").arg(tr("Transponders")); break;
-			case e2db::ERRID::chi: str << tr("%1 errors").arg(tr("Channels")); break;
+			case e2db::ERRID::chi: str << tr("%1 errors").arg(tr("Services")); break;
 			case e2db::ERRID::bsi: str << tr("%1 errors").arg(tr("Bouquets")); break;
 			case e2db::ERRID::ubi: str << tr("%1 errors").arg(tr("Userbouquets")); break;
 			case e2db::ERRID::tni: str << tr("%1 errors").arg(tr("Tunersets")); break;

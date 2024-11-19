@@ -153,12 +153,12 @@ void e2db_utils::fix_remove_references()
 
 				if (chref.marker)
 				{
-					if (chref.atype != ATYPE::marker && chref.atype != ATYPE::marker_hidden_512 && chref.atype != ATYPE::marker_hidden_832 && chref.atype != ATYPE::marker_numbered)
+					if (! is_valid_marker(chref))
 						ref_error = true;
 				}
 				else if (chref.stream)
 				{
-					if (chref.url.empty())
+					if (! is_valid_stream(chref))
 						ref_error = true;
 				}
 				else if (db.services.count(chid))
@@ -167,7 +167,7 @@ void e2db_utils::fix_remove_references()
 
 					if (ch.chid != chref.chid)
 						ref_error = true;
-					if (ch.txid.empty() || ch.tsid < 1 || ch.onid < 1)
+					if (! is_valid_service(ch))
 						ref_error = true;
 				}
 				else

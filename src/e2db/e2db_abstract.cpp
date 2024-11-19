@@ -148,6 +148,133 @@ string e2db_abstract::file_mime_value(FPORTS fpi, string path)
 	}
 }
 
+bool e2db_abstract::is_valid_transponder(transponder tx)
+{
+	if (tx.txid.empty() || tx.freq <= 0)
+		return false;
+	if (tx.ytype < 0 || tx.ytype > 3)
+		return false;
+	if ((tx.tsid < 1 || tx.onid < 1) && tx.dvbns == 0)
+		return false;
+	return true;
+}
+
+bool e2db_abstract::is_valid_service(service ch)
+{
+	if (ch.chid.empty() || ch.ssid < 1)
+		return false;
+	if ((ch.tsid < 1 || ch.onid < 1) && ch.dvbns == 0)
+		return false;
+	return true;
+}
+
+bool e2db_abstract::is_valid_marker(channel_reference chref)
+{
+	if (chref.chid.empty())
+		return false;
+	if (chref.anum == 0 && chref.inum == -1)
+		return false;
+	if (chref.atype != ATYPE::marker && chref.atype != ATYPE::marker_hidden_512 && chref.atype != ATYPE::marker_hidden_832 && chref.atype != ATYPE::marker_numbered)
+		return false;
+	return true;
+}
+
+bool e2db_abstract::is_valid_stream(channel_reference chref)
+{
+	if (chref.chid.empty())
+		return false;
+	if (chref.url.find("//") == string::npos)
+		return false;
+	return true;
+}
+
+bool e2db_abstract::is_valid_channel_reference(channel_reference chref)
+{
+	if (chref.chid.empty())
+		return false;
+	if (chref.marker)
+		return is_valid_marker(chref);
+	else if (chref.stream)
+		return is_valid_stream(chref);
+	return true;
+}
+
+bool e2db_abstract::is_valid_tunersets(tunersets tv)
+{
+	if (tv.ytype < 0 || tv.ytype > 3)
+		return false;
+	return true;
+}
+
+bool e2db_abstract::is_valid_tunersets_table(tunersets_table tn)
+{
+	if (tn.ytype < 0 || tn.ytype > 3)
+		return false;
+	return true;
+}
+
+bool e2db_abstract::is_valid_tunersets_transponder(tunersets_table tn, tunersets_transponder tntxp)
+{
+	if (tntxp.trid.empty() || tntxp.freq <= 0)
+		return false;
+	return is_valid_tunersets_table(tn);
+}
+
+bool e2db_abstract::is_valid_dvbns(transponder tx)
+{
+	YTYPE ytype = static_cast<YTYPE>(tx.ytype);
+	return is_valid_dvbns(ytype, tx.dvbns, tx.tsid, tx.onid, tx.pos, tx.freq);
+}
+
+bool e2db_abstract::is_valid_dvbns(YTYPE ytype, int dvbns, int tsid, int onid, int pos, int freq)
+{
+	if (ytype == YTYPE::terrestrial)
+		return uint (dvbns) == 0xeeee0000;
+	else if (ytype == YTYPE::cable)
+		return uint (dvbns) == 0xffff0000;
+	else
+		return dvbns == value_transponder_dvbns(ytype, tsid, onid, pos, freq);
+}
+
+bool e2db_abstract::is_valid_onid(transponder tx)
+{
+	YTYPE ytype = static_cast<YTYPE>(tx.ytype);
+	return is_valid_onid(ytype, tx.onid, tx.tsid);
+}
+
+bool e2db_abstract::is_valid_onid(YTYPE ytype, int onid, int tsid)
+{
+	if (ytype == YTYPE::terrestrial)
+		return onid != 0;
+	else if (ytype == YTYPE::cable)
+		return onid != 0;
+
+	bool valid = false;
+
+	if (onid == 0x0000 || onid == 0xffff || onid == 0x1111)
+		valid = false;
+	else if (onid == 0x0001)
+		valid = (tsid > 0x0001);
+	else if (onid == 0x00b1)
+		valid = (tsid > 0x00b0 || tsid < 0x00b0);
+	else if (onid == 0x0002)
+		valid = (tsid > 0x07e8 || tsid < 0x07e8);
+	else
+		valid = true;
+
+	return valid;
+}
+
+bool e2db_abstract::is_valid_tsid(int tsid)
+{
+	return tsid > 0;
+}
+
+bool e2db_abstract::is_valid_ssid(int ssid)
+{
+	return ssid > 0;
+}
+
 void e2db_abstract::value_channel_reference(string str, channel_reference& chref, service_reference& ref)
 {
 	int etype = 0, atype = 0, anum = 0, ssid = 0, tsid = 0, onid = 0, dvbns = 0,
@@ -599,7 +726,6 @@ int e2db_abstract::value_transponder_dvbns(transponder tx)
 	return value_transponder_dvbns(ytype, tx.tsid, tx.onid, tx.pos, tx.freq);
 }
 
-//TODO TEST
 int e2db_abstract::value_transponder_dvbns(YTYPE ytype, int tsid, int onid, int pos, int freq)
 {
 	if (ytype == YTYPE::terrestrial)
