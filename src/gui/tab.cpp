@@ -477,8 +477,7 @@ void tab::layout()
 	DEMO = true;
 #endif
 
-	toolBarSeparator(bottom_toolbar);
-
+	toolBarEnding(bottom_toolbar);
 	QAction* btt_action = new QAction(bottom_toolbar);
 	btt_action->setText(tr("Tools", "toolbar"));
 	btt_action->connect(btt_action, &QAction::triggered, [=]() {
@@ -492,6 +491,7 @@ void tab::layout()
 	bottom_toolbar->addAction(btt_action);
 
 	toolBarSeparator(bottom_toolbar);
+	toolBarAction(bottom_toolbar, tr("Inspect", "toolbar"), [=]() { this->toolsErrorChecker(); });
 	if (QSettings().value("application/debug", false).toBool() || DEMO)
 	{
 		toolBarAction(bottom_toolbar, "§ Load seeds", [=]() { this->loadSeeds(); });
@@ -503,7 +503,7 @@ void tab::layout()
 	toolBarSeparator(bottom_toolbar);
 	toolBarAction(bottom_toolbar, tr("Donate", "toolbar"), [=]() { this->linkToWebsite(1); });
 #endif
-	toolBarSeparator(bottom_toolbar);
+	toolBarEnding(bottom_toolbar);
 
 	top->addWidget(top_toolbar);
 	bottom->addWidget(bottom_toolbar);
@@ -1635,8 +1635,8 @@ QMenu* tab::toolsMenu()
 		menuAction(tmsort, tr("Sort transponders…", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsSort_transponders); });
 		menuAction(tmsort, tr("Sort userbouquets…", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsSort_userbouquets); });
 		menuSeparator(menu);
-		menuAction(menu, tr("Error Checker", "menu"), [=]() { this->toolsErrorChecker(); });
-		menuAction(menu, tr("Autofix", "menu"), [=]() { this->toolsAutofixMacro(); });
+		menuAction(menu, tr("Error Checker", "menu"), [=]() { this->toolsErrorChecker(); }, Qt::CTRL | Qt::ALT | Qt::Key_I);
+		menuAction(menu, tr("Autofix", "menu"), [=]() { this->toolsAutofixMacro(); }, Qt::CTRL | Qt::ALT | Qt::Key_A);
 		menuSeparator(menu);
 		QMenu* tmimport = menuMenu(menu, tr("Import", "menu"));
 		menuAction(tmimport, tr("Import…", "menu"), [=]() { this->importFile(); });
@@ -3270,7 +3270,7 @@ QToolBar* tab::toolBar(int type)
 	// 0: bottom
 	{
 		toolbar->setObjectName("tab_bottom_toolbar");
-		toolbar->setStyleSheet("QToolBar { padding: 8px 12px } QToolButton { font-size: 16px; font-weight: bold; }");
+		toolbar->setStyleSheet("QToolBar { padding: 8px 12px } QToolButton { font-size: 16px; font-weight: bold }");
 	}
 
 #ifndef Q_OS_MAC
@@ -3355,6 +3355,14 @@ QWidget* tab::toolBarSpacer(QToolBar* toolbar)
 {
 	QWidget* spacer = new QWidget;
 	spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Ignored);
+	toolbar->addWidget(spacer);
+	return spacer;
+}
+
+QWidget* tab::toolBarEnding(QToolBar* toolbar)
+{
+	QWidget* spacer = new QWidget;
+	spacer->setFixedWidth(6);
 	toolbar->addWidget(spacer);
 	return spacer;
 }

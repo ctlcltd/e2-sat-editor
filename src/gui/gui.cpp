@@ -311,8 +311,8 @@ void gui::menuBarLayout()
 	//: Encoding: preserve 3-dots ellipsis symbol
 	gmenu[GUI_CXE::FileSaveAs] = menuBarAction(mfile, tr("Save &As…", "menu"), [=]() { this->fileSaveAs(); }, QKeySequence::SaveAs);
 	menuBarSeparator(mfile);
-	gmenu[GUI_CXE::FileImport] = menuBarAction(mfile, tr("Import", "menu"), [=]() { this->fileImport(); });
-	gmenu[GUI_CXE::FileExport] = menuBarAction(mfile, tr("Export", "menu"), [=]() { this->fileExport(); });
+	gmenu[GUI_CXE::FileImport] = menuBarAction(mfile, tr("Import", "menu"), [=]() { this->fileImport(); }, Qt::CTRL | Qt::SHIFT | Qt::Key_I);
+	gmenu[GUI_CXE::FileExport] = menuBarAction(mfile, tr("Export", "menu"), [=]() { this->fileExport(); }, Qt::CTRL | Qt::SHIFT | Qt::Key_E);
 	menuBarSeparator(mfile);
 	gmenu[GUI_CXE::CloseTab] = menuBarAction(mfile, tr("Close Tab", "menu"), [=]() { this->closeTab(); }, QKeySequence::Close);
 	gmenu[GUI_CXE::CloseAllTabs] = menuBarAction(mfile, tr("Close All Tabs", "menu"), [=]() { this->closeAllTabs(); }, Qt::CTRL | Qt::ALT | Qt::Key_W);
@@ -456,25 +456,25 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::ToolsUtilsSort_transponders] = menuBarAction(tmsort, tr("Sort transponders…", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsSort_transponders); });
 	gmenu[GUI_CXE::ToolsUtilsSort_userbouquets] = menuBarAction(tmsort, tr("Sort userbouquets…", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsSort_userbouquets); });
 	menuBarSeparator(mtools);
-	gmenu[GUI_CXE::ToolsErrorChecker] = menuBarAction(mtools, tr("Error Checker", "menu"), [=]() { this->tabAction(TAB_ATS::ErrorChecker); });
-	gmenu[GUI_CXE::ToolsAutofixMacro] = menuBarAction(mtools, tr("Autofix", "menu"), [=]() { this->tabAction(TAB_ATS::AutofixMacro); });
+	gmenu[GUI_CXE::ToolsErrorChecker] = menuBarAction(mtools, tr("Error Checker", "menu"), [=]() { this->tabAction(TAB_ATS::ErrorChecker); }, Qt::CTRL | Qt::ALT | Qt::Key_I);
+	gmenu[GUI_CXE::ToolsAutofixMacro] = menuBarAction(mtools, tr("Autofix", "menu"), [=]() { this->tabAction(TAB_ATS::AutofixMacro); }, Qt::CTRL | Qt::ALT | Qt::Key_A);
 	menuBarSeparator(mtools);
 	gmenu[GUI_CXE::ToolsLogInspector] = menuBarAction(mtools, tr("Log Inspector", "menu"), [=]() { this->tabAction(TAB_ATS::Inspect); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
 
 	QMenu* meditor = menuBarMenu(menubar, tr("Edit&or", "menu"));
-	gmenu[GUI_CXE::Transponders] = menuBarAction(meditor, tr("Edit Transponders", "menu"), [=]() { this->tabAction(TAB_ATS::EditTransponders); });
+	gmenu[GUI_CXE::Transponders] = menuBarAction(meditor, tr("Edit Transponders", "menu"), [=]() { this->tabAction(TAB_ATS::EditTransponders); }, Qt::CTRL | Qt::SHIFT | Qt::Key_T);
 	menuBarSeparator(meditor);
 	//: Note: %1 is xml filename
-	gmenu[GUI_CXE::TunersetsSat] = menuBarAction(meditor, tr("Edit %1", "menu").arg("satellites.xml"), [=]() { this->tabAction(TAB_ATS::EditTunersetsSat); });
+	gmenu[GUI_CXE::TunersetsSat] = menuBarAction(meditor, tr("Edit %1", "menu").arg("satellites.xml"), [=]() { this->tabAction(TAB_ATS::EditTunersetsSat); }, Qt::CTRL | Qt::ALT | Qt::SHIFT | Qt::Key_S);
 	//: Note: %1 is xml filename
-	gmenu[GUI_CXE::TunersetsTerrestrial] = menuBarAction(meditor, tr("Edit %1", "menu").arg("terrestrial.xml"), [=]() { this->tabAction(TAB_ATS::EditTunersetsTerrestrial); });
+	gmenu[GUI_CXE::TunersetsTerrestrial] = menuBarAction(meditor, tr("Edit %1", "menu").arg("terrestrial.xml"), [=]() { this->tabAction(TAB_ATS::EditTunersetsTerrestrial); }, Qt::CTRL | Qt::ALT | Qt::SHIFT | Qt::Key_T);
 	//: Note: %1 is xml filename
-	gmenu[GUI_CXE::TunersetsCable] = menuBarAction(meditor, tr("Edit %1", "menu").arg("cables.xml"), [=]() { this->tabAction(TAB_ATS::EditTunersetsCable); });
+	gmenu[GUI_CXE::TunersetsCable] = menuBarAction(meditor, tr("Edit %1", "menu").arg("cables.xml"), [=]() { this->tabAction(TAB_ATS::EditTunersetsCable); }, Qt::CTRL | Qt::ALT | Qt::SHIFT | Qt::Key_C);
 	//: Note: %1 is xml filename
-	gmenu[GUI_CXE::TunersetsAtsc] = menuBarAction(meditor, tr("Edit %1", "menu").arg("atsc.xml"), [=]() { this->tabAction(TAB_ATS::EditTunersetsAtsc); });
+	gmenu[GUI_CXE::TunersetsAtsc] = menuBarAction(meditor, tr("Edit %1", "menu").arg("atsc.xml"), [=]() { this->tabAction(TAB_ATS::EditTunersetsAtsc); }, Qt::CTRL | Qt::ALT | Qt::SHIFT | Qt::Key_A);
 	menuBarSeparator(meditor);
-	gmenu[GUI_CXE::Picons] = menuBarAction(meditor, tr("Picons editor", "menu"), [=]() { this->tabAction(TAB_ATS::EditPicons); });
-	gmenu[GUI_CXE::OpenChannelBook] = menuBarAction(meditor, tr("Channel Book", "menu"), [=]() { this->tabAction(TAB_ATS::ShowChannelBook); });
+	gmenu[GUI_CXE::Picons] = menuBarAction(meditor, tr("Picons editor", "menu"), [=]() { this->tabAction(TAB_ATS::EditPicons); }, Qt::CTRL | Qt::SHIFT | Qt::Key_I);
+	gmenu[GUI_CXE::OpenChannelBook] = menuBarAction(meditor, tr("Channel Book", "menu"), [=]() { this->tabAction(TAB_ATS::ShowChannelBook); }, Qt::CTRL | Qt::SHIFT | Qt::Key_C);
 
 	//: Platform: Window menu
 	QMenu* mwind = menuBarMenu(menubar, tr("&Window", "menu"));
@@ -491,7 +491,7 @@ void gui::menuBarLayout()
 	//: Platform: Help menu
 	QMenu* mhelp = menuBarMenu(menubar, tr("&Help", "menu"));
 	menuBarAction(mhelp, tr("Quick start", "menu"), [=]() { this->linkToOnlineHelp(1); });
-	menuBarAction(mhelp, tr("Online help", "menu"), [=]() { this->linkToOnlineHelp(0); });
+	menuBarAction(mhelp, tr("Online help", "menu"), [=]() { this->linkToOnlineHelp(0); }, QKeySequence::HelpContents);
 	menuBarAction(mhelp, tr("Troubleshooting", "menu"), [=]() { this->linkToOnlineHelp(2); });
 	menuBarSeparator(mhelp);
 	menuBarAction(mhelp, tr("Software licenses…", "menu"), [=]() { this->linkToWebsite(3); });

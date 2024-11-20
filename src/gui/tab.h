@@ -198,6 +198,7 @@ class tab : protected e2se::log_factory
 		static QWidget* toolBarWidget(QToolBar* toolbar, QString text, QWidget* widget, std::function<void()> trigger);
 		static QAction* toolBarSeparator(QToolBar* toolbar);
 		static QWidget* toolBarSpacer(QToolBar* toolbar);
+		static QWidget* toolBarEnding(QToolBar* toolbar);
 		void toolBarStyleSheet();
 
 		static QMenu* menuMenu(QMenu* menu, QString title);
