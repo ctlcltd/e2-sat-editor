@@ -57,9 +57,9 @@
 
 # apt-get remove curl
 # apt-get install libssl-dev
-# wget https://curl.se/download/curl-8.10.1.tar.xz
-# tar -xf curl-8.10.1.tar.xz
-# cd curl-8.10.1
+# wget https://curl.se/download/curl-8.11.0.tar.xz
+# tar -xf curl-8.11.0.tar.xz
+# cd curl-8.11.0
 # ./configure --prefix=/usr/local --with-openssl --without-libpsl --enable-versioned-symbols
 # make -j 2
 # make install
@@ -85,7 +85,7 @@
 
 # cd
 # git clone https://github.com/ctlcltd/e2-sat-editor.git
-# git checkout v1.7.0
+# git checkout v1.8.0
 # cd e2-sat-editor
 
 ./scripts/translations.sh -m
@@ -132,7 +132,7 @@ chmod +x e2_SAT_Editor-x86_64.AppImage
 
 appimagetool squashfs-root --sign --sign-key $MY_SIGN_KEY
 
-mv e2_SAT_Editor-x86_64.AppImage e2-sat-editor-1.7.0-x86_64.AppImage
+mv e2_SAT_Editor-x86_64.AppImage e2-sat-editor-1.8.0-x86_64.AppImage
 
-# ./e2-sat-editor-1.7.0-x86_64.AppImage --appimage-signature
+# ./e2-sat-editor-1.8.0-x86_64.AppImage --appimage-signature
 

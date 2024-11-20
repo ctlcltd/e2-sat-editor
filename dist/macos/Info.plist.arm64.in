@@ -11,9 +11,9 @@
 	<key>CFBundleName</key>
 	<string>e2 SAT Editor</string>
     <key>CFBundleVersion</key>
-    <string>1.7.0</string>
+    <string>1.8.0</string>
     <key>CFBundleShortVersionString</key>
-    <string>1.7</string>
+    <string>1.8</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleSignature</key>
