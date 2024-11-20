@@ -290,7 +290,7 @@ void e2db::import_file(FPORTS fpi, e2db* dst, e2db_file file, string path)
 		exception("import_file", "Error", msg(MSG::except_uncaught));
 	}
 
-	this->e2db_files.emplace_back(e2db_file(file));
+	this->e2db_files.emplace_back(e2db_file::status(file));
 
 	auto t_end = std::chrono::high_resolution_clock::now();
 	int elapsed = std::chrono::duration<double, std::micro>(t_end - t_start).count();
@@ -579,7 +579,7 @@ void e2db::import_blob(unordered_map<string, e2db_file> files)
 	blobctx_crlf = false;
 
 	for (auto & x : files)
-		this->e2db_files.emplace_back(e2db_file(x.second));
+		this->e2db_files.emplace_back(e2db_file::status(x.second));
 
 	auto t_end = std::chrono::high_resolution_clock::now();
 	int elapsed = std::chrono::duration<double, std::micro>(t_end - t_start).count();
@@ -2001,9 +2001,9 @@ map<e2db::ERRID, vector<e2db::errmsg>> e2db::error_checker()
 				if (! is_valid_service(ch))
 				{
 					char dsc[255];
-					
+
 					std::snprintf(dsc, 255, "SID: %d TSID: %d ONID: %d DVBNS: %x", ch.ssid, ch.tsid, ch.onid, ch.dvbns);
-					
+
 					chkerr[ERRID::chi].emplace_back(errmsg(ERRID::chi, chid, msg("Service \"%s\" is not valid.", chid), dsc, i));
 				}
 				if (! db.transponders.count(ch.txid))
@@ -2161,10 +2161,10 @@ map<e2db::ERRID, vector<e2db::errmsg>> e2db::error_checker()
 					if (! is_valid_service(ch))
 					{
 						char dsc[255];
-						
+
 						std::snprintf(dsc, 255, "reference: %s SID: %d TSID: %d ONID: %d DVBNS: %x", chid.c_str(), ch.ssid, ch.tsid, ch.onid, ch.dvbns);
 						string descr = string ("userbouquet: ").append(ub_bname).append(" ").append(dsc);
-						
+
 						chkerr[ERRID::rff].emplace_back(errmsg(ERRID::rff, chid, msg("Channel reference \"%s\" is not a valid service.", chid), descr, i));
 					}
 					if (! db.transponders.count(ch.txid))

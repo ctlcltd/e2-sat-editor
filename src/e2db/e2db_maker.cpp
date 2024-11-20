@@ -1855,7 +1855,7 @@ bool e2db_maker::write(string path)
 			this->e2db_files.clear();
 
 			for (auto & x : this->e2db_in)
-				this->e2db_files.emplace_back(x.second);
+				this->e2db_files.emplace_back(e2db_file::status(x.second));
 
 			db.dstat = DSTAT::d_write;
 

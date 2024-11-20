@@ -732,6 +732,9 @@ QMenu* tools::sortMenu(SORT_ITEM model, bool selecting, bool contextual)
 			// QComboBox popup mouse release interfers with QMenu viewport events
 			// QWidgetAction QComboBox native popup not enabled
 			/*platform::osComboBox(select);*/
+#ifdef Q_OS_WASM
+			select->setEditable(true);
+#endif
 			form->addRow("by", select);
 		}
 		{
@@ -744,6 +747,9 @@ QMenu* tools::sortMenu(SORT_ITEM model, bool selecting, bool contextual)
 			// QComboBox popup mouse release interfers with QMenu viewport events
 			// QWidgetAction QComboBox native popup not enabled
 			/*platform::osComboBox(select);*/
+#ifdef Q_OS_WASM
+			select->setEditable(true);
+#endif
 			form->addRow("order", select);
 		}
 

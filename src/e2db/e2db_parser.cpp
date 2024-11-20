@@ -2498,7 +2498,7 @@ bool e2db_parser::list_file(string path)
 		file.size = int (fsize);
 
 		this->e2db_in[filename] = file;
-		this->e2db_files.emplace_back(e2db_file(file));
+		this->e2db_files.emplace_back(e2db_file::status(file));
 	}
 	if (! find_services_file())
 	{

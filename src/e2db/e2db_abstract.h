@@ -331,14 +331,16 @@ struct e2db_abstract : protected e2se::log_factory
 			{
 				t = timestamp();
 			}
-			e2db_file(const e2db_file& file)
+			static e2db_file status(const e2db_file& file)
 			{
-				origin = file.origin;
-				path = file.path;
-				filename = file.filename;
-				mime = file.mime;
-				size = file.size;
-				t = file.t;
+				auto s = e2db_file();
+				s.origin = file.origin;
+				s.path = file.path;
+				s.filename = file.filename;
+				s.mime = file.mime;
+				s.size = file.size;
+				s.t = file.t;
+				return s;
 			}
 		};
 

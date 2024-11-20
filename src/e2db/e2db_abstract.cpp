@@ -248,9 +248,9 @@ bool e2db_abstract::is_valid_dvbns(transponder tx)
 bool e2db_abstract::is_valid_dvbns(YTYPE ytype, int dvbns, int tsid, int onid, int pos, int freq)
 {
 	if (ytype == YTYPE::terrestrial)
-		return uint (dvbns) == 0xeeee0000;
+		return (long (dvbns) == 0xeeee0000);
 	else if (ytype == YTYPE::cable)
-		return uint (dvbns) == 0xffff0000;
+		return (long (dvbns) == 0xffff0000);
 	else
 		return dvbns == value_transponder_dvbns(ytype, tsid, onid, pos, freq);
 }
