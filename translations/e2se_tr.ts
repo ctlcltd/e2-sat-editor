@@ -4485,7 +4485,7 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
     </message>
     <message>
         <source>%1 errors</source>
-        <translation>%1 Hatalar</translation>
+        <translation>%1 hatalar</translation>
     </message>
     <message>
         <source>Log</source>

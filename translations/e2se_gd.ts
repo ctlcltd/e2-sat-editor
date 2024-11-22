@@ -4502,7 +4502,7 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
     </message>
     <message>
         <source>%1 errors</source>
-        <translation>%1 Mhearachd</translation>
+        <translation>%1 mhearachd</translation>
     </message>
     <message>
         <source>Log</source>

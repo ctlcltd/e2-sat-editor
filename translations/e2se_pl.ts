@@ -4499,7 +4499,7 @@ Poczekaj kilka minut i spróbuj ponownie.</translation>
     </message>
     <message>
         <source>%1 errors</source>
-        <translation>%1 Błędów</translation>
+        <translation>%1 błędów</translation>
     </message>
     <message>
         <source>Log</source>

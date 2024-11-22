@@ -4494,7 +4494,7 @@ Vent et par minutter, og prøv igen.</translation>
     </message>
     <message>
         <source>%1 errors</source>
-        <translation>%1 Fejl</translation>
+        <translation>%1 fejl</translation>
     </message>
     <message>
         <source>Log</source>

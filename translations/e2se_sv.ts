@@ -4488,7 +4488,7 @@ Vänta några minuter och försök igen.</translation>
     </message>
     <message>
         <source>%1 errors</source>
-        <translation>Fel %1</translation>
+        <translation>%1 fel</translation>
     </message>
     <message>
         <source>Log</source>

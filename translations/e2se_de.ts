@@ -4496,7 +4496,7 @@ Bitte warten Sie einige Minuten und versuchen Sie es erneut.</translation>
     </message>
     <message>
         <source>%1 errors</source>
-        <translation>%1 Fehler</translation>
+        <translation>%1 fehler</translation>
     </message>
     <message>
         <source>Log</source>
