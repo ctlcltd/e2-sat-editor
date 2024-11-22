@@ -501,6 +501,56 @@ Please wait few minutes and try again.</source>
         <comment>error</comment>
         <translation>Група каналів користувачів &quot;%s&quot; уже існує.</translation>
     </message>
+    <message>
+        <source>Transponder &quot;%s&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>Транспондер &quot;%s&quot; не існує.</translation>
+    </message>
+    <message>
+        <source>Transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Транспондер &quot;%s&quot; недійсний.</translation>
+    </message>
+    <message>
+        <source>Service &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Служба &quot;%s&quot; недійсна.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid service.</source>
+        <comment>error</comment>
+        <translation>Посилання на канал &quot;%s&quot; не є дійсною службою.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid marker.</source>
+        <comment>error</comment>
+        <translation>Посилання на канал &quot;%s&quot; не є дійсним маркером.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid stream.</source>
+        <comment>error</comment>
+        <translation>Посилання на канал &quot;%s&quot; не є дійсним потоком.</translation>
+    </message>
+    <message>
+        <source>Channel reference mismatch &quot;%s&quot;.</source>
+        <comment>error</comment>
+        <translation>Невідповідність посилання на канал &quot;%s&quot;.</translation>
+    </message>
+    <message>
+        <source>Tunersets &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Налаштування тюнера &quot;%s&quot; недійсні.</translation>
+    </message>
+    <message>
+        <source>Tunersets table &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Таблиця налаштувань тюнера &quot;%s&quot; недійсна.</translation>
+    </message>
+    <message>
+        <source>Tunersets transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Транспондер налаштувань тюнера &quot;%s&quot; недійсний.</translation>
+    </message>
 </context>
 <context>
     <name>editBouquet</name>
@@ -2281,6 +2331,11 @@ Please wait few minutes and try again.</source>
         <comment>menu</comment>
         <translation>Редакт&amp;ор</translation>
     </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Перевірка помилок</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -3635,11 +3690,6 @@ Please wait few minutes and try again.</source>
         <translation>Не вдається перезавантажити телеприставку &quot;%1&quot;.</translation>
     </message>
     <message>
-        <source>Cannot reload STB!</source>
-        <comment>error</comment>
-        <translation type="vanished">Неможливо перезавантажити телеприставку!</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -4066,6 +4116,24 @@ Please wait few minutes and try again.</source>
         <comment>error</comment>
         <translation>Помилка виконання утиліт.</translation>
     </message>
+    <message>
+        <source>Inspect</source>
+        <comment>toolbar</comment>
+        <translation>Огляд</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Групи каналів</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation>Час</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Перевірка помилок</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -4369,10 +4437,6 @@ Please wait few minutes and try again.</source>
         <translation>DVBNS</translation>
     </message>
     <message>
-        <source>URI</source>
-        <translation>URI</translation>
-    </message>
-    <message>
         <source>FAV Name</source>
         <translation>Улюблене ім&apos;я</translation>
     </message>
@@ -4423,6 +4487,57 @@ Please wait few minutes and try again.</source>
     <message>
         <source>System</source>
         <translation>Система</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>dialog</comment>
+        <translation>Перевірка помилок</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>dialog</comment>
+        <translation>Автофікс</translation>
+    </message>
+    <message>
+        <source>%1 errors</source>
+        <translation>Помилки %1</translation>
+    </message>
+    <message>
+        <source>Log</source>
+        <translation>Журнал</translation>
+    </message>
+    <message>
+        <source>Transponders</source>
+        <translation>Транспондери</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>Служби</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Групи каналів</translation>
+    </message>
+    <message>
+        <source>Userbouquets</source>
+        <translation>Userbouquets</translation>
+    </message>
+    <message>
+        <source>Tunersets</source>
+        <translation>Налаштування тюнера</translation>
+    </message>
+    <message>
+        <source>References</source>
+        <translation>Посилання</translation>
+    </message>
+    <message>
+        <source>No errors found.</source>
+        <comment>message</comment>
+        <translation>Помилок не виявлено.</translation>
+    </message>
+    <message>
+        <source>URL</source>
+        <translation>URL</translation>
     </message>
 </context>
 <context>

@@ -498,6 +498,56 @@ Počkejte prosím několik minut a zkuste to znovu.</translation>
         <comment>error</comment>
         <translation>Userbouquet &quot;%s&quot; již existuje.</translation>
     </message>
+    <message>
+        <source>Transponder &quot;%s&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>Transpondér &quot;%s&quot; neexistuje.</translation>
+    </message>
+    <message>
+        <source>Transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Transpondér &quot;%s&quot; není platný.</translation>
+    </message>
+    <message>
+        <source>Service &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Služba &quot;%s&quot; není platná.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid service.</source>
+        <comment>error</comment>
+        <translation>Odkaz kanálu &quot;%s&quot; není platná značka službu.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid marker.</source>
+        <comment>error</comment>
+        <translation>Odkaz kanálu &quot;%s&quot; není platná značka marker.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid stream.</source>
+        <comment>error</comment>
+        <translation>Odkaz kanálu &quot;%s&quot; není platná značka stream.</translation>
+    </message>
+    <message>
+        <source>Channel reference mismatch &quot;%s&quot;.</source>
+        <comment>error</comment>
+        <translation>Neshoda reference kanálu &quot;%s&quot;.</translation>
+    </message>
+    <message>
+        <source>Tunersets &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Tunersety &quot;%s&quot; nejsou platné.</translation>
+    </message>
+    <message>
+        <source>Tunersets table &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Tabulka tunersetů &quot;%s&quot; není platná.</translation>
+    </message>
+    <message>
+        <source>Tunersets transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Transpondér tunersetů &quot;%s&quot; není platný.</translation>
+    </message>
 </context>
 <context>
     <name>editBouquet</name>
@@ -2278,6 +2328,11 @@ Počkejte prosím několik minut a zkuste to znovu.</translation>
         <comment>menu</comment>
         <translation>Edit&amp;or</translation>
     </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Kontrola Chyb</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -3632,11 +3687,6 @@ Počkejte prosím několik minut a zkuste to znovu.</translation>
         <translation>Nelze znovu načíst STB &quot;%1&quot;.</translation>
     </message>
     <message>
-        <source>Cannot reload STB!</source>
-        <comment>error</comment>
-        <translation type="vanished">Nelze znovu načíst STB!</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -4063,6 +4113,24 @@ Počkejte prosím několik minut a zkuste to znovu.</translation>
         <comment>error</comment>
         <translation>Chyba při spouštění utils.</translation>
     </message>
+    <message>
+        <source>Inspect</source>
+        <comment>toolbar</comment>
+        <translation>Kontrola</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Bouquets</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation>Čas</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Kontrola Chyb</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -4366,10 +4434,6 @@ Počkejte prosím několik minut a zkuste to znovu.</translation>
         <translation>DVBNS</translation>
     </message>
     <message>
-        <source>URI</source>
-        <translation>URI</translation>
-    </message>
-    <message>
         <source>FAV Name</source>
         <translation>FAV název</translation>
     </message>
@@ -4420,6 +4484,57 @@ Počkejte prosím několik minut a zkuste to znovu.</translation>
     <message>
         <source>System</source>
         <translation>Systém</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>dialog</comment>
+        <translation>Kontrola Chyb</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>dialog</comment>
+        <translation>Autofix</translation>
+    </message>
+    <message>
+        <source>%1 errors</source>
+        <translation>Chyb %1</translation>
+    </message>
+    <message>
+        <source>Log</source>
+        <translation>Log</translation>
+    </message>
+    <message>
+        <source>Transponders</source>
+        <translation>Transpondéry</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>Služby</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Bouquets</translation>
+    </message>
+    <message>
+        <source>Userbouquets</source>
+        <translation>Userbouquets</translation>
+    </message>
+    <message>
+        <source>Tunersets</source>
+        <translation>Tunersety</translation>
+    </message>
+    <message>
+        <source>References</source>
+        <translation>Reference</translation>
+    </message>
+    <message>
+        <source>No errors found.</source>
+        <comment>message</comment>
+        <translation>Nebyly nalezeny žádné chyby.</translation>
+    </message>
+    <message>
+        <source>URL</source>
+        <translation>URL</translation>
     </message>
 </context>
 <context>

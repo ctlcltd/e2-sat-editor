@@ -498,6 +498,56 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <comment>error</comment>
         <translation>Userbouquet &quot;%s&quot; jau pastāv.</translation>
     </message>
+    <message>
+        <source>Transponder &quot;%s&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>Transponderis &quot;%s&quot; neeksistē.</translation>
+    </message>
+    <message>
+        <source>Transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Transponderis &quot;%s&quot; nav derīgs.</translation>
+    </message>
+    <message>
+        <source>Service &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Pakalpojums &quot;%s&quot; nav derīgs.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid service.</source>
+        <comment>error</comment>
+        <translation>Kanāla atsauce &quot;%s&quot; nav derīgs pakalpojumu.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid marker.</source>
+        <comment>error</comment>
+        <translation>Kanāla atsauce &quot;%s&quot; nav derīgs marker.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid stream.</source>
+        <comment>error</comment>
+        <translation>Kanāla atsauce &quot;%s&quot; nav derīgs stream.</translation>
+    </message>
+    <message>
+        <source>Channel reference mismatch &quot;%s&quot;.</source>
+        <comment>error</comment>
+        <translation>Kanāla atsauces neatbilstība &quot;%s&quot;.</translation>
+    </message>
+    <message>
+        <source>Tunersets &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Tunersets &quot;%s&quot; nav derīgs.</translation>
+    </message>
+    <message>
+        <source>Tunersets table &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Tunersets tabula &quot;%s&quot; nav derīga.</translation>
+    </message>
+    <message>
+        <source>Tunersets transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Tunersets transponderis &quot;%s&quot; nav derīgs.</translation>
+    </message>
 </context>
 <context>
     <name>editBouquet</name>
@@ -2278,6 +2328,11 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <comment>menu</comment>
         <translation>Redakt&amp;ors</translation>
     </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Kļūdu Pārbaudītājs</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -3632,11 +3687,6 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <translation>Nevar atkārtoti ielādēt STB &quot;%1&quot;.</translation>
     </message>
     <message>
-        <source>Cannot reload STB!</source>
-        <comment>error</comment>
-        <translation type="vanished">Nevar atkārtoti ielādēt STB!</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -4063,6 +4113,24 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <comment>error</comment>
         <translation>Kļūda izpildot utils.</translation>
     </message>
+    <message>
+        <source>Inspect</source>
+        <comment>toolbar</comment>
+        <translation>Pārbaude</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Bouquets</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation>Laiks</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Kļūdu Pārbaudītājs</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -4366,10 +4434,6 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <translation>DVBNS</translation>
     </message>
     <message>
-        <source>URI</source>
-        <translation>URI</translation>
-    </message>
-    <message>
         <source>FAV Name</source>
         <translation>FAV nosaukums</translation>
     </message>
@@ -4420,6 +4484,57 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
     <message>
         <source>System</source>
         <translation>Sistēma</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>dialog</comment>
+        <translation>Kļūdu Pārbaudītājs</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>dialog</comment>
+        <translation>Autofix</translation>
+    </message>
+    <message>
+        <source>%1 errors</source>
+        <translation>Kļūdas %1</translation>
+    </message>
+    <message>
+        <source>Log</source>
+        <translation>Log</translation>
+    </message>
+    <message>
+        <source>Transponders</source>
+        <translation>Transponderi</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>Pakalpojumi</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Bouquets</translation>
+    </message>
+    <message>
+        <source>Userbouquets</source>
+        <translation>Userbouquets</translation>
+    </message>
+    <message>
+        <source>Tunersets</source>
+        <translation>Tunersets</translation>
+    </message>
+    <message>
+        <source>References</source>
+        <translation>Atsauces</translation>
+    </message>
+    <message>
+        <source>No errors found.</source>
+        <comment>message</comment>
+        <translation>Kļūdas nav atrastas.</translation>
+    </message>
+    <message>
+        <source>URL</source>
+        <translation>URL</translation>
     </message>
 </context>
 <context>

@@ -500,6 +500,56 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <comment>error</comment>
         <translation>Tha Userbouquet &quot;%s&quot; ann mu thràth.</translation>
     </message>
+    <message>
+        <source>Transponder &quot;%s&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>Chan eil an transponder &quot;%s&quot; ann.</translation>
+    </message>
+    <message>
+        <source>Transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Chan eil an transponder &quot;%s&quot; dligheach.</translation>
+    </message>
+    <message>
+        <source>Service &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Chan eil an t-seirbheis &quot;%s&quot; dligheach.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid service.</source>
+        <comment>error</comment>
+        <translation>Chan e sheirbheis dligheach a tha ann an iomradh seanail &quot;%s&quot;.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid marker.</source>
+        <comment>error</comment>
+        <translation>Chan e marker dligheach a tha ann an iomradh seanail &quot;%s&quot;.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid stream.</source>
+        <comment>error</comment>
+        <translation>Chan e stream dligheach a tha ann an iomradh seanail &quot;%s&quot;.</translation>
+    </message>
+    <message>
+        <source>Channel reference mismatch &quot;%s&quot;.</source>
+        <comment>error</comment>
+        <translation>Mì-fhreagairt an t-seanail &quot;%s&quot;.</translation>
+    </message>
+    <message>
+        <source>Tunersets &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Chan eil tunersets &quot;%s&quot; dligheach.</translation>
+    </message>
+    <message>
+        <source>Tunersets table &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Chan eil clàr tunersets &quot;%s&quot; dligheach.</translation>
+    </message>
+    <message>
+        <source>Tunersets transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Chan eil an transponder tunersets &quot;%s&quot; dligheach.</translation>
+    </message>
 </context>
 <context>
     <name>editBouquet</name>
@@ -2280,6 +2330,11 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <comment>menu</comment>
         <translation>Deasaiche</translation>
     </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Mearachd a&apos; sgrùdadh</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -3637,11 +3692,6 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <translation>Cha ghabh STB &quot;%1&quot; ath-luchdachadh.</translation>
     </message>
     <message>
-        <source>Cannot reload STB!</source>
-        <comment>error</comment>
-        <translation type="vanished">Cha ghabh STB ath-luchdachadh!</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -4068,6 +4118,24 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <comment>error</comment>
         <translation>Thachair mearachd le cur an gnìomh goireasan.</translation>
     </message>
+    <message>
+        <source>Inspect</source>
+        <comment>toolbar</comment>
+        <translation>Thoir sùil</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Bouquets</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation>Uair</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Mearachd a&apos; sgrùdadh</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -4371,10 +4439,6 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <translation>DVBNS</translation>
     </message>
     <message>
-        <source>URI</source>
-        <translation>URI</translation>
-    </message>
-    <message>
         <source>FAV Name</source>
         <translation>Ainm FAV</translation>
     </message>
@@ -4425,6 +4489,57 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
     <message>
         <source>System</source>
         <translation>Siostam</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>dialog</comment>
+        <translation>Mearachd a&apos; sgrùdadh</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>dialog</comment>
+        <translation>Fèin-fix</translation>
+    </message>
+    <message>
+        <source>%1 errors</source>
+        <translation>%1 Mhearachd</translation>
+    </message>
+    <message>
+        <source>Log</source>
+        <translation>Log</translation>
+    </message>
+    <message>
+        <source>Transponders</source>
+        <translation>Transponders</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>Seirbheisean</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Bouquets</translation>
+    </message>
+    <message>
+        <source>Userbouquets</source>
+        <translation>Userbouquets</translation>
+    </message>
+    <message>
+        <source>Tunersets</source>
+        <translation>Tunersets</translation>
+    </message>
+    <message>
+        <source>References</source>
+        <translation>Iomraidhean</translation>
+    </message>
+    <message>
+        <source>No errors found.</source>
+        <comment>message</comment>
+        <translation>Cha deach mearachdan a lorg.</translation>
+    </message>
+    <message>
+        <source>URL</source>
+        <translation>URL</translation>
     </message>
 </context>
 <context>

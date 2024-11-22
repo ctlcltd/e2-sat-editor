@@ -499,6 +499,56 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
         <comment>error</comment>
         <translation>Userbouquet &quot;%s&quot; on jo olemassa.</translation>
     </message>
+    <message>
+        <source>Transponder &quot;%s&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>Transponderia &quot;%s&quot; ei ole olemassa.</translation>
+    </message>
+    <message>
+        <source>Transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Transponderi &quot;%s&quot; ei kelpaa.</translation>
+    </message>
+    <message>
+        <source>Service &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Palvelu &quot;%s&quot; ei kelpaa.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid service.</source>
+        <comment>error</comment>
+        <translation>Kanavaviite &quot;%s&quot; ei ole kelvollinen palveluna.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid marker.</source>
+        <comment>error</comment>
+        <translation>Kanavaviite &quot;%s&quot; ei ole kelvollinen marker.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid stream.</source>
+        <comment>error</comment>
+        <translation>Kanavaviite &quot;%s&quot; ei ole kelvollinen stream.</translation>
+    </message>
+    <message>
+        <source>Channel reference mismatch &quot;%s&quot;.</source>
+        <comment>error</comment>
+        <translation>Kanavaviite ei täsmää &quot;%s&quot;.</translation>
+    </message>
+    <message>
+        <source>Tunersets &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Tunersets &quot;%s&quot; ei kelpaa.</translation>
+    </message>
+    <message>
+        <source>Tunersets table &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Tunersets-taulukkoa &quot;%s&quot; ei kelpaa.</translation>
+    </message>
+    <message>
+        <source>Tunersets transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Tunersets-transponderi &quot;%s&quot; ei kelpaa.</translation>
+    </message>
 </context>
 <context>
     <name>editBouquet</name>
@@ -2279,6 +2329,11 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
         <comment>menu</comment>
         <translation>Edit&amp;ori</translation>
     </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Virhe Tarkistus</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -3630,11 +3685,6 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
         <translation>STB &quot;%1&quot; ei voi ladata uudelleen.</translation>
     </message>
     <message>
-        <source>Cannot reload STB!</source>
-        <comment>error</comment>
-        <translation type="vanished">STB:tä ei voi ladata uudelleen!</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -4061,6 +4111,24 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
         <comment>error</comment>
         <translation>Virhe suoritettaessa apuohjelmia.</translation>
     </message>
+    <message>
+        <source>Inspect</source>
+        <comment>toolbar</comment>
+        <translation>Tarkista</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Bouquets</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation>Aika</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Virhe Tarkistus</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -4364,10 +4432,6 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
         <translation>DVBNS</translation>
     </message>
     <message>
-        <source>URI</source>
-        <translation>URI</translation>
-    </message>
-    <message>
         <source>FAV Name</source>
         <translation>FAV nimi</translation>
     </message>
@@ -4418,6 +4482,57 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
     <message>
         <source>System</source>
         <translation>Järjestelmä</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>dialog</comment>
+        <translation>Virhe Tarkistus</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>dialog</comment>
+        <translation>Autofix</translation>
+    </message>
+    <message>
+        <source>%1 errors</source>
+        <translation>Virhe %1</translation>
+    </message>
+    <message>
+        <source>Log</source>
+        <translation>Log</translation>
+    </message>
+    <message>
+        <source>Transponders</source>
+        <translation>Transponderit</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>Palvelut</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Bouquets</translation>
+    </message>
+    <message>
+        <source>Userbouquets</source>
+        <translation>Userbouquets</translation>
+    </message>
+    <message>
+        <source>Tunersets</source>
+        <translation>Tunersets</translation>
+    </message>
+    <message>
+        <source>References</source>
+        <translation>Viitteet</translation>
+    </message>
+    <message>
+        <source>No errors found.</source>
+        <comment>message</comment>
+        <translation>Virheitä ei löytynyt.</translation>
+    </message>
+    <message>
+        <source>URL</source>
+        <translation>URL</translation>
     </message>
 </context>
 <context>

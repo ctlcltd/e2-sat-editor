@@ -499,6 +499,56 @@ Vent noen minutter og prøv igjen.</translation>
         <comment>error</comment>
         <translation>Userbouquet &quot;%s&quot; finnes allerede.</translation>
     </message>
+    <message>
+        <source>Transponder &quot;%s&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>Transponder &quot;%s&quot; eksisterer ikke.</translation>
+    </message>
+    <message>
+        <source>Transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Transponder &quot;%s&quot; er ikke gyldig.</translation>
+    </message>
+    <message>
+        <source>Service &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Tjenesten &quot;%s&quot; er ikke gyldig.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid service.</source>
+        <comment>error</comment>
+        <translation>Kanal referanse &quot;%s&quot; er ikke en gyldig teneste.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid marker.</source>
+        <comment>error</comment>
+        <translation>Kanal referanse &quot;%s&quot; er ikke en gyldig marker.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid stream.</source>
+        <comment>error</comment>
+        <translation>Kanal referanse &quot;%s&quot; er ikke en gyldig stream.</translation>
+    </message>
+    <message>
+        <source>Channel reference mismatch &quot;%s&quot;.</source>
+        <comment>error</comment>
+        <translation>Kanal referansen samsvarer ikke med &quot;%s&quot;.</translation>
+    </message>
+    <message>
+        <source>Tunersets &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Tunersets &quot;%s&quot; er ikke gyldig.</translation>
+    </message>
+    <message>
+        <source>Tunersets table &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Tunersets tabellen &quot;%s&quot; er ikke gyldig.</translation>
+    </message>
+    <message>
+        <source>Tunersets transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Tunersets transponder &quot;%s&quot; er ikke gyldig.</translation>
+    </message>
 </context>
 <context>
     <name>editBouquet</name>
@@ -2279,6 +2329,11 @@ Vent noen minutter og prøv igjen.</translation>
         <comment>menu</comment>
         <translation>Edit&amp;or</translation>
     </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Feil Kontroll</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -3630,11 +3685,6 @@ Vent noen minutter og prøv igjen.</translation>
         <translation>Kan ikke laste STB &quot;%1&quot; på nytt.</translation>
     </message>
     <message>
-        <source>Cannot reload STB!</source>
-        <comment>error</comment>
-        <translation type="vanished">Kan ikke laste STB på nytt!</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -4061,6 +4111,24 @@ Vent noen minutter og prøv igjen.</translation>
         <comment>error</comment>
         <translation>Feil ved kjøring av verktøy.</translation>
     </message>
+    <message>
+        <source>Inspect</source>
+        <comment>toolbar</comment>
+        <translation>Sjekk</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Bouquets</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation>Tid</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Feil Kontroll</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -4364,10 +4432,6 @@ Vent noen minutter og prøv igjen.</translation>
         <translation>DVBNS</translation>
     </message>
     <message>
-        <source>URI</source>
-        <translation>URI</translation>
-    </message>
-    <message>
         <source>FAV Name</source>
         <translation>FAV navn</translation>
     </message>
@@ -4418,6 +4482,57 @@ Vent noen minutter og prøv igjen.</translation>
     <message>
         <source>System</source>
         <translation>System</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>dialog</comment>
+        <translation>Feil Kontroll</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>dialog</comment>
+        <translation>Autofix</translation>
+    </message>
+    <message>
+        <source>%1 errors</source>
+        <translation>Feil %1</translation>
+    </message>
+    <message>
+        <source>Log</source>
+        <translation>Logg</translation>
+    </message>
+    <message>
+        <source>Transponders</source>
+        <translation>Transpondere</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>Tenester</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Bouquets</translation>
+    </message>
+    <message>
+        <source>Userbouquets</source>
+        <translation>Userbouquets</translation>
+    </message>
+    <message>
+        <source>Tunersets</source>
+        <translation>Tunersets</translation>
+    </message>
+    <message>
+        <source>References</source>
+        <translation>Referanser</translation>
+    </message>
+    <message>
+        <source>No errors found.</source>
+        <comment>message</comment>
+        <translation>Ingen feil funnet.</translation>
+    </message>
+    <message>
+        <source>URL</source>
+        <translation>URL</translation>
     </message>
 </context>
 <context>

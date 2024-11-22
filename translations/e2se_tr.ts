@@ -492,6 +492,56 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <comment>error</comment>
         <translation>Userbouquets &quot;%s&quot; zaten mevcut.</translation>
     </message>
+    <message>
+        <source>Transponder &quot;%s&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>Transponderi &quot;%s&quot; mevcut değil.</translation>
+    </message>
+    <message>
+        <source>Transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Transponderi &quot;%s&quot; geçerli değil.</translation>
+    </message>
+    <message>
+        <source>Service &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Hizmeti &quot;%s&quot; geçerli değil.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid service.</source>
+        <comment>error</comment>
+        <translation>%s kanal referansı geçerli bir hizmet değil.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid marker.</source>
+        <comment>error</comment>
+        <translation>%s kanal referansı geçerli bir marker değil.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid stream.</source>
+        <comment>error</comment>
+        <translation>%s kanal referansı geçerli bir stream değil.</translation>
+    </message>
+    <message>
+        <source>Channel reference mismatch &quot;%s&quot;.</source>
+        <comment>error</comment>
+        <translation>Kanal referansı uyumsuzluğu &quot;%s&quot;.</translation>
+    </message>
+    <message>
+        <source>Tunersets &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Tunersets &quot;%s&quot; geçerli değil.</translation>
+    </message>
+    <message>
+        <source>Tunersets table &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Tunersets tablosu &quot;%s&quot; geçerli değil.</translation>
+    </message>
+    <message>
+        <source>Tunersets transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Tunersets transponder &quot;%s&quot; geçerli değil.</translation>
+    </message>
 </context>
 <context>
     <name>editBouquet</name>
@@ -2272,6 +2322,11 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <comment>menu</comment>
         <translation>Editör</translation>
     </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Hata Denetleyicisi</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -3620,11 +3675,6 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <translation>&quot;%1&quot; STB si yeniden yüklenemiyor.</translation>
     </message>
     <message>
-        <source>Cannot reload STB!</source>
-        <comment>error</comment>
-        <translation type="vanished">STB yeniden yüklenemiyor!</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -4051,6 +4101,24 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <comment>error</comment>
         <translation>Utils yürütülürken hata oluştu.</translation>
     </message>
+    <message>
+        <source>Inspect</source>
+        <comment>toolbar</comment>
+        <translation>Kontrol</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Bouquets</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation>Zaman</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Hata Denetleyicisi</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -4354,10 +4422,6 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <translation>DVBNS</translation>
     </message>
     <message>
-        <source>URI</source>
-        <translation>URI</translation>
-    </message>
-    <message>
         <source>FAV Name</source>
         <translation>FAV Adı</translation>
     </message>
@@ -4408,6 +4472,57 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
     <message>
         <source>System</source>
         <translation>Sistem</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>dialog</comment>
+        <translation>Hata Denetleyicisi</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>dialog</comment>
+        <translation>Oto-düzelt</translation>
+    </message>
+    <message>
+        <source>%1 errors</source>
+        <translation>%1 Hatalar</translation>
+    </message>
+    <message>
+        <source>Log</source>
+        <translation>Log</translation>
+    </message>
+    <message>
+        <source>Transponders</source>
+        <translation>Transponderler</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>Hizmetler</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Bouquets</translation>
+    </message>
+    <message>
+        <source>Userbouquets</source>
+        <translation>Userbouquets</translation>
+    </message>
+    <message>
+        <source>Tunersets</source>
+        <translation>Tunersets </translation>
+    </message>
+    <message>
+        <source>References</source>
+        <translation>Referanslar</translation>
+    </message>
+    <message>
+        <source>No errors found.</source>
+        <comment>message</comment>
+        <translation>Hiçbir hata bulunamadı.</translation>
+    </message>
+    <message>
+        <source>URL</source>
+        <translation>URL</translation>
     </message>
 </context>
 <context>

@@ -498,6 +498,56 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
         <comment>error</comment>
         <translation>Userbouquet „%s“ jau yra.</translation>
     </message>
+    <message>
+        <source>Transponder &quot;%s&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>Atsakiklis „%s“ neegzistuoja.</translation>
+    </message>
+    <message>
+        <source>Transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Atsakiklis „%s“ negalioja.</translation>
+    </message>
+    <message>
+        <source>Service &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Paslauga „%s“ negalioja.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid service.</source>
+        <comment>error</comment>
+        <translation>Kanalo nuoroda „%s“ nėra tinkamas paslaugą.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid marker.</source>
+        <comment>error</comment>
+        <translation>Kanalo nuoroda „%s“ nėra tinkamas marker.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid stream.</source>
+        <comment>error</comment>
+        <translation>Kanalo nuoroda „%s“ nėra tinkamas stream.</translation>
+    </message>
+    <message>
+        <source>Channel reference mismatch &quot;%s&quot;.</source>
+        <comment>error</comment>
+        <translation>Kanalo nuorodos neatitikimas „%s“.</translation>
+    </message>
+    <message>
+        <source>Tunersets &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Tunersets „%s“ negalioja.</translation>
+    </message>
+    <message>
+        <source>Tunersets table &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Tunersets lentelė „%s“ negalioja.</translation>
+    </message>
+    <message>
+        <source>Tunersets transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Tunersets atsakiklis „%s“ negalioja.</translation>
+    </message>
 </context>
 <context>
     <name>editBouquet</name>
@@ -2278,6 +2328,11 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
         <comment>menu</comment>
         <translation>Redakt&amp;orius</translation>
     </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Patikrinkite Klaidų</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -3632,11 +3687,6 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
         <translation>Nepavyko iš naujo įkelti STB „%1“.</translation>
     </message>
     <message>
-        <source>Cannot reload STB!</source>
-        <comment>error</comment>
-        <translation type="vanished">Negalima iš naujo įkelti STB!</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -4063,6 +4113,24 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
         <comment>error</comment>
         <translation>Klaida vykdant komunalines paslaugas.</translation>
     </message>
+    <message>
+        <source>Inspect</source>
+        <comment>toolbar</comment>
+        <translation>Apžiūra</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Bouquets</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation>Laikas</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Patikrinkite Klaidų</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -4366,10 +4434,6 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
         <translation>DVBNS</translation>
     </message>
     <message>
-        <source>URI</source>
-        <translation>URI</translation>
-    </message>
-    <message>
         <source>FAV Name</source>
         <translation>FAV pavadinimas</translation>
     </message>
@@ -4420,6 +4484,57 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
     <message>
         <source>System</source>
         <translation>Sistema</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>dialog</comment>
+        <translation>Patikrinkite Klaidų</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>dialog</comment>
+        <translation>Autofix</translation>
+    </message>
+    <message>
+        <source>%1 errors</source>
+        <translation>Klaidų %1</translation>
+    </message>
+    <message>
+        <source>Log</source>
+        <translation>Log</translation>
+    </message>
+    <message>
+        <source>Transponders</source>
+        <translation>Atsakikliai</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>Paslaugos</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Bouquets</translation>
+    </message>
+    <message>
+        <source>Userbouquets</source>
+        <translation>Userbouquets</translation>
+    </message>
+    <message>
+        <source>Tunersets</source>
+        <translation>Tunersets</translation>
+    </message>
+    <message>
+        <source>References</source>
+        <translation>Nuorodos</translation>
+    </message>
+    <message>
+        <source>No errors found.</source>
+        <comment>message</comment>
+        <translation>Klaidų nerasta.</translation>
+    </message>
+    <message>
+        <source>URL</source>
+        <translation>URL</translation>
     </message>
 </context>
 <context>

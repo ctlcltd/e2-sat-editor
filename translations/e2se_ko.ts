@@ -497,6 +497,56 @@ Please wait few minutes and try again.</source>
         <comment>error</comment>
         <translation>사용자 채널 그룹 &quot;%s&quot; 이 이미 존재합니다.</translation>
     </message>
+    <message>
+        <source>Transponder &quot;%s&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>트랜스폰더 &quot;%s&quot;이(가) 존재하지 않습니다.</translation>
+    </message>
+    <message>
+        <source>Transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>트랜스폰더 &quot;%s&quot;이(가) 유효하지 않습니다.</translation>
+    </message>
+    <message>
+        <source>Service &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>서비스 &quot;%s&quot;이(가) 유효하지 않습니다.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid service.</source>
+        <comment>error</comment>
+        <translation>채널 참조 &quot;%s&quot;은(는) 유효한 서비스가 아닙니다.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid marker.</source>
+        <comment>error</comment>
+        <translation>채널 참조 &quot;%s&quot;은(는) 유효한 마커가 아닙니다.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid stream.</source>
+        <comment>error</comment>
+        <translation>채널 참조 &quot;%s&quot;은(는) 유효한 스트림이 아닙니다.</translation>
+    </message>
+    <message>
+        <source>Channel reference mismatch &quot;%s&quot;.</source>
+        <comment>error</comment>
+        <translation>채널 참조 불일치 &quot;%s&quot;.</translation>
+    </message>
+    <message>
+        <source>Tunersets &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>튜너 설정 &quot;%s&quot;이 잘못되었습니다.</translation>
+    </message>
+    <message>
+        <source>Tunersets table &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>튜너 설정 테이블 &quot;%s&quot;이(가) 잘못되었습니다.</translation>
+    </message>
+    <message>
+        <source>Tunersets transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>튜너 설정 트랜스폰더 &quot;%s&quot;이(가) 잘못되었습니다.</translation>
+    </message>
 </context>
 <context>
     <name>editBouquet</name>
@@ -2277,6 +2327,11 @@ Please wait few minutes and try again.</source>
         <comment>menu</comment>
         <translation>편집자</translation>
     </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>오류 검사기</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -3625,11 +3680,6 @@ Please wait few minutes and try again.</source>
         <translation>셋톱박스 &quot;%1&quot;을(를) 다시 로드할 수 없습니다.</translation>
     </message>
     <message>
-        <source>Cannot reload STB!</source>
-        <comment>error</comment>
-        <translation type="vanished">셋톱박스를 다시 로드할 수 없습니다!</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -4056,6 +4106,24 @@ Please wait few minutes and try again.</source>
         <comment>error</comment>
         <translation>유틸리티 실행 중 오류가 발생했습니다.</translation>
     </message>
+    <message>
+        <source>Inspect</source>
+        <comment>toolbar</comment>
+        <translation>검사하다</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>채널 그룹</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation>시간</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>오류 검사기</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -4359,10 +4427,6 @@ Please wait few minutes and try again.</source>
         <translation>DVBNS</translation>
     </message>
     <message>
-        <source>URI</source>
-        <translation>URI</translation>
-    </message>
-    <message>
         <source>FAV Name</source>
         <translation>좋아하는 이름</translation>
     </message>
@@ -4413,6 +4477,57 @@ Please wait few minutes and try again.</source>
     <message>
         <source>System</source>
         <translation>체계</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>dialog</comment>
+        <translation>오류 검사기</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>dialog</comment>
+        <translation>자동 수정</translation>
+    </message>
+    <message>
+        <source>%1 errors</source>
+        <translation>%1의 오류</translation>
+    </message>
+    <message>
+        <source>Log</source>
+        <translation>통나무</translation>
+    </message>
+    <message>
+        <source>Transponders</source>
+        <translation>트랜스폰더</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>서비스</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>채널 그룹</translation>
+    </message>
+    <message>
+        <source>Userbouquets</source>
+        <translation>사용자 부케</translation>
+    </message>
+    <message>
+        <source>Tunersets</source>
+        <translation>튜너 설정</translation>
+    </message>
+    <message>
+        <source>References</source>
+        <translation>참고문헌</translation>
+    </message>
+    <message>
+        <source>No errors found.</source>
+        <comment>message</comment>
+        <translation>오류가 발견되지 않았습니다.</translation>
+    </message>
+    <message>
+        <source>URL</source>
+        <translation>URL</translation>
     </message>
 </context>
 <context>

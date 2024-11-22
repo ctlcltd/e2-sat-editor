@@ -500,6 +500,56 @@ Agarde uns minutos e ténteo de novo.</translation>
         <comment>error</comment>
         <translation>Userbouquet &quot;%s&quot; xa existe.</translation>
     </message>
+    <message>
+        <source>Transponder &quot;%s&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>O transpondedor &quot;%s&quot; non existe.</translation>
+    </message>
+    <message>
+        <source>Transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>O transpondedor &quot;%s&quot; non é válido.</translation>
+    </message>
+    <message>
+        <source>Service &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>O servizo &quot;%s&quot; non é válido.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid service.</source>
+        <comment>error</comment>
+        <translation>A referencia da canle &quot;%s&quot; non é un servizo válido.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid marker.</source>
+        <comment>error</comment>
+        <translation>A referencia da canle &quot;%s&quot; non é un marker válido.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid stream.</source>
+        <comment>error</comment>
+        <translation>A referencia da canle &quot;%s&quot; non é un stream válido.</translation>
+    </message>
+    <message>
+        <source>Channel reference mismatch &quot;%s&quot;.</source>
+        <comment>error</comment>
+        <translation>Non coincide a referencia da canle &quot;%s&quot;.</translation>
+    </message>
+    <message>
+        <source>Tunersets &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>O tuner &quot;%s&quot; non é válido.</translation>
+    </message>
+    <message>
+        <source>Tunersets table &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>A táboa de tuner &quot;%s&quot; non é válida.</translation>
+    </message>
+    <message>
+        <source>Tunersets transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>O transpondedor de tuner &quot;%s&quot; non é válido.</translation>
+    </message>
 </context>
 <context>
     <name>editBouquet</name>
@@ -2280,6 +2330,11 @@ Agarde uns minutos e ténteo de novo.</translation>
         <comment>menu</comment>
         <translation>Edit&amp;or</translation>
     </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Comprobador Erros</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -3631,11 +3686,6 @@ Agarde uns minutos e ténteo de novo.</translation>
         <translation>Non se pode cargar de novo o STB &quot;%1&quot;.</translation>
     </message>
     <message>
-        <source>Cannot reload STB!</source>
-        <comment>error</comment>
-        <translation type="vanished">Non se pode recargar STB!</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -4062,6 +4112,24 @@ Agarde uns minutos e ténteo de novo.</translation>
         <comment>error</comment>
         <translation>Erro ao executar as utils.</translation>
     </message>
+    <message>
+        <source>Inspect</source>
+        <comment>toolbar</comment>
+        <translation>Comproba</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Bouquets</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation>Tempo</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Comprobador Erros</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -4365,10 +4433,6 @@ Agarde uns minutos e ténteo de novo.</translation>
         <translation>DVBNS</translation>
     </message>
     <message>
-        <source>URI</source>
-        <translation>URI</translation>
-    </message>
-    <message>
         <source>FAV Name</source>
         <translation>Nome FAV</translation>
     </message>
@@ -4419,6 +4483,57 @@ Agarde uns minutos e ténteo de novo.</translation>
     <message>
         <source>System</source>
         <translation>Sistema</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>dialog</comment>
+        <translation>Comprobador Erros</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>dialog</comment>
+        <translation>Autofix</translation>
+    </message>
+    <message>
+        <source>%1 errors</source>
+        <translation>Erros %1</translation>
+    </message>
+    <message>
+        <source>Log</source>
+        <translation>Log</translation>
+    </message>
+    <message>
+        <source>Transponders</source>
+        <translation>Transponders</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>Servizos</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Bouquets</translation>
+    </message>
+    <message>
+        <source>Userbouquets</source>
+        <translation>Userbouquets</translation>
+    </message>
+    <message>
+        <source>Tunersets</source>
+        <translation>Tuner</translation>
+    </message>
+    <message>
+        <source>References</source>
+        <translation>Referencias</translation>
+    </message>
+    <message>
+        <source>No errors found.</source>
+        <comment>message</comment>
+        <translation>Non se atoparon erros.</translation>
+    </message>
+    <message>
+        <source>URL</source>
+        <translation>URL</translation>
     </message>
 </context>
 <context>

@@ -473,7 +473,7 @@ void gui::menuBarLayout()
 	//: Note: %1 is xml filename
 	gmenu[GUI_CXE::TunersetsAtsc] = menuBarAction(meditor, tr("Edit %1", "menu").arg("atsc.xml"), [=]() { this->tabAction(TAB_ATS::EditTunersetsAtsc); }, Qt::CTRL | Qt::ALT | Qt::SHIFT | Qt::Key_A);
 	menuBarSeparator(meditor);
-	gmenu[GUI_CXE::Picons] = menuBarAction(meditor, tr("Picons editor", "menu"), [=]() { this->tabAction(TAB_ATS::EditPicons); }, Qt::CTRL | Qt::SHIFT | Qt::Key_I);
+	gmenu[GUI_CXE::Picons] = menuBarAction(meditor, tr("Picons editor", "menu"), [=]() { this->tabAction(TAB_ATS::EditPicons); }, Qt::CTRL | Qt::SHIFT | Qt::Key_X);
 	gmenu[GUI_CXE::OpenChannelBook] = menuBarAction(meditor, tr("Channel Book", "menu"), [=]() { this->tabAction(TAB_ATS::ShowChannelBook); }, Qt::CTRL | Qt::SHIFT | Qt::Key_C);
 
 	//: Platform: Window menu

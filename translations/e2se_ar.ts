@@ -499,6 +499,56 @@ Please wait few minutes and try again.</source>
         <comment>error</comment>
         <translation>مجموعة قنوات المستخدم &quot;%s&quot; موجودة بالفعل.</translation>
     </message>
+    <message>
+        <source>Transponder &quot;%s&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>المرسل &quot;%s&quot; غير موجود.</translation>
+    </message>
+    <message>
+        <source>Transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>جهاز الإرسال والاستقبال &quot;%s&quot; غير صالح.</translation>
+    </message>
+    <message>
+        <source>Service &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>الخدمة &quot;%s&quot; غير صالحة.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid service.</source>
+        <comment>error</comment>
+        <translation>مرجع القناة &quot;%s&quot; ليس خدمة صالحة.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid marker.</source>
+        <comment>error</comment>
+        <translation>مرجع القناة &quot;1%&quot; ليس علامة صالحة.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid stream.</source>
+        <comment>error</comment>
+        <translation>مرجع القناة &quot;%s&quot; ليس دفقًا صالحًا.</translation>
+    </message>
+    <message>
+        <source>Channel reference mismatch &quot;%s&quot;.</source>
+        <comment>error</comment>
+        <translation>عدم تطابق مرجع القناة &quot;%s&quot;.</translation>
+    </message>
+    <message>
+        <source>Tunersets &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>إعدادات الموالف &quot;%s&quot; غير صالحة.</translation>
+    </message>
+    <message>
+        <source>Tunersets table &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>جدول إعدادات الموالف &quot;%s&quot; غير صالح.</translation>
+    </message>
+    <message>
+        <source>Tunersets transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>إعدادات الموالف المرسل &quot;%s&quot; غير صالح.</translation>
+    </message>
 </context>
 <context>
     <name>editBouquet</name>
@@ -2279,6 +2329,11 @@ Please wait few minutes and try again.</source>
         <comment>menu</comment>
         <translation>محرر</translation>
     </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>مدقق الأخطاء</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -3642,11 +3697,6 @@ Please wait few minutes and try again.</source>
         <translation>لا يمكن إعادة تحميل STB &quot;%1&quot;.</translation>
     </message>
     <message>
-        <source>Cannot reload STB!</source>
-        <comment>error</comment>
-        <translation type="vanished">لا يمكن إعادة تحميل STB!</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -4073,6 +4123,24 @@ Please wait few minutes and try again.</source>
         <comment>error</comment>
         <translation>خطأ في تنفيذ الأدوات المساعدة.</translation>
     </message>
+    <message>
+        <source>Inspect</source>
+        <comment>toolbar</comment>
+        <translation>فحص</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>مجموعات القنوات</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation>وقت</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>مدقق الأخطاء</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -4376,10 +4444,6 @@ Please wait few minutes and try again.</source>
         <translation>DVBNS</translation>
     </message>
     <message>
-        <source>URI</source>
-        <translation>URI</translation>
-    </message>
-    <message>
         <source>FAV Name</source>
         <translation>الاسم المفضل</translation>
     </message>
@@ -4430,6 +4494,57 @@ Please wait few minutes and try again.</source>
     <message>
         <source>System</source>
         <translation>نظام</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>dialog</comment>
+        <translation>مدقق الأخطاء</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>dialog</comment>
+        <translation>إصلاح تلقائي</translation>
+    </message>
+    <message>
+        <source>%1 errors</source>
+        <translation>أخطاء %1</translation>
+    </message>
+    <message>
+        <source>Log</source>
+        <translation>سجل</translation>
+    </message>
+    <message>
+        <source>Transponders</source>
+        <translation>أجهزة الإرسال والاستقبال</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>الخدمات</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>مجموعات القنوات</translation>
+    </message>
+    <message>
+        <source>Userbouquets</source>
+        <translation>باقات المستخدم</translation>
+    </message>
+    <message>
+        <source>Tunersets</source>
+        <translation>إعدادات الموالف</translation>
+    </message>
+    <message>
+        <source>References</source>
+        <translation>مراجع</translation>
+    </message>
+    <message>
+        <source>No errors found.</source>
+        <comment>message</comment>
+        <translation>لم يتم العثور على أخطاء.</translation>
+    </message>
+    <message>
+        <source>URL</source>
+        <translation>URL</translation>
     </message>
 </context>
 <context>

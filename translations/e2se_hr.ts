@@ -501,6 +501,56 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <comment>error</comment>
         <translation>Userbouquet &quot;%s&quot; već postoji.</translation>
     </message>
+    <message>
+        <source>Transponder &quot;%s&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>Transponder &quot;%s&quot; ne postoji.</translation>
+    </message>
+    <message>
+        <source>Transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Transponder &quot;%s&quot; nije valjan.</translation>
+    </message>
+    <message>
+        <source>Service &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Usluga &quot;%s&quot; nije važeća.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid service.</source>
+        <comment>error</comment>
+        <translation>Referenca kanala &quot;%s&quot; nije važeća usluga.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid marker.</source>
+        <comment>error</comment>
+        <translation>Referenca kanala &quot;%s&quot; nije važeća marker.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid stream.</source>
+        <comment>error</comment>
+        <translation>Referenca kanala &quot;%s&quot; nije važeća stream.</translation>
+    </message>
+    <message>
+        <source>Channel reference mismatch &quot;%s&quot;.</source>
+        <comment>error</comment>
+        <translation>Nepodudaranje reference kanala &quot;%s&quot;.</translation>
+    </message>
+    <message>
+        <source>Tunersets &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Tunersets&quot;%s&quot; nisu valjani.</translation>
+    </message>
+    <message>
+        <source>Tunersets table &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Tablica tunersets &quot;%s&quot; nije važeća.</translation>
+    </message>
+    <message>
+        <source>Tunersets transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Transponder tunersets &quot;%s&quot; nije valjan.</translation>
+    </message>
 </context>
 <context>
     <name>editBouquet</name>
@@ -2281,6 +2331,11 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <comment>menu</comment>
         <translation>Uređivač</translation>
     </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Provjerite Pogreške</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2552,7 +2607,7 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
     <message>
         <source>Channel reference &quot;%1&quot; is not a valid marker.</source>
         <comment>error</comment>
-        <translation>Referenca kanala &quot;%1&quot; nije važeća oznaka.</translation>
+        <translation>Referenca kanala &quot;%1&quot; nije važeća marker.</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
@@ -3635,11 +3690,6 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <translation>Nije moguće ponovno učitati STB &quot;%1&quot;.</translation>
     </message>
     <message>
-        <source>Cannot reload STB!</source>
-        <comment>error</comment>
-        <translation type="vanished">Nije moguće ponovno učitati STB!</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -4066,6 +4116,24 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <comment>error</comment>
         <translation>Pogreška pri izvršavanju utils.</translation>
     </message>
+    <message>
+        <source>Inspect</source>
+        <comment>toolbar</comment>
+        <translation>Ček</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Bouquets</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation>Vrijeme</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Provjerite Pogreške</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -4369,10 +4437,6 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <translation>DVBNS</translation>
     </message>
     <message>
-        <source>URI</source>
-        <translation>URI</translation>
-    </message>
-    <message>
         <source>FAV Name</source>
         <translation>Naziv FAV</translation>
     </message>
@@ -4423,6 +4487,57 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
     <message>
         <source>System</source>
         <translation>Sustav</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>dialog</comment>
+        <translation>Provjerite Pogreške</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>dialog</comment>
+        <translation>Autofix</translation>
+    </message>
+    <message>
+        <source>%1 errors</source>
+        <translation>Greška %1</translation>
+    </message>
+    <message>
+        <source>Log</source>
+        <translation>Log</translation>
+    </message>
+    <message>
+        <source>Transponders</source>
+        <translation>Transponderi</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>Usluge</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Bouquets</translation>
+    </message>
+    <message>
+        <source>Userbouquets</source>
+        <translation>Userbouquets</translation>
+    </message>
+    <message>
+        <source>Tunersets</source>
+        <translation>Tunersets</translation>
+    </message>
+    <message>
+        <source>References</source>
+        <translation>Reference</translation>
+    </message>
+    <message>
+        <source>No errors found.</source>
+        <comment>message</comment>
+        <translation>Nisu pronađene pogreške.</translation>
+    </message>
+    <message>
+        <source>URL</source>
+        <translation>URL</translation>
     </message>
 </context>
 <context>

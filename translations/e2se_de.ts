@@ -500,6 +500,56 @@ Bitte warten Sie einige Minuten und versuchen Sie es erneut.</translation>
         <comment>error</comment>
         <translation>Das Userbouquet „%s“ existiert bereits.</translation>
     </message>
+    <message>
+        <source>Transponder &quot;%s&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>Transponder „%s“ existiert nicht.</translation>
+    </message>
+    <message>
+        <source>Transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Transponder „%s“ ist ungültig.</translation>
+    </message>
+    <message>
+        <source>Service &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Service „%s“ ist ungültig.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid service.</source>
+        <comment>error</comment>
+        <translation>Die Kanalreferenz „%s“ ist kein gültiger Service.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid marker.</source>
+        <comment>error</comment>
+        <translation>Die Kanalreferenz „%s“ ist kein gültiger Marker.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid stream.</source>
+        <comment>error</comment>
+        <translation>Die Kanalreferenz „%s“ ist kein gültiger Marker.</translation>
+    </message>
+    <message>
+        <source>Channel reference mismatch &quot;%s&quot;.</source>
+        <comment>error</comment>
+        <translation>Kanalreferenz stimmt nicht überein „%s“.</translation>
+    </message>
+    <message>
+        <source>Tunersets &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Tunersets „%s“ ist ungültig.</translation>
+    </message>
+    <message>
+        <source>Tunersets table &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Tunersets-Tabelle „%s“ ist ungültig.</translation>
+    </message>
+    <message>
+        <source>Tunersets transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Tunersets-Transponder „%s“ ist ungültig.</translation>
+    </message>
 </context>
 <context>
     <name>editBouquet</name>
@@ -2280,6 +2330,11 @@ Bitte warten Sie einige Minuten und versuchen Sie es erneut.</translation>
         <comment>menu</comment>
         <translation>Edit&amp;or</translation>
     </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Fehler Kontrolle</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -3631,11 +3686,6 @@ Bitte warten Sie einige Minuten und versuchen Sie es erneut.</translation>
         <translation>STB „%1“ kann nicht neu geladen werden.</translation>
     </message>
     <message>
-        <source>Cannot reload STB!</source>
-        <comment>error</comment>
-        <translation type="vanished">STB kann nicht neu geladen werden!</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -4062,6 +4112,24 @@ Bitte warten Sie einige Minuten und versuchen Sie es erneut.</translation>
         <comment>error</comment>
         <translation>Fehler beim Ausführen der Dienst programme.</translation>
     </message>
+    <message>
+        <source>Inspect</source>
+        <comment>toolbar</comment>
+        <translation>Kontrolle</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Bouquets</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation>Zeit</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Fehler Kontrolle</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -4365,10 +4433,6 @@ Bitte warten Sie einige Minuten und versuchen Sie es erneut.</translation>
         <translation>DVBNS</translation>
     </message>
     <message>
-        <source>URI</source>
-        <translation>URI</translation>
-    </message>
-    <message>
         <source>FAV Name</source>
         <translation>FAV Name</translation>
     </message>
@@ -4419,6 +4483,57 @@ Bitte warten Sie einige Minuten und versuchen Sie es erneut.</translation>
     <message>
         <source>System</source>
         <translation>System</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>dialog</comment>
+        <translation>Fehler Kontrolle</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>dialog</comment>
+        <translation>Autofix</translation>
+    </message>
+    <message>
+        <source>%1 errors</source>
+        <translation>%1 Fehler</translation>
+    </message>
+    <message>
+        <source>Log</source>
+        <translation>Log</translation>
+    </message>
+    <message>
+        <source>Transponders</source>
+        <translation>Transponders</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>Services</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Bouquets</translation>
+    </message>
+    <message>
+        <source>Userbouquets</source>
+        <translation>Userbouquets</translation>
+    </message>
+    <message>
+        <source>Tunersets</source>
+        <translation>Tunersets</translation>
+    </message>
+    <message>
+        <source>References</source>
+        <translation>Referenzen</translation>
+    </message>
+    <message>
+        <source>No errors found.</source>
+        <comment>message</comment>
+        <translation>Keine Fehler gefunden.</translation>
+    </message>
+    <message>
+        <source>URL</source>
+        <translation>URL</translation>
     </message>
 </context>
 <context>

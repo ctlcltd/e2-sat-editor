@@ -500,6 +500,56 @@ Please wait few minutes and try again.</source>
         <comment>error</comment>
         <translation>Групата потребителски канали „%s“ вече съществува.</translation>
     </message>
+    <message>
+        <source>Transponder &quot;%s&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>Транспондерът &quot;%s&quot; не съществува.</translation>
+    </message>
+    <message>
+        <source>Transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Транспондерът &quot;%s&quot; не е валиден.</translation>
+    </message>
+    <message>
+        <source>Service &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Услугата &quot;%s&quot; не е валидна.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid service.</source>
+        <comment>error</comment>
+        <translation>Референцията на канала &quot;%s&quot; не е валидна услуга.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid marker.</source>
+        <comment>error</comment>
+        <translation>Референцията на канала „%s“ не е валиден маркер.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid stream.</source>
+        <comment>error</comment>
+        <translation>Референцията на канала &quot;%s&quot; не е валиден поток.</translation>
+    </message>
+    <message>
+        <source>Channel reference mismatch &quot;%s&quot;.</source>
+        <comment>error</comment>
+        <translation>Несъответствие на референтния канал „%s“.</translation>
+    </message>
+    <message>
+        <source>Tunersets &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Настройките на тунера &quot;%s&quot; не са валидни.</translation>
+    </message>
+    <message>
+        <source>Tunersets table &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Таблицата с настройки на тунера &quot;%s&quot; не е валидна.</translation>
+    </message>
+    <message>
+        <source>Tunersets transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Транспондерът на настройките на тунера &quot;%s&quot; не е валиден.</translation>
+    </message>
 </context>
 <context>
     <name>editBouquet</name>
@@ -2280,6 +2330,11 @@ Please wait few minutes and try again.</source>
         <comment>menu</comment>
         <translation>Редакт&amp;ор</translation>
     </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Проверка грешки</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -3631,11 +3686,6 @@ Please wait few minutes and try again.</source>
         <translation>Не може да се презареди STB „%1“.</translation>
     </message>
     <message>
-        <source>Cannot reload STB!</source>
-        <comment>error</comment>
-        <translation type="vanished">STB не може да се презареди!</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -4062,6 +4112,24 @@ Please wait few minutes and try again.</source>
         <comment>error</comment>
         <translation>Грешка при изпълнение на помощни програми.</translation>
     </message>
+    <message>
+        <source>Inspect</source>
+        <comment>toolbar</comment>
+        <translation>Чек</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Групи канали</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation>Време</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Проверка грешки</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -4365,10 +4433,6 @@ Please wait few minutes and try again.</source>
         <translation>DVBNS</translation>
     </message>
     <message>
-        <source>URI</source>
-        <translation>URI</translation>
-    </message>
-    <message>
         <source>FAV Name</source>
         <translation>Любимо име</translation>
     </message>
@@ -4419,6 +4483,57 @@ Please wait few minutes and try again.</source>
     <message>
         <source>System</source>
         <translation>Система</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>dialog</comment>
+        <translation>Проверка грешки</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>dialog</comment>
+        <translation>Автофиксирани</translation>
+    </message>
+    <message>
+        <source>%1 errors</source>
+        <translation>Грешки %1</translation>
+    </message>
+    <message>
+        <source>Log</source>
+        <translation>Дневник</translation>
+    </message>
+    <message>
+        <source>Transponders</source>
+        <translation>Транспондери</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>Услуги</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Групи канали</translation>
+    </message>
+    <message>
+        <source>Userbouquets</source>
+        <translation>Потребителски букети</translation>
+    </message>
+    <message>
+        <source>Tunersets</source>
+        <translation>Настройки тунера</translation>
+    </message>
+    <message>
+        <source>References</source>
+        <translation>Референции</translation>
+    </message>
+    <message>
+        <source>No errors found.</source>
+        <comment>message</comment>
+        <translation>Няма открити грешки.</translation>
+    </message>
+    <message>
+        <source>URL</source>
+        <translation>URL</translation>
     </message>
 </context>
 <context>

@@ -500,6 +500,56 @@ Please wait few minutes and try again.</source>
         <comment>error</comment>
         <translation>ユーザー チャネル グループ &quot;%s&quot; は既に存在します。</translation>
     </message>
+    <message>
+        <source>Transponder &quot;%s&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>トランスポンダー &quot;%s&quot; は存在しません。</translation>
+    </message>
+    <message>
+        <source>Transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>トランスポンダー &quot;%s&quot; は無効です。</translation>
+    </message>
+    <message>
+        <source>Service &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>サービス &quot;%s&quot; は無効です。</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid service.</source>
+        <comment>error</comment>
+        <translation>チャネル参照 &quot;%s&quot; は有効なサービスではありません。</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid marker.</source>
+        <comment>error</comment>
+        <translation>チャネル参照 &quot;%s&quot; は有効なマーカーではありません。</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid stream.</source>
+        <comment>error</comment>
+        <translation>チャネル参照 &quot;%s&quot; は有効なストリームではありません。</translation>
+    </message>
+    <message>
+        <source>Channel reference mismatch &quot;%s&quot;.</source>
+        <comment>error</comment>
+        <translation>チャネル参照 &quot;%s&quot; が一致しません。</translation>
+    </message>
+    <message>
+        <source>Tunersets &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>チューナー設定 &quot;%s&quot; は無効です。</translation>
+    </message>
+    <message>
+        <source>Tunersets table &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>チューナー設定テーブル &quot;%s&quot; は無効です。</translation>
+    </message>
+    <message>
+        <source>Tunersets transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>チューナー設定トランスポンダー &quot;%s&quot; は無効です。</translation>
+    </message>
 </context>
 <context>
     <name>editBouquet</name>
@@ -2280,6 +2330,11 @@ Please wait few minutes and try again.</source>
         <comment>menu</comment>
         <translation>エディタ</translation>
     </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>エラーチェッカー</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -3628,11 +3683,6 @@ Please wait few minutes and try again.</source>
         <translation>STB &quot;%1&quot; をリロードできません。</translation>
     </message>
     <message>
-        <source>Cannot reload STB!</source>
-        <comment>error</comment>
-        <translation type="vanished">STBをリロードできません!</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -4059,6 +4109,24 @@ Please wait few minutes and try again.</source>
         <comment>error</comment>
         <translation>ユーティリティの実行中にエラーが発生しました。</translation>
     </message>
+    <message>
+        <source>Inspect</source>
+        <comment>toolbar</comment>
+        <translation>検査する</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>チャネルグループ</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation>時間</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>エラーチェッカー</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -4362,10 +4430,6 @@ Please wait few minutes and try again.</source>
         <translation>DVBNS</translation>
     </message>
     <message>
-        <source>URI</source>
-        <translation>URI</translation>
-    </message>
-    <message>
         <source>FAV Name</source>
         <translation>好きな名前</translation>
     </message>
@@ -4416,6 +4480,57 @@ Please wait few minutes and try again.</source>
     <message>
         <source>System</source>
         <translation>システム</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>dialog</comment>
+        <translation>エラーチェッカー</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>dialog</comment>
+        <translation>自動修正</translation>
+    </message>
+    <message>
+        <source>%1 errors</source>
+        <translation>%1 のエラー</translation>
+    </message>
+    <message>
+        <source>Log</source>
+        <translation>ログ</translation>
+    </message>
+    <message>
+        <source>Transponders</source>
+        <translation>トランスポンダー</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>サービス</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>チャネルグループ</translation>
+    </message>
+    <message>
+        <source>Userbouquets</source>
+        <translation>ユーザーブーケ</translation>
+    </message>
+    <message>
+        <source>Tunersets</source>
+        <translation>チューナー設定</translation>
+    </message>
+    <message>
+        <source>References</source>
+        <translation>参考文献</translation>
+    </message>
+    <message>
+        <source>No errors found.</source>
+        <comment>message</comment>
+        <translation>エラーは見つかりませんでした。</translation>
+    </message>
+    <message>
+        <source>URL</source>
+        <translation>URL</translation>
     </message>
 </context>
 <context>

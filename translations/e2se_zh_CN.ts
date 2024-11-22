@@ -496,6 +496,56 @@ Please wait few minutes and try again.</source>
         <comment>error</comment>
         <translation>用户频道组 &quot;%s&quot; 已存在。</translation>
     </message>
+    <message>
+        <source>Transponder &quot;%s&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>应答器 &quot;%s&quot; 不存在。</translation>
+    </message>
+    <message>
+        <source>Transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>应答器 &quot;%s&quot; 无效。</translation>
+    </message>
+    <message>
+        <source>Service &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>服务 &quot;%s&quot; 无效。</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid service.</source>
+        <comment>error</comment>
+        <translation>通道引用 &quot;％s&quot; 不是有效服务。</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid marker.</source>
+        <comment>error</comment>
+        <translation>通道引用 &quot;%s&quot; 不是有效标记。</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid stream.</source>
+        <comment>error</comment>
+        <translation>通道引用 &quot;％s&quot; 不是有效的流。</translation>
+    </message>
+    <message>
+        <source>Channel reference mismatch &quot;%s&quot;.</source>
+        <comment>error</comment>
+        <translation>通道参考不匹配 &quot;%s&quot; 。</translation>
+    </message>
+    <message>
+        <source>Tunersets &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>调谐器设置 &quot;%s&quot; 无效。</translation>
+    </message>
+    <message>
+        <source>Tunersets table &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>调谐器设置表 &quot;%s&quot; 无效。</translation>
+    </message>
+    <message>
+        <source>Tunersets transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>调谐器设置应答器 &quot;%s&quot; 无效。</translation>
+    </message>
 </context>
 <context>
     <name>editBouquet</name>
@@ -2276,6 +2326,11 @@ Please wait few minutes and try again.</source>
         <comment>menu</comment>
         <translation>编辑</translation>
     </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>错误检查器</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -3624,11 +3679,6 @@ Please wait few minutes and try again.</source>
         <translation>无法重新加载 STB &quot;%1&quot;。</translation>
     </message>
     <message>
-        <source>Cannot reload STB!</source>
-        <comment>error</comment>
-        <translation type="vanished">无法重新加载 STB！</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -4055,6 +4105,24 @@ Please wait few minutes and try again.</source>
         <comment>error</comment>
         <translation>执行实用程序时出错。</translation>
     </message>
+    <message>
+        <source>Inspect</source>
+        <comment>toolbar</comment>
+        <translation>检查</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>频道组</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation>时间</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>错误检查器</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -4358,10 +4426,6 @@ Please wait few minutes and try again.</source>
         <translation>DVBNS</translation>
     </message>
     <message>
-        <source>URI</source>
-        <translation>URI</translation>
-    </message>
-    <message>
         <source>FAV Name</source>
         <translation>最喜欢的名字</translation>
     </message>
@@ -4412,6 +4476,57 @@ Please wait few minutes and try again.</source>
     <message>
         <source>System</source>
         <translation>系统</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>dialog</comment>
+        <translation>错误检查器</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>dialog</comment>
+        <translation>自动修复</translation>
+    </message>
+    <message>
+        <source>%1 errors</source>
+        <translation>%1 的错误</translation>
+    </message>
+    <message>
+        <source>Log</source>
+        <translation>日志</translation>
+    </message>
+    <message>
+        <source>Transponders</source>
+        <translation>应答器</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>服务</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>频道组</translation>
+    </message>
+    <message>
+        <source>Userbouquets</source>
+        <translation>用户频道组</translation>
+    </message>
+    <message>
+        <source>Tunersets</source>
+        <translation>调谐器设置</translation>
+    </message>
+    <message>
+        <source>References</source>
+        <translation>参考</translation>
+    </message>
+    <message>
+        <source>No errors found.</source>
+        <comment>message</comment>
+        <translation>未发现错误。</translation>
+    </message>
+    <message>
+        <source>URL</source>
+        <translation>URL</translation>
     </message>
 </context>
 <context>

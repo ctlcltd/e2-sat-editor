@@ -499,6 +499,56 @@ Počakajte nekaj minut in poskusite znova.</translation>
         <comment>error</comment>
         <translation>Userbouquet &quot;%s&quot; že obstaja.</translation>
     </message>
+    <message>
+        <source>Transponder &quot;%s&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>Transponder &quot;%s&quot; ne obstaja.</translation>
+    </message>
+    <message>
+        <source>Transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Transponder &quot;%s&quot; ni veljaven.</translation>
+    </message>
+    <message>
+        <source>Service &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Storitev &quot;%s&quot; ni veljavna.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid service.</source>
+        <comment>error</comment>
+        <translation>Referenca kanala &quot;%s&quot; ni veljaven storitev.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid marker.</source>
+        <comment>error</comment>
+        <translation>Referenca kanala &quot;%s&quot; ni veljaven marker.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid stream.</source>
+        <comment>error</comment>
+        <translation>Referenca kanala &quot;%s&quot; ni veljaven stream.</translation>
+    </message>
+    <message>
+        <source>Channel reference mismatch &quot;%s&quot;.</source>
+        <comment>error</comment>
+        <translation>Neujemanje reference kanala &quot;%s&quot;.</translation>
+    </message>
+    <message>
+        <source>Tunersets &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Tunersets &quot;%s&quot; ni veljaven.</translation>
+    </message>
+    <message>
+        <source>Tunersets table &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Tabela z tunersets &quot;%s&quot; ni veljavna.</translation>
+    </message>
+    <message>
+        <source>Tunersets transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Transponder z tunersets&quot;%s&quot; ni veljaven.</translation>
+    </message>
 </context>
 <context>
     <name>editBouquet</name>
@@ -2279,6 +2329,11 @@ Počakajte nekaj minut in poskusite znova.</translation>
         <comment>menu</comment>
         <translation>Urejevalnik</translation>
     </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Preverite Napake</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -3636,11 +3691,6 @@ Počakajte nekaj minut in poskusite znova.</translation>
         <translation>STB &quot;%1&quot; ni mogoče znova naložiti.</translation>
     </message>
     <message>
-        <source>Cannot reload STB!</source>
-        <comment>error</comment>
-        <translation type="vanished">STB ni mogoče znova naložiti!</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -4067,6 +4117,24 @@ Počakajte nekaj minut in poskusite znova.</translation>
         <comment>error</comment>
         <translation>Napaka pri izvajanju pripomočkov.</translation>
     </message>
+    <message>
+        <source>Inspect</source>
+        <comment>toolbar</comment>
+        <translation>Preglejte</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Šopki</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation>Čas</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Preverite Napake</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -4370,10 +4438,6 @@ Počakajte nekaj minut in poskusite znova.</translation>
         <translation>DVBNS</translation>
     </message>
     <message>
-        <source>URI</source>
-        <translation>URI</translation>
-    </message>
-    <message>
         <source>FAV Name</source>
         <translation>Ime FAV</translation>
     </message>
@@ -4424,6 +4488,57 @@ Počakajte nekaj minut in poskusite znova.</translation>
     <message>
         <source>System</source>
         <translation>Sistem</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>dialog</comment>
+        <translation>Preverite Napake</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>dialog</comment>
+        <translation>Autofix</translation>
+    </message>
+    <message>
+        <source>%1 errors</source>
+        <translation>Napak %1</translation>
+    </message>
+    <message>
+        <source>Log</source>
+        <translation>Log</translation>
+    </message>
+    <message>
+        <source>Transponders</source>
+        <translation>Transponderji</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>Storitve</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Šopki</translation>
+    </message>
+    <message>
+        <source>Userbouquets</source>
+        <translation>Userbouquets</translation>
+    </message>
+    <message>
+        <source>Tunersets</source>
+        <translation>Tunersets</translation>
+    </message>
+    <message>
+        <source>References</source>
+        <translation>Reference</translation>
+    </message>
+    <message>
+        <source>No errors found.</source>
+        <comment>message</comment>
+        <translation>Ni napak.</translation>
+    </message>
+    <message>
+        <source>URL</source>
+        <translation>URL</translation>
     </message>
 </context>
 <context>

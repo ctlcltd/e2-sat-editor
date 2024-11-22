@@ -477,7 +477,7 @@ Attendere qualche minuto e riprovare.</translation>
     <message>
         <source>Tunersets table &quot;%s&quot; not exists.</source>
         <comment>error</comment>
-        <translation>Tunersets table &quot;%s&quot; non esistente.</translation>
+        <translation>Tabella tunersets &quot;%s&quot; non esistente.</translation>
     </message>
     <message>
         <source>Abstract merge swap objects.</source>
@@ -498,6 +498,56 @@ Attendere qualche minuto e riprovare.</translation>
         <source>Userbouquet &quot;%s&quot; already exists.</source>
         <comment>error</comment>
         <translation>Il userbouquet &quot;%s&quot; è pre-esistente.</translation>
+    </message>
+    <message>
+        <source>Transponder &quot;%s&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>Transponder &quot;%s&quot; non esiste.</translation>
+    </message>
+    <message>
+        <source>Transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Transponder &quot;%s&quot; non è valido.</translation>
+    </message>
+    <message>
+        <source>Service &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Servizio &quot;%s&quot; non è valido.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid service.</source>
+        <comment>error</comment>
+        <translation>Riferimento canale &quot;%s&quot; non è un servizio valido.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid marker.</source>
+        <comment>error</comment>
+        <translation>Riferimento canale &quot;%s&quot; non è un marker valido.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid stream.</source>
+        <comment>error</comment>
+        <translation>Riferimento canale &quot;%s&quot; non è uno stream valido.</translation>
+    </message>
+    <message>
+        <source>Channel reference mismatch &quot;%s&quot;.</source>
+        <comment>error</comment>
+        <translation>Riferimento canale &quot;%s&quot; errato.</translation>
+    </message>
+    <message>
+        <source>Tunersets &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Tunersets&quot;%s&quot; non è valido.</translation>
+    </message>
+    <message>
+        <source>Tunersets table &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Tunersets table&quot;%s&quot; non è valido.</translation>
+    </message>
+    <message>
+        <source>Tunersets transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>Tunersets transponder &quot;%s&quot; non è valido.</translation>
     </message>
 </context>
 <context>
@@ -2279,6 +2329,11 @@ Attendere qualche minuto e riprovare.</translation>
         <comment>menu</comment>
         <translation>Edit&amp;or</translation>
     </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Controllo Errori</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2535,7 +2590,7 @@ Attendere qualche minuto e riprovare.</translation>
     <message>
         <source>Missing service key &quot;%1&quot;.</source>
         <comment>error</comment>
-        <translation>Chiave indice service &quot;%1&quot; smarrita.</translation>
+        <translation>Chiave indice servizio &quot;%1&quot; smarrita.</translation>
     </message>
     <message>
         <source>Service &quot;%1&quot; not exists or is a channel reference.</source>
@@ -3630,11 +3685,6 @@ Attendere qualche minuto e riprovare.</translation>
         <translation>Impossibile riavviare il STB &quot;%1&quot;.</translation>
     </message>
     <message>
-        <source>Cannot reload STB!</source>
-        <comment>error</comment>
-        <translation type="vanished">Impossibile riavviare il STB!</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -4061,6 +4111,24 @@ Attendere qualche minuto e riprovare.</translation>
         <comment>error</comment>
         <translation>Errore durante l&apos;esecuzione di utils.</translation>
     </message>
+    <message>
+        <source>Inspect</source>
+        <comment>toolbar</comment>
+        <translation>Ispeziona</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Bouquets</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation>Tempo</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Controllo Errori</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -4364,10 +4432,6 @@ Attendere qualche minuto e riprovare.</translation>
         <translation>DVBNS</translation>
     </message>
     <message>
-        <source>URI</source>
-        <translation>URI</translation>
-    </message>
-    <message>
         <source>FAV Name</source>
         <translation>Nome FAV</translation>
     </message>
@@ -4418,6 +4482,57 @@ Attendere qualche minuto e riprovare.</translation>
     <message>
         <source>System</source>
         <translation>System</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>dialog</comment>
+        <translation>Controllo Errori</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>dialog</comment>
+        <translation>Autofix</translation>
+    </message>
+    <message>
+        <source>%1 errors</source>
+        <translation>Errori %1</translation>
+    </message>
+    <message>
+        <source>Log</source>
+        <translation>Log</translation>
+    </message>
+    <message>
+        <source>Transponders</source>
+        <translation>Transponders</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>Servizi</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Bouquets</translation>
+    </message>
+    <message>
+        <source>Userbouquets</source>
+        <translation>Userbouquets</translation>
+    </message>
+    <message>
+        <source>Tunersets</source>
+        <translation>Tunersets</translation>
+    </message>
+    <message>
+        <source>References</source>
+        <translation>Riferimenti</translation>
+    </message>
+    <message>
+        <source>No errors found.</source>
+        <comment>message</comment>
+        <translation>Nessun errore rilevato.</translation>
+    </message>
+    <message>
+        <source>URL</source>
+        <translation>URL</translation>
     </message>
 </context>
 <context>
@@ -4582,7 +4697,7 @@ Attendere qualche minuto e riprovare.</translation>
     <message>
         <source>Unknown tuner settings type.</source>
         <comment>error</comment>
-        <translation>Tipo di tuner settings non riconosciuto.</translation>
+        <translation>Tipo di tuner settings errato.</translation>
     </message>
     <message>
         <source>Transponders</source>

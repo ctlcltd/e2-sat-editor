@@ -500,6 +500,56 @@ Kérjük, várjon néhány percet, és próbálja újra.</translation>
         <comment>error</comment>
         <translation>&quot;%s&quot; userbouquet már létezik.</translation>
     </message>
+    <message>
+        <source>Transponder &quot;%s&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>&quot;%s&quot; transzponder nem létezik.</translation>
+    </message>
+    <message>
+        <source>Transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>A &quot;%s&quot; transzponder nem érvényes.</translation>
+    </message>
+    <message>
+        <source>Service &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>A &quot;%s&quot; szolgáltatás nem érvényes.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid service.</source>
+        <comment>error</comment>
+        <translation>A &quot;%s&quot; csatornahivatkozás nem érvényes szolgáltatás.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid marker.</source>
+        <comment>error</comment>
+        <translation>A &quot;%s&quot; csatornahivatkozás nem érvényes marker.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid stream.</source>
+        <comment>error</comment>
+        <translation>A &quot;%s&quot; csatornahivatkozás nem érvényes stream.</translation>
+    </message>
+    <message>
+        <source>Channel reference mismatch &quot;%s&quot;.</source>
+        <comment>error</comment>
+        <translation>Csatorna referencia nem egyezik &quot;%s&quot;.</translation>
+    </message>
+    <message>
+        <source>Tunersets &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>A &quot;%s&quot; tunersets nem érvényes.</translation>
+    </message>
+    <message>
+        <source>Tunersets table &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>A &quot;%s&quot; tunersets-tábla nem érvényes.</translation>
+    </message>
+    <message>
+        <source>Tunersets transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>A &quot;%s&quot; tunersets-transzponder nem érvényes.</translation>
+    </message>
 </context>
 <context>
     <name>editBouquet</name>
@@ -2280,6 +2330,11 @@ Kérjük, várjon néhány percet, és próbálja újra.</translation>
         <comment>menu</comment>
         <translation>Szerkesztő</translation>
     </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Hiba ellenőrző</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -2551,7 +2606,7 @@ Kérjük, várjon néhány percet, és próbálja újra.</translation>
     <message>
         <source>Channel reference &quot;%1&quot; is not a valid marker.</source>
         <comment>error</comment>
-        <translation>A &quot;%1&quot; csatornahivatkozás nem érvényes jelölő.</translation>
+        <translation>A &quot;%1&quot; csatornahivatkozás nem érvényes marker.</translation>
     </message>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
@@ -3628,11 +3683,6 @@ Kérjük, várjon néhány percet, és próbálja újra.</translation>
         <translation>Nem sikerült újratölteni a &quot;%1&quot; STB-t.</translation>
     </message>
     <message>
-        <source>Cannot reload STB!</source>
-        <comment>error</comment>
-        <translation type="vanished">STB nem tölthető újra!</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -4059,6 +4109,24 @@ Kérjük, várjon néhány percet, és próbálja újra.</translation>
         <comment>error</comment>
         <translation>Hiba a segédprogramok végrehajtásakor.</translation>
     </message>
+    <message>
+        <source>Inspect</source>
+        <comment>toolbar</comment>
+        <translation>Csekk</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Bouquets</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation>Idő</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>Hiba ellenőrző</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -4362,10 +4430,6 @@ Kérjük, várjon néhány percet, és próbálja újra.</translation>
         <translation>DVBNS</translation>
     </message>
     <message>
-        <source>URI</source>
-        <translation>URI</translation>
-    </message>
-    <message>
         <source>FAV Name</source>
         <translation>FAV név</translation>
     </message>
@@ -4416,6 +4480,57 @@ Kérjük, várjon néhány percet, és próbálja újra.</translation>
     <message>
         <source>System</source>
         <translation>Rendszer</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>dialog</comment>
+        <translation>Hiba ellenőrző</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>dialog</comment>
+        <translation>Autofix</translation>
+    </message>
+    <message>
+        <source>%1 errors</source>
+        <translation>Hiba %1</translation>
+    </message>
+    <message>
+        <source>Log</source>
+        <translation>Log</translation>
+    </message>
+    <message>
+        <source>Transponders</source>
+        <translation>Transzponderek</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>Szolgáltatások</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>Bouquets</translation>
+    </message>
+    <message>
+        <source>Userbouquets</source>
+        <translation>Userbouquets</translation>
+    </message>
+    <message>
+        <source>Tunersets</source>
+        <translation>Tunersets</translation>
+    </message>
+    <message>
+        <source>References</source>
+        <translation>Hivatkozások</translation>
+    </message>
+    <message>
+        <source>No errors found.</source>
+        <comment>message</comment>
+        <translation>Nem található hiba.</translation>
+    </message>
+    <message>
+        <source>URL</source>
+        <translation>URL</translation>
     </message>
 </context>
 <context>

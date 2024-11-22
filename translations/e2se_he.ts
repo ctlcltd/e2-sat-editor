@@ -498,6 +498,56 @@ Please wait few minutes and try again.</source>
         <comment>error</comment>
         <translation>קבוצת ערוץ משתמש &quot;%s&quot; כבר קיימת.</translation>
     </message>
+    <message>
+        <source>Transponder &quot;%s&quot; not exists.</source>
+        <comment>error</comment>
+        <translation>המשדר &quot;%s&quot; אינו קיים.</translation>
+    </message>
+    <message>
+        <source>Transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>המשדר &quot;%s&quot; אינו חוקי.</translation>
+    </message>
+    <message>
+        <source>Service &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>השירות &quot;%s&quot; אינו חוקי.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid service.</source>
+        <comment>error</comment>
+        <translation>הפניה לערוץ &quot;%s&quot; אינה שירות חוקי.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid marker.</source>
+        <comment>error</comment>
+        <translation>הפניה לערוץ &quot;%s&quot; אינה סמן חוקי.</translation>
+    </message>
+    <message>
+        <source>Channel reference &quot;%s&quot; is not a valid stream.</source>
+        <comment>error</comment>
+        <translation>הפניה לערוץ &quot;%s&quot; אינה זרם חוקי.</translation>
+    </message>
+    <message>
+        <source>Channel reference mismatch &quot;%s&quot;.</source>
+        <comment>error</comment>
+        <translation>אי התאמה של הפניה לערוץ &quot;%s&quot;.</translation>
+    </message>
+    <message>
+        <source>Tunersets &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>הגדרות הטיונר &quot;%s&quot; אינן חוקיות.</translation>
+    </message>
+    <message>
+        <source>Tunersets table &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>טבלת הגדרות הטיונר &quot;%s&quot; אינה חוקית.</translation>
+    </message>
+    <message>
+        <source>Tunersets transponder &quot;%s&quot; is not valid.</source>
+        <comment>error</comment>
+        <translation>משדר הגדרות הטיונר &quot;%s&quot; אינו חוקי.</translation>
+    </message>
 </context>
 <context>
     <name>editBouquet</name>
@@ -2278,6 +2328,11 @@ Please wait few minutes and try again.</source>
         <comment>menu</comment>
         <translation>עורך</translation>
     </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>בודק שגיאות</translation>
+    </message>
 </context>
 <context>
     <name>mainView</name>
@@ -3629,11 +3684,6 @@ Please wait few minutes and try again.</source>
         <translation>לא ניתן לטעון מחדש את ה-STB &quot;%1&quot;.</translation>
     </message>
     <message>
-        <source>Cannot reload STB!</source>
-        <comment>error</comment>
-        <translation type="vanished">לא ניתן לטעון מחדש את ה-STB!</translation>
-    </message>
-    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
@@ -4060,6 +4110,24 @@ Please wait few minutes and try again.</source>
         <comment>error</comment>
         <translation>שגיאה בהפעלת כלי עזר.</translation>
     </message>
+    <message>
+        <source>Inspect</source>
+        <comment>toolbar</comment>
+        <translation>לִבדוֹק</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>ערוץ-קבוצות</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation>זְמַן</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>menu</comment>
+        <translation>בודק שגיאות</translation>
+    </message>
 </context>
 <context>
     <name>tools</name>
@@ -4363,10 +4431,6 @@ Please wait few minutes and try again.</source>
         <translation>DVBNS</translation>
     </message>
     <message>
-        <source>URI</source>
-        <translation>URI</translation>
-    </message>
-    <message>
         <source>FAV Name</source>
         <translation>שם אהוב</translation>
     </message>
@@ -4417,6 +4481,57 @@ Please wait few minutes and try again.</source>
     <message>
         <source>System</source>
         <translation>מערכת</translation>
+    </message>
+    <message>
+        <source>Error Checker</source>
+        <comment>dialog</comment>
+        <translation>בודק שגיאות</translation>
+    </message>
+    <message>
+        <source>Autofix</source>
+        <comment>dialog</comment>
+        <translation>תיקון אוטומטי</translation>
+    </message>
+    <message>
+        <source>%1 errors</source>
+        <translation>שגיאות %1</translation>
+    </message>
+    <message>
+        <source>Log</source>
+        <translation>עֵץ</translation>
+    </message>
+    <message>
+        <source>Transponders</source>
+        <translation>משיבים</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>שירותים</translation>
+    </message>
+    <message>
+        <source>Bouquets</source>
+        <translation>ערוץ-קבוצות</translation>
+    </message>
+    <message>
+        <source>Userbouquets</source>
+        <translation>זרי משתמש</translation>
+    </message>
+    <message>
+        <source>Tunersets</source>
+        <translation>הגדרות טיונר</translation>
+    </message>
+    <message>
+        <source>References</source>
+        <translation>הפניות</translation>
+    </message>
+    <message>
+        <source>No errors found.</source>
+        <comment>message</comment>
+        <translation>לא נמצאו שגיאות.</translation>
+    </message>
+    <message>
+        <source>URL</source>
+        <translation>URL</translation>
     </message>
 </context>
 <context>
