@@ -9,7 +9,12 @@ All notable changes to this project will be documented in this file.
 **Release Date**: *not released*  
 **Full Changelog**: [v1.7.0...HEAD](https://github.com/ctlcltd/e2-sat-editor/compare/v1.7.0...HEAD)
 
-
+- New Error Checker util
+- Fix parsing stream URL and description
+- Added support for favorite channel name
+- Improved File Information dialog
+- Updated translations, keyboard shortcuts
+- Bugfix
 
 
 ## [v1.7.0]
