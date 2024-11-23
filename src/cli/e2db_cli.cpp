@@ -1833,13 +1833,12 @@ void e2db_cli::shell_e2db_convert(ENTRY entry_type, int fopt, int ftype, string 
 	{
 		cerr << "Error: " << msg(MSG::except_filesystem, err.what()) << endl;
 	}
-	catch (const std::ifstream::failure& err)
+	catch (const std::ios_base::failure& err)
 	{
-		cerr << "Error" << msg("File \"%s\" is not readable.", path) << endl;
-	}
-	catch (const std::ofstream::failure& err)
-	{
-		cerr << "Error" << msg("File \"%s\" is not writable.", path) << endl;
+		if (fopt == 0)
+			cerr << "Error" << msg("File \"%s\" is not readable.", path) << endl;
+		else if (fopt == 1)
+			cerr << "Error" << msg("File \"%s\" is not writable.", path) << endl;
 	}
 	catch (const std::runtime_error& err)
 	{
