@@ -14,6 +14,7 @@
 #include <QtGlobal>
 #include <QTimer>
 #include <QRegularExpression>
+#include <QTextStream>
 #include <QWindow>
 #include <QDialog>
 #include <QGridLayout>
