@@ -813,9 +813,7 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file, int ver)
 			}
 
 			if (! chref.stream)
-			{
 				error("make_userbouquet", "Maker Error", msg("reference (%s)", bname + ':' + x.second + ':' + to_string(ln)));
-			}
 		}
 
 		ss << endl;
@@ -1554,9 +1552,7 @@ void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
 			else
 			{
 				if (! chref.marker && ! chref.stream)
-				{
 					error("make_bouquets_xml", "Maker Error", msg("reference (%s)", filename + ':' + x.second + ':' + to_string(ln)));
-				}
 			}
 		}
 
