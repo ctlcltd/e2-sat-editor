@@ -499,6 +499,8 @@ void editFavourite::store()
 			return error("store", tr("Error", "error").toStdString(), tr("Channel reference \"%1\" not exists.", "error").arg(chid.data()).toStdString());
 	}
 
+	string refid = dbih->get_reference_id(chref);
+
 	for (auto & item : fields)
 	{
 		string key = item->property("field").toString().toStdString();
@@ -543,16 +545,15 @@ void editFavourite::store()
 	chref.stream = false;
 	chref.marker = false;
 
+	debug("store", "refid", refid);
+	debug("store", "new refid", dbih->value_reference_id(chref));
+
 	if (chref.etype != 0 && ! chref.url.empty() && chref.url.find("//") != string::npos)
 		chref.stream = true;
 	else if (chref.atype != 0 && chref.atype != e2db::ATYPE::group)
 		chref.marker = true;
-	//TODO TEST
-	// else
-		// chref.chid = "";
-	//TODO FIX db.services[chref.chid] exists and collision x:x:x:X
-	// else if (dbih->db.services.count(chref.chid))
-		// chref.chid = "";
+	else if (refid != dbih->value_reference_id(chref))
+		chref.stream = true;
 
 	if (this->state.edit)
 		this->chid = dbih->editChannelReference(chid, chref, bname);

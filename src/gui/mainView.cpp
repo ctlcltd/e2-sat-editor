@@ -2232,7 +2232,19 @@ void mainView::addService()
 	}
 	else
 	{
-		QStringList entry = dbih->entries.services[chid];
+		QString refid;
+		QStringList entry;
+
+		if (favourite)
+			refid = QString::fromStdString(dbih->get_reference_id(chref));
+		else
+			refid = QString::fromStdString(dbih->get_reference_id(chid));
+
+		if (dbih->entries.services.count(chid))
+			entry = dbih->entries.services[chid];
+		else
+			return error("addService", tr("Error", "error").toStdString(), tr("Missing service key \"%1\".", "error").arg(chid.data()).toStdString());
+
 		bool parental = entry[1].size() || ub_parental;
 		entry.prepend(idx);
 		entry.prepend(x);
@@ -2249,6 +2261,7 @@ void mainView::addService()
 		item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(chid));
 		item->setData(ITEM_DATA_ROLE::parental, Qt::UserRole, parental);
 		item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
+		item->setData(ITEM_DATA_ROLE::refid, Qt::UserRole, refid);
 		item->setIcon(ITEM_ROW_ROLE::chlock, parental ? theme::icon(parentalicon) : QIcon());
 		item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
 		item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
@@ -2399,7 +2412,19 @@ void mainView::editService()
 	}
 	else
 	{
-		QStringList entry = dbih->entries.services[nw_chid];
+		QString refid;
+		QStringList entry;
+
+		if (favourite)
+			refid = QString::fromStdString(dbih->get_reference_id(chref));
+		else
+			refid = QString::fromStdString(dbih->get_reference_id(nw_chid));
+
+		if (dbih->entries.services.count(nw_chid))
+			entry = dbih->entries.services[nw_chid];
+		else
+			return error("editService", tr("Error", "error").toStdString(), tr("Missing service key \"%1\".", "error").arg(nw_chid.data()).toStdString());
+
 		bool parental = entry[1].size() || ub_parental;
 		entry.prepend(item->text(ITEM_ROW_ROLE::chnum));
 		entry.prepend(item->text(ITEM_ROW_ROLE::x));
@@ -2414,6 +2439,7 @@ void mainView::editService()
 		item->setData(ITEM_DATA_ROLE::chid, Qt::UserRole, QString::fromStdString(nw_chid));
 		item->setData(ITEM_DATA_ROLE::parental, Qt::UserRole, parental);
 		item->setData(ITEM_DATA_ROLE::reftype, Qt::UserRole, reftype);
+		item->setData(ITEM_DATA_ROLE::refid, Qt::UserRole, refid);
 		item->setIcon(ITEM_ROW_ROLE::chlock, parental ? theme::icon(parentalicon) : QIcon());
 		item->setFont(ITEM_ROW_ROLE::chcas, QFont(theme::fontFamily(), theme::calcFontSize(-1)));
 		item->setIcon(ITEM_ROW_ROLE::chcas, ! item->text(ITEM_ROW_ROLE::chcas).isEmpty() ? theme::icon("crypted") : QIcon());
@@ -3458,10 +3484,20 @@ void mainView::putListItems(vector<QString> items)
 			std::snprintf(chid, 25, "%x:%x:%x", ref.ssid, ref.tsid, ref.dvbns);
 		}
 
-		if (dbih->db.services.count(chid))
+		if (dbih->db.services.count(chid) && dbih->entries.services.count(chid))
 		{
+			e2db::service ch = dbih->db.services[chid];
 			entry = dbih->entries.services[chid];
 			parental = entry[1].size() || ub_parental;
+
+			if (chref.value != ch.chname)
+			{
+				reftype = REF_TYPE::favourite;
+				chref.value = value;
+				entry = QStringList(entry);
+				QString value = QString::fromStdString(chref.value);
+				entry[0] = value;
+			}
 			entry.prepend(idx);
 			entry.prepend(x);
 
