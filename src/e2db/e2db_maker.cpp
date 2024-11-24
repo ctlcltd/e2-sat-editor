@@ -275,6 +275,7 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 	ss << formats[MAKER_FORMAT::b_comment] << "editor: " << editor_string() << endl;
 	ss << formats[MAKER_FORMAT::b_comment] << "datetime: " << editor_timestamp() << endl;
 
+	file.origin = FORG::filesys;
 	file.filename = filename;
 	file.mime = "text/plain";
 	file.data = ss.str();
@@ -312,13 +313,14 @@ void e2db_maker::make_e2db_bouquets(int ver)
 	//TODO bouquets file
 	if (ver < 3)
 	{
-		e2db_file empty;
-		empty.data = "eDVB bouquets /2/\nbouquets\nend\n";
-		empty.filename = "bouquets";
-		empty.mime = "text/plain";
-		empty.size = empty.data.size();
+		e2db_file file;
+		file.origin = FORG::filesys;
+		file.data = "eDVB bouquets /2/\nbouquets\nend\n";
+		file.filename = "bouquets";
+		file.mime = "text/plain";
+		file.size = file.data.size();
 
-		this->e2db_out[empty.filename] = empty;
+		this->e2db_out[file.filename] = file;
 	}
 }
 
@@ -469,13 +471,14 @@ void e2db_maker::make_zapit_bouquets(int ver)
 
 	if (ver > 1)
 	{
-		e2db_file empty;
-		empty.data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<zapit>\n</zapit>\n";
-		empty.filename = "bouquets.xml";
-		empty.mime = "text/xml";
-		empty.size = empty.data.size();
+		e2db_file file;
+		file.origin = FORG::filesys;
+		file.data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<zapit>\n</zapit>\n";
+		file.filename = "bouquets.xml";
+		file.mime = "text/xml";
+		file.size = file.data.size();
 
-		this->e2db_out[empty.filename] = empty;
+		this->e2db_out[file.filename] = file;
 	}
 }
 
@@ -493,22 +496,24 @@ void e2db_maker::make_e2db_parentallock_list()
 	}
 	else
 	{
-		string filename = db.parental ? "whitelist" : "blacklist";
+		{
+			string filename = db.parental ? "whitelist" : "blacklist";
+			e2db_file file;
 
-		e2db_file file;
+			make_parentallock_list(filename, db.parental, file);
 
-		make_parentallock_list(filename, db.parental, file);
+			this->e2db_out[filename] = file;
+		}
+		{
+			string filename = db.parental ? "blacklist" : "whitelist";
+			e2db_file file;
+			file.origin = FORG::filesys;
+			file.filename = filename;
+			file.mime = "text/plain";
+			file.size = 0;
 
-		this->e2db_out[filename] = file;
-
-		filename = db.parental ? "blacklist" : "whitelist";
-
-		e2db_file empty;
-		empty.filename = filename;
-		empty.mime = "text/plain";
-		empty.size = 0;
-
-		this->e2db_out[empty.filename] = empty;
+			this->e2db_out[file.filename] = file;
+		}
 	}
 }
 
@@ -587,6 +592,7 @@ void e2db_maker::make_bouquet(string bname, e2db_file& file, int ver)
 		ss << endl;
 	}
 
+	file.origin = FORG::filesys;
 	file.filename = filename;
 	file.mime = "text/plain";
 	file.data = ss.str();
@@ -645,6 +651,7 @@ void e2db_maker::make_bouquet_epl(string bname, e2db_file& file, int ver)
 		ss << path << endl;
 	}
 
+	file.origin = FORG::filesys;
 	file.filename = filename;
 	file.mime = "text/plain";
 	file.data = ss.str();
@@ -705,7 +712,38 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file, int ver)
 		ss << chref.etype << ':';
 		ss << chref.atype << ':';
 
-		if (db.services.count(x.second))
+		if (chref.marker)
+		{
+			ss << hex;
+			if (MARKER_GLOBAL_INDEX)
+				ss << uppercase << this->marker_count + 1 << ':';
+			else
+				ss << uppercase << chref.anum << ':';
+			ss << dec;
+			ss << "0:0:0:0:0:0:0:";
+
+			if (! chref.value.empty())
+			{
+				if (chref.inlineval)
+				{
+					ss << ':';
+					ss << conv_uri_value(chref.value);
+				}
+				if (chref.descrval)
+				{
+					ln++;
+
+					ss << '\n';
+					ss << "#DESCRIPTION";
+					if (ver < 3)
+						ss << ':';
+					ss << ' ' << chref.value;
+				}
+			}
+
+			this->marker_count++;
+		}
+		else if (db.services.count(x.second))
 		{
 			service ch = db.services[x.second];
 
@@ -740,83 +778,50 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file, int ver)
 		}
 		else
 		{
-			if (chref.marker)
+			ss << hex;
+			ss << uppercase << chref.anum << ':';
+			ss << uppercase << chref.ref.ssid << ':';
+			ss << uppercase << chref.ref.tsid << ':';
+			ss << uppercase << chref.ref.onid << ':';
+			ss << uppercase << chref.ref.dvbns << ':';
+			ss << dec;
+			ss << chref.x7 << ':';
+			ss << chref.x8 << ':';
+			ss << chref.x9 << ':';
+
+			if (! chref.url.empty())
 			{
-				ss << hex;
-				if (MARKER_GLOBAL_INDEX)
-					ss << uppercase << this->marker_count + 1 << ':';
-				else
-					ss << uppercase << chref.anum << ':';
-				ss << dec;
-				ss << "0:0:0:0:0:0:0:";
-
-				if (! chref.value.empty())
-				{
-					if (chref.inlineval)
-					{
-						ss << ':';
-						ss << conv_uri_value(chref.value);
-					}
-					if (chref.descrval)
-					{
-						ln++;
-
-						ss << '\n';
-						ss << "#DESCRIPTION";
-						if (ver < 3)
-							ss << ':';
-						ss << ' ' << chref.value;
-					}
-				}
-
-				this->marker_count++;
+				ss << conv_uri_value(chref.url);
 			}
-			else
+			if (! chref.value.empty())
 			{
-				ss << hex;
-				ss << uppercase << chref.anum << ':';
-				ss << uppercase << chref.ref.ssid << ':';
-				ss << uppercase << chref.ref.tsid << ':';
-				ss << uppercase << chref.ref.onid << ':';
-				ss << uppercase << chref.ref.dvbns << ':';
-				ss << dec;
-				ss << chref.x7 << ':';
-				ss << chref.x8 << ':';
-				ss << chref.x9 << ':';
-
-				if (! chref.url.empty())
+				if (chref.inlineval)
 				{
-					ss << conv_uri_value(chref.url);
+					ss << ':';
+					ss << conv_uri_value(chref.value);
 				}
-				if (! chref.value.empty())
+				if (chref.descrval)
 				{
-					if (chref.inlineval)
-					{
+					ln++;
+
+					ss << '\n';
+					ss << "#DESCRIPTION";
+					if (ver < 3)
 						ss << ':';
-						ss << conv_uri_value(chref.value);
-					}
-					if (chref.descrval)
-					{
-						ln++;
-
-						ss << '\n';
-						ss << "#DESCRIPTION";
-						if (ver < 3)
-							ss << ':';
-						ss << ' ' << chref.value;
-					}
+					ss << ' ' << chref.value;
 				}
+			}
 
-				if (! chref.stream)
-				{
-					error("make_userbouquet", "Maker Error", msg("reference (%s)", bname + ':' + x.second + ':' + to_string(ln)));
-				}
+			if (! chref.stream)
+			{
+				error("make_userbouquet", "Maker Error", msg("reference (%s)", bname + ':' + x.second + ':' + to_string(ln)));
 			}
 		}
 
 		ss << endl;
 	}
 
+	file.origin = FORG::filesys;
 	file.filename = filename;
 	file.mime = "text/plain";
 	file.data = ss.str();
@@ -1016,6 +1021,7 @@ void e2db_maker::make_tunersets_xml(string filename, int ytype, e2db_file& file)
 	{
 	}
 
+	file.origin = FORG::filesys;
 	file.filename = filename;
 	file.mime = "text/xml";
 	file.data = str;
@@ -1441,6 +1447,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 	str += "<!-- Editor: " + editor + " -->\n";
 	str += "<!-- Datetime: " + timestamp + " -->\n";
 
+	file.origin = FORG::filesys;
 	file.filename = filename;
 	file.mime = "text/xml";
 	file.data = str;
@@ -1580,6 +1587,7 @@ void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
 		}
 	}
 
+	file.origin = FORG::filesys;
 	file.filename = filename;
 	file.mime = "text/xml";
 	file.data = str;
@@ -1746,6 +1754,7 @@ void e2db_maker::make_parentallock_list(string filename, PARENTALLOCK ltype, e2d
 		}
 	}
 
+	file.origin = FORG::filesys;
 	file.filename = filename;
 	file.mime = "text/plain";
 	file.data = ss.str();

@@ -72,7 +72,7 @@ class tools : protected e2se::log_factory
 		QString inspectContent(string str, int filter = 0);
 		void inspectUpdate(QTextEdit* view, int filter = 0);
 		void inspectReset();
-		void chkerrLoad(QTextEdit* view);
+		void chkerrUpdate(QTextEdit* view);
 		void status(QString message);
 		bool done(bool exec);
 		bool sortContext(SORT_ITEM model, e2db::uoopts& opts);

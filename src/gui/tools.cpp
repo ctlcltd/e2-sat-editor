@@ -261,7 +261,21 @@ void tools::errorChecker()
 	dtbutton->setDefault(true);
 	dtbutton->setText(tr("Autofix", "dialog"));
 	dtbutton->connect(dtbutton, &QPushButton::pressed, [=]() {
+		dcnt->clear();
+		dtbutton->setEnabled(false);
+
 		this->macroAutofix();
+
+		// delay too fast
+		QTimer::singleShot(900, [=]() {
+			dtbutton->setEnabled(true);
+		});
+
+		// delay async
+		QTimer* timer = new QTimer(dial);
+		timer->callOnTimeout([=]() { this->chkerrUpdate(dcnt); });
+		timer->setSingleShot(true);
+		timer->start(700);
 	});
 	dthbox->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
 	dthbox->addWidget(dtbutton);
@@ -269,7 +283,7 @@ void tools::errorChecker()
 
 	// delay async
 	QTimer* timer = new QTimer(dial);
-	timer->callOnTimeout([=]() { this->chkerrLoad(dcnt); });
+	timer->callOnTimeout([=]() { this->chkerrUpdate(dcnt); });
 	timer->setSingleShot(true);
 	timer->start(400);
 
@@ -280,7 +294,7 @@ void tools::errorChecker()
 	dial->exec();
 }
 
-void tools::chkerrLoad(QTextEdit* view)
+void tools::chkerrUpdate(QTextEdit* view)
 {
 	auto* dbih = this->data->dbih;
 
