@@ -953,7 +953,7 @@ patch_qtcore ()
 		printf "patch: %s\n" "$filename"
 	fi
 
-	local offset=$(LC_CTYPE=C grep "qt_prfxpath=" -oba -m 1 "$path")
+	local offset=$(LC_ALL=C grep "qt_prfxpath=" -oba -m 1 "$path")
 
 	if [[ -z "$offset" ]]; then
 		return 0
@@ -975,15 +975,15 @@ patch_qtcore ()
 	cd "$basepath"
 
 	local span=""
-	for i in {0..251}; do
+	for i in {0..254}; do
 		span+="\x00"
 	done
 
-	printf "qtprfxpath=.$span" > "${filename}_p.bin"
+	printf "qt_prfxpath=.$span" > "${filename}_p.bin"
 
 	head -c "$offset" "$filename" > "${filename}_l.bin"
-	# head -c "$((offset+264))" "$filename" | tail -c 264 > "${filename}_m.bin"
-	tail -c "+$((offset+264+1))" "$filename" > "${filename}_r.bin"
+	# head -c "$((offset+268))" "$filename" | tail -c 268 > "${filename}_m.bin"
+	tail -c "+$((offset+268+1))" "$filename" > "${filename}_r.bin"
 
 	cat "${filename}_l.bin" "${filename}_p.bin" "${filename}_r.bin" > "$filename.bin"
 	rm "$filename"
