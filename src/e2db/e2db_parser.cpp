@@ -1270,7 +1270,7 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 				}
 			}
 
-			if (! value.empty())
+			if (! value.empty() && (chref.marker || chref.stream))
 			{
 				conv_uri_value(value);
 
