@@ -1225,7 +1225,7 @@ void settings::importProfile()
 					else if (name == "User")
 						pref = "username";
 					else if (name == "Pass")
-						pref = "Pass";
+						pref = "password";
 					else if (name == "PasvMode")
 						pref = "ftpActive";
 					else if (name == "PathTransponders")
@@ -1272,8 +1272,7 @@ void settings::importProfile()
 								value = val;
 							}
 						}
-						//TODO bug ?
-						else if (name == "ftpActive")
+						else if (name == "PasvMode")
 						{
 							value = (val == "MODE_ACTIVE");
 						}

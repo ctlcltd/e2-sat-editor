@@ -531,9 +531,9 @@ void e2db_maker::make_bouquet(string bname, e2db_file& file, int ver)
 
 	ss << "#NAME " << bs.name << endl;
 
-	for (string & w : bs.userbouquets)
+	for (string & bname : bs.userbouquets)
 	{
-		userbouquet ub = userbouquets[w];
+		userbouquet ub = userbouquets[bname];
 
 		ss << "#SERVICE";
 		if (ver > 4 && ! compat)

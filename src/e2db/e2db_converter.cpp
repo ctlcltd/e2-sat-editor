@@ -2958,9 +2958,9 @@ void e2db_converter::csv_bouquet_list(string& csv, string bname)
 	}
 
 	int i = 1;
-	for (string & w : bs.userbouquets)
+	for (string & bname : bs.userbouquets)
 	{
-		userbouquet ub = userbouquets[w];
+		userbouquet ub = userbouquets[bname];
 
 		ss << i++ << CSV_SEPARATOR;
 		ss << CSV_ESCAPE << bs.name << CSV_ESCAPE << CSV_SEPARATOR;
@@ -3723,9 +3723,9 @@ void e2db_converter::page_body_bouquet_list(html_page& page, string bname)
 	page.body += "<tbody>\n";
 
 	int i = 1;
-	for (string & w : bs.userbouquets)
+	for (string & bname : bs.userbouquets)
 	{
-		userbouquet ub = userbouquets[w];
+		userbouquet ub = userbouquets[bname];
 
 		page.body += "<td class=\"trid\">" + to_string(i++) + "</td>";
 		page.body += "<td>" + bs.name + "</td>";

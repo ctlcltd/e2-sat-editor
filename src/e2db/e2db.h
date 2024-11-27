@@ -29,14 +29,14 @@ class e2db : public e2db_parser, public e2db_maker, public e2db_converter, publi
 		inline static bool FIX_CRLF = true;
 
 		enum ERRID {
-			ees,
 			ixe,
 			txi,
 			chi,
 			bsi,
 			ubi,
 			tni,
-			rff
+			rff,
+			ees
 		};
 
 		struct errmsg

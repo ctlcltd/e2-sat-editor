@@ -1901,9 +1901,9 @@ void e2db_abstract::fix_bouquets(bool uniq_ubouquets)
 				}
 			}
 		}
-		for (string & w : _remove)
+		for (string & bname : _remove)
 		{
-			bouquets.erase(w);
+			bouquets.erase(bname);
 		}
 		_remove.clear();
 	}
@@ -2141,9 +2141,9 @@ void e2db_abstract::dump()
 		cout << "name: " << bs.name << '\n';
 		cout << "nname: " << bs.nname << '\n';
 		cout << "userbouquets: " << '\n' << "[" << '\n';
-		for (string & w : bs.userbouquets)
+		for (string & bname : bs.userbouquets)
 		{
-			cout << w << '\n';
+			cout << bname << '\n';
 		}
 		cout << "]" << '\n';
 		cout << "idx: " << bs.index << '\n';

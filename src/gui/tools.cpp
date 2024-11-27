@@ -307,7 +307,6 @@ void tools::chkerrUpdate(QTextEdit* view)
 		str << "<dl><dt>";
 		switch (err.first)
 		{
-			case e2db::ERRID::ees: str << tr("%1 errors").arg(tr("Log")); break;
 			case e2db::ERRID::ixe: str << tr("%1 errors").arg(tr("Index")); break;
 			case e2db::ERRID::txi: str << tr("%1 errors").arg(tr("Transponders")); break;
 			case e2db::ERRID::chi: str << tr("%1 errors").arg(tr("Services")); break;
@@ -315,6 +314,7 @@ void tools::chkerrUpdate(QTextEdit* view)
 			case e2db::ERRID::ubi: str << tr("%1 errors").arg(tr("Userbouquets")); break;
 			case e2db::ERRID::tni: str << tr("%1 errors").arg(tr("Tunersets")); break;
 			case e2db::ERRID::rff: str << tr("%1 errors").arg(tr("References")); break;
+			case e2db::ERRID::ees: str << tr("%1 errors").arg(tr("Log")); break;
 		}
 		str << "</dt>" << '\n';
 		if (! err.second.empty())
@@ -632,9 +632,9 @@ void tools::macroAutofix()
 
 	vector<string> pattern = {
 		"remove_duplicates",
+		"fix_bouquets",
 		"fix_remove_references",
-		"fix_dvbns",
-		"fix_bouquets"
+		"fix_dvbns"
 	};
 
 	execMacro(pattern);

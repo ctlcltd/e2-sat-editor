@@ -206,6 +206,65 @@ void e2db_utils::fix_remove_references()
 
 void e2db_utils::fix_bouquets(bool uniq_ubouquets)
 {
+	debug("fix_bouquets");
+
+	unordered_set<string> _remove;
+	
+
+	for (auto & x : userbouquets)
+	{
+		userbouquet& ub = x.second;
+		string bname = ub.bname;
+
+		if (! index.count(bname))
+		{
+			if (! ub.channels.empty())
+				index[bname]; // touch
+			else
+				_remove.insert(bname);
+		}
+	}
+
+	if (! _remove.empty())
+	{
+		vector<pair<int, string>> i_ubouquets;
+
+		for (auto & x : index["ubs"])
+		{
+			string bname = x.second;
+
+			if (! _remove.count(bname))
+				i_ubouquets.emplace_back(x);
+		}
+
+		index["ubs"].swap(i_ubouquets);
+
+		for (auto & x : bouquets)
+		{
+			bouquet& bs = x.second;
+
+			vector<string> ubouquets;
+
+			for (string & w : bs.userbouquets)
+			{
+				userbouquet& ub = userbouquets[w];
+				string bname = ub.bname;
+
+				if (! _remove.count(bname))
+					ubouquets.emplace_back(bname);
+			}
+
+			bs.userbouquets.swap(ubouquets);
+		}
+
+		for (const string & bname : _remove)
+		{
+			userbouquets.erase(bname);
+		}
+		
+		_remove.clear();
+	}
+
 	this->::e2se_e2db::e2db_abstract::fix_bouquets(uniq_ubouquets);
 }
 
@@ -290,6 +349,9 @@ void e2db_utils::fix_dvbns()
 		db.services.emplace(x.second, ch);
 	}
 
+	if (chs_changes.empty())
+		return;
+
 	for (auto & x : userbouquets)
 	{
 		userbouquet& ub = x.second;
@@ -320,10 +382,10 @@ void e2db_utils::fix_dvbns()
 			for (auto & x : index[bname])
 			{
 				string chid = x.second;
+				channel_reference chref = ub.channels[chid];
 
 				if (chs_changes.count(chid))
 				{
-					channel_reference chref = ub.channels[x.second];
 					string nw_chid = chs_changes[chid];
 
 					if (! chref.stream)
@@ -334,12 +396,56 @@ void e2db_utils::fix_dvbns()
 
 					chref.chid = nw_chid;
 					x.second = nw_chid;
-
-					channels.emplace(chref.chid, chref);
 				}
+
+				channels.emplace(chref.chid, chref);
 			}
 
 			ub.channels.swap(channels);
+		}
+	}
+
+	for (auto & x : bouquets)
+	{
+		bouquet& bs = x.second;
+		string bname = bs.bname;
+
+		bs.services.clear();
+		index[bname].clear();
+	}
+	for (auto & x : index["ubs"])
+	{
+		userbouquet ub = userbouquets[x.second];
+		string bname = ub.bname;
+		string pname = ub.pname;
+
+		if (! index.count(bname))
+		{
+			error("fix_dvbns", "Error", msg("Missing index key \"%s\".", bname));
+
+			continue;
+		}
+		if (! index.count(pname))
+		{
+			error("fix_dvbns", "Error", msg("Missing index key \"%s\".", pname));
+
+			continue;
+		}
+
+		bouquet& bs = bouquets[pname];
+
+		int idx = 0;
+		for (auto & x : index[bname])
+		{
+			channel_reference& chref = ub.channels[x.second];
+
+			if (! chref.marker && ! chref.stream)
+			{
+				idx = int (index[pname].size());
+				idx += 1;
+				bs.services.emplace(chref.chid);
+				index[pname].emplace_back(pair (idx, chref.chid));
+			}
 		}
 	}
 }

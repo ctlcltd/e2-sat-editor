@@ -2489,12 +2489,12 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, int pos, int offset, int& end,
 				print_obj_pair(TYPE::bsdata, NULL);
 				print_obj_begin(1), print_obj_sep(-1);
 				size_t i = 0;
-				for (string & w : bs.userbouquets)
+				for (string & bname : bs.userbouquets)
 				{
 					i++;
 
 					print_obj_begin(2), print_obj_sep(-1);
-					print_obj_pair(TYPE::bname, w), print_obj_sep(1);
+					print_obj_pair(TYPE::bname, bname), print_obj_sep(1);
 					print_obj_end(2), print_obj_dlm(2, i == bs.userbouquets.size());
 				}
 				print_obj_end(1), print_obj_sep();

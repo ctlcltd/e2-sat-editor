@@ -303,10 +303,10 @@ void e2db::export_file(vector<string> paths)
 	debug("export_file", "file path", "multiple");
 	debug("export_file", "file output", "auto");
 
-	for (string & w : paths)
+	for (string & path : paths)
 	{
-		FPORTS fpo = file_type_detect(w);
-		export_file(fpo, w);
+		FPORTS fpo = file_type_detect(path);
+		export_file(fpo, path);
 	}
 }
 
@@ -315,9 +315,9 @@ void e2db::export_file(FPORTS fpo, vector<string> paths)
 	debug("export_file", "file path", "multiple");
 	debug("export_file", "file output", fpo);
 
-	for (string & w : paths)
+	for (string & path : paths)
 	{
-		export_file(fpo, w);
+		export_file(fpo, path);
 	}
 }
 
@@ -2585,21 +2585,19 @@ void e2db::merge(e2db_abstract* dst)
 		{
 			channel_reference& chref = ub.channels[x.second];
 
-			if (! (chref.marker && chref.atype != ATYPE::marker_numbered) && ! chref.stream)
+			if (merge && ! (chref.marker && chref.atype != ATYPE::marker_numbered))
 			{
-				if (merge)
-				{
-					idx += 1;
-					chref.index = idx;
-					x.first = chref.index;
-				}
-				if (! chref.marker && this->bouquets[pname].services.count(chref.chid) == 0)
-				{
-					int idx = int (index[pname].size());
-					idx += 1;
-					this->bouquets[pname].services.emplace(chref.chid);
-					index[pname].emplace_back(pair (idx, chref.chid));
-				}
+				idx += 1;
+				chref.index = idx;
+				x.first = chref.index;
+			}
+
+			if (! chref.marker && ! chref.stream && this->bouquets[pname].services.count(chref.chid) == 0)
+			{
+				int idx = int (index[pname].size());
+				idx += 1;
+				this->bouquets[pname].services.emplace(chref.chid);
+				index[pname].emplace_back(pair (idx, chref.chid));
 			}
 		}
 	}
@@ -2689,7 +2687,6 @@ void e2db::debugger()
 	{
 		switch (err.first)
 		{
-			case ERRID::ees: std::cout << '[' << msg("%s errors", "Log") << ']'; break;
 			case ERRID::ixe: std::cout << '[' << msg("%s errors", "Index") << ']'; break;
 			case ERRID::txi: std::cout << '[' << msg("%s errors", "Transponders") << ']'; break;
 			case ERRID::chi: std::cout << '[' << msg("%s errors", "Services") << ']'; break;
@@ -2697,6 +2694,7 @@ void e2db::debugger()
 			case ERRID::ubi: std::cout << '[' << msg("%s errors", "Userbouquets") << ']'; break;
 			case ERRID::tni: std::cout << '[' << msg("%s errors", "Tunersets") << ']'; break;
 			case ERRID::rff: std::cout << '[' << msg("%s errors", "References") << ']'; break;
+			case ERRID::ees: std::cout << '[' << msg("%s errors", "Log") << ']'; break;
 		}
 		std::cout << '\n';
 		if (! err.second.empty())
