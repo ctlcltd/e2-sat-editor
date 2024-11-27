@@ -3329,12 +3329,12 @@ Počakajte nekaj minut in poskusite znova.</translation>
         <translation>Ukazi</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
-        <translation>Naslov URL za vnovično nalaganje webif po meri</translation>
+        <source>Custom Webif reload URL address</source>
+        <translation>Naslov URL za vnovično nalaganje Webif po meri</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
-        <translation>Ukaz za vnovično nalaganje telnet po meri</translation>
+        <source>Custom Telnet reload command</source>
+        <translation>Ukaz za vnovično nalaganje Telnet po meri</translation>
     </message>
     <message>
         <source>Menu</source>

@@ -3329,12 +3329,12 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
         <translation>Komennot</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
+        <source>Custom Webif reload URL address</source>
         <translation>Muokattu verkko-jos uudelleenlataus-URL-osoite</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
-        <translation>Mukautettu telnet reload-komento</translation>
+        <source>Custom Telnet reload command</source>
+        <translation>Mukautettu Telnet reload-komento</translation>
     </message>
     <message>
         <source>Menu</source>

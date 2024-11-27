@@ -3329,11 +3329,11 @@ Please wait few minutes and try again.</source>
         <translation>دستورات</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
-        <translation>آدرس URL سفارشی بارگیری مجدد webif</translation>
+        <source>Custom Webif reload URL address</source>
+        <translation>آدرس URL سفارشی بارگیری مجدد Webif</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
+        <source>Custom Telnet reload command</source>
         <translation>دستور بارگذاری مجدد شبکه راه دور سفارشی</translation>
     </message>
     <message>
@@ -3387,7 +3387,7 @@ Please wait few minutes and try again.</source>
     <message numerus="yes">
         <source>Export Profile(s)…</source>
         <translation type="unfinished">
-            <numerusform>&gt;صادرات نمایه ها…</numerusform>
+            <numerusform>صادرات نمایه ها…</numerusform>
         </translation>
     </message>
     <message>

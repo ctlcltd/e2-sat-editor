@@ -3330,12 +3330,12 @@ Kérjük, várjon néhány percet, és próbálja újra.</translation>
         <translation>Parancsok</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
+        <source>Custom Webif reload URL address</source>
         <translation>Egyéni webes újratöltési URL-cím</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
-        <translation>Egyéni telnet újratöltési parancs</translation>
+        <source>Custom Telnet reload command</source>
+        <translation>Egyéni Telnet újratöltési parancs</translation>
     </message>
     <message>
         <source>Menu</source>

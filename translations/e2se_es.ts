@@ -3329,12 +3329,12 @@ Espera unos minutos y vuelve a intentarlo.</translation>
         <translation>Comandos</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
-        <translation>Dirección URL de recarga webif personalizada</translation>
+        <source>Custom Webif reload URL address</source>
+        <translation>Dirección URL de recarga Webif personalizada</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
-        <translation>Comando de recarga de telnet personalizado</translation>
+        <source>Custom Telnet reload command</source>
+        <translation>Comando de recarga de Telnet personalizado</translation>
     </message>
     <message>
         <source>Menu</source>

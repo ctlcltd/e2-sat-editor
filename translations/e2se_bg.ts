@@ -3330,12 +3330,12 @@ Please wait few minutes and try again.</source>
         <translation>Команди</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
-        <translation>Персонализиран URL адрес за презареждане на webif</translation>
+        <source>Custom Webif reload URL address</source>
+        <translation>Персонализиран URL адрес за презареждане на Webif</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
-        <translation>Персонализирана команда за презареждане на telnet </translation>
+        <source>Custom Telnet reload command</source>
+        <translation>Персонализирана команда за презареждане на Telnet</translation>
     </message>
     <message>
         <source>Menu</source>

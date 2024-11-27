@@ -1451,12 +1451,12 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Missing &quot;%s&quot; parameter.</source>
         <comment>error</comment>
-        <translation> &quot;%s&quot; パラメータが欠落しています。</translation>
+        <translation>&quot;%s&quot; パラメータが欠落しています。</translation>
     </message>
     <message>
         <source>Missing &quot;%s&quot; path parameter.</source>
         <comment>error</comment>
-        <translation> &quot;%s&quot; パスパラメータが欠落しています。</translation>
+        <translation>&quot;%s&quot; パスパラメータが欠落しています。</translation>
     </message>
     <message>
         <source>Failed to resume FTP connection.</source>
@@ -3330,12 +3330,12 @@ Please wait few minutes and try again.</source>
         <translation>コマンド</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
-        <translation>カスタム webif リロード URL アドレス</translation>
+        <source>Custom Webif reload URL address</source>
+        <translation>カスタム Webif リロード URL アドレス</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
-        <translation>カスタム telnet リロード コマンド</translation>
+        <source>Custom Telnet reload command</source>
+        <translation>カスタム Telnet リロード コマンド</translation>
     </message>
     <message>
         <source>Menu</source>

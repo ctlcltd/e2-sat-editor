@@ -2201,7 +2201,7 @@ Počkejte prosím několik minut a zkuste to znovu.</translation>
     <message>
         <source>Remove service CAID</source>
         <comment>menu</comment>
-        <translation>Odeberte služby CAID </translation>
+        <translation>Odeberte služby CAID</translation>
     </message>
     <message>
         <source>Remove service flags</source>
@@ -3328,12 +3328,12 @@ Počkejte prosím několik minut a zkuste to znovu.</translation>
         <translation>Příkazy</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
-        <translation>Vlastní URL pro opětovné načtení webif</translation>
+        <source>Custom Webif reload URL address</source>
+        <translation>Vlastní URL pro opětovné načtení Webif</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
-        <translation>Vlastní příkaz znovu načíst telnet</translation>
+        <source>Custom Telnet reload command</source>
+        <translation>Vlastní příkaz znovu načíst Telnet</translation>
     </message>
     <message>
         <source>Menu</source>
@@ -3876,7 +3876,7 @@ Počkejte prosím několik minut a zkuste to znovu.</translation>
     <message>
         <source>Remove service CAID</source>
         <comment>menu</comment>
-        <translation>Odeberte služby CAID </translation>
+        <translation>Odeberte služby CAID</translation>
     </message>
     <message>
         <source>Remove service flags</source>

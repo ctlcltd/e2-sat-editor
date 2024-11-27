@@ -3328,12 +3328,12 @@ Please wait few minutes and try again.</source>
         <translation>פקודות</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
+        <source>Custom Webif reload URL address</source>
         <translation>כתובת URL מותאמת אישית לטעינה מחדש</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
-        <translation>פקודת טעינה מחדש של telnet מותאמת אישית</translation>
+        <source>Custom Telnet reload command</source>
+        <translation>פקודת טעינה מחדש של Telnet מותאמת אישית</translation>
     </message>
     <message>
         <source>Menu</source>

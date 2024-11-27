@@ -3331,12 +3331,12 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <translation>Naredbe</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
-        <translation>Prilagođena URL adresa webif ponovnog učitavanja</translation>
+        <source>Custom Webif reload URL address</source>
+        <translation>Prilagođena URL adresa Webif ponovnog učitavanja</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
-        <translation>Prilagođena naredba ponovnog učitavanja telneta</translation>
+        <source>Custom Telnet reload command</source>
+        <translation>Prilagođena naredba ponovnog učitavanja Telneta</translation>
     </message>
     <message>
         <source>Menu</source>

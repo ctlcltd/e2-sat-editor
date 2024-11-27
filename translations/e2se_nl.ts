@@ -3330,12 +3330,12 @@ Wacht een paar minuten en probeer het opnieuw.</translation>
         <translation>Opdrachten</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
-        <translation>Aangepast webif herlaad URL-adres</translation>
+        <source>Custom Webif reload URL address</source>
+        <translation>Aangepast Webif herlaad URL-adres</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
-        <translation>Aangepaste telnet herlaad opdracht</translation>
+        <source>Custom Telnet reload command</source>
+        <translation>Aangepaste Telnet herlaad opdracht</translation>
     </message>
     <message>
         <source>Menu</source>

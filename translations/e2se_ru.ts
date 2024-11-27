@@ -1578,7 +1578,7 @@ Please wait few minutes and try again.</source>
         <source>About</source>
         <comment>menu</comment>
         <extracomment>Platform: About [$BUNDLE_NAME] item in macOS Application Menu</extracomment>
-        <translation>О </translation>
+        <translation>О</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -3332,12 +3332,12 @@ Please wait few minutes and try again.</source>
         <translation>Команды</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
-        <translation>Пользовательский URL адрес перезагрузки webif</translation>
+        <source>Custom Webif reload URL address</source>
+        <translation>Пользовательский URL адрес перезагрузки Webif</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
-        <translation>Пользовательская команда перезагрузки telnet</translation>
+        <source>Custom Telnet reload command</source>
+        <translation>Пользовательская команда перезагрузки Telnet</translation>
     </message>
     <message>
         <source>Menu</source>

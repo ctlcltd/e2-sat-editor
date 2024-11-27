@@ -3121,11 +3121,11 @@ Please wait few minutes and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
+        <source>Custom Webif reload URL address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
+        <source>Custom Telnet reload command</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -3329,12 +3329,12 @@ Please wait few minutes and try again.</source>
         <translation>أوامر</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
-        <translation>عنوان URL لإعادة تحميل webif المخصص</translation>
+        <source>Custom Webif reload URL address</source>
+        <translation>عنوان URL لإعادة تحميل Webif المخصص</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
-        <translation>أمر إعادة تحميل telnet المخصص</translation>
+        <source>Custom Telnet reload command</source>
+        <translation>أمر إعادة تحميل Telnet المخصص</translation>
     </message>
     <message>
         <source>Menu</source>

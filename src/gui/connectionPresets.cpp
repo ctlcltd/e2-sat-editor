@@ -21,6 +21,7 @@ vector<connectionPresets::PRESET> connectionPresets::presets()
 		neutrino,
 		enigma_23,
 		gx_24,
+		gx_24_telnet,
 		enigma_1
 	};
 }
@@ -32,7 +33,8 @@ map<string, string> connectionPresets::call(connectionPresets::PRESET preset)
 		case enigma_24: return preset_enigma_24();
 		case neutrino: return preset_neutrino();
 		case enigma_23: return preset_enigma_23();
-		case gx_24: return preset_gx_24();
+		case gx_24: return preset_gx_24(0);
+		case gx_24_telnet: return preset_gx_24(1);
 		case enigma_1: return preset_enigma_1();
 	}
 
@@ -81,7 +83,7 @@ map<string, string> connectionPresets::preset_enigma_23()
 	};
 }
 
-map<string, string> connectionPresets::preset_gx_24()
+map<string, string> connectionPresets::preset_gx_24(bool telnet)
 {
 	string spath = "/home/gx/local/enigma_db";
 
@@ -91,7 +93,7 @@ map<string, string> connectionPresets::preset_gx_24()
 		{"pathBouquets", spath},
 		{"pathPicons", ""},
 		{"customWebifReloadUrl", "/web/servicelistreload?mode=0"},
-		{"customTelnetReloadCmd", "init 3"}
+		{"customTelnetReloadCmd", telnet ? "init 3" : "-"}
 	};
 }
 

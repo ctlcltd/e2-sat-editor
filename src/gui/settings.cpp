@@ -454,13 +454,13 @@ void settings::connectionsLayout()
 	dtf3ca->setProperty("field", "customWebifReloadUrl");
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf3ca);
 	platform::osLineEdit(dtf3ca);
-	dtf3->addRow(tr("Custom webif reload URL address"), dtf3ca);
+	dtf3->addRow(tr("Custom Webif reload URL address"), dtf3ca);
 
 	QLineEdit* dtf3cc = new QLineEdit;
 	dtf3cc->setProperty("field", "customTelnetReloadCmd");
 	prefs[PREF_SECTIONS::Connections].emplace_back(dtf3cc);
 	platform::osLineEdit(dtf3cc);
-	dtf3->addRow(tr("Custom telnet reload command"), dtf3cc);
+	dtf3->addRow(tr("Custom Telnet reload command"), dtf3cc);
 
 	dtl0->setLayout(dtf0);
 	dtl1->setLayout(dtf1);
@@ -1560,7 +1560,8 @@ QMenu* settings::profileMenu()
 			case connectionPresets::enigma_24: text = "Enigma 2.4"; break;
 			case connectionPresets::neutrino: text = "Neutrino"; break;
 			case connectionPresets::enigma_23: text = "Enigma 2.3 / 2.4"; break;
-			case connectionPresets::gx_24: text = "GX NationalChip Octagon 2.4"; break;
+			case connectionPresets::gx_24: text = "gx Octagon 2.4"; break;
+			case connectionPresets::gx_24_telnet: text = "gx Octagon 2.4 [telnet]"; break;
 			case connectionPresets::enigma_1: text = "Enigma 1"; break;
 		}
 

@@ -3326,12 +3326,12 @@ Please wait few minutes and try again.</source>
         <translation>命令</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
-        <translation>自定义 webif 重新加载 URL 地址</translation>
+        <source>Custom Webif reload URL address</source>
+        <translation>自定义 Webif 重新加载 URL 地址</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
-        <translation>自定义 telnet 重新加载命令</translation>
+        <source>Custom Telnet reload command</source>
+        <translation>自定义 Telnet 重新加载命令</translation>
     </message>
     <message>
         <source>Menu</source>

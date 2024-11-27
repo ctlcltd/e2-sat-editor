@@ -3328,12 +3328,12 @@ Palaukite kelias minutes ir bandykite dar kartą.</translation>
         <translation>Komandos</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
-        <translation>Pasirinktinis webif perkrovimo URL adresas</translation>
+        <source>Custom Webif reload URL address</source>
+        <translation>Pasirinktinis Webif perkrovimo URL adresas</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
-        <translation>Pasirinktinė telnet perkrovimo komanda</translation>
+        <source>Custom Telnet reload command</source>
+        <translation>Pasirinktinė Telnet perkrovimo komanda</translation>
     </message>
     <message>
         <source>Menu</source>

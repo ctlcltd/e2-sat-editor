@@ -3328,12 +3328,12 @@ Vent et par minutter, og prøv igen.</translation>
         <translation>Kommandoer</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
-        <translation>Tilpasset webif-genindlæsnings-URL-adresse</translation>
+        <source>Custom Webif reload URL address</source>
+        <translation>Tilpasset Webif-genindlæsnings-URL-adresse</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
-        <translation>Brugerdefineret telnet genindlæsningskommando</translation>
+        <source>Custom Telnet reload command</source>
+        <translation>Brugerdefineret Telnet genindlæsningskommando</translation>
     </message>
     <message>
         <source>Menu</source>

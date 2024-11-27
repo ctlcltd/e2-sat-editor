@@ -209,7 +209,6 @@ void e2db_utils::fix_bouquets(bool uniq_ubouquets)
 	debug("fix_bouquets");
 
 	unordered_set<string> _remove;
-	
 
 	for (auto & x : userbouquets)
 	{

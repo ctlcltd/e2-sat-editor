@@ -3328,12 +3328,12 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <translation>Komandas</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
-        <translation>Pielāgota webif atkārtotas ielādes URL adrese</translation>
+        <source>Custom Webif reload URL address</source>
+        <translation>Pielāgota Webif atkārtotas ielādes URL adrese</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
-        <translation>Pielāgota telnet pārlādēšanas komanda</translation>
+        <source>Custom Telnet reload command</source>
+        <translation>Pielāgota Telnet pārlādēšanas komanda</translation>
     </message>
     <message>
         <source>Menu</source>

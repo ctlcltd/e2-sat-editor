@@ -2197,7 +2197,7 @@ Aguarde alguns minutos e tente novamente.</translation>
     <message>
         <source>Remove service cached</source>
         <comment>menu</comment>
-        <translation>Remover cached de serviço </translation>
+        <translation>Remover cached de serviço</translation>
     </message>
     <message>
         <source>Remove service CAID</source>
@@ -3329,12 +3329,12 @@ Aguarde alguns minutos e tente novamente.</translation>
         <translation>Comandos</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
-        <translation>Endereço de URL de recarga webif personalizado</translation>
+        <source>Custom Webif reload URL address</source>
+        <translation>Endereço de URL de recarga Webif personalizado</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
-        <translation>Comando de recarga de telnet personalizado</translation>
+        <source>Custom Telnet reload command</source>
+        <translation>Comando de recarga de Telnet personalizado</translation>
     </message>
     <message>
         <source>Menu</source>
@@ -3869,7 +3869,7 @@ Aguarde alguns minutos e tente novamente.</translation>
     <message>
         <source>Remove service cached</source>
         <comment>menu</comment>
-        <translation>Remover cached de serviço </translation>
+        <translation>Remover cached de serviço</translation>
     </message>
     <message>
         <source>Remove service CAID</source>

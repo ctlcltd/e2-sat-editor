@@ -3329,12 +3329,12 @@ Espereu uns minuts i torneu ho a provar.</translation>
         <translation>Ordres</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
+        <source>Custom Webif reload URL address</source>
         <translation>Adreça URL de recàrrega web personalitzada</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
-        <translation>Ordre personalitzada de recàrrega de telnet</translation>
+        <source>Custom Telnet reload command</source>
+        <translation>Ordre personalitzada de recàrrega de Telnet</translation>
     </message>
     <message>
         <source>Menu</source>

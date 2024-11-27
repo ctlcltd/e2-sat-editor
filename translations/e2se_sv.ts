@@ -3322,12 +3322,12 @@ Vänta några minuter och försök igen.</translation>
         <translation>Kommandon</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
-        <translation>Anpassad webif URL adress för omladdning</translation>
+        <source>Custom Webif reload URL address</source>
+        <translation>Anpassad Webif URL adress för omladdning</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
-        <translation>Anpassat telnet kommando för omladdning</translation>
+        <source>Custom Telnet reload command</source>
+        <translation>Anpassat Telnet kommando för omladdning</translation>
     </message>
     <message>
         <source>Menu</source>

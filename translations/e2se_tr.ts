@@ -3322,12 +3322,12 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <translation>Komutlar</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
-        <translation>Özel webif yeniden yükleme URL adresi</translation>
+        <source>Custom Webif reload URL address</source>
+        <translation>Özel Webif yeniden yükleme URL adresi</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
-        <translation>Özel telnet yeniden yükleme komutu</translation>
+        <source>Custom Telnet reload command</source>
+        <translation>Özel Telnet yeniden yükleme komutu</translation>
     </message>
     <message>
         <source>Menu</source>
@@ -4509,7 +4509,7 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
     </message>
     <message>
         <source>Tunersets</source>
-        <translation>Tunersets </translation>
+        <translation>Tunersets</translation>
     </message>
     <message>
         <source>References</source>

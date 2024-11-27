@@ -3331,12 +3331,12 @@ Veuillez patienter quelques minutes et réessayer.</translation>
         <translation>Commandes</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
-        <translation>Adresse URL rechargement webif personnalisée</translation>
+        <source>Custom Webif reload URL address</source>
+        <translation>Adresse URL rechargement Webif personnalisée</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
-        <translation>Commande rechargement telnet personnalisée</translation>
+        <source>Custom Telnet reload command</source>
+        <translation>Commande rechargement Telnet personnalisée</translation>
     </message>
     <message>
         <source>Menu</source>

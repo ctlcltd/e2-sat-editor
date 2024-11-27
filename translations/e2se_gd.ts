@@ -3330,12 +3330,12 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <translation>Àitheantan</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
-        <translation>Seòladh URL ath-luchdachadh webif gnàthaichte</translation>
+        <source>Custom Webif reload URL address</source>
+        <translation>Seòladh URL ath-luchdachadh Webif gnàthaichte</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
-        <translation>Òrdugh ath-luchdachadh gnàthaichte telnet</translation>
+        <source>Custom Telnet reload command</source>
+        <translation>Òrdugh ath-luchdachadh gnàthaichte Telnet</translation>
     </message>
     <message>
         <source>Menu</source>

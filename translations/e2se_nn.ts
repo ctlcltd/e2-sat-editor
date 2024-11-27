@@ -3329,12 +3329,12 @@ Vent noen minutter og prøv igjen.</translation>
         <translation>Kommandoer</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
+        <source>Custom Webif reload URL address</source>
         <translation>Egendefinert URL-adresse for å laste inn på nytt</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
-        <translation>Egendefinert telnet reload kommando</translation>
+        <source>Custom Telnet reload command</source>
+        <translation>Egendefinert Telnet reload kommando</translation>
     </message>
     <message>
         <source>Menu</source>

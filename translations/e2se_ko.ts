@@ -3327,12 +3327,12 @@ Please wait few minutes and try again.</source>
         <translation>명령</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
-        <translation>사용자 지정 webif 다시 로드 URL 주소</translation>
+        <source>Custom Webif reload URL address</source>
+        <translation>사용자 지정 Webif 다시 로드 URL 주소</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
-        <translation>사용자 지정 telnet 다시 로드 명령</translation>
+        <source>Custom Telnet reload command</source>
+        <translation>사용자 지정 Telnet 다시 로드 명령</translation>
     </message>
     <message>
         <source>Menu</source>

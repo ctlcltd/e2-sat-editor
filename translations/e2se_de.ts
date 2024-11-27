@@ -2288,7 +2288,7 @@ Bitte warten Sie einige Minuten und versuchen Sie es erneut.</translation>
     <message>
         <source>Transform transponders to XML settings</source>
         <comment>menu</comment>
-        <translation>Transponder in XML-settings transformieren </translation>
+        <translation>Transponder in XML-settings transformieren</translation>
     </message>
     <message>
         <source>Transform XML settings to transponders</source>
@@ -3330,11 +3330,11 @@ Bitte warten Sie einige Minuten und versuchen Sie es erneut.</translation>
         <translation>Befehle</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
+        <source>Custom Webif reload URL address</source>
         <translation>Benutzerdefinierte Webif-Reload-URL-Adresse</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
+        <source>Custom Telnet reload command</source>
         <translation>Benutzerdefinierter Telnet-Neuladebefehl</translation>
     </message>
     <message>
@@ -3960,7 +3960,7 @@ Bitte warten Sie einige Minuten und versuchen Sie es erneut.</translation>
     <message>
         <source>Transform transponders to XML settings</source>
         <comment>menu</comment>
-        <translation>Transponder in XML-settings transformieren </translation>
+        <translation>Transponder in XML-settings transformieren</translation>
     </message>
     <message>
         <source>Transform XML settings to transponders</source>

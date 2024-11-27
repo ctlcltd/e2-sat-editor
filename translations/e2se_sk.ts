@@ -2297,7 +2297,7 @@ Počkajte niekoľko minút a skúste to znova.</translation>
     <message>
         <source>Sort</source>
         <comment>menu</comment>
-        <translation>Zoradiť </translation>
+        <translation>Zoradiť</translation>
     </message>
     <message>
         <source>Sort references…</source>
@@ -3329,12 +3329,12 @@ Počkajte niekoľko minút a skúste to znova.</translation>
         <translation>Príkazy</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
-        <translation>Vlastná adresa URL na opätovné načítanie webif</translation>
+        <source>Custom Webif reload URL address</source>
+        <translation>Vlastná adresa URL na opätovné načítanie Webif</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
-        <translation>Vlastný príkaz znovu načítať telnet</translation>
+        <source>Custom Telnet reload command</source>
+        <translation>Vlastný príkaz znovu načítať Telnet</translation>
     </message>
     <message>
         <source>Menu</source>
@@ -3972,7 +3972,7 @@ Počkajte niekoľko minút a skúste to znova.</translation>
     <message>
         <source>Sort</source>
         <comment>menu</comment>
-        <translation>Zoradiť </translation>
+        <translation>Zoradiť</translation>
     </message>
     <message>
         <source>Sort references…</source>
@@ -4388,7 +4388,7 @@ Počkajte niekoľko minút a skúste to znova.</translation>
     <message>
         <source>Apply Sort</source>
         <comment>dialog</comment>
-        <translation>Zoradiť </translation>
+        <translation>Zoradiť</translation>
     </message>
     <message>
         <source>Filename</source>

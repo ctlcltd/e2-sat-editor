@@ -2298,7 +2298,7 @@ Poczekaj kilka minut i spróbuj ponownie.</translation>
     <message>
         <source>Sort</source>
         <comment>menu</comment>
-        <translation>Sortuj </translation>
+        <translation>Sortuj</translation>
     </message>
     <message>
         <source>Sort references…</source>
@@ -3330,12 +3330,12 @@ Poczekaj kilka minut i spróbuj ponownie.</translation>
         <translation>Polecenia</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
-        <translation>Niestandardowy adres URL przeładowania webif</translation>
+        <source>Custom Webif reload URL address</source>
+        <translation>Niestandardowy adres URL przeładowania Webif</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
-        <translation>Niestandardowe polecenie przeładowania telnet</translation>
+        <source>Custom Telnet reload command</source>
+        <translation>Niestandardowe polecenie przeładowania Telnet</translation>
     </message>
     <message>
         <source>Menu</source>
@@ -3973,7 +3973,7 @@ Poczekaj kilka minut i spróbuj ponownie.</translation>
     <message>
         <source>Sort</source>
         <comment>menu</comment>
-        <translation>Sortuj </translation>
+        <translation>Sortuj</translation>
     </message>
     <message>
         <source>Sort references…</source>
@@ -4389,7 +4389,7 @@ Poczekaj kilka minut i spróbuj ponownie.</translation>
     <message>
         <source>Apply Sort</source>
         <comment>dialog</comment>
-        <translation>Sortuj </translation>
+        <translation>Sortuj</translation>
     </message>
     <message>
         <source>Filename</source>

@@ -970,7 +970,7 @@ Attendere qualche minuto e riprovare.</translation>
     <message>
         <source>Service collision warning</source>
         <comment>message</comment>
-        <translation>Servizio in conflitto </translation>
+        <translation>Servizio in conflitto</translation>
     </message>
     <message>
         <source>The service collides with an existing service.</source>
@@ -2232,7 +2232,7 @@ Attendere qualche minuto e riprovare.</translation>
     <message>
         <source>Remove from bouquets (unused services)</source>
         <comment>menu</comment>
-        <translation>Rimuovi (servizi non utilizzati) dai bouquets </translation>
+        <translation>Rimuovi (servizi non utilizzati) dai bouquets</translation>
     </message>
     <message>
         <source>Remove parental lock</source>
@@ -3132,12 +3132,12 @@ Attendere qualche minuto e riprovare.</translation>
         <translation>Comandi</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
-        <translation>Indirizzo URL riavvio webif custom</translation>
+        <source>Custom Webif reload URL address</source>
+        <translation>Indirizzo URL riavvio Webif custom</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
-        <translation>Comando riavvio telnet custom</translation>
+        <source>Custom Telnet reload command</source>
+        <translation>Comando riavvio Telnet custom</translation>
     </message>
     <message>
         <source>Connections</source>
@@ -3904,7 +3904,7 @@ Attendere qualche minuto e riprovare.</translation>
     <message>
         <source>Remove from bouquets (unused services)</source>
         <comment>menu</comment>
-        <translation>Rimuovi (servizi non utilizzati) dai bouquets </translation>
+        <translation>Rimuovi (servizi non utilizzati) dai bouquets</translation>
     </message>
     <message>
         <source>Remove parental lock</source>

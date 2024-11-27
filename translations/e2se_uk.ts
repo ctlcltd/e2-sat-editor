@@ -3331,12 +3331,12 @@ Please wait few minutes and try again.</source>
         <translation>Команди</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
-        <translation>Спеціальна URL адреса перезавантаження webif</translation>
+        <source>Custom Webif reload URL address</source>
+        <translation>Спеціальна URL адреса перезавантаження Webif</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
-        <translation>Спеціальна команда перезавантаження telnet</translation>
+        <source>Custom Telnet reload command</source>
+        <translation>Спеціальна команда перезавантаження Telnet</translation>
     </message>
     <message>
         <source>Menu</source>

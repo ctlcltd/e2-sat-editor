@@ -28,6 +28,7 @@ class connectionPresets
 			neutrino,
 			enigma_23,
 			gx_24,
+			gx_24_telnet,
 			enigma_1
 		};
 
@@ -37,7 +38,7 @@ class connectionPresets
 		static map<string, string> preset_enigma_24();
 		static map<string, string> preset_neutrino();
 		static map<string, string> preset_enigma_23();
-		static map<string, string> preset_gx_24();
+		static map<string, string> preset_gx_24(bool telnet);
 		static map<string, string> preset_enigma_1();
 };
 }

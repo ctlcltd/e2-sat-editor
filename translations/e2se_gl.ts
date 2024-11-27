@@ -3330,12 +3330,12 @@ Agarde uns minutos e ténteo de novo.</translation>
         <translation>Comandos</translation>
     </message>
     <message>
-        <source>Custom webif reload URL address</source>
-        <translation>Enderezo URL personalizado de recarga webif</translation>
+        <source>Custom Webif reload URL address</source>
+        <translation>Enderezo URL personalizado de recarga Webif</translation>
     </message>
     <message>
-        <source>Custom telnet reload command</source>
-        <translation>Comando de recarga telnet personalizado</translation>
+        <source>Custom Telnet reload command</source>
+        <translation>Comando de recarga Telnet personalizado</translation>
     </message>
     <message>
         <source>Menu</source>
