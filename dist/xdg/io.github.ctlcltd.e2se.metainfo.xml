@@ -33,11 +33,13 @@
     <binary>e2-sat-editor</binary>
   </provides>
   <releases>
-    <release version="1.8.0" date="1970-01-01">
+    <release version="1.8.0" date="2024-11-28">
       <description>
         <ul>
             <li>New Error Checker util</li>
             <li>Fix parsing stream URL and description</li>
+            <li>Fix Edit Service PIDs on save</li>
+            <li>Fix merge XML settings</li>
             <li>Added support for favorite channel name</li>
             <li>Improved File Information dialog</li>
             <li>Updated translations, keyboard shortcuts</li>

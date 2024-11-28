@@ -3115,7 +3115,7 @@ void e2db_cli::shell_entry_edit(ENTRY entry_type, bool edit, string id, int ref,
 			tv.charset = any_cast<string>(field(TYPE::charset));
 
 			if (tv.charset.empty())
-				tv.charset = "UTF-8";
+				tv.charset = "utf-8";
 
 			if (edit)
 				dbih->edit_tunersets(tvid, tv);

@@ -6,11 +6,13 @@ All notable changes to this project will be documented in this file.
 ## [v1.8.0]
 
 **Version**: 1.8  
-**Release Date**: *not released*  
-**Full Changelog**: [v1.7.0...HEAD](https://github.com/ctlcltd/e2-sat-editor/compare/v1.7.0...HEAD)
+**Release Date**: 2024-11-28  
+**Full Changelog**: [v1.7.0...v1.8.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.7.0...v1.8.0)
 
 - New Error Checker util
 - Fix parsing stream URL and description
+- Fix Edit Service PIDs on save
+- Fix merge XML settings
 - Added support for favorite channel name
 - Improved File Information dialog
 - Updated translations, keyboard shortcuts

@@ -260,7 +260,7 @@ void e2db_utils::fix_bouquets(bool uniq_ubouquets)
 		{
 			userbouquets.erase(bname);
 		}
-		
+
 		_remove.clear();
 	}
 

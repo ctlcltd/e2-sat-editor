@@ -2279,7 +2279,8 @@ map<e2db::ERRID, vector<e2db::errmsg>> e2db::error_checker()
 	return chkerr;
 }
 
-//TODO improve options
+//TODO improve tunerset tables merge (pos property)
+//TODO improve with options
 void e2db::merge(e2db_abstract* dst)
 {
 	debug("merge");
@@ -2319,12 +2320,94 @@ void e2db::merge(e2db_abstract* dst)
 		}
 	}
 
-	this->tuners.merge(dst->tuners);
+	unordered_map<int, tunersets> ituners;
+
+	vector<int> ytypes = {
+		YTYPE::satellite,
+		YTYPE::terrestrial,
+		YTYPE::cable,
+		YTYPE::atsc
+	};
+	for (int & ytype : ytypes)
+	{
+		string iname = "tns:";
+		char yname = value_transponder_type(ytype);
+		iname += yname;
+
+		index[iname]; // touch
+		int idx = 0;
+
+		if (this->tuners.count(ytype))
+		{
+			tunersets tv;
+			tv.ytype = this->tuners[ytype].ytype;
+			tv.charset = this->tuners[ytype].charset;
+
+			ituners.emplace(tv.ytype, tv);
+		}
+		else if (dst->tuners.count(ytype))
+		{
+			tunersets tv;
+			tv.ytype = this->tuners[ytype].ytype;
+			tv.charset = this->tuners[ytype].charset;
+
+			ituners.emplace(tv.ytype, tv);
+		}
+
+		if (this->tuners.count(ytype))
+		{
+			idx = int(index[iname].size());
+			for (auto & x : this->index[iname])
+			{
+				string tnid = x.second;
+
+				if (this->tuners[ytype].tables.count(tnid))
+				{
+					tunersets_table& tn = this->tuners[ytype].tables[tnid];
+					idx += 1;
+
+					char nw_tnid[25];
+					std::snprintf(nw_tnid, 25, "%c:%04x", yname, idx);
+					tn.tnid = nw_tnid;
+					tn.index = idx;
+
+					ituners[ytype].tables.emplace(tn.tnid, tn);
+					index[iname].emplace_back(pair (idx, tn.tnid));
+					index[nw_tnid] = this->index[tnid];
+				}
+			}
+		}
+		if (dst->tuners.count(ytype))
+		{
+			idx = int(index[iname].size());
+			for (auto & x : dst->index[iname])
+			{
+				string tnid = x.second;
+
+				if (dst->tuners[ytype].tables.count(tnid))
+				{
+					tunersets_table& tn = dst->tuners[ytype].tables[tnid];
+					idx += 1;
+
+					char nw_tnid[25];
+					std::snprintf(nw_tnid, 25, "%c:%04x", yname, idx);
+					tn.tnid = nw_tnid;
+					tn.index = idx;
+
+					ituners[ytype].tables.emplace(tn.tnid, tn);
+					index[iname].emplace_back(pair (idx, tn.tnid));
+					index[nw_tnid] = dst->index[tnid];
+				}
+			}
+		}
+	}
+
+	this->tuners.swap(ituners);
 	this->tnloc.clear();
 
 	if (this->tuners.count(YTYPE::satellite))
 	{
-		for (auto & x : tuners[YTYPE::satellite].tables)
+		for (auto & x : this->tuners[YTYPE::satellite].tables)
 			this->tnloc.emplace(x.second.pos, x.second.tnid);
 	}
 
@@ -2347,11 +2430,21 @@ void e2db::merge(e2db_abstract* dst)
 			continue;
 		else if (iname.find("chs:") != string::npos)
 			continue;
+		else if (iname.find("tns:") != string::npos)
+			continue;
 		else if (iname == "bss")
 			continue;
 		else if (iname == "ubs")
 			continue;
 		else if (iname == "mks")
+			continue;
+		else if (iname.find("s:") != string::npos)
+			continue;
+		else if (iname.find("t:") != string::npos)
+			continue;
+		else if (iname.find("c:") != string::npos)
+			continue;
+		else if (iname.find("a:") != string::npos)
 			continue;
 		else
 			i_names.emplace_back(iname);
