@@ -46,8 +46,6 @@ You can open [issues](https://github.com/ctlcltd/e2-sat-editor/issues) to report
 
 ## Roadmap
 
-The Roadmap contains ± ambitious points.
-
 Read the full [Roadmap](https://github.com/ctlcltd/e2-sat-editor/blob/main/ROADMAP.md)
 
 
