@@ -23,5 +23,5 @@ modules:
     sources:
       - type: git
         url: https://github.com/ctlcltd/e2-sat-editor.git
-        tag: v1.7.0
-        commit: abfc8b1f8b91d18ccc750ad5f65cdcd7fb1db43f
+        tag: v1.8.0
+        commit: b2c3dccd95133cce464e50a315e0b8c64ba3f637
