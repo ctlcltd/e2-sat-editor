@@ -8,6 +8,8 @@ Cross-platform (Windows, macOS, Linux, Unix-like BSD) and free.
 
 It has tab navigation with global Cut-Copy-Paste support; Drag and Drop support; import and export of Lamedb, bouquets and userbouquets; FTP support; built-in Picons editor; tools for sorting and management of channel lists; non-destructive editing; dark and light themes.
 
+**NEW** utils: Error Checker, Autofix, remove duplicates, fix and remove parameters and flags, Sort channels and bouquets.
+
 It supports both Enigma2, Lamedb 4 and Lamedb 5 formats (2.4 and 2.5) and Enigma1 (2.3 and 2.2).
 
 And it supports also Neutrino xml (api v1, v2, v3, v4).
