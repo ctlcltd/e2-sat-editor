@@ -83,7 +83,7 @@ void about::layout()
 	aauts->setStyleSheet("margin: 2px 0 0 0");
 
 	QLabel* acopy = new QLabel;
-	acopy->setText("Copyright 2022-2024 © e2 SAT Editor Team");
+	acopy->setText("Copyright 2022-2025 © e2 SAT Editor Team");
 	acopy->setStyleSheet("margin: 10px 0 5px 0");
 
 	QLabel* alise = new QLabel;
