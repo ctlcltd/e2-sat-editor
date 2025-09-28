@@ -36,7 +36,7 @@ _PLUGINS_PATH=""
 # private integer _QT_VER
 _QT_VER=6
 # private string _QT_VERSION
-_QT_VERSION="6.8.0"
+_QT_VERSION="6.9.0"
 # private array _PLUGINS
 _PLUGINS=("platforms" "styles")
 # private boolean _PATCH_QTCORE

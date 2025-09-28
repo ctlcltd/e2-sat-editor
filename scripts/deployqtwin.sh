@@ -34,7 +34,7 @@ _PLUGINS_PATH=""
 # private integer _QT_VER
 _QT_VER=6
 # private string _QT_VERSION
-_QT_VERSION="6.8.0"
+_QT_VERSION="6.9.0"
 # private array _MODULES
 _MODULES=("Core" "Gui" "Widgets")
 # private array _PLUGINS
@@ -416,12 +416,14 @@ deploy_module () {
 			local semmp="${__QTVERSION#*.}"
 
 			deps+=("libdouble-conversion")
-			if [[ "${__QTVERSION%%.*}" -eq 6 && "${semmp%%.*}" -gt 7 || ("${semmp%%.*}" -eq 7 && "${semmp##*.}" -ge 2) ]]; then
+			if [[ "${__QTVERSION%%.*}" -eq 6 && "${semmp%%.*}" -gt 8 || ("${semmp%%.*}" -eq 8 && "${semmp##*.}" -ge 0) ]]; then
+				deps+=("libicuin77" "libicuuc77" "libicudt77")
+			elif [[ "${__QTVERSION%%.*}" -eq 6 && "${semmp%%.*}" -gt 7 || ("${semmp%%.*}" -eq 7 && "${semmp##*.}" -ge 0) ]]; then
 				deps+=("libicuin75" "libicuuc75" "libicudt75")
+			elif [[ "${__QTVERSION%%.*}" -eq 5 && "${semmp%%.*}" -gt 15 || ("${semmp%%.*}" -eq 15 && "${semmp##*.}" -ge 17) ]]; then
+				deps+=("libicuin77" "libicuuc77" "libicudt77")
 			elif [[ "${__QTVERSION%%.*}" -eq 5 && "${semmp%%.*}" -gt 15 || ("${semmp%%.*}" -eq 15 && "${semmp##*.}" -ge 14) ]]; then
 				deps+=("libicuin75" "libicuuc75" "libicudt75")
-			else
-				deps+=("libicuin74" "libicuuc74" "libicudt74")
 			fi
 			if [[ "$__QTVER" -eq 6 ]]; then
 				deps+=("libb2-1")

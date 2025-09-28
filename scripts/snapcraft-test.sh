@@ -8,7 +8,7 @@
 ## BUG-1964763 https://askubuntu.com/a/1460243
 
 # git clone https://github.com/ctlcltd/e2-sat-editor.git
-# git checkout v1.8.0
+# git checkout v1.8.1
 # cd e2-sat-editor
 
 # cd dist/xdg
