@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.22)
 
 project(e2-sat-editor VERSION 1.8.1 LANGUAGES CXX)
 
@@ -130,9 +130,9 @@ if(NOT WITHOUT_CLI)
 endif()
 
 if(DOWNLOAD_CURL_CABUNDLE)
-	file(DOWNLOAD https://curl.se/ca/cacert-2024-11-26.pem
+	file(DOWNLOAD https://curl.se/ca/cacert-2025-09-09.pem
 		"curl-cacert.pem"
-		EXPECTED_HASH SHA256=bb1782d281fe60d4a2dcf41bc229abe3e46c280212597d4abcc25bddf667739b
+		EXPECTED_HASH SHA256=f290e6acaf904a4121424ca3ebdd70652780707e28e8af999221786b86bb1975
 	)
 
 	if(APPLE)
