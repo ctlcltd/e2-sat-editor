@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
   <id>io.github.ctlcltd.e2se</id>
-  <name>e2 SAT Editor</name>
+  <name translate="no">e2 SAT Editor</name>
   <summary>Satellite channel lists editor for Enigma2, Neutrino, dreambox</summary>
   <metadata_license>MIT</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
@@ -19,10 +19,15 @@
   <screenshots>
     <screenshot type="default">
       <image>https://ctlcltd.github.io/e2se/screenshot.png</image>
+      <caption>Screenshot of the software running</caption>
     </screenshot>
   </screenshots>
+  <branding>
+    <color type="primary" scheme_preference="light">#b4e2dc</color>
+    <color type="primary" scheme_preference="dark">#00455c</color>
+  </branding>
   <developer id="io.github.ctlcltd">
-    <name>Leonardo Laureti</name>
+    <name translate="no">Leonardo Laureti</name>
   </developer>
   <url type="homepage">https://e2sateditor.com</url>
   <url type="bugtracker">https://github.com/ctlcltd/e2-sat-editor/issues</url>
@@ -33,7 +38,7 @@
     <binary>e2-sat-editor</binary>
   </provides>
   <releases>
-    <release version="1.8.1" date="1970-01-01">
+    <release version="1.8.1" date="2025-09-30">
       <description>
         <ul>
             <li>Maintenance release</li>
