@@ -64,15 +64,6 @@ git clone https://github.com/ctlcltd/e2-sat-editor.git
 > Instructions on how to build in [BUILD.md](https://github.com/ctlcltd/e2-sat-editor/blob/main/BUILD.md) file
 
 
-## Translations
-
-The software is available in 33 languages: Arabic, Bulgarian, Catalan, Czech, Danish, German, Spanish, Persian, Finnish, French, Gaelic, Galician, Hebrew, Croatian, Hungarian, Italian, Japanese, Korean, Lithuanian, Latvian, Dutch, Norwegian Nynorsk, Polish, Portuguese (Brazil), Portuguese (Portugal), Russian, Slovak, Slovenian, Swedish, Turkish, Ukrainian, Chinese (China), Chinese (Taiwan).
-
-New languages can be added.
-
-Contribute to translations on the website: https://e2sateditor.com/translate/
-
-
 ## Contents
 
 |Folder|Description|
@@ -83,6 +74,15 @@ Contribute to translations on the website: https://e2sateditor.com/translate/
 |**src**|The source of this software|
 |**translations**|Translation source files|
 |**workspace**|Utils python scripts, emulation: ftp, telnet, webif|
+
+
+## Translations
+
+The software is available in 33 languages: Arabic, Bulgarian, Catalan, Czech, Danish, German, Spanish, Persian, Finnish, French, Gaelic, Galician, Hebrew, Croatian, Hungarian, Italian, Japanese, Korean, Lithuanian, Latvian, Dutch, Norwegian Nynorsk, Polish, Portuguese (Brazil), Portuguese (Portugal), Russian, Slovak, Slovenian, Swedish, Turkish, Ukrainian, Chinese (China), Chinese (Taiwan).
+
+New languages can be added.
+
+Contribute to translations on the website: https://e2sateditor.com/translate/
 
 
 ## License
