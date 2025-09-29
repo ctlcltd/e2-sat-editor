@@ -6,8 +6,8 @@ All notable changes to this project will be documented in this file.
 ## [v1.8.1]
 
 **Version**: 1.8.1  
-**Release Date**: *not released*  
-**Full Changelog**: [v1.8.0...HEAD](https://github.com/ctlcltd/e2-sat-editor/compare/v1.8.0...HEAD)
+**Release Date**: 2025-09-30  
+**Full Changelog**: [v1.8.0...v1.8.1](https://github.com/ctlcltd/e2-sat-editor/compare/v1.8.0...v1.8.1)
 
 - Maintenance release
 - Updated dependencies

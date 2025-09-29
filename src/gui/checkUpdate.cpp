@@ -68,7 +68,7 @@ void checkUpdate::check()
 {
 	debug("check");
 
-	string relver = "v1.8.0";
+	string relver = "v1.8.1";
 	string current_url = "https://github.com/ctlcltd/e2-sat-editor/releases/tag/";
 	current_url.append(relver);
 
