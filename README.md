@@ -38,26 +38,12 @@ And it supports also Neutrino xml (api v1, v2, v3, v4).
 [![e2 SAT Editor (screenshot sample)](https://github.com/ctlcltd/e2-sat-editor/raw/main/res/screenshot-flf.webp "Sample of the software running with (Qt) Fusion appearance")](https://github.com/ctlcltd/e2-sat-editor/blob/main/res/screenshot-flf.webp?raw=true)
 
 
-
-## Get involved
+## Contributing
 
 You can open [issues](https://github.com/ctlcltd/e2-sat-editor/issues) to report bug, request features and send [Pull Request](https://github.com/ctlcltd/e2-sat-editor/pulls)
 
-[Contribution guidelines](https://github.com/ctlcltd/e2-sat-editor/blob/main/CONTRIBUTING.md)
-
-
-## Roadmap
-
-Read the full [Roadmap](https://github.com/ctlcltd/e2-sat-editor/blob/main/ROADMAP.md)
-
-
-## Translation
-
-The software is available in 33 languages: Arabic, Bulgarian, Catalan, Czech, Danish, German, Spanish, Persian, Finnish, French, Gaelic, Galician, Hebrew, Croatian, Hungarian, Italian, Japanese, Korean, Lithuanian, Latvian, Dutch, Norwegian Nynorsk, Polish, Portuguese (Brazil), Portuguese (Portugal), Russian, Slovak, Slovenian, Swedish, Turkish, Ukrainian, Chinese (China), Chinese (Taiwan).
-
-New languages can be added.
-
-Contribute to translations on the website: https://e2sateditor.com/translate/
+* [Contribution guidelines](https://github.com/ctlcltd/e2-sat-editor/blob/main/CONTRIBUTING.md)
+* [Roadmap](https://github.com/ctlcltd/e2-sat-editor/blob/main/ROADMAP.md)
 
 
 ## Development
@@ -67,7 +53,7 @@ Before start, you need to install build tools and Qt: https://www.qt.io/download
 You might need Curl installed with headers, details here: https://curl.se/download.html
 
 > [!NOTE]
-> Depending on your OS environment, you should install some dependencies (devel)
+> Depending on your OS environment, you should install dependencies
 
 Clone the repository:
 ```
@@ -88,6 +74,15 @@ git clone https://github.com/ctlcltd/e2-sat-editor.git
 |**src**|The source of this software|
 |**translations**|Translation source files|
 |**workspace**|Utils python scripts, emulation: ftp, telnet, webif|
+
+
+## Translations
+
+The software is available in 33 languages: Arabic, Bulgarian, Catalan, Czech, Danish, German, Spanish, Persian, Finnish, French, Gaelic, Galician, Hebrew, Croatian, Hungarian, Italian, Japanese, Korean, Lithuanian, Latvian, Dutch, Norwegian Nynorsk, Polish, Portuguese (Brazil), Portuguese (Portugal), Russian, Slovak, Slovenian, Swedish, Turkish, Ukrainian, Chinese (China), Chinese (Taiwan).
+
+New languages can be added.
+
+Contribute to translations on the website: https://e2sateditor.com/translate/
 
 
 ## License
