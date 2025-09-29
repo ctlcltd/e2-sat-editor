@@ -30,7 +30,30 @@ jobs:
         msystem: MINGW32
         update: true
         pacboy: >-
-          cc:i cmake:i ninja:i qt5-base:i qt5-translations:i curl:i
+          cc:i cmake:i ninja:i curl:i
+          dbus:i fontconfig:i freetype:i harfbuzz:i libjpeg-turbo:i libpng:i openssl:i pcre2:i sqlite3:i vulkan:i zlib:i zstd:i
+          gcc-libs:i
+
+    - name: Install latest MinGW-w64-i686 Qt5 from MSYS2
+      shell: msys2 {0}
+      run: |
+        wget -nv https://repo.msys2.org/mingw/mingw32/mingw-w64-i686-double-conversion-3.3.1-1-any.pkg.tar.zst
+        wget -nv https://repo.msys2.org/mingw/mingw32/mingw-w64-i686-double-conversion-3.3.1-1-any.pkg.tar.zst.sig
+        wget -nv https://repo.msys2.org/mingw/mingw32/mingw-w64-i686-icu-76.1-1-any.pkg.tar.zst
+        wget -nv https://repo.msys2.org/mingw/mingw32/mingw-w64-i686-icu-76.1-1-any.pkg.tar.zst.sig
+        wget -nv https://repo.msys2.org/mingw/mingw32/mingw-w64-i686-md4c-0.5.2-1-any.pkg.tar.zst
+        wget -nv https://repo.msys2.org/mingw/mingw32/mingw-w64-i686-md4c-0.5.2-1-any.pkg.tar.zst.sig
+
+        wget -nv https://repo.msys2.org/mingw/mingw32/mingw-w64-i686-qt5-base-5.15.16%2Bkde%2Br130-2-any.pkg.tar.zst
+        wget -nv https://repo.msys2.org/mingw/mingw32/mingw-w64-i686-qt5-base-5.15.16%2Bkde%2Br130-2-any.pkg.tar.zst.sig
+        wget -nv https://repo.msys2.org/mingw/mingw32/mingw-w64-i686-qt5-translations-5.15.16-1-any.pkg.tar.zst
+        wget -nv https://repo.msys2.org/mingw/mingw32/mingw-w64-i686-qt5-translations-5.15.16-1-any.pkg.tar.zst.sig
+
+        pacman --noconfirm -U mingw-w64-i686-double-conversion-3.3.1-1-any.pkg.tar.zst
+        pacman --noconfirm -U mingw-w64-i686-icu-76.1-1-any.pkg.tar.zst
+        pacman --noconfirm -U mingw-w64-i686-md4c-0.5.2-1-any.pkg.tar.zst
+        pacman --noconfirm -U mingw-w64-i686-qt5-base-5.15.16+kde+r130-2-any.pkg.tar.zst
+        pacman --noconfirm -U mingw-w64-i686-qt5-translations-5.15.16-1-any.pkg.tar.zst
 
     - name: Configure CMake
       working-directory: ${{github.workspace}}/e2-sat-editor/src
@@ -62,7 +85,7 @@ jobs:
       shell: msys2 {0}
       run: |
         DESTDIR=../AppDir ninja -C build install
-        # pre actions
+        # translations
         QMDIR="AppDir/Program Files (x86)/e2-sat-editor/bin/translations"
         mkdir -p "$QMDIR"
         cp ../dist/translations/*.qm "$QMDIR"
@@ -77,7 +100,7 @@ jobs:
         -modules Core,Gui,Widgets,PrintSupport \
         -plugins platforms,styles,printsupport \
         -libraries libcurl-4.dll,libcrypto-3.dll,libidn2-0.dll,libnghttp2-14.dll,libpsl-5.dll,libssh2-1.dll,libssl-3.dll,libunistring-5.dll
-        # post actions
+        # cleanup
         rm "AppDir/Program Files (x86)/e2-sat-editor/bin/platforms/qdirect2d.dll"
         # package
         mkdir -p ../artifact/{cli,user-manual}

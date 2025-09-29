@@ -11,7 +11,7 @@ jobs:
 
   build:
 
-    runs-on: macos-14
+    runs-on: macos-15
     needs: user-manual
 
     env:
@@ -24,7 +24,7 @@ jobs:
         path: e2-sat-editor
 
     - name: Setup MacPorts
-      uses: melusina-org/setup-macports@v1.1.3
+      uses: melusina-org/setup-macports@v1.1.5
 
     - continue-on-error: true
       run: |
@@ -66,7 +66,7 @@ jobs:
       run: |
         DESTDIR=../AppDir ninja -C build install
         cp ../dist/macos/PkgInfo.in AppDir/usr/local/e2\ SAT\ Editor.app/Contents/PkgInfo
-        # pre actions
+        # translations
         QMDIR=AppDir/usr/local/e2\ SAT\ Editor.app/Contents/Resources/translations
         mkdir -p "$QMDIR"
         cp ../dist/translations/*.qm "$QMDIR"
@@ -75,7 +75,11 @@ jobs:
         rm -R "$QMDIR"/qt_help_*.qm
         # run deploy script
         bash ../scripts/deployqtmacx.sh AppDir/usr/local/e2\ SAT\ Editor.app -environment port
-        # post actions
+        # fix build version minos
+        vtool -set-build-version macos 14.0 15.5 -output AppDir/usr/local/e2\ SAT\ Editor.bin AppDir/usr/local/e2\ SAT\ Editor.app/Contents/MacOS/e2\ SAT\ Editor
+        mv AppDir/usr/local/e2\ SAT\ Editor.app/Contents/MacOS/e2\ SAT\ Editor AppDir/usr/local/e2\ SAT\ Editor.app/Contents/MacOS/e2\ SAT\ Editor.bak
+        mv AppDir/usr/local/e2\ SAT\ Editor.bin AppDir/usr/local/e2\ SAT\ Editor.app/Contents/MacOS/e2\ SAT\ Editor
+        # set permissions
         chmod 644 AppDir/usr/local/e2\ SAT\ Editor.app/Contents/Frameworks/*.dylib
         chmod -R 755 AppDir/usr/local/e2\ SAT\ Editor.app/Contents/Frameworks/*.framework
         chmod 644 AppDir/usr/local/e2\ SAT\ Editor.app/Contents/Frameworks/**/**/**/*

@@ -416,12 +416,14 @@ deploy_module () {
 			local semmp="${__QTVERSION#*.}"
 
 			deps+=("libdouble-conversion")
-			if [[ "${__QTVERSION%%.*}" -eq 6 && "${semmp%%.*}" -gt 8 || ("${semmp%%.*}" -eq 8 && "${semmp##*.}" -ge 0) ]]; then
+			if [[ "${__QTVERSION%%.*}" -eq 6 && "${semmp%%.*}" -gt 9 || ("${semmp%%.*}" -eq 9 && "${semmp##*.}" -ge 1) ]]; then
 				deps+=("libicuin77" "libicuuc77" "libicudt77")
-			elif [[ "${__QTVERSION%%.*}" -eq 6 && "${semmp%%.*}" -gt 7 || ("${semmp%%.*}" -eq 7 && "${semmp##*.}" -ge 0) ]]; then
+			elif [[ "${__QTVERSION%%.*}" -eq 6 && "${semmp%%.*}" -gt 8 || ("${semmp%%.*}" -ge 8 && "${semmp##*.}" -ge 1) ]]; then
+				deps+=("libicuin76" "libicuuc76" "libicudt76")
+			elif [[ "${__QTVERSION%%.*}" -eq 6 && "${semmp%%.*}" -gt 7 || ("${semmp%%.*}" -eq 7 && "${semmp##*.}" -ge 2) ]]; then
 				deps+=("libicuin75" "libicuuc75" "libicudt75")
-			elif [[ "${__QTVERSION%%.*}" -eq 5 && "${semmp%%.*}" -gt 15 || ("${semmp%%.*}" -eq 15 && "${semmp##*.}" -ge 17) ]]; then
-				deps+=("libicuin77" "libicuuc77" "libicudt77")
+			elif [[ "${__QTVERSION%%.*}" -eq 5 && "${semmp%%.*}" -gt 15 || ("${semmp%%.*}" -eq 15 && "${semmp##*.}" -ge 16) ]]; then
+				deps+=("libicuin76" "libicuuc76" "libicudt76")
 			elif [[ "${__QTVERSION%%.*}" -eq 5 && "${semmp%%.*}" -gt 15 || ("${semmp%%.*}" -eq 15 && "${semmp##*.}" -ge 14) ]]; then
 				deps+=("libicuin75" "libicuuc75" "libicudt75")
 			fi
