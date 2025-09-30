@@ -2705,7 +2705,7 @@ void tab::ftpReloadStb()
 	auto* ftih = this->ftph->ftih;
 
 	this->ftp_errors.clear();
-	this->stb_reload = 1;
+	this->stb_reload = 0;
 
 	QThread* thread = QThread::create([=]() {
 		try

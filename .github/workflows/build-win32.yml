@@ -99,7 +99,7 @@ jobs:
         -qt-version 5.15.16 \
         -modules Core,Gui,Widgets,PrintSupport \
         -plugins platforms,styles,printsupport \
-        -libraries libcurl-4.dll,libcrypto-3.dll,libidn2-0.dll,libnghttp2-14.dll,libpsl-5.dll,libssh2-1.dll,libssl-3.dll,libunistring-5.dll
+        -libraries libcurl-4.dll,libcrypto-3.dll,libidn2-0.dll,libnghttp2-14.dll,libnghttp3-9.dll,libngtcp2-16.dll,libngtcp2_crypto_ossl-0.dll,libpsl-5.dll,libssh2-1.dll,libssl-3.dll,libunistring-5.dll
         # cleanup
         rm "AppDir/Program Files (x86)/e2-sat-editor/bin/platforms/qdirect2d.dll"
         # package
