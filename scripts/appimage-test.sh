@@ -85,7 +85,7 @@
 
 # cd
 # git clone https://github.com/ctlcltd/e2-sat-editor.git
-# git checkout v1.8.1
+# git checkout $TAG
 # cd e2-sat-editor
 
 ./scripts/translations.sh -m
@@ -98,16 +98,12 @@ ninja -C build
 DESTDIR=../AppDir ninja -C build install
 
 
+# QTDIR="qt6"
+# QMDIR="/usr/local/share/$QTDIR/translations"
 # mkdir -p AppDir/usr/share/qt6/translations
-# cp /usr/share/qt6/translations/qt_*.qm AppDir/usr/share/qt6/translations
-# cp /usr/share/qt6/translations/qtbase_*.qm AppDir/usr/share/qt6/translations
-# rm -R AppDir/usr/share/qt6/translations/qt_help_*.qm
-
-
-# mkdir -p AppDir/usr/share/qt/translations
-# cp /usr/local/share/qt6/translations/qt_*.qm AppDir/usr/share/qt/translations
-# cp /usr/local/share/qt6/translations/qtbase_*.qm AppDir/usr/share/qt/translations
-# rm -R AppDir/usr/share/qt/translations/qt_help_*.qm
+# cp "$QMDIR/qt_*.qm" AppDir/usr/share/$QTDIR/translations
+# cp "$QMDIR/qtbase_*.qm" AppDir/usr/share/$QTDIR/translations
+# rm -R AppDir/usr/share/$QTDIR/translations/qt_help_*.qm
 
 
 mv AppDir/usr/share/applications/e2-sat-editor.desktop AppDir/usr/share/applications/io.github.ctlcltd.e2se.desktop
@@ -132,7 +128,7 @@ chmod +x e2_SAT_Editor-x86_64.AppImage
 
 appimagetool squashfs-root --sign --sign-key $MY_SIGN_KEY
 
-mv e2_SAT_Editor-x86_64.AppImage e2-sat-editor-1.8.1-x86_64.AppImage
+mv e2_SAT_Editor-x86_64.AppImage e2-sat-editor-$VERSION-x86_64.AppImage
 
-# ./e2-sat-editor-1.8.1-x86_64.AppImage --appimage-signature
+# ./e2-sat-editor-$VERSION-x86_64.AppImage --appimage-signature
 

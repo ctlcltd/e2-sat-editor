@@ -12,7 +12,7 @@
 # desktop-file-validate e2se-cli.desktop
 # cd ../..
 
-# flatpak remove io.github.ctlcltd.e2se
+# flatpak uninstall io.github.ctlcltd.e2se
 # flatpak install org.kde.Sdk
 # flatpak install org.kde.Platform
 
