@@ -3,7 +3,7 @@
 # 
 
 # git clone https://github.com/ctlcltd/e2-sat-editor.git
-# git checkout v1.8.1
+# git checkout $COMMIT
 # cd e2-sat-editor
 
 # cd dist/xdg
@@ -13,13 +13,17 @@
 # cd ../..
 
 # flatpak remove io.github.ctlcltd.e2se
+# flatpak install org.kde.Sdk
+# flatpak install org.kde.Platform
 
 ./scripts/translations.sh -m
 ./scripts/icons.sh -x
 
 mkdir src/build
+cat dist/linux/io.github.ctlcltd.e2se.yaml
+
 flatpak-builder src/build dist/linux/io.github.ctlcltd.e2se.yaml --force-clean
 flatpak-builder src/build dist/linux/io.github.ctlcltd.e2se.yaml --force-clean --user --install
 
-# flatpak run io.github.ctlcltd.e2se
+# flatpak run io.github.ctlcltd.e2se --debug
 

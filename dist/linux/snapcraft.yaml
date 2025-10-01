@@ -1,17 +1,29 @@
 name: e2-sat-editor
-version: '1.8.1'
-summary: 'Satellite channel lists editor: Enigma2, Neutrino, dreambox'
+version: 1.8.1
 title: e2 SAT Editor
+summary: "Satellite channel lists editor: Enigma2, Neutrino, dreambox"
 license: GPL-3.0-or-later
 adopt-info: e2-sat-editor
-base: core24
 confinement: strict
-compression: lzo
+base: core24
+apps:
+  e2-sat-editor:
+    extensions:
+      - kde-neon-6
+    desktop: usr/share/applications/e2-sat-editor.desktop
+    command: usr/bin/e2-sat-editor
+    plugs:
+      - home
+      - removable-media
+      - network
+      - cups
 parts:
   e2-sat-editor:
+    parse-info: 
+      - usr/share/metainfo/io.github.ctlcltd.e2se.metainfo.xml
     plugin: cmake
-    source-type: git
     source: https://github.com/ctlcltd/e2-sat-editor.git
+    source-type: git
     source-commit: e7ed8404cf492f474496a2c623a02bb35d2d55fa
     source-subdir: src
     cmake-generator: Ninja
@@ -21,43 +33,11 @@ parts:
       - -DRELEASE_MEDIUM=snapstore
       - -DWITHOUT_CLI=ON
     build-packages:
-      - build-essential
-      - qt6-base-dev
-      - libgl1-mesa-dev
-      - libglvnd-dev
-      - libxcb-xkb-dev
-      - libxkbcommon-x11-dev
-      - libvulkan-dev
-      - curl
       - libcurl4-openssl-dev
     stage-packages:
-      - libqt6core6
-      - libqt6gui6
-      - libqt6widgets6
-      - libqt6printsupport6
-      - libcurl4
-      - qt6-translations-l10n
-      - qt6-gtk-platformtheme
-      - qt6-qpa-plugins
-      - qt6-wayland
+      - libcurl4t64
+      - libcups2t64
       - cups-client
     override-pull: |
       craftctl default
       sed -i 's|Icon=e2-sat-editor|Icon=/usr/share/icons/hicolor/256x256/apps/e2-sat-editor\.png|' dist/xdg/e2-sat-editor.desktop
-    parse-info: ['usr/share/metainfo/io.github.ctlcltd.e2se.metainfo.xml']
-apps:
-  e2-sat-editor:
-    command: usr/bin/e2-sat-editor
-    desktop: usr/share/applications/e2-sat-editor.desktop
-    plugs:
-      - desktop
-      - desktop-legacy
-      - wayland
-      - x11
-      - home
-      - removable-media
-      - network
-      - cups
-    extensions: [kde-neon]
-environment:
-  QT_PLUGIN_PATH: "$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins"

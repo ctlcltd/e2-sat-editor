@@ -31,7 +31,7 @@ icons_win () {
 
 	cwt
 
-	magick res/e2-sat-editor/icon-256.png res/e2-sat-editor/icon-128.png res/e2-sat-editor/icon-64.png res/e2-sat-editor/icon-48.png res/e2-sat-editor/icon-32.png dist/windows/e2-sat-editor.ico
+	magick res/e2-sat-editor/icon-{256,128,64,48,32}.png dist/windows/e2-sat-editor.ico
 }
 
 icons_macx () {
@@ -40,12 +40,10 @@ icons_macx () {
 	cwt
 
 	mkdir -p dist/macos/icons.iconset
-	cp res/e2-sat-editor/icon-{512,256,128,64,32}.png dist/macos/icons.iconset
-	mv dist/macos/icons.iconset/icon-512.png dist/macos/icons.iconset/icon_512x512.png
-	mv dist/macos/icons.iconset/icon-256.png dist/macos/icons.iconset/icon_256x256.png
-	mv dist/macos/icons.iconset/icon-128.png dist/macos/icons.iconset/icon_128x128.png
-	mv dist/macos/icons.iconset/icon-64.png dist/macos/icons.iconset/icon_64x64.png
-	mv dist/macos/icons.iconset/icon-32.png dist/macos/icons.iconset/icon_32x32.png
+
+	for I in 512 256 128 64 32; do
+		mv "res/e2-sat-editor/icon-$I.png" "dist/macos/icons.iconset/icon_${I}x${I}.png"
+	done
 
 	iconutil -c icns dist/macos/icons.iconset -o dist/macos/e2-sat-editor.icns
 
@@ -58,15 +56,20 @@ icons_ux () {
 	cwt
 
 	mkdir -p dist/xdg/icons/{scalable,512x512,256x256,128x128,64x64,48x48,32x32}
-	cp res/e2-sat-editor/icon.svg dist/xdg/icons/scalable/e2-sat-editor.svg
-	cp res/e2-sat-editor/icon-512.png dist/xdg/icons/512x512/e2-sat-editor.png
-	cp res/e2-sat-editor/icon-256.png dist/xdg/icons/256x256/e2-sat-editor.png
-	cp res/e2-sat-editor/icon-128.png dist/xdg/icons/128x128/e2-sat-editor.png
-	cp res/e2-sat-editor/icon-64.png dist/xdg/icons/64x64/e2-sat-editor.png
-	cp res/e2-sat-editor/icon-48.png dist/xdg/icons/48x48/e2-sat-editor.png
-	cp res/e2-sat-editor/icon-32.png dist/xdg/icons/32x32/e2-sat-editor.png
-	cp res/e2-sat-editor/icon-cli.svg dist/xdg/icons/scalable/e2se-cli.svg
-	cp res/e2-sat-editor/icon-cli-64.png dist/xdg/icons/64x64/e2se-cli.png
+
+	for I in 0 512 256 128 64 48 32; do
+		I3=$([[ $i -eq 0]] && echo "scalable" || echo "${I}x${I}")
+		IW=$([[ $i -eq 0]] || echo "-$I")
+		IX=$([[ $i -eq 0]] && echo "svg" || echo "png")
+		cp "res/e2-sat-editor/icon$IW.$IX" "dist/xdg/icons/$I3/e2-sat-editor.$IX"
+	done
+
+	for I in 0 64; do
+		I3=$([[ $i -eq 0]] && echo "scalable" || echo "${I}x${I}")
+		IW=$([[ $i -eq 0]] || echo "-$I")
+		IX=$([[ $i -eq 0]] && echo "svg" || echo "png")
+		cp "res/e2-sat-editor/icon-cli$IW.$IX" "dist/xdg/icons/$I3/e2se-cli.$IX"
+	done
 }
 
 complete () {
