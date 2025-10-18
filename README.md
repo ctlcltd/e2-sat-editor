@@ -40,10 +40,14 @@ And it supports also Neutrino xml (api v1, v2, v3, v4).
 
 ## Contributing
 
-You can open [issues](https://github.com/ctlcltd/e2-sat-editor/issues) to report bug, request features and send [Pull Request](https://github.com/ctlcltd/e2-sat-editor/pulls)
+To contribute, you can open [Issues](https://github.com/ctlcltd/e2-sat-editor/issues) to report a bug, or send your contribution via [Pull Request](https://github.com/ctlcltd/e2-sat-editor/pulls).
 
-* [Contribution guidelines](https://github.com/ctlcltd/e2-sat-editor/blob/main/CONTRIBUTING.md)
-* [Roadmap](https://github.com/ctlcltd/e2-sat-editor/blob/main/ROADMAP.md)
+For suggestions of any kind, open a [Feature request](https://github.com/ctlcltd/e2-sat-editor/issues/new?template=feature_request.yml).
+
+* [BUGS.md](https://github.com/ctlcltd/e2-sat-editor/blob/main/BUGS.md)
+* [ROADMAP.md](https://github.com/ctlcltd/e2-sat-editor/blob/main/ROADMAP.md)
+* [CONTRIBUTING.md](https://github.com/ctlcltd/e2-sat-editor/blob/main/CONTRIBUTING.md)
+* [CODE_OF_CONDUCT.md](https://github.com/ctlcltd/e2-sat-editor/blob/main/CODE_OF_CONDUCT.md)
 
 
 ## Development
@@ -64,16 +68,16 @@ git clone https://github.com/ctlcltd/e2-sat-editor.git
 > Instructions on how to build in [BUILD.md](https://github.com/ctlcltd/e2-sat-editor/blob/main/BUILD.md) file
 
 
-## Contents
+## Source tree
 
 |Folder|Description|
 |-|-|
 |**dist**|Target files for platforms|
-|**res**|Resource files and screenshots|
-|**scripts**|Utils bash scripts|
-|**src**|The source of this software|
-|**translations**|Translation source files|
-|**workspace**|Utils python scripts, emulation: ftp, telnet, webif|
+|**res**|Resource files|
+|**scripts**|Utils scripts|
+|**src**|Software source|
+|**translations**|Translation files|
+|**workspace**|Utils py scripts for emulation: ftp telnet webif|
 
 
 ## Translations
@@ -91,5 +95,5 @@ Source code licensed under the terms of the [MIT License](https://github.com/ctl
 
 It is also licensed under the terms of the [GNU GPLv3 License](https://github.com/ctlcltd/e2-sat-editor/blob/main/LICENSE-GPL-3.0-or-later)
 
-This software will be distribuited under the terms of the GNU GPLv3 License.
+The software will be distribuited under the terms of the GNU GPLv3 License.
 
