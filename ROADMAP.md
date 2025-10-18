@@ -4,7 +4,7 @@ The current project Roadmap is concerned in enhancements. To discuss the Roadmap
 
 For suggestions of any kind, please open a [Feature request](https://github.com/ctlcltd/e2-sat-editor/issues/new?template=feature_request.yml).
 
-There are several points To Do and To Evalutate.
+There are several points To Do and To Evaluate.
 
 **To Do:**
 
@@ -18,18 +18,18 @@ There are several points To Do and To Evalutate.
 - [ ] log inspector text filter, with regular expression, eg. `/e2db/` [gui]
 - [ ] multi-windowed GUI [gui] [gui.cpp] [tab.cpp]
 - [x] improve management of duplicate channels [gui] [mainView.cpp] [editService.cpp]
-- [x] mirror transponders, from Lamedb transponder to XML transponder and vice-versa [gui] [e2db.cpp] [tools.cpp]
-- [x] calculate dvbns namespace in e2db [gui] [e2db.cpp] [editService.cpp] [tools.cpp]
-- [x] add type stream (favourite) support [gui] [e2db.cpp]
-- [x] import and export connection profiles [gui] [settings.cpp]
+- [x] mirror transponders Lamedb|XML [gui] [e2db.cpp] [tools.cpp]
+- [x] calculate dvbns namespace [gui] [e2db.cpp] [editService.cpp] [tools.cpp]
+- [x] favourite support, `stream` reference type [gui] [e2db.cpp]
+- [x] connection profiles import and export [gui] [settings.cpp]
 
-**To Evalutate:**
+**To Evaluate:**
 
-- [ ] add merge options on import [gui] [tab.cpp] [e2db.cpp]
-- [ ] assign channel number such as LCN (Logical Channel Number), custom number is partially supported [gui] [e2db.cpp]
-- [ ] provide custom data for each reference [e2db.cpp]
-- [ ] picon image transformation, resize, apply image masks [gui] [piconsView.cpp]
-- [ ] improve m3u import and export [gui] [e2db.cpp]
+- [ ] merge options on import [gui] [tab.cpp] [e2db.cpp]
+- [ ] custom channel number as LCN (Logical Channel Number) [gui] [e2db.cpp]
+- [ ] provide reference custom data [e2db.cpp]
+- [ ] picon image transformation, eg. resize, mask [gui] [piconsView.cpp]
+- [ ] improve m3u support, import and export [gui] [e2db.cpp]
 - [ ] wasm, capability to open and save the directory with multiple files [qt-wasm] [gui] [gui.cpp]
 
 

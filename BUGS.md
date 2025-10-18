@@ -3,7 +3,7 @@
 
 The following lists of known bugs are categorized by: Fix, Improve, Evaluate, Check; and ordered by priority.
 
-Information on contributions, to contribute and send Pull Request, please see [CONTRIBUTING](https://github.com/ctlcltd/e2-sat-editor/blob/main/CONTRIBUTING.md) file.
+Information on contributions, to contribute and send Pull Request, please see [CONTRIBUTING.md](https://github.com/ctlcltd/e2-sat-editor/blob/main/CONTRIBUTING.md) file.
 
 
 **To Fix:**
@@ -17,18 +17,18 @@ Information on contributions, to contribute and send Pull Request, please see [C
 - [ ] find match cache, cached after channel deletetion [gui] [viewAbstract.cpp]
 - [ ] telnet emulation py script, seems to not working [workspace] [start-telnet.py]
 - [ ] check update, when disconnected, there is no connection error dialog [checkUpdate.cpp]
-- [ ] check update, when disconnected, version string %1 is omitted [checkUpdate.cpp]
-- [ ] html bouquets markup errors `<tr>` [printable.cpp]
+- [ ] check update, when disconnected, version string `%1` is omitted [checkUpdate.cpp]
+- [ ] html bouquets, markup errors `<tr>` [printable.cpp]
 - [ ] cli on terminal emulation, PgUp and PgDown inversion [linux] [cli] [e2db_termctl.cpp]
 
 
 **To Improve:**
 
-- [ ] service flags and compatibility, dvbfrontend [gui] [e2db.cpp]
-- [ ] reference flags and compatibility, dvbfrontend [gui] [e2db.cpp]
+- [ ] service flags and compatibility, `dvbfrontend` [gui] [e2db.cpp]
+- [ ] reference flags and compatibility, `dvbfrontend` [gui] [e2db.cpp]
 - [ ] ftp error messages, from "Access denied to remote resource." to "No such file or directory." [ftp] [fptcom.cpp]
 - [ ] counters accuracy for items, Total, TV, Radio, Data [gui] [tab.cpp]
-- [ ] service and reference flags in the GUI, eg. Issues #33 [gui]
+- [ ] service and reference flags in the GUI, eg. Issues (#33) [gui]
 - [ ] items move and copy, from and to, drag and drop not enough [gui] [cli]
 - [ ] convert lamedbx from and to zapitx, better visual feedback [gui] [tab.cpp]
 - [ ] transponder orbital position column, sorting order A-Z [gui] [viewAbstract.cpp]
@@ -41,13 +41,13 @@ Information on contributions, to contribute and send Pull Request, please see [C
 **To Evaluate:**
 
 - [ ] find match cache, cached after reset in debug [gui] [viewAbstract.cpp]
-- [ ] ftp, resetStatusBar is called twice [gui] [tab.cpp]
+- [ ] ftp, `resetStatusBar` is called twice [gui] [tab.cpp]
 - [ ] reference, merge markers with same name [gui] [mainView.cpp]
 - [ ] usability, import multiple selection [gui] [tab.cpp]
 - [ ] usability, import directory selection [gui] [tab.cpp]
 - [ ] runtime exceptions, eg. use of `std::runtime_error` cause segfault on mingw32 [code]
 - [ ] force updates from TSV, CSV, eg. rename channels, change parameters [gui] [mainView.cpp]
-- [ ] status bar closed, visual feedback InfoMessage downloaded files, no double dialog, errors and infos [gui] [tab.cpp]
+- [ ] status bar closed, visual feedback `InfoMessage` downloaded files, no double dialog, errors and infos [gui] [tab.cpp]
 - [ ] reload option, webif and|or telnet [gui] [tab.cpp] [settings.cpp] [ftpcom.cpp]
 - [ ] reload option, deactivate reload, manually [gui] [tab.cpp] [settings.cpp] [ftpcom.cpp]
 - [ ] parental userbouquet `FROM BOUQUET`, unknown compatibility, visual feedback icon [gui] [e2db.cpp]
@@ -56,13 +56,13 @@ Information on contributions, to contribute and send Pull Request, please see [C
 - [ ] FTPS, HTTPS support [networking] [gui] [settings.cpp] [fptcom.cpp]
 - [ ] find toolbar, look and feel [windows] [linux] [gui]
 - [ ] picons editor, `QListWidget::IconMode` lazy load [gui] [piconsView.cpp]
-- [ ] hidpi, font sizes [gui]
+- [ ] HiDPI, font sizes [gui]
 - [ ] RTL support, `LRM` text not enough [rtl]
 - [ ] accessibility status [gui]
 - [ ] edit service on demo, collision dialog is not displayed, dialog cohexist limit [qt-wasm] [gui] [editService.cpp]
 - [ ] debug to stdout is not working on silicon [arm64] [macos]
 - [ ] ftp debug, bad stdout output [ftp]
-- [ ] snapcraft cmake log, libcurl conflict kde-neon-6 [build] [snapcraft]
+- [ ] snapcraft cmake log, `libcurl4t64` conflict `kde-neon-6` [build] [snapcraft]
 
 
 **To Check:**

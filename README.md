@@ -22,8 +22,7 @@ And it supports also Neutrino xml (api v1, v2, v3, v4).
 
 💡 **Try now online DEMO: https://ctlcltd.github.io/e2se-wasm-demo/**  
 
-> [!NOTE]
-> Online demo has limitations imposed by remote use, you cannot open and save files other than the demo ones included.
+*Note: Online demo has limitations imposed by remote use, you cannot open and save files other than the demo ones included.*
 
 
 ## Screenshot
@@ -56,16 +55,14 @@ Before start, you need to install build tools and Qt: https://www.qt.io/download
 
 You might need Curl installed with headers, details here: https://curl.se/download.html
 
-> [!NOTE]
-> Depending on your OS environment, you should install dependencies
+Depending on your OS environment, you should install dependencies.
 
 Clone the repository:
 ```
 git clone https://github.com/ctlcltd/e2-sat-editor.git
 ```
 
-> [!TIP]
-> Instructions on how to build in [BUILD.md](https://github.com/ctlcltd/e2-sat-editor/blob/main/BUILD.md) file
+Instructions on how to build in [BUILD.md](https://github.com/ctlcltd/e2-sat-editor/blob/main/BUILD.md) file.
 
 
 ## Source tree
