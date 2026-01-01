@@ -84,7 +84,7 @@ Do not create new files, new directories, new classes, if not necessary.
 
 Do not introduce in the code: undefined behaviors, useless complexity, return values or results that differs between compilers and platforms.
 
-Do not use other dependencies if not strictly necessary. The main dependencies are: `Qt 6`, `libcurl4`.
+Do not use other dependencies if not strictly necessary. The main dependencies are: `Qt 6`, `libcurl`.
 
 Do not use C++ dialects or preprocessors, do not extend classes from `QObject` or `QWidget`, if not strictly necessary.
 
