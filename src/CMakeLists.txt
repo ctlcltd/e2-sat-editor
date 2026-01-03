@@ -186,7 +186,7 @@ else()
 endif()
 
 configure_file("../dist/common/Readme.txt.in" "Readme.txt" @ONLY NEWLINE_STYLE ${NEWLINE})
-configure_file("COPYING" "License.txt" @ONLY NEWLINE_STYLE ${NEWLINE})
+configure_file("LICENSE-GPL-3.0-or-later" "License.txt" @ONLY NEWLINE_STYLE ${NEWLINE})
 
 if(UNIX AND NOT APPLE)
 	include(GNUInstallDirs)

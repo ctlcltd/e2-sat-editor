@@ -69,7 +69,7 @@ unix:!mac {
 	translations.path = $$PREFIX/share/e2-sat-editor/translations
 	translations.files += ../res/locale/*.qm
 	license.path = $$PREFIX/share/e2-sat-editor
-	license.files += COPYING
+	license.files += LICENSE-GPL-3.0-or-later
 
 	INSTALLS += target desktop metainfo icon icon_512 icon_256 icon_128 icon_64 icon_48 icon_32 translations license
 }
