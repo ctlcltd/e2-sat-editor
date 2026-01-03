@@ -1,0 +1,63 @@
+Third Party Software Libraries
+==============================
+
+This software will be distribuited under the terms of the GNU GPLv3 License.
+
+Link to the copy of the License:
+https://github.com/ctlcltd/e2se-wasm-demo/blob/main/LICENSE-GPL-3.0-only
+
+This software will be distribuited along with third party software.
+
+Third party software libraries are open-source and/or free software.
+
+Online information about software libraries and licenses:
+https://e2sateditor.com/licenses.html
+
+
+Libraries
+=========
+
+The main libraries for this software is: Qt.
+
+- Qt Toolkit (Qt for WebAssembly) library for the GUI
+
+Libraries depend on other third party software libraries (dependencies).
+
+
+Qt Toolkit
+----------
+
+Library: Qt Toolkit (Qt for WebAssembly)
+Copyright: Copyright (C) 2018-2026 The Qt Company Ltd. and other contributors.
+License (SPDX): GPL-3.0-only
+License Link (URL): https://doc.qt.io/qt-6/gpl.html
+
+The list of libraries in brief:
+
+qt-core
+qt-gui
+qt-widgets
+qt-imageformats
+qt-svg
+qwasm
+qtloader.js
+
+The list of dependencies in brief:
+
+Library | Description | License (SPDX)
+------- | ----------- | --------------
+emscripten | Emscripten runtime library | MIT, NCSA
+libfreetype | Font rendering library | FTL, GPL-2.0-or-later
+libharfbuzz | Text shaping library | MIT
+libjpeg-turbo | JPEG image codec library | BSD-3-Clause, IJG
+libpng | PNG image codec library | libpng-2.0
+libpcre2 | PCRE regular expression library | BSD-3-Clause PCRE2-exception
+libzlib | Deflate compression library | Zlib
+Bitstream Vera Sans | font | Bitstream-Vera
+DejaVu Sans | font | custom (DejaVu font license)
+DejaVu Sans Mono | font | custom (DejaVu font license)
+
+For third party code used in Qt, refer to:
+- Third party code used in Qt 6 (URL): https://doc.qt.io/qt-6/licenses-used-in-qt.html
+- Third party code used in Qt 5 (URL): https://doc.qt.io/qt-5/licenses-used-in-qt.html
+

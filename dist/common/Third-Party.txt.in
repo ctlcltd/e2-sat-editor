@@ -1,0 +1,121 @@
+Third Party Software Libraries
+==============================
+
+This software will be distribuited under the terms of the GNU GPLv3 License.
+
+Link to the copy of the License:
+https://github.com/ctlcltd/e2-sat-editor/blob/main/LICENSE-GPL-3.0-or-later
+
+This software will be distribuited along with third party software.
+
+Third party software libraries are open-source and/or free software.
+
+Online information about software libraries and licenses:
+https://e2sateditor.com/licenses.html
+
+
+Libraries
+=========
+
+The main libraries for this software are: Qt, libcurl.
+
+- Qt Toolkit (Qt Community Edition) library for the GUI
+- Curl Library (libcurl) library for the connectivity (HTTP, FTP, telnet, Webif)
+
+Libraries depend on other third party software libraries (dependencies).
+
+
+Qt Toolkit
+----------
+
+Library: Qt Toolkit (Qt Community Edition)
+Copyright: Copyright (C) 2018-2026 The Qt Company Ltd. and other contributors.
+License (SPDX): GPL-3.0-only Qt-GPL-exception-1.0
+License Link (URL): https://doc.qt.io/qt-6/gpl.html
+
+The list of libraries in brief:
+
+qt-core
+qt-gui
+qt-widgets
+qt-printsupport
+qt-dbus
+qminimal
+qoffscreen
+qwindows
+qmodernwindowsstyle
+qcocoa
+qmacstyle
+qxcb
+qwayland
+
+The list of dependencies in brief:
+
+Library | Description | License (SPDX)
+------- | ----------- | --------------
+libglib | GLib system helper library | LGPL-2.1-or-later
+libgthread | GLib system threads helper library | LGPL-2.1-or-later
+libdbus | D-Bus message bus system library | GPL-2.0-or-later, AFL-2.1
+libfreetype | Font rendering library | FTL, GPL-2.0-or-later
+libharfbuzz | Text shaping library | MIT
+libgraphite | Font rendering library | GPL-2.0-or-later, LGPL-2.1-or-later, MPL-2.0
+libicu | Unicode support library | Unicode-3.0, ICU
+libdouble-conversion | IEEE doubles helper library | BSD-3-Clause
+libjpeg-turbo | JPEG image codec library | BSD-3-Clause, IJG
+libpng | PNG image codec library | libpng-2.0
+libiconv | GNU libiconv Character encoding library | GPL-3.0-or-later, LGPL-2.1-or-later
+libintl | GNU gettext Internationalization library | GPL-3.0-or-later, LGPL-2.1-or-later
+libpcre2 | PCRE regular expression library | BSD-3-Clause PCRE2-exception
+libmd4c | Markdown parser library for C | MIT
+libb2 | BLAKE2 hash functions library for C | CC0-1.0
+libbrotli | Brotli compression library | MIT
+libzlib | Deflate compression library | Zlib
+libzip2 | Data compression library | bzip2-1.0.6
+libzstd | Zstandard compression library | BSD-3-Clause, GPL-2.0-only
+
+For third party code used in Qt, refer to:
+- Third party code used in Qt 6 (URL): https://doc.qt.io/qt-6/licenses-used-in-qt.html
+- Third party code used in Qt 5 (URL): https://doc.qt.io/qt-5/licenses-used-in-qt.html
+
+
+Curl Library
+------------
+
+Library: Curl (libcurl)
+Copyright: Copyright (c) 1996 - 2025, Daniel Stenberg, daniel@haxx.se, and many contributors.
+License (SPDX): curl
+License Link (URL): https://curl.se/docs/copyright.html
+
+The list of dependencies in brief:
+
+Library | Description | License (SPDX)
+------- | ----------- | --------------
+libssl3 | OpenSSL TLS/SSL security library | Apache-2.0
+libcrypto3 | OpenSSL TLS/SSL security library | Apache-2.0
+libnghttp2 | HTTP/2 library for C | MIT
+libnghttp3 | HTTP/3 library for C | MIT
+libngtcp2 | QUIC library for C | MIT
+libssh2 | SSH2 library for C | BSD-3-Clause
+libpsl | Domain TLDs collection library for C | MIT
+libidn2 | GNU libidn2 Domain names encoding support library | GPL-2.0-or-later, LGPL-3.0-or-later
+libiconv | GNU libiconv Character encoding library | GPL-3.0-or-later, LGPL-2.1-or-later
+libintl | GNU gettext Internationalization library | GPL-3.0-or-later, LGPL-2.1-or-later
+libunistring | GNU libunistring C string processing library | GPL-3.0-or-later, LGPL-3.0-or-later
+libbrotli | Brotli compression library | MIT
+libzlib | Deflate compression library | Zlib
+libzip2 | Data compression library | bzip2-1.0.6
+libzstd | Zstandard compression library | BSD-3-Clause, GPL-2.0-only
+
+
+Other Dependencies
+------------------
+
+The list of (optional) other distribuited software libraries:
+
+Library | Description | License (SPDX)
+------- | ----------- | --------------
+libgcc | GNU GCC runtime library | GPL-3.0-or-later GCC-exception-3.1
+libstdc++ | GNU GCC C++ runtime library | GPL-3.0-or-later GCC-exception-3.1
+libwinpthread | MinGW-w64 POSIX threading library | MIT, BSD-3-Clause-Clear
+ca-certificates | Common CA certificates from Mozilla | MPL-2.0
+
