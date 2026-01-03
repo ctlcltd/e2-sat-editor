@@ -88,9 +88,9 @@ Contribute to translations on the website: https://e2sateditor.com/translate/
 
 ## License
 
-Source code licensed under the terms of the [MIT License](https://github.com/ctlcltd/e2-sat-editor/blob/main/LICENSE-MIT)
+Source code is licensed under the terms of the [MIT License](https://github.com/ctlcltd/e2-sat-editor/blob/main/LICENSE-MIT)
 
-It is also licensed under the terms of the [GNU GPLv3 License](https://github.com/ctlcltd/e2-sat-editor/blob/main/LICENSE-GPL-3.0-or-later)
+Source code is also licensed under the terms of the [GNU GPLv3 License](https://github.com/ctlcltd/e2-sat-editor/blob/main/LICENSE-GPL-3.0-or-later)
 
 The software will be distribuited under the terms of the GNU GPLv3 License.
 
