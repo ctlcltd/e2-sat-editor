@@ -73,9 +73,7 @@ libzlib | Deflate compression library | Zlib
 libzip2 | Data compression library | bzip2-1.0.6
 libzstd | Zstandard compression library | BSD-3-Clause, GPL-2.0-only
 
-For third party code used in Qt, refer to:
-- Third party code used in Qt 6 (URL): https://doc.qt.io/qt-6/licenses-used-in-qt.html
-- Third party code used in Qt 5 (URL): https://doc.qt.io/qt-5/licenses-used-in-qt.html
+For third party code used in Qt, refer to (Qt website): https://doc.qt.io/qt-6/licenses-used-in-qt.html
 
 
 Curl Library
@@ -105,6 +103,8 @@ libbrotli | Brotli compression library | MIT
 libzlib | Deflate compression library | Zlib
 libzip2 | Data compression library | bzip2-1.0.6
 libzstd | Zstandard compression library | BSD-3-Clause, GPL-2.0-only
+
+Project documentation (Curl website): https://curl.se/docs/projdocs.html
 
 
 Other Dependencies

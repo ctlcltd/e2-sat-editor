@@ -57,7 +57,5 @@ Bitstream Vera Sans | font | Bitstream-Vera
 DejaVu Sans | font | custom (DejaVu font license)
 DejaVu Sans Mono | font | custom (DejaVu font license)
 
-For third party code used in Qt, refer to:
-- Third party code used in Qt 6 (URL): https://doc.qt.io/qt-6/licenses-used-in-qt.html
-- Third party code used in Qt 5 (URL): https://doc.qt.io/qt-5/licenses-used-in-qt.html
+For third party code used in Qt, refer to (Qt website): https://doc.qt.io/qt-6/licenses-used-in-qt.html
 
