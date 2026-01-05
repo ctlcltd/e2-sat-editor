@@ -59,13 +59,13 @@ libdbus | D-Bus message bus system library | GPL-2.0-or-later, AFL-2.1
 libfreetype | Font rendering library | FTL, GPL-2.0-or-later
 libharfbuzz | Text shaping library | MIT
 libgraphite | Font rendering library | GPL-2.0-or-later, LGPL-2.1-or-later, MPL-2.0
-libicu | Unicode support library | Unicode-3.0, ICU
+libicu | Unicode internationalization library | Unicode-3.0, ICU
 libdouble-conversion | IEEE doubles helper library | BSD-3-Clause
 libjpeg-turbo | JPEG image codec library | BSD-3-Clause, IJG
 libpng | PNG image codec library | libpng-2.0
 libiconv | GNU libiconv Character encoding library | GPL-3.0-or-later, LGPL-2.1-or-later
 libintl | GNU gettext Internationalization library | GPL-3.0-or-later, LGPL-2.1-or-later
-libpcre2 | PCRE regular expression library | BSD-3-Clause PCRE2-exception
+libpcre2 | PCRE regular expressions library | BSD-3-Clause PCRE2-exception
 libmd4c | Markdown parser library for C | MIT
 libb2 | BLAKE2 hash functions library for C | CC0-1.0
 libbrotli | Brotli compression library | MIT
@@ -95,7 +95,7 @@ libnghttp3 | HTTP/3 library for C | MIT
 libngtcp2 | QUIC library for C | MIT
 libssh2 | SSH2 library for C | BSD-3-Clause
 libpsl | Domain TLDs collection library for C | MIT
-libidn2 | GNU libidn2 Domain names encoding support library | GPL-2.0-or-later, LGPL-3.0-or-later
+libidn2 | GNU libidn2 Domain names encoding library | GPL-2.0-or-later, LGPL-3.0-or-later
 libiconv | GNU libiconv Character encoding library | GPL-3.0-or-later, LGPL-2.1-or-later
 libintl | GNU gettext Internationalization library | GPL-3.0-or-later, LGPL-2.1-or-later
 libunistring | GNU libunistring C string processing library | GPL-3.0-or-later, LGPL-3.0-or-later

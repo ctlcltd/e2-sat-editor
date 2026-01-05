@@ -51,7 +51,7 @@ libfreetype | Font rendering library | FTL, GPL-2.0-or-later
 libharfbuzz | Text shaping library | MIT
 libjpeg-turbo | JPEG image codec library | BSD-3-Clause, IJG
 libpng | PNG image codec library | libpng-2.0
-libpcre2 | PCRE regular expression library | BSD-3-Clause PCRE2-exception
+libpcre2 | PCRE regular expressions library | BSD-3-Clause PCRE2-exception
 libzlib | Deflate compression library | Zlib
 Bitstream Vera Sans | font | Bitstream-Vera
 DejaVu Sans | font | custom (DejaVu font license)
