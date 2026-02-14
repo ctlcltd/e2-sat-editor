@@ -68,9 +68,8 @@ void checkUpdate::check()
 {
 	debug("check");
 
-	string relver = "v1.8.1";
 	string current_url = "https://github.com/ctlcltd/e2-sat-editor/releases/tag/";
-	current_url.append(relver);
+	current_url.append(this->relver);
 
 	this->state.checked = true;
 	this->state.current_url = current_url;
@@ -144,7 +143,7 @@ void checkUpdate::autoCheck()
 	{
 		this->state.dialog = DIAL::dial_haveupdate;
 
-		QString version;
+		QString version = this->ver;
 		QUrl url;
 
 		if (! this->state.version.empty())
@@ -152,7 +151,9 @@ void checkUpdate::autoCheck()
 		if (! this->state.latest_url.empty())
 			url = QUrl (QString::fromStdString(this->state.latest_url));
 
-		QMetaObject::invokeMethod(this->cwid, [=]() { this->prompt(this->state.dialog, this->medium, version, url); });
+		DIAL dialog = this->state.dialog;
+		MEDIUM medium = this->medium;
+		QMetaObject::invokeMethod(this->cwid, [=]() { this->prompt(dialog, medium, version, url); });
 	}
 }
 
@@ -181,7 +182,7 @@ void checkUpdate::show()
 		this->state.dialog = DIAL::dial_fetcherror;
 	}
 
-	QString version;
+	QString version = this->ver;
 	QUrl url;
 
 	if (! this->state.version.empty())
@@ -189,8 +190,10 @@ void checkUpdate::show()
 	if (! this->state.latest_url.empty())
 		url = QUrl (QString::fromStdString(this->state.latest_url));
 
-	// note: this->state broken strings with QMetaObject::invokeMethod
-	QMetaObject::invokeMethod(this->cwid, [=]() { this->prompt(this->state.dialog, this->medium, version, url); });
+	// note: this->state broken struct, passed by reference, with QMetaObject::invokeMethod
+	DIAL dialog = this->state.dialog;
+	MEDIUM medium = this->medium;
+	QMetaObject::invokeMethod(this->cwid, [=]() { this->prompt(dialog, medium, version, url); });
 }
 
 void checkUpdate::prompt(DIAL dialog, MEDIUM medium, QString version, QUrl url)

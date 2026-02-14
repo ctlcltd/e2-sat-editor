@@ -3461,6 +3461,7 @@ void e2db_converter::page_body_index_list(html_page& page, vector<string> paths)
 	page.body += "<th>Content</th>\n";
 	page.body += "<th>Type</th>\n";
 	page.body += "</tr>\n";
+	page.body += "</thead>\n";
 
 	page.body += "<tbody>\n";
 
@@ -3707,8 +3708,6 @@ void e2db_converter::page_body_bouquet_list(html_page& page, string bname)
 	else if (bs.btype == STYPE::radio)
 		btype = "Radio";
 
-	page.body += "<tr>";
-
 	page.body += "<div class=\"bouquet\">\n";
 	page.body += "<table>\n";
 	page.body += "<thead>\n";
@@ -3719,6 +3718,7 @@ void e2db_converter::page_body_bouquet_list(html_page& page, string bname)
 	page.body += "<th>Name</th>\n";
 	page.body += "<th>Type</th>\n";
 	page.body += "</tr>\n";
+	page.body += "</thead>\n";
 
 	page.body += "<tbody>\n";
 
@@ -3727,6 +3727,7 @@ void e2db_converter::page_body_bouquet_list(html_page& page, string bname)
 	{
 		userbouquet ub = userbouquets[bname];
 
+		page.body += "<tr>\n";
 		page.body += "<td class=\"trid\">" + to_string(i++) + "</td>";
 		page.body += "<td>" + bs.name + "</td>";
 		page.body += "<td>" + ub.bname + "</td>";
@@ -3813,6 +3814,7 @@ void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 			page.body += "<th>Sys</th>\n";
 		}
 		page.body += "</tr>\n";
+		page.body += "</thead>\n";
 
 		page.body += "<tbody>\n";
 

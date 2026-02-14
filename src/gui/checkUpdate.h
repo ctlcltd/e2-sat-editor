@@ -68,6 +68,8 @@ class checkUpdate : protected e2se::log_factory
 		void prompt(DIAL dialog, MEDIUM medium, QString version, QUrl url);
 		virtual void fetch();
 
+		string relver = "v1.8.1";
+		QString ver = "1.8.1";
 		MEDIUM medium = MEDIUM::unknown;
 		bool autocheck = false;
 

@@ -275,6 +275,7 @@ void printable::pageBodyIndexList(html_page& page, vector<string> paths)
 	page.body += "<th>" + tr("Content") + "</th>";
 	page.body += "<th>" + tr("Type") + "</th>";
 	page.body += "</tr>";
+	page.body += "</thead>";
 
 	page.body += "<tbody>";
 
@@ -532,6 +533,7 @@ void printable::pageBodyBouquetList(html_page& page, string bname)
 	page.body += "<th>" + tr("Name") + "</th>";
 	page.body += "<th>" + tr("Type") + "</th>";
 	page.body += "</tr>";
+	page.body += "</thead>";
 
 	page.body += "<tbody>";
 
@@ -630,6 +632,7 @@ void printable::pageBodyTunersetsList(html_page& page, int ytype)
 			page.body += "<th>" + tr("Sys") + "</th>";
 		}
 		page.body += "</tr>";
+		page.body += "</thead>";
 
 		page.body += "<tbody>";
 

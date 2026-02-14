@@ -9,24 +9,25 @@ Information on contributions, to contribute and send Pull Request, please see [C
 **To Fix:**
 
 - [ ] ftp upload, the current tree list is not stored before upload [tab.cpp] [viewAbstract.cpp] [mainView.cpp]
-- [ ] favourite reference, on copy-paste, `#DESCRIPTION` is placed everywhere on userbouquet file [mainView.cpp]
+- [x] favourite reference, on copy-paste, `#DESCRIPTION` is placed everywhere on userbouquet file [mainView.cpp]
 - [ ] edit transponders, sort ordering is not stored [transpondersView.cpp]
 - [ ] telnet reload, when connected is always True also when not reloading [ftp] [ftpcom.cpp]
 - [ ] telnet reload, it connects but seems to not working [ftp] [ftpcom.cpp]
 - [ ] tools popover defects, native `QMenu` `QComboBox` [macos] [gui] [tools.cpp]
 - [ ] find match cache, is cached after channel deletetion [gui] [viewAbstract.cpp]
 - [ ] telnet emulation py script, seems to not working [workspace] [start-telnet.py]
-- [ ] check update, when disconnected, there is no connection error dialog [checkUpdate.cpp]
-- [ ] check update, when disconnected, version string `%1` replacement error [checkUpdate.cpp]
-- [ ] html bouquets, markup errors `<tr>` [printable.cpp]
+- [x] check update, when disconnected, there is no connection error dialog [checkUpdate.cpp]
+- [x] check update, when disconnected, version string `%1` replacement error [checkUpdate.cpp]
+- [x] html markup errors `<tr>` `<thead>` [printable.cpp] [e2db_converter.cpp]
 - [ ] cli on terminal emulation, cli history, PgUp and PgDown inversion [linux] [cli] [e2db_termctl.cpp]
 
 
 **To Improve:**
 
+- [ ] ftp connection messages, eg. "Connected", better visual feedback, status bar is not enough, eg. Issues (#35) [gui] [tab.cpp]
+- [ ] ftp error messages, from "Access denied to remote resource." to "No such file or directory." [ftp] [fptcom.cpp]
 - [ ] service flags and compatibility, `dvbfrontend` [gui] [e2db.cpp]
 - [ ] reference flags and compatibility, `dvbfrontend` [gui] [e2db.cpp]
-- [ ] ftp error messages, from "Access denied to remote resource." to "No such file or directory." [ftp] [fptcom.cpp]
 - [ ] counters accuracy for items, Total, TV, Radio, Data [gui] [tab.cpp]
 - [ ] service and reference flags, show flags in the UI, eg. Issues (#33) [gui]
 - [ ] items move and copy, from and to, drag and drop is not enough [gui] [cli]
@@ -55,6 +56,7 @@ Information on contributions, to contribute and send Pull Request, please see [C
 - [ ] parental userbouquet `FROM BOUQUET`, visual feedback icon [gui] [e2db.cpp]
 - [ ] lamedb5 comments support [e2db.cpp]
 - [ ] neutrino cable, atsc, unknown support [e2db.cpp]
+- [ ] neutrino webtv support, Issues (#35) [e2db.cpp]
 - [ ] FTPS, HTTPS support [networking] [gui] [settings.cpp] [fptcom.cpp]
 - [ ] find toolbar, look and feel [windows] [linux] [gui]
 - [ ] picons editor, `QListWidget::IconMode` lazy load [gui] [piconsView.cpp]

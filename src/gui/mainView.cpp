@@ -3490,7 +3490,7 @@ void mainView::putListItems(vector<QString> items)
 			entry = dbih->entries.services[chid];
 			parental = entry[1].size() || ub_parental;
 
-			if (chref.value != ch.chname)
+			if (! chref.value.empty() && chref.value != ch.chname)
 			{
 				reftype = REF_TYPE::favourite;
 				chref.value = value;
