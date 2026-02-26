@@ -12,14 +12,14 @@ body:
     id: language
     attributes:
       label: Language name
-      description: Language extended name, for example: English
+      description: "Language extended name, for example: English"
       validations:
         required: true
   - type: input
     id: locale
     attributes:
       label: Locale name
-      description: ISO language code, for example: en_US, or leave empty
+      description: "ISO language code, for example: en_US, or leave empty"
       validations:
         required: false
   - type: textarea
