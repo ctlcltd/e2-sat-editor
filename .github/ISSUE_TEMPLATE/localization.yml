@@ -1,0 +1,35 @@
+name: Localization
+description: Send translation source files
+labels: [l10n]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Useful new and corrected translation strings will be included on next releases.
+
+        *Please do not use this form to send singular translation strings, only translation files (.ts, .po).*
+  - type: input
+    id: language
+    attributes:
+      label: Language name
+      description: Language extended name, for example: English
+      validations:
+        required: true
+  - type: input
+    id: locale
+    attributes:
+      label: Locale name
+      description: ISO language code, for example: en_US, or leave empty
+      validations:
+        required: false
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional notes
+    validations:
+      required: false
+  - type: textarea
+    id: file
+    attributes:
+      name: Translation file
+      description: Use attachment for **Qt translation sources (.ts)** and **GNU Gettext localization files (.po)** file formats.

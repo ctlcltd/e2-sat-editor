@@ -196,7 +196,16 @@ gui::gui(int argc, char* argv[])
 
 	layout();
 
-	mainWindowShowAndGainFocus();
+	if (QSettings().value("geometry").isNull())
+	{
+		mwid->resize(960, 670);
+		mwid->showMaximized();
+	}
+	else
+	{
+		mwid->restoreGeometry(QSettings().value("geometry").toByteArray());
+		mwid->show();
+	}
 
 #ifdef E2SE_CHECKUPDATE
 	if (QSettings().value("preference/autoCheckUpdate", false).toBool())
@@ -219,61 +228,6 @@ gui::~gui()
 int gui::exited()
 {
 	return 0;
-}
-
-// note: workaround
-// main window is deactivated on launch [macOS]
-// a regression in Qt 6.7.x and 6.6.x
-// no way to raise the main window without change the focused window
-// delay main window show on applicationStateChange and with failsafe timer
-void gui::mainWindowShowAndGainFocus()
-{
-#ifdef Q_OS_MAC
-	if (QSettings().value("geometry").isNull())
-	{
-		mwid->resize(960, 670);
-#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0) || QT_VERSION <= QT_VERSION_CHECK(6, 5, 1)
-		mwid->showMaximized();
-#endif
-	}
-	else
-	{
-		mwid->restoreGeometry(QSettings().value("geometry").toByteArray());
-#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0) || QT_VERSION <= QT_VERSION_CHECK(6, 5, 1)
-		mwid->show();
-#endif
-	}
-
-#if QT_VERSION < QT_VERSION_CHECK(6, 8, 0) || QT_VERSION > QT_VERSION_CHECK(6, 5, 1)
-	mroot->connect(mroot, &QApplication::applicationStateChanged, [=]() { this->mainWindowDelayedShow(); });
-
-	QTimer::singleShot(6e3, [=]() { this->mainWindowDelayedShow(); });
-#endif
-#else
-	if (QSettings().value("geometry").isNull())
-	{
-		mwid->resize(960, 670);
-		mwid->showMaximized();
-	}
-	else
-	{
-		mwid->restoreGeometry(QSettings().value("geometry").toByteArray());
-		mwid->show();
-	}
-#endif
-}
-
-void gui::mainWindowDelayedShow()
-{
-	if (! mroot->property("_started_macx").toBool())
-	{
-		if (QSettings().value("geometry").isNull())
-			mwid->showMaximized();
-		else
-			mwid->show();
-
-		mroot->setProperty("_started_macx", true);
-	}
 }
 
 void gui::layout()
@@ -345,17 +299,6 @@ void gui::menuBarLayout()
 	menuBarSeparator(mfile);
 	//: Platform: Exit | Quit item
 	menuBarAction(mfile, tr("E&xit", "menu"), [=]() { this->mroot->quit(); }, QKeySequence::Quit);
-
-#ifdef Q_OS_MAC
-	//: Platform: Edit menu in macOS Menu bar
-	QT_TRANSLATE_NOOP("QCocoaMenu", "Edit");
-	//: Platform: edit item in macOS Edit Menu |
-	//: Encoding: preserve 3 singular dots
-	QT_TRANSLATE_NOOP("QCocoaMenuItem", "Start Dictation...");
-	//: Platform: edit item in macOS Edit Menu |
-	//: Encoding: note double ampersand
-	QT_TRANSLATE_NOOP("QCocoaMenuItem", "Emoji && Symbols");
-#endif
 
 	//: Platform: Edit menu
 	QMenu* medit = menuBarMenu(menubar, tr("&Edit", "menu"));

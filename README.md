@@ -1,4 +1,4 @@
-## e2 SAT Editor
+# e2 SAT Editor
 
 e2 SAT Editor is a satellite channel lists editor, for Enigma2, Neutrino, dreambox lists.
 

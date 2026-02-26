@@ -406,18 +406,6 @@ void theme::stylePseudoWinEarly()
 		highlightColor.setRgb(r, g, b);
 	}
 
-	//TODO improve win32 Qt5 not has fusion dark standard palette
-
-/*#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-	QSettings personalize = QSettings ("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", QSettings::NativeFormat);
-	if (personalize.contains("AppsUseLightTheme") && ! personalize.value("AppsUseLightTheme").toBool())
-	{
-		QPalette p = QGuiApplication::palette();
-		p.setColor(QPalette::All, QPalette::Window, Qt::black);
-		QApplication::setPalette(p);
-	}
-#endif*/
-
 	// dark mode: fusion
 	if (theme::absLuma())
 	{

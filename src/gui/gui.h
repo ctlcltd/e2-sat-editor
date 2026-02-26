@@ -376,8 +376,6 @@ class gui : protected e2se::log_factory
 		gui(int argc, char* argv[]);
 		~gui();
 		int exited();
-		void mainWindowShowAndGainFocus();
-		void mainWindowDelayedShow();
 		void settingsChanged();
 		int newTab(string path = "", bool launch = false);
 		int openTab(TAB_VIEW ttv, int arg = 0, bool rievoke = true);

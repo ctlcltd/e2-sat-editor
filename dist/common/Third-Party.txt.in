@@ -80,7 +80,7 @@ Curl Library
 ------------
 
 Library: Curl (libcurl)
-Copyright: Copyright (c) 1996 - 2025, Daniel Stenberg, daniel@haxx.se, and many contributors.
+Copyright: Copyright (C) 1996-2026, Daniel Stenberg, daniel@haxx.se, and many contributors.
 License (SPDX): curl
 License Link (URL): https://curl.se/docs/copyright.html
 
