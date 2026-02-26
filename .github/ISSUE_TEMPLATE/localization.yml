@@ -13,15 +13,15 @@ body:
     attributes:
       label: Language name
       description: "Language extended name, for example: English"
-      validations:
-        required: true
+    validations:
+      required: true
   - type: input
     id: locale
     attributes:
       label: Locale name
       description: "ISO language code, for example: en_US, or leave empty"
-      validations:
-        required: false
+    validations:
+      required: false
   - type: textarea
     id: notes
     attributes:
@@ -31,5 +31,7 @@ body:
   - type: textarea
     id: file
     attributes:
-      name: Translation file
+      label: Translation file
       description: Use attachment for **Qt translation sources (.ts)** and **GNU Gettext localization files (.po)** file formats.
+    validations:
+      required: false
