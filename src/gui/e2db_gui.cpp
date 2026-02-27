@@ -819,7 +819,7 @@ QStringList e2db::entryTunersetsTable(tunersets_table tn)
 	}
 	else if (tn.ytype == e2db::YTYPE::atsc)
 	{
-		entry = QStringList ({tnid, name});
+		entry = QStringList ({tnid, name, NULL});
 	}
 
 	return entry;

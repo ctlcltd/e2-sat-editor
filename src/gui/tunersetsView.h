@@ -16,7 +16,7 @@
 #include <QAction>
 #include <QPushButton>
 
-#include "toolkit/TreeDropIndicatorEventPainter.h"
+#include "toolkit/TreeDragDropEventHandler.h"
 #include "toolkit/TreeItemChangedEventObserver.h"
 #include "viewAbstract.h"
 
@@ -59,6 +59,7 @@ class tunersetsView : public viewAbstract
 			tnid,
 			trow1,
 			trow2,
+			tnnum,
 			name = TREE_ROW_ROLE::trow1,
 			pos = TREE_ROW_ROLE::trow2,
 			country = TREE_ROW_ROLE::trow2
@@ -71,9 +72,10 @@ class tunersetsView : public viewAbstract
 
 		enum ITEM_ROW_ROLE {
 			x,
+			trnum, // trnum [2]
 			debug_trid,
 			combo,
-			row3,
+			row3, // row3 [4]
 			row4,
 			row5,
 			row6,
@@ -141,6 +143,8 @@ class tunersetsView : public viewAbstract
 		void listItemSelectionChanged();
 		void listItemDoubleClicked();
 		void listPendingUpdate();
+		void visualReindexTree();
+		void visualReindexList();
 		void addSettings();
 		void editSettings();
 		void addPosition();
@@ -151,6 +155,8 @@ class tunersetsView : public viewAbstract
 		void showTreeEditContextMenu(QPoint& pos);
 		void showListEditContextMenu(QPoint& pos);
 		void actionCall(int bit);
+		void treeAfterDrop();
+		void listAfterDrop();
 		void updateFlags();
 		void updateStatusBar(bool current = false);
 		void updateTreeIndex();
@@ -158,8 +164,8 @@ class tunersetsView : public viewAbstract
 		void setPendingUpdateListIndex();
 		void unsetPendingUpdateListIndex();
 
-		TreeDropIndicatorEventPainter* tree_evth;
-		TreeDropIndicatorEventPainter* list_evth;
+		TreeDragDropEventHandler* tree_evth;
+		TreeDragDropEventHandler* list_evth;
 		TreeItemChangedEventObserver* tree_evto;
 		TreeItemChangedEventObserver* list_evto;
 

@@ -826,6 +826,7 @@ QDialog* tools::sortDialog(SORT_ITEM model, bool selecting, bool contextual)
 	dfrm->addWidget(label, 0, 0);
 	dfrm->addItem(dtform, 1, 0);
 	dfrm->addItem(dtbar, 2, 0);
+	dfrm->setSizeConstraint(QGridLayout::SetFixedSize);
 	dial->setLayout(dfrm);
 
 	return dial;

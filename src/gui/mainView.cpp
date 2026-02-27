@@ -262,11 +262,11 @@ void mainView::layout()
 	list->setColumnWidth(ITEM_ROW_ROLE::chfec, 50);		// FEC
 
 	// numeric items
-	QTreeWidgetItem* tree_head = list->headerItem();
-	tree_head->setData(ITEM_ROW_ROLE::chssid, Qt::UserRole, true);
-	tree_head->setData(ITEM_ROW_ROLE::chtsid, Qt::UserRole, true);
-	tree_head->setData(ITEM_ROW_ROLE::chfreq, Qt::UserRole, true);
-	tree_head->setData(ITEM_ROW_ROLE::chsr, Qt::UserRole, true);
+	QTreeWidgetItem* list_head = list->headerItem();
+	list_head->setData(ITEM_ROW_ROLE::chssid, Qt::UserRole, true);
+	list_head->setData(ITEM_ROW_ROLE::chtsid, Qt::UserRole, true);
+	list_head->setData(ITEM_ROW_ROLE::chfreq, Qt::UserRole, true);
+	list_head->setData(ITEM_ROW_ROLE::chsr, Qt::UserRole, true);
 
 	list->header()->connect(list->header(), &QHeaderView::sectionClicked, [=](int column) { this->sortByColumn(column); });
 
@@ -395,7 +395,7 @@ void mainView::layout()
 	this->list_evth = new TreeDragDropEventHandler;
 	this->list_evto = new TreeItemChangedEventObserver;
 	tree_evth->setEventCallback([=](QTreeWidget* tw, QTreeWidgetItem* current) { this->treeAfterDrop(tw, current); });
-	list_evth->setEventCallback([=](QTreeWidget* tw) { this->listAfterDrop(tw); });
+	list_evth->setEventCallback([=](QTreeWidget* tw) { this->listAfterDrop(); });
 	side->connect(side, &QTreeWidget::itemPressed, [=](QTreeWidgetItem* item) { this->treeSwitched(side, item); });
 	side->connect(side, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem* current) { this->servicesItemChanged(current); });
 	tree->viewport()->installEventFilter(tree_evth);
@@ -3908,7 +3908,7 @@ void mainView::treeAfterDrop(QTreeWidget* tw, QTreeWidgetItem* current)
 	this->data->setChanged(true);
 }
 
-void mainView::listAfterDrop(QTreeWidget* tw)
+void mainView::listAfterDrop()
 {
 	debug("listAfterDrop");
 

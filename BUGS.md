@@ -10,7 +10,7 @@ Information on contributions, to contribute and send Pull Request, please see [C
 
 - [x] favourite reference, on copy-paste, `#DESCRIPTION` is placed everywhere on userbouquet file [mainView.cpp]
 - [ ] ftp upload, the current tree list is not stored before upload [tab.cpp] [viewAbstract.cpp] [mainView.cpp]
-- [ ] edit transponders, sort ordering is not stored [transpondersView.cpp]
+- [x] edit transponders, sort ordering is not stored [transpondersView.cpp] [tunersetsView.cpp]
 - [x] tools popover defects, native `QMenu` `QComboBox` [macos] [gui] [tools.cpp]
 - [x] find match cache, is cached after channel deletetion [gui] [viewAbstract.cpp]
 - [x] check update, when disconnected, there is no connection error dialog [checkUpdate.cpp]

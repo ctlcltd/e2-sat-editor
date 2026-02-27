@@ -145,12 +145,13 @@ void transpondersView::layout()
 	list_style->setIndentation(8, true);
 	list_style->setFirstColumnIndent(1);
 
-	QTreeWidgetItem* list_thead = new QTreeWidgetItem({NULL, "TXID", tr("Combo"), tr("System"), tr("Position"), tr("Transport ID"), tr("DVBNS"), tr("ONID"), tr("Frequency"), tr("Polarization"), tr("Symbol Rate"), tr("FEC"), tr("Modulation"), tr("Bandwidth"), tr("Roll offset"), tr("Pilot"), tr("Inversion"), tr("Tmx Mode"), tr("Guard"), tr("Hierarchy")});
+	QTreeWidgetItem* list_thead = new QTreeWidgetItem({NULL, tr("Index"), "TXID", tr("Combo"), tr("System"), tr("Position"), tr("Transport ID"), tr("DVBNS"), tr("ONID"), tr("Frequency"), tr("Polarization"), tr("Symbol Rate"), tr("FEC"), tr("Modulation"), tr("Bandwidth"), tr("Roll offset"), tr("Pilot"), tr("Inversion"), tr("Tmx Mode"), tr("Guard"), tr("Hierarchy")});
 	list->setHeaderItem(list_thead);
 #if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
 	list->header()->setDefaultSectionSize(0);
 #endif
 	list->setColumnHidden(ITEM_ROW_ROLE::x, true);		// hidden index
+	list->setColumnWidth(ITEM_ROW_ROLE::txnum, 65);		// (Transponder Number) Index
 	if (QSettings().value("application/debug", true).toBool()) {
 		list->setColumnWidth(ITEM_ROW_ROLE::debug_txid, 175);
 	}
@@ -178,12 +179,12 @@ void transpondersView::layout()
 	list->setColumnWidth(ITEM_ROW_ROLE::hier, 70);		// Hierarchy
 
 	// numeric items
-	QTreeWidgetItem* tree_head = list->headerItem();
-	tree_head->setData(ITEM_ROW_ROLE::tsid, Qt::UserRole, true);
-	tree_head->setData(ITEM_ROW_ROLE::dvbns, Qt::UserRole, true);
-	tree_head->setData(ITEM_ROW_ROLE::onid, Qt::UserRole, true);
-	tree_head->setData(ITEM_ROW_ROLE::freq, Qt::UserRole, true);
-	tree_head->setData(ITEM_ROW_ROLE::sr, Qt::UserRole, true);
+	QTreeWidgetItem* list_head = list->headerItem();
+	list_head->setData(ITEM_ROW_ROLE::tsid, Qt::UserRole, true);
+	list_head->setData(ITEM_ROW_ROLE::dvbns, Qt::UserRole, true);
+	list_head->setData(ITEM_ROW_ROLE::onid, Qt::UserRole, true);
+	list_head->setData(ITEM_ROW_ROLE::freq, Qt::UserRole, true);
+	list_head->setData(ITEM_ROW_ROLE::sr, Qt::UserRole, true);
 
 	list->header()->connect(list->header(), &QHeaderView::sectionClicked, [=](int column) { this->sortByColumn(column); });
 
@@ -204,8 +205,9 @@ void transpondersView::layout()
 	this->action.list_search->setDisabled(true);
 	this->action.list_search->actions().first()->setDisabled(true);
 
-	this->list_evth = new TreeDropIndicatorEventPainter;
+	this->list_evth = new TreeDragDropEventHandler;
 	this->list_evto = new TreeItemChangedEventObserver;
+	list_evth->setEventCallback([=](QTreeWidget* tw) { this->listAfterDrop(); });
 	list->installEventFilter(list_evto);
 	list->viewport()->installEventFilter(list_evth);
 	list->connect(list, &QTreeWidget::currentItemChanged, [=]() { this->listItemChanged(); });
@@ -321,6 +323,7 @@ void transpondersView::populate()
 		QString txid = QString::fromStdString(tx.txid);
 
 		QStringList entry = dbih->entryTransponder(tx, true);
+		entry.prepend(idx);
 		entry.prepend(x);
 		entry.removeAt(8);
 
@@ -340,7 +343,7 @@ void transpondersView::populate()
 
 	// sorting default column 0|asc
 	list->sortItems(0, Qt::AscendingOrder);
-	list->header()->setSortIndicator(1, Qt::AscendingOrder);
+	list->header()->setSortIndicator(0, Qt::AscendingOrder);
 }
 
 void transpondersView::listItemChanged()
@@ -408,6 +411,37 @@ void transpondersView::listUpdate()
 	this->data->setChanged(true);
 }
 
+void transpondersView::visualReindexList()
+{
+	debug("visualReindexList");
+
+	// sorting column 0|desc || column 0|asc
+	bool reverse = (this->state.sort.first < 1 && this->state.sort.second == Qt::DescendingOrder) ? true : false;
+
+	int i = 0, y = 0, idx = 0;
+	int j = list->topLevelItemCount();
+	size_t pad_width = std::to_string(j).size() + 1;
+
+	if (reverse)
+	{
+		while (j--)
+		{
+			y++;
+		}
+		j = list->topLevelItemCount();
+	}
+	while (reverse ? j-- : i != j)
+	{
+		QTreeWidgetItem* item = list->topLevelItem(i);
+		idx = reverse ? j : i;
+		item->setText(ITEM_ROW_ROLE::x, QString::number(idx++).rightJustified(pad_width, '0'));
+		item->setText(ITEM_ROW_ROLE::txnum, QString::number(idx - y));
+		i++;
+	}
+
+	this->state.txx_pending = true;
+}
+
 void transpondersView::addTransponder()
 {
 	debug("addTransponder");
@@ -442,6 +476,7 @@ void transpondersView::addTransponder()
 	QString x = QString::number(i++).rightJustified(pad_width, '0');
 	QString idx = QString::number(i);
 	QStringList entry = dbih->entryTransponder(tx, true);
+	entry.prepend(idx);
 	entry.prepend(x);
 	entry.removeAt(8);
 
@@ -458,6 +493,8 @@ void transpondersView::addTransponder()
 	list->header()->setSectionsClickable(true);
 	list->setDragEnabled(true);
 	list->setAcceptDrops(true);
+
+	visualReindexList();
 
 	updateListIndex();
 
@@ -504,6 +541,7 @@ void transpondersView::editTransponder()
 	e2db::transponder tx = dbih->db.transponders[nw_txid];
 
 	QStringList entry = dbih->entryTransponder(tx, true);
+	entry.prepend(item->text(ITEM_ROW_ROLE::txnum));
 	entry.prepend(item->text(ITEM_ROW_ROLE::x));
 	entry.removeAt(8);
 	for (int i = 0; i < entry.count(); i++)
@@ -536,7 +574,7 @@ void transpondersView::listItemCopy(bool cut)
 		QStringList data;
 		data.reserve(TSV_TABS);
 
-		// start from combo column [2]
+		// start from combo column [3]
 		for (int i = ITEM_ROW_ROLE::combo; i < list->columnCount(); i++)
 		{
 			QString qstr = item->data(i, Qt::DisplayRole).toString();
@@ -637,6 +675,8 @@ void transpondersView::listItemDelete(bool cut)
 	list->header()->setSectionsClickable(true);
 	list->setDragEnabled(true);
 	list->setAcceptDrops(true);
+
+	visualReindexList();
 
 	updateListIndex();
 
@@ -747,6 +787,7 @@ void transpondersView::putListItems(vector<QString> items)
 			tx = dbih->db.transponders[tx.txid];
 		}
 		entry = dbih->entryTransponder(tx, true);
+		entry.prepend(idx);
 		entry.prepend(x);
 		entry.removeAt(8);
 
@@ -765,6 +806,8 @@ void transpondersView::putListItems(vector<QString> items)
 			list->addTopLevelItems(clist);
 		else
 			list->insertTopLevelItems(y, clist);
+
+		visualReindexList();
 
 		updateListIndex();
 
@@ -838,6 +881,18 @@ void transpondersView::actionCall(int bit)
 	}
 }
 
+void transpondersView::listAfterDrop()
+{
+	debug("listAfterDrop");
+
+	QTimer::singleShot(0, [=]() {
+		this->visualReindexList();
+
+		this->listUpdate();
+		this->tabPropagateChanges();
+	});
+}
+
 void transpondersView::updateFlags()
 {
 	viewAbstract::updateFlags();
@@ -888,10 +943,15 @@ void transpondersView::updateListIndex()
 
 	dbih->index["txs"].clear();
 
+	qDebug() << "count 0: " << dbih->index["txs"].size();
+
 	int sort_column = list->sortColumn();
 	Qt::SortOrder sort_order = list->header()->sortIndicatorOrder();
 	bool sorted = sort_column != 0 && sort_order != Qt::AscendingOrder;
 	sort_column = sort_column == 1 ? 0 : sort_column;
+
+	qDebug() << "sorted: " << sorted;
+	qDebug() << "sort_column: " << sort_column;
 
 	if (sorted)
 		list->sortItems(0, Qt::AscendingOrder);
@@ -907,6 +967,8 @@ void transpondersView::updateListIndex()
 
 	if (sorted)
 		treeSortItems(list, sort_column, sort_order);
+
+	qDebug() << "count 1: " << dbih->index["txs"].size();
 
 	this->state.txx_pending = false;
 }

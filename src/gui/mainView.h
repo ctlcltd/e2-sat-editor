@@ -201,7 +201,7 @@ class mainView : public viewAbstract
 		void showListEditContextMenu(QPoint& pos);
 		void actionCall(int bit);
 		void treeAfterDrop(QTreeWidget* tw, QTreeWidgetItem* current);
-		void listAfterDrop(QTreeWidget* tw);
+		void listAfterDrop();
 		void treeDropFromTree(QTreeWidgetItem* current);
 		void treeDropFromList(QTreeWidgetItem* current);
 		void updateFlags();

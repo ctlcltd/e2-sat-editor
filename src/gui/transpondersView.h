@@ -15,7 +15,7 @@
 #include <QTreeWidget>
 #include <QPushButton>
 
-#include "toolkit/TreeDropIndicatorEventPainter.h"
+#include "toolkit/TreeDragDropEventHandler.h"
 #include "toolkit/TreeItemChangedEventObserver.h"
 #include "viewAbstract.h"
 
@@ -52,6 +52,7 @@ class transpondersView : public viewAbstract
 
 		enum ITEM_ROW_ROLE {
 			x,
+			txnum,
 			debug_txid,
 			combo,
 			sys,
@@ -95,16 +96,18 @@ class transpondersView : public viewAbstract
 		void listItemSelectionChanged();
 		void listItemDoubleClicked();
 		void listUpdate();
+		void visualReindexList();
 		void addTransponder();
 		void editTransponder();
 		void putListItems(vector<QString> items);
 		void showListEditContextMenu(QPoint& pos);
 		void actionCall(int bit);
+		void listAfterDrop();
 		void updateFlags();
 		void updateStatusBar(bool current = false);
 		void updateListIndex();
 
-		TreeDropIndicatorEventPainter* list_evth;
+		TreeDragDropEventHandler* list_evth;
 		TreeItemChangedEventObserver* list_evto;
 
 		__state state;
