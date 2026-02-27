@@ -424,6 +424,8 @@ void transpondersView::addTransponder()
 	if (! dbih->db.transponders.count(txid))
 		return error("addTransponder", tr("Error", "error").toStdString(), tr("Missing transponder key \"%1\".", "error").arg(txid.data()).toStdString());
 
+	listFindClear();
+
 	list->header()->setSectionsClickable(false);
 	list->setDragEnabled(false);
 	list->setAcceptDrops(false);
@@ -485,6 +487,8 @@ void transpondersView::editTransponder()
 		debug("editTransponder", "txid", txid);
 	else
 		return error("editTransponder", tr("Error", "error").toStdString(), tr("Transponder \"%1\" not exists.", "error").arg(txid.data()).toStdString());
+
+	listFindClear();
 
 	e2se_gui::editTransponder* dialog = new e2se_gui::editTransponder(this->data);
 	dialog->setEditId(txid);

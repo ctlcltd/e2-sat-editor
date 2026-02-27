@@ -814,7 +814,6 @@ QDialog* tools::sortDialog(SORT_ITEM model, bool selecting, bool contextual)
 				dial->close();
 			});
 		});
-		dtbar->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
 		dtbar->addWidget(button);
 	}
 

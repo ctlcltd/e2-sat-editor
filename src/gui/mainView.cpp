@@ -2177,6 +2177,8 @@ void mainView::addService()
 	if (reload)
 		dbih->clearStorage();
 
+	listFindClear();
+
 	list->header()->setSectionsClickable(false);
 	list->setDragEnabled(false);
 	list->setAcceptDrops(false);
@@ -2343,6 +2345,8 @@ void mainView::editService()
 
 	if (reload)
 		dbih->clearStorage();
+
+	listFindClear();
 
 	e2db::channel_reference chref;
 
@@ -2848,6 +2852,8 @@ void mainView::treeItemDelete()
 		QTreeWidgetItem* parent = item->parent();
 		parent->removeChild(item);
 	}
+
+	listFindClear();
 
 	setPendingUpdateListIndex();
 	updateTreeIndex();
@@ -3363,6 +3369,8 @@ void mainView::listItemDelete(bool cut)
 			cache.clear();
 		}
 	}
+
+	listFindClear();
 
 	list->header()->setSectionsClickable(true);
 	list->setDragEnabled(true);

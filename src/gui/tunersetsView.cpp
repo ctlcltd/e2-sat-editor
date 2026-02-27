@@ -940,6 +940,8 @@ void tunersetsView::addTransponder()
 	if (! dbih->tuners[tvid].tables[tnid].transponders.count(trid))
 		return error("addTransponder", tr("Error", "error").toStdString(), tr("Missing tuner settings transponder key \"%1\".", "error").arg(trid.data()).toStdString());
 
+	listFindClear();
+
 	list->header()->setSectionsClickable(false);
 	list->setDragEnabled(false);
 	list->setAcceptDrops(false);
@@ -1010,6 +1012,8 @@ void tunersetsView::editTransponder()
 	else
 		return error("editTransponder", tr("Error", "error").toStdString(), tr("Tuner settings transponder \"%1\" not exists.", "error").arg(trid.data()).toStdString());
 
+	listFindClear();
+
 	e2se_gui::editTunersetsTransponder* dialog = new e2se_gui::editTunersetsTransponder(this->data, tvid);
 	dialog->setEditId(trid, tnid, tvid);
 	dialog->display(cwid);
@@ -1068,6 +1072,8 @@ void tunersetsView::treeItemDelete()
 
 		dbih->removeTunersetsTable(tnid, tvs);
 	}
+
+	listFindClear();
 
 	setPendingUpdateListIndex();
 	updateTreeIndex();
@@ -1211,6 +1217,8 @@ void tunersetsView::listItemDelete(bool cut)
 
 		dbih->removeTunersetsTransponder(trid, tns);
 	}
+
+	listFindClear();
 
 	list->header()->setSectionsClickable(true);
 	list->setDragEnabled(true);
