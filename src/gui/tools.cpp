@@ -19,12 +19,13 @@
 #include <QDialog>
 #include <QGridLayout>
 #include <QFormLayout>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QLineEdit>
 #include <QComboBox>
 #include <QCheckBox>
 #include <QLabel>
-#include <QMenu>
-#include <QWidgetAction>
+#include <QGroupBox>
 #include <QMouseEvent>
 #ifdef Q_OS_WIN
 #include <QStyleFactory>
@@ -676,40 +677,29 @@ bool tools::handleSortContext(SORT_ITEM model, bool contextual, e2db::uoopts& op
 		return true;
 
 	bool selecting = opts.selecting;
-	QWidget* wid = tid->lastPopupFocusWidget();
-	QPoint pos = tid->lastPopupFocusPos();
-	QMenu* menu = sortMenu(model, selecting, contextual);
 
-	// note: menu loose focus
-	if (! platform::osExperiment())
-		menu->setFocus();
-
-	// menu->exec(wid->mapToGlobal(pos));
-	platform::osMenu(menu, wid, pos);
-
-#if defined Q_OS_MAC && QT_VERSION >= QT_VERSION_CHECK(6, 5, 1)
-	if (platform::osExperiment())
-	{
-		// note: trick to re-gain window focus
-		QWindow* wnd = new QWindow(wid->topLevelWidget()->windowHandle());
-		wnd->setFlags(Qt::Drawer);
-		wnd->show();
-		wnd->requestActivate();
-		wnd->close();
-		wid->topLevelWidget()->windowHandle()->requestActivate();
-		wnd->destroy();
-	}
-#endif
+	QDialog* dial = sortDialog(model, selecting, contextual);
+	dial->exec();
 
 	return sortContext(model, opts);
 }
 
-QMenu* tools::sortMenu(SORT_ITEM model, bool selecting, bool contextual)
+QDialog* tools::sortDialog(SORT_ITEM model, bool selecting, bool contextual)
 {
-	QMenu* menu = new QMenu;
-	vector<QWidget*> fields;
-	QString title;
+	QDialog* dial = new QDialog(this->cwid, Qt::Sheet);
+	dial->setObjectName("dialsort");
+	dial->setModal(true);
+	dial->setWindowTitle(tr("Sort", "menu"));
 
+#ifdef Q_OS_WIN
+	theme->win_flavor_fix(dial);
+#endif
+
+	QGridLayout* dfrm = new QGridLayout;
+	QFormLayout* dtform = new QFormLayout;
+	vector<QWidget*> fields;
+
+	QString title;
 	switch (model)
 	{
 		case SORT_ITEM::item_transponder: title = tr("Sort transponders", "dialog"); break;
@@ -718,64 +708,56 @@ QMenu* tools::sortMenu(SORT_ITEM model, bool selecting, bool contextual)
 		case SORT_ITEM::item_reference: title = tr("Sort references", "dialog"); break;
 	}
 
-	{
-		QWidgetAction* action = new QWidgetAction(nullptr);
-		QLabel* label = new QLabel(title);
+	QLabel* label = new QLabel(title);
 #ifndef Q_OS_MAC
-		label->setStyleSheet("QLabel { margin: 5px 10px }");
+	label->setStyleSheet("QLabel { margin: 5px 10px }");
 #else
-		label->setStyleSheet("QLabel { margin: 5px 10px; font-weight: bold }");
+	label->setStyleSheet("QLabel { margin: 5px 10px; font-weight: bold }");
 #endif
-		action->setDefaultWidget(label);
-		menu->addAction(action);
-	}
+
 	{
-		QWidgetAction* action = new QWidgetAction(nullptr);
-		QWidget* wrap = new QWidget;
-		QFormLayout* form = new QFormLayout(wrap);
-		form->setContentsMargins(15, 3, 15, 10);
+		QFormLayout* form = new QFormLayout;
+		form->setContentsMargins(15, 6, 15, 8);
 		form->setFormAlignment(Qt::AlignLeading);
 		form->setRowWrapPolicy(QFormLayout::DontWrapRows);
+		form->setSpacing(10);
 
 		{
 			QComboBox* select = new QComboBox;
+			select->setFocusPolicy(Qt::ClickFocus);
 			select->setProperty("field", "prop");
 			fields.emplace_back(select);
 			for (auto & x : this->sortComboBoxProps(model))
 				select->addItem(x.first, x.second);
-			//TODO FIX
-			// QComboBox popup mouse release interfers with QMenu viewport events
-			// QWidgetAction QComboBox native popup not enabled
-			/*platform::osComboBox(select);*/
-#ifdef Q_OS_WASM
-			select->setEditable(true);
-#endif
+			platform::osComboBox(select);
 			form->addRow("by", select);
 		}
 		{
 			QComboBox* select = new QComboBox;
+			select->setFocusPolicy(Qt::ClickFocus);
 			select->setProperty("field", "order");
 			fields.emplace_back(select);
 			select->addItem(tr("ascending"), e2db::SORT_ORDER::sort_asc);
 			select->addItem(tr("descending"), e2db::SORT_ORDER::sort_desc);
-			//TODO FIX
-			// QComboBox popup mouse release interfers with QMenu viewport events
-			// QWidgetAction QComboBox native popup not enabled
-			/*platform::osComboBox(select);*/
-#ifdef Q_OS_WASM
-			select->setEditable(true);
-#endif
+			platform::osComboBox(select);
 			form->addRow("order", select);
 		}
 
-		action->setDefaultWidget(wrap);
-		menu->addAction(action);
+		dtform->addRow(form);
 	}
-	menu->addSeparator();
 	{
-		QWidgetAction* action = new QWidgetAction(nullptr);
-		QWidget* wrap = new QWidget;
-		QFormLayout* form = new QFormLayout(wrap);
+		// note: bad way to obtain styled pseudo separator, 1px gap
+		QVBoxLayout* separator = new QVBoxLayout;
+		separator->setContentsMargins(14, 7, 14, 6);
+		QGroupBox* frame = new QGroupBox;
+		frame->setMinimumHeight(2);
+		frame->setMaximumHeight(1);
+		separator->addWidget(frame);
+
+		dtform->addRow(separator);
+	}
+	{
+		QFormLayout* form = new QFormLayout;
 		form->setContentsMargins(15, 8, 15, 8);
 		form->setFormAlignment(Qt::AlignLeading);
 		form->setVerticalSpacing(12);
@@ -783,6 +765,7 @@ QMenu* tools::sortMenu(SORT_ITEM model, bool selecting, bool contextual)
 		if (! contextual)
 		{
 			QCheckBox* checker = new QCheckBox;
+			checker->setFocusPolicy(Qt::ClickFocus);
 			checker->setProperty("field", "recall");
 			fields.emplace_back(checker);
 			checker->setText(tr("Recall this set when Sort from context menu"));
@@ -800,35 +783,53 @@ QMenu* tools::sortMenu(SORT_ITEM model, bool selecting, bool contextual)
 			form->addRow(checker);
 		}
 
-		action->setDefaultWidget(wrap);
-		menu->addAction(action);
+		dtform->addRow(form);
 	}
-	{
-		QWidgetAction* action = new QWidgetAction(nullptr);
-		QWidget* wrap = new QWidget;
-		QHBoxLayout* hbox = new QHBoxLayout(wrap);
-		hbox->setContentsMargins(15, 10, 15, 10);
-		hbox->setAlignment(Qt::AlignTrailing);
 
+	QHBoxLayout* dtbar = new QHBoxLayout;
+	dtbar->setContentsMargins(15, 10, 15, 10);
+	dtbar->setAlignment(Qt::AlignTrailing);
+
+	{
 		QPushButton* button = new QPushButton;
-		//TODO FIX
+		button->setText(tr("Cancel", "dialog"));
+		button->connect(button, &QPushButton::pressed, [=]() {
+			// delay too fast
+			QTimer::singleShot(100, [=]() {
+				dial->close();
+			});
+		});
+		dtbar->addWidget(button);
+	}
+	dtbar->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
+	{
+		QPushButton* button = new QPushButton;
 		button->setDefault(true);
 		button->setText(tr("Apply Sort", "dialog"));
 		button->connect(button, &QPushButton::pressed, [=]() {
 			this->menuSortCallback(fields);
 
 			// delay too fast
-			QTimer::singleShot(50, [=]() {
-				delete menu;
+			QTimer::singleShot(100, [=]() {
+				dial->close();
 			});
 		});
-		hbox->addWidget(button);
-
-		action->setDefaultWidget(wrap);
-		menu->addAction(action);
+		dtbar->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
+		dtbar->addWidget(button);
 	}
 
-	return menu;
+#ifndef Q_OS_MAC
+	dfrm->setContentsMargins(3, 5, 3, 7);
+#else
+	dfrm->setContentsMargins(1, 4, 1, 6);
+#endif
+	dfrm->setSpacing(0);
+	dfrm->addWidget(label, 0, 0);
+	dfrm->addItem(dtform, 1, 0);
+	dfrm->addItem(dtbar, 2, 0);
+	dial->setLayout(dfrm);
+
+	return dial;
 }
 
 void tools::menuSortCallback(vector<QWidget*> fields)

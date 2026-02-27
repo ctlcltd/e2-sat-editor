@@ -13,7 +13,7 @@ Information on contributions, to contribute and send Pull Request, please see [C
 - [ ] edit transponders, sort ordering is not stored [transpondersView.cpp]
 - [ ] telnet reload, when connected is always True also when not reloading [ftp] [ftpcom.cpp]
 - [ ] telnet reload, it connects but seems to not working [ftp] [ftpcom.cpp]
-- [ ] tools popover defects, native `QMenu` `QComboBox` [macos] [gui] [tools.cpp]
+- [x] tools popover defects, native `QMenu` `QComboBox` [macos] [gui] [tools.cpp]
 - [ ] find match cache, is cached after channel deletetion [gui] [viewAbstract.cpp]
 - [ ] telnet emulation py script, seems to not working [workspace] [start-telnet.py]
 - [x] check update, when disconnected, there is no connection error dialog [checkUpdate.cpp]

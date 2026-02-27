@@ -150,7 +150,6 @@ void ListIconDragDropEventHandler::raiseWindow()
 	list->window()->raise();
 }
 
-
 bool ListIconDragDropEventFilter::eventFilter(QObject* object, QEvent* event)
 {
 	if (event->type() == QEvent::DragEnter)

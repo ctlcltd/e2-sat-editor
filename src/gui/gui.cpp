@@ -1171,6 +1171,7 @@ void gui::windowChanged()
 
 	updateMenu();
 
+	//TODO improve QApplication::focusChanged() is not enough
 	QSettings().setValue("geometry", mwid->saveGeometry());
 }
 

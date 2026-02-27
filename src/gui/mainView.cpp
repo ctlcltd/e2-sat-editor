@@ -3748,6 +3748,8 @@ void mainView::showTreeEditContextMenu(QPoint& pos)
 	if (selected.empty())
 		return;
 
+	bool sortable = list->topLevelItemCount();
+
 	QMenu* tree_edit = contextMenu();
 
 	// bouquet: tv | radio
@@ -3773,7 +3775,7 @@ void mainView::showTreeEditContextMenu(QPoint& pos)
 		contextMenuSeparator(tree_edit);
 		contextMenuAction(tree_edit, ! ub_parental ? tr("Set Parental lock", "context-menu") : tr("Unset Parental lock", "context-menu"), [=]() { this->toggleUserbouquetParentalLock(); });
 		contextMenuSeparator(tree_edit);
-		contextMenuAction(tree_edit, tr("Sort…", "context-menu"), [=]() { this->tabToolsUtils(gui::TAB_ATS::UtilsSort_references, false); });
+		contextMenuAction(tree_edit, tr("Sort…", "context-menu"), [=]() { this->tabToolsUtils(gui::TAB_ATS::UtilsSort_references, false); }, sortable);
 		contextMenuSeparator(tree_edit);
 		contextMenuAction(tree_edit, tr("&Delete", "context-menu"), [=]() { this->treeItemDelete(); }, tabGetFlag(gui::TabTreeDelete));
 	}
@@ -3796,6 +3798,7 @@ void mainView::showListEditContextMenu(QPoint& pos)
 	bool parental = false;
 	bool ub_parental = false;
 	bool editable = false;
+	bool sortable = list->topLevelItemCount();
 	int bit = gui::TAB_ATS::UtilsSort_references;
 
 	// services
@@ -3843,7 +3846,7 @@ void mainView::showListEditContextMenu(QPoint& pos)
 	else
 		contextMenuAction(list_edit, ! parental ? tr("Set Parental lock", "context-menu") : tr("Unset Parental lock", "context-menu"), [=]() { this->toggleServiceParentalLock(); }, editable && service);
 	contextMenuSeparator(list_edit);
-	contextMenuAction(list_edit, tr("Sort…", "context-menu"), [=]() { this->tabToolsUtils(bit, true); });
+	contextMenuAction(list_edit, tr("Sort…", "context-menu"), [=]() { this->tabToolsUtils(bit, true); }, sortable);
 	contextMenuSeparator(list_edit);
 	contextMenuAction(list_edit, tr("Cu&t", "context-menu"), [=]() { this->listItemCut(); }, tabGetFlag(gui::TabListCut), QKeySequence::Cut);
 	contextMenuAction(list_edit, tr("&Copy", "context-menu"), [=]() { this->listItemCopy(); }, tabGetFlag(gui::TabListCopy), QKeySequence::Copy);
