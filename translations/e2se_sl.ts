@@ -2,27 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="sl_SI">
 <context>
-    <name>QCocoaMenu</name>
-    <message>
-        <source>Edit</source>
-        <extracomment>Platform: Edit menu in macOS Menu bar</extracomment>
-        <translation>Uredi</translation>
-    </message>
-</context>
-<context>
-    <name>QCocoaMenuItem</name>
-    <message>
-        <source>Start Dictation...</source>
-        <extracomment>Platform: edit item in macOS Edit Menu | Encoding: preserve 3 singular dots</extracomment>
-        <translation>Začni narekovanje ...</translation>
-    </message>
-    <message>
-        <source>Emoji &amp;&amp; Symbols</source>
-        <extracomment>Platform: edit item in macOS Edit Menu | Encoding: note double ampersand</extracomment>
-        <translation>Emoji &amp;&amp; simboli</translation>
-    </message>
-</context>
-<context>
     <name>QFileDialog</name>
     <message>
         <source>&amp;Save</source>
@@ -2467,33 +2446,43 @@ Počakajte nekaj minut in poskusite znova.</translation>
     </message>
     <message>
         <source>Reference ID</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>Reference ID</translation>
     </message>
     <message>
         <source>Service ID</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>Service ID</translation>
     </message>
     <message>
         <source>Transponder</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>Transponder</translation>
     </message>
     <message>
         <source>Userbouquets</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>Userbouquets</translation>
     </message>
     <message>
         <source>Bouquets</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>Šopki</translation>
     </message>
     <message>
+        <source>Flags</source>
+        <comment>reference-panel</comment>
+        <translation type="unfinished">Zastave</translation>
+    </message>
+    <message>
         <source>Tuner</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>Tuner</translation>
+    </message>
+    <message>
+        <source>PIDs</source>
+        <comment>reference-panel</comment>
+        <translation type="unfinished">PID</translation>
     </message>
     <message>
         <source>Error</source>
@@ -4353,6 +4342,11 @@ Počakajte nekaj minut in poskusite znova.</translation>
         <translation>Napaka pri izvajanju makra.</translation>
     </message>
     <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Razvrsti</translation>
+    </message>
+    <message>
         <source>Sort transponders</source>
         <comment>dialog</comment>
         <translation>Razvrsti transponderje</translation>
@@ -4387,6 +4381,11 @@ Počakajte nekaj minut in poskusite znova.</translation>
     <message>
         <source>Apply to list selection</source>
         <translation>Uporabi za izbrano na seznamu</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation type="unfinished">Prekliči</translation>
     </message>
     <message>
         <source>Apply Sort</source>
@@ -4620,6 +4619,10 @@ Počakajte nekaj minut in poskusite znova.</translation>
         <translation>Hierarhija</translation>
     </message>
     <message>
+        <source>Index</source>
+        <translation type="unfinished">Kazalo</translation>
+    </message>
+    <message>
         <source>New Transponder</source>
         <comment>toolbar</comment>
         <translation>Nov Transponder</translation>
@@ -4716,6 +4719,10 @@ Počakajte nekaj minut in poskusite znova.</translation>
     <message>
         <source>Position</source>
         <translation>Položaj</translation>
+    </message>
+    <message>
+        <source>Index</source>
+        <translation type="unfinished">Kazalo</translation>
     </message>
     <message>
         <source>Freq/Pol/SR</source>

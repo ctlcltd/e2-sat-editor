@@ -2,27 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="tr_TR">
 <context>
-    <name>QCocoaMenu</name>
-    <message>
-        <source>Edit</source>
-        <extracomment>Platform: Edit menu in macOS Menu bar</extracomment>
-        <translation>Düzenlemek</translation>
-    </message>
-</context>
-<context>
-    <name>QCocoaMenuItem</name>
-    <message>
-        <source>Start Dictation...</source>
-        <extracomment>Platform: edit item in macOS Edit Menu | Encoding: preserve 3 singular dots</extracomment>
-        <translation>Dikteyi başlat...</translation>
-    </message>
-    <message>
-        <source>Emoji &amp;&amp; Symbols</source>
-        <extracomment>Platform: edit item in macOS Edit Menu | Encoding: note double ampersand</extracomment>
-        <translation>Emoji &amp;&amp; Semboller</translation>
-    </message>
-</context>
-<context>
     <name>QFileDialog</name>
     <message>
         <source>&amp;Save</source>
@@ -2460,33 +2439,43 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
     </message>
     <message>
         <source>Reference ID</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>Reference ID</translation>
     </message>
     <message>
         <source>Service ID</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>Service ID</translation>
     </message>
     <message>
         <source>Transponder</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>Transponder</translation>
     </message>
     <message>
         <source>Userbouquets</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>Userbouquets</translation>
     </message>
     <message>
         <source>Bouquets</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>Bouquets</translation>
     </message>
     <message>
+        <source>Flags</source>
+        <comment>reference-panel</comment>
+        <translation type="unfinished">Flags</translation>
+    </message>
+    <message>
         <source>Tuner</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>Tuner</translation>
+    </message>
+    <message>
+        <source>PIDs</source>
+        <comment>reference-panel</comment>
+        <translation type="unfinished">PID</translation>
     </message>
     <message>
         <source>Error</source>
@@ -4337,6 +4326,11 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <translation>Makro yürütülürken hata oluştu.</translation>
     </message>
     <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Sırala</translation>
+    </message>
+    <message>
         <source>Sort transponders</source>
         <comment>dialog</comment>
         <translation>Transponderleri sırala</translation>
@@ -4371,6 +4365,11 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
     <message>
         <source>Apply to list selection</source>
         <translation>Listede seçili olanlara uygula</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation type="unfinished">İptal</translation>
     </message>
     <message>
         <source>Apply Sort</source>
@@ -4604,6 +4603,10 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <translation>Hierarchy</translation>
     </message>
     <message>
+        <source>Index</source>
+        <translation type="unfinished">Dizin</translation>
+    </message>
+    <message>
         <source>New Transponder</source>
         <comment>toolbar</comment>
         <translation>Yeni Transponder</translation>
@@ -4700,6 +4703,10 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
     <message>
         <source>Position</source>
         <translation>Pozisyon</translation>
+    </message>
+    <message>
+        <source>Index</source>
+        <translation type="unfinished">Dizin</translation>
     </message>
     <message>
         <source>Freq/Pol/SR</source>

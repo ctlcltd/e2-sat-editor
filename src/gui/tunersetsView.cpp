@@ -137,7 +137,7 @@ void tunersetsView::layout()
 			lhs = QStringList ({NULL, "Index", "TRID", tr("Freq/Mod/SR"), tr("Frequency"), tr("Modulation"), tr("Symbol Rate"), tr("System"), tr("FEC"), tr("Inversion")});
 		break;
 		case e2db::YTYPE::atsc:
-			ths = QStringList ({NULL, tr("Name"), tr("Position"), tr("Index")});
+			ths = QStringList ({NULL, tr("Name"), NULL, tr("Index")});
 			lhs = QStringList ({NULL, "Index", "TRID", NULL, tr("Frequency"), tr("Modulation"), NULL, tr("System")});
 		break;
 	}

@@ -2,27 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="he_IL">
 <context>
-    <name>QCocoaMenu</name>
-    <message>
-        <source>Edit</source>
-        <extracomment>Platform: Edit menu in macOS Menu bar</extracomment>
-        <translation>לַעֲרוֹך</translation>
-    </message>
-</context>
-<context>
-    <name>QCocoaMenuItem</name>
-    <message>
-        <source>Start Dictation...</source>
-        <extracomment>Platform: edit item in macOS Edit Menu | Encoding: preserve 3 singular dots</extracomment>
-        <translation>התחל הכתבה...</translation>
-    </message>
-    <message>
-        <source>Emoji &amp;&amp; Symbols</source>
-        <extracomment>Platform: edit item in macOS Edit Menu | Encoding: note double ampersand</extracomment>
-        <translation>אימוג&apos;י וסמלים</translation>
-    </message>
-</context>
-<context>
     <name>QFileDialog</name>
     <message>
         <source>&amp;Save</source>
@@ -2466,33 +2445,43 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>Reference ID</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>Reference ID</translation>
     </message>
     <message>
         <source>Service ID</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>Service ID</translation>
     </message>
     <message>
         <source>Transponder</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>משדר</translation>
     </message>
     <message>
         <source>Userbouquets</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>זרי משתמש</translation>
     </message>
     <message>
         <source>Bouquets</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>ערוץ-קבוצות</translation>
     </message>
     <message>
+        <source>Flags</source>
+        <comment>reference-panel</comment>
+        <translation type="unfinished">דגלים</translation>
+    </message>
+    <message>
         <source>Tuner</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>כַּונָן</translation>
+    </message>
+    <message>
+        <source>PIDs</source>
+        <comment>reference-panel</comment>
+        <translation type="unfinished">PID</translation>
     </message>
     <message>
         <source>Error</source>
@@ -4346,6 +4335,11 @@ Please wait few minutes and try again.</source>
         <translation>שגיאה בביצוע מאקרו.</translation>
     </message>
     <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation type="unfinished">סוּג</translation>
+    </message>
+    <message>
         <source>Sort transponders</source>
         <comment>dialog</comment>
         <translation>מיין משיבים</translation>
@@ -4380,6 +4374,11 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Apply to list selection</source>
         <translation>החל על שנבחרו ברשימה</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation type="unfinished">ביטול</translation>
     </message>
     <message>
         <source>Apply Sort</source>
@@ -4613,6 +4612,10 @@ Please wait few minutes and try again.</source>
         <translation>הִיֵרַרכִיָה</translation>
     </message>
     <message>
+        <source>Index</source>
+        <translation type="unfinished">אינדקס</translation>
+    </message>
+    <message>
         <source>New Transponder</source>
         <comment>toolbar</comment>
         <translation>משדר חדש</translation>
@@ -4709,6 +4712,10 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Position</source>
         <translation>מיקום</translation>
+    </message>
+    <message>
+        <source>Index</source>
+        <translation type="unfinished">אינדקס</translation>
     </message>
     <message>
         <source>Freq/Pol/SR</source>

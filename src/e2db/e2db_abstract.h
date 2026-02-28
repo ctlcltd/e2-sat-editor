@@ -628,8 +628,12 @@ struct e2db_abstract : protected e2se::log_factory
 		static vector<string> value_channel_provider(string str);
 		static string value_channel_provider(service ch);
 		static string value_channel_provider(map<char, vector<string>> data);
+		static string value_channel_pid(service ch, SDATA_PIDS pid);
+		static vector<string> value_channel_pid(service ch, SDATA_PIDS pid, string val);
 		static vector<string> value_channel_caid(string str, string separator = "|");
 		static vector<string> value_channel_cached(string str, string separator = "|");
+		static string value_channel_flags(service ch, SDATA_FLAGS bit);
+		static vector<string> value_channel_flags(service ch, SDATA_FLAGS bit, string val);
 		static int value_transponder_type(char ty);
 		static int value_transponder_type(string str);
 		static char value_transponder_type(int yx);

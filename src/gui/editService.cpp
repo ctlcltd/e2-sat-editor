@@ -1142,73 +1142,28 @@ void editService::retrieve()
 	}
 }
 
-string editService::getPIDValue(e2db::service ch, e2db::SDATA_PIDS x)
+string editService::getPIDValue(e2db::service ch, e2db::SDATA_PIDS pid)
 {
-	string cpx = (x > 9 ? "" : "0") + to_string(x);
-	for (string & w : ch.data[e2db::SDATA::c])
-	{
-		if (w.substr(0, 2) == cpx)
-			return to_string(std::strtol(w.substr(2).data(), NULL, 16));
-	}
-	return "";
+	auto* dbih = this->data->dbih;
+	return dbih->value_channel_pid(ch, pid);
 }
 
-vector<string> editService::computePIDs(e2db::service ch, e2db::SDATA_PIDS x, string val)
+vector<string> editService::computePIDs(e2db::service ch, e2db::SDATA_PIDS pid, string val)
 {
-	bool found = false;
-	vector<string> data = ch.data[e2db::SDATA::c];
-	string cpx = (x > 9 ? "" : "0") + to_string(x);
-	int cval = std::atoi(val.data());
-
-	char pid[7];
-	std::snprintf(pid, 7, "%2s%04x", cpx.c_str(), cval);
-
-	for (auto it = data.begin(); it != data.end(); it++)
-	{
-		if ((*it).substr(0, 2) == cpx)
-		{
-			if (val.empty())
-				*it = "";
-			else
-				*it = pid;
-			found = true;
-		}
-	}
-	if (! found && cval)
-	{
-		data.emplace_back(pid);
-	}
-	return data;
+	auto* dbih = this->data->dbih;
+	return dbih->value_channel_pid(ch, pid, val);
 }
 
-string editService::getFlagValue(e2db::service ch, e2db::SDATA_FLAGS x)
+string editService::getFlagValue(e2db::service ch, e2db::SDATA_FLAGS bit)
 {
-	long flags = std::strtol(ch.data[e2db::SDATA::f][0].data(), NULL, 16);
-
-	if (flags & x)
-		return "1";
-	return "";
+	auto* dbih = this->data->dbih;
+	return dbih->value_channel_flags(ch, bit);
 }
 
-vector<string> editService::computeFlags(e2db::service ch, e2db::SDATA_FLAGS x, string val)
+vector<string> editService::computeFlags(e2db::service ch, e2db::SDATA_FLAGS bit, string val)
 {
-	vector<string> data = ch.data[e2db::SDATA::f];
-	long flags = data.empty() ? 0 : std::strtol(data[0].data(), NULL, 16);
-
-	if (flags & x)
-		flags -= x;
-	if (val == "1")
-		flags += x;
-
-	char cflags[3];
-	std::snprintf(cflags, 3, "%02x", int (flags));
-
-	data.clear();
-
-	if (flags)
-		data.emplace_back(cflags);
-
-	return data;
+	auto* dbih = this->data->dbih;
+	return dbih->value_channel_flags(ch, bit, val);
 }
 
 bool editService::checkCollision(e2db::service ch)

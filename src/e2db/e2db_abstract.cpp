@@ -559,6 +559,45 @@ string e2db_abstract::value_channel_provider(map<char, vector<string>> data)
 	return "";
 }
 
+string e2db_abstract::value_channel_pid(service ch, SDATA_PIDS pid)
+{
+	string cpx = (pid > 9 ? "" : "0") + to_string(pid);
+	for (string & w : ch.data[SDATA::c])
+	{
+		if (w.substr(0, 2) == cpx)
+			return to_string(std::strtol(w.substr(2).data(), NULL, 16));
+	}
+	return "";
+}
+
+vector<string> e2db_abstract::value_channel_pid(service ch, SDATA_PIDS pid, string val)
+{
+	bool found = false;
+	vector<string> data = ch.data[SDATA::c];
+	string cpx = (pid > 9 ? "" : "0") + to_string(pid);
+	int cval = std::atoi(val.data());
+
+	char cpid[7];
+	std::snprintf(cpid, 7, "%2s%04x", cpx.c_str(), cval);
+
+	for (auto it = data.begin(); it != data.end(); it++)
+	{
+		if ((*it).substr(0, 2) == cpx)
+		{
+			if (val.empty())
+				*it = "";
+			else
+				*it = cpid;
+			found = true;
+		}
+	}
+	if (! found && cval)
+	{
+		data.emplace_back(cpid);
+	}
+	return data;
+}
+
 vector<string> e2db_abstract::value_channel_caid(string str, string separator)
 {
 	if (str.empty())
@@ -615,6 +654,36 @@ vector<string> e2db_abstract::value_channel_cached(string str, string separator)
 		token = std::strtok(NULL, separator.c_str());
 	}
 	return cached;
+}
+
+string e2db_abstract::value_channel_flags(service ch, SDATA_FLAGS bit)
+{
+	long flags = std::strtol(ch.data[SDATA::f][0].data(), NULL, 16);
+
+	if (flags & bit)
+		return "1";
+	return "";
+}
+
+vector<string> e2db_abstract::value_channel_flags(service ch, SDATA_FLAGS bit, string val)
+{
+	vector<string> data = ch.data[SDATA::f];
+	long flags = data.empty() ? 0 : std::strtol(data[0].data(), NULL, 16);
+
+	if (flags & bit)
+		flags -= bit;
+	if (val == "1")
+		flags += bit;
+
+	char cflags[3];
+	std::snprintf(cflags, 3, "%02x", int (flags));
+
+	data.clear();
+
+	if (flags)
+		data.emplace_back(cflags);
+
+	return data;
 }
 
 int e2db_abstract::value_transponder_type(char ty)

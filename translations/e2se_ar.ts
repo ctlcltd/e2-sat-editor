@@ -2,27 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ar_EG">
 <context>
-    <name>QCocoaMenu</name>
-    <message>
-        <source>Edit</source>
-        <extracomment>Platform: Edit menu in macOS Menu bar</extracomment>
-        <translation>يحرر</translation>
-    </message>
-</context>
-<context>
-    <name>QCocoaMenuItem</name>
-    <message>
-        <source>Start Dictation...</source>
-        <extracomment>Platform: edit item in macOS Edit Menu | Encoding: preserve 3 singular dots</extracomment>
-        <translation>بدء الإملاء...</translation>
-    </message>
-    <message>
-        <source>Emoji &amp;&amp; Symbols</source>
-        <extracomment>Platform: edit item in macOS Edit Menu | Encoding: note double ampersand</extracomment>
-        <translation>الرموز التعبيرية والرموز</translation>
-    </message>
-</context>
-<context>
     <name>QFileDialog</name>
     <message>
         <source>&amp;Save</source>
@@ -2467,33 +2446,43 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>Reference ID</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>الرقم المرجعي</translation>
     </message>
     <message>
         <source>Service ID</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>Service ID</translation>
     </message>
     <message>
         <source>Transponder</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>مرسل مستجيب</translation>
     </message>
     <message>
         <source>Userbouquets</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>باقات المستخدم</translation>
     </message>
     <message>
         <source>Bouquets</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>مجموعات القنوات</translation>
     </message>
     <message>
+        <source>Flags</source>
+        <comment>reference-panel</comment>
+        <translation type="unfinished">أعلام البت</translation>
+    </message>
+    <message>
         <source>Tuner</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>موالف</translation>
+    </message>
+    <message>
+        <source>PIDs</source>
+        <comment>reference-panel</comment>
+        <translation type="unfinished">PID</translation>
     </message>
     <message>
         <source>Error</source>
@@ -4359,6 +4348,11 @@ Please wait few minutes and try again.</source>
         <translation>خطأ في تنفيذ الماكرو.</translation>
     </message>
     <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation type="unfinished">نوع</translation>
+    </message>
+    <message>
         <source>Sort transponders</source>
         <comment>dialog</comment>
         <translation>فرز أجهزة الإرسال والإستقبال</translation>
@@ -4393,6 +4387,11 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Apply to list selection</source>
         <translation>تطبيق على العناصر المحددة في القائمة</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation type="unfinished">ألغِ</translation>
     </message>
     <message>
         <source>Apply Sort</source>
@@ -4626,6 +4625,10 @@ Please wait few minutes and try again.</source>
         <translation>تَسَلسُل</translation>
     </message>
     <message>
+        <source>Index</source>
+        <translation type="unfinished">فِهرِس</translation>
+    </message>
+    <message>
         <source>New Transponder</source>
         <comment>toolbar</comment>
         <translation>باقة جديدة</translation>
@@ -4722,6 +4725,10 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Position</source>
         <translation>موقف</translation>
+    </message>
+    <message>
+        <source>Index</source>
+        <translation type="unfinished">فِهرِس</translation>
     </message>
     <message>
         <source>Freq/Pol/SR</source>

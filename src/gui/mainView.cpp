@@ -276,7 +276,7 @@ void mainView::layout()
 	list->connect(list, &QTreeWidget::customContextMenuRequested, [=](QPoint pos) { this->showListEditContextMenu(pos); });
 
 	searchLayout();
-	referenceBoxLayout();
+	referencePanelLayout();
 
 	QWidget* scrn = new QWidget;
 	scrn->setStyleSheet("position: absolute; top: 0");
@@ -485,7 +485,7 @@ void mainView::searchLayout()
 
 //TODO TEST viewAbstract::themeChange()
 //TODO improve copyable viewport text
-void mainView::referenceBoxLayout()
+void mainView::referencePanelLayout()
 {
 	this->list_reference = new QWidget;
 
@@ -558,81 +558,112 @@ void mainView::referenceBoxLayout()
 	}
 #endif
 
-	QGridLayout* ref_box = new QGridLayout;
-	QLabel* ref0lr = new QLabel(tr("Reference ID", "reference-box"));
+	QGridLayout* ref_panel = new QGridLayout;
+	QLabel* ref0lr = new QLabel(tr("Reference ID", "reference-panel"));
 	QLabel* ref0tr = new QLabel("< >");
 	ref0tr->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
 	platform::osLabel(ref0tr);
 	ref0lr->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
 	ref0tr->setAlignment(ref0tr->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
 	ref_fields[LIST_REF::ReferenceID] = ref0tr;
-	ref_box->addWidget(ref0lr, 0, 0, Qt::AlignTop);
-	ref_box->addWidget(ref0tr, 0, 1, Qt::AlignTop);
+	ref_panel->addWidget(ref0lr, 0, 0, Qt::AlignTop);
+	ref_panel->addWidget(ref0tr, 0, 1, Qt::AlignTop);
 
-	QLabel* ref1ls = new QLabel(tr("Service ID", "reference-box"));
-	QLabel* ref1ts = new QLabel("< >");
-	ref1ts->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
-	platform::osLabel(ref1ts);
-	ref1ls->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
-	ref1ts->setAlignment(ref1ts->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
-	ref_fields[LIST_REF::ServiceID] = ref1ts;
-	ref_box->addWidget(ref1ls, 0, 2, Qt::AlignTop);
-	ref_box->addWidget(ref1ts, 0, 3, Qt::AlignLeading | Qt::AlignTop);
+	QLabel* ref1lb = new QLabel(tr("Bouquets", "reference-panel"));
+	QLabel* ref1tb = new QLabel("< >");
+	ref1tb->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+	platform::osLabel(ref1tb);
+	ref1lb->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
+	ref1tb->setAlignment(ref1tb->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
+	ref_fields[LIST_REF::Bouquets] = ref1tb;
+	ref_panel->addWidget(ref1lb, 0, 2, Qt::AlignTop);
+	ref_panel->addWidget(ref1tb, 0, 3, Qt::AlignLeading | Qt::AlignTop);
 
-	QLabel* ref2lt = new QLabel(tr("Transponder", "reference-box"));
+	QLabel* ref2lt = new QLabel(tr("Transponder", "reference-panel"));
 	QLabel* ref2tt = new QLabel("< >");
 	ref2tt->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
 	platform::osLabel(ref2tt);
 	ref2lt->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
 	ref2tt->setAlignment(ref2tt->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
 	ref_fields[LIST_REF::Transponder] = ref2tt;
-	ref_box->addWidget(ref2lt, 0, 4, Qt::AlignTop);
-	ref_box->addWidget(ref2tt, 0, 5, Qt::AlignLeading | Qt::AlignTop);
-	ref_box->addItem(new QSpacerItem(0, 12), 1, 0);
+	ref_panel->addWidget(ref2lt, 0, 4, Qt::AlignTop);
+	ref_panel->addWidget(ref2tt, 0, 5, Qt::AlignLeading | Qt::AlignTop);
 
-	QLabel* ref3lu = new QLabel(tr("Userbouquets", "reference-box"));
-	QLabel* ref3tu = new QLabel("< >");
-	ref3tu->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
-	platform::osLabel(ref3tu);
-	ref3lu->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
-	ref3tu->setAlignment(ref3tu->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
-	ref_fields[LIST_REF::Userbouquets] = ref3tu;
-	ref_box->addWidget(ref3lu, 2, 0, Qt::AlignTop);
-	ref_box->addWidget(ref3tu, 2, 1, Qt::AlignLeading | Qt::AlignTop);
+	QLabel* ref3lp = new QLabel(tr("Flags", "reference-panel"));
+	QLabel* ref3tp = new QLabel("< >");
+	ref3tp->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+	platform::osLabel(ref3tp);
+	ref3lp->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
+	ref3tp->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-1)));
+	ref3tp->setAlignment(ref3tp->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
+	ref_fields[LIST_REF::ServiceFlags] = ref3tp;
+	ref_panel->addWidget(ref3lp, 0, 6, Qt::AlignTop);
+	ref_panel->addWidget(ref3tp, 0, 7, Qt::AlignLeading | Qt::AlignTop);
 
-	QLabel* ref4lb = new QLabel(tr("Bouquets", "reference-box"));
-	QLabel* ref4tb = new QLabel("< >");
-	ref4tb->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
-	platform::osLabel(ref4tb);
-	ref4lb->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
-	ref4tb->setAlignment(ref4tb->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
-	ref_fields[LIST_REF::Bouquets] = ref4tb;
-	ref_box->addWidget(ref4lb, 2, 2, Qt::AlignTop);
-	ref_box->addWidget(ref4tb, 2, 3, Qt::AlignLeading | Qt::AlignTop);
+	ref_panel->addItem(new QSpacerItem(0, 0), 1, 0);
 
-	QLabel* ref5ln = new QLabel(tr("Tuner", "reference-box"));
-	QLabel* ref5tn = new QLabel("< >");
-	ref5tn->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard | Qt::LinksAccessibleByMouse | Qt::LinksAccessibleByKeyboard);
-	ref5tn->setOpenExternalLinks(false);
-	platform::osLabel(ref5tn);
-	ref5ln->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
-	ref5tn->setAlignment(ref5tn->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
-	ref_fields[LIST_REF::Tuner] = ref5tn;
-	ref_box->addWidget(ref5ln, 2, 4, Qt::AlignTop);
-	ref_box->addWidget(ref5tn, 2, 5, Qt::AlignLeading | Qt::AlignTop);
+	QLabel* ref4ls = new QLabel(tr("Service ID", "reference-panel"));
+	QLabel* ref4ts = new QLabel("< >");
+	ref4ts->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+	platform::osLabel(ref4ts);
+	ref4ls->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
+	ref4ts->setAlignment(ref4ts->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
+	ref_fields[LIST_REF::ServiceID] = ref4ts;
+	ref_panel->addWidget(ref4ls, 2, 0, Qt::AlignTop);
+	ref_panel->addWidget(ref4ts, 2, 1, Qt::AlignLeading | Qt::AlignTop);
 
-	ref_box->addItem(new QSpacerItem(0, 0), 0, 6, 3, 1);
+	QLabel* ref5lu = new QLabel(tr("Userbouquets", "reference-panel"));
+	QLabel* ref5tu = new QLabel("< >");
+	ref5tu->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+	platform::osLabel(ref5tu);
+	ref5lu->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
+	ref5tu->setAlignment(ref5tu->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
+	ref_fields[LIST_REF::Userbouquets] = ref5tu;
+	ref_panel->addWidget(ref5lu, 2, 2, 3, 1, Qt::AlignTop);
+	ref_panel->addWidget(ref5tu, 2, 3, 3, 1, Qt::AlignLeading | Qt::AlignTop);
 
-	ref_box->setRowStretch(2, 1);
-	ref_box->setColumnStretch(6, 1);
-	ref_box->setColumnMinimumWidth(1, 300);
-	ref_box->setColumnMinimumWidth(3, 200);
-	ref_box->setColumnMinimumWidth(5, 200);
+	QLabel* ref6ln = new QLabel(tr("Tuner", "reference-panel"));
+	QLabel* ref6tn = new QLabel("< >");
+	ref6tn->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard | Qt::LinksAccessibleByMouse | Qt::LinksAccessibleByKeyboard);
+	ref6tn->setOpenExternalLinks(false);
+	platform::osLabel(ref6tn);
+	ref6ln->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
+	ref6tn->setAlignment(ref6tn->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
+	ref_fields[LIST_REF::Tuner] = ref6tn;
+	ref_panel->addWidget(ref6ln, 2, 4, 3, 1, Qt::AlignTop);
+	ref_panel->addWidget(ref6tn, 2, 5, 3, 1, Qt::AlignLeading | Qt::AlignTop);
+
+	ref_panel->addItem(new QSpacerItem(0, 0), 3, 0);
+
+	QLabel* ref7lp = new QLabel(tr("PIDs", "reference-panel"));
+	QLabel* ref7tp = new QLabel("< >");
+	ref7tp->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+	platform::osLabel(ref7tp);
+	ref7lp->setFont(QFont(theme::fontFamily(), theme::calcFontSize(-2)));
+	ref7tp->setAlignment(ref7tp->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
+	ref_fields[LIST_REF::ServicePIDs] = ref7tp;
+	ref_panel->addWidget(ref7lp, 4, 0, Qt::AlignTop);
+	ref_panel->addWidget(ref7tp, 4, 1, Qt::AlignLeading | Qt::AlignTop);
+
+	ref_panel->addItem(new QSpacerItem(0, 0), 0, 8, 3, 1);
+
+	ref_panel->setVerticalSpacing(0);
+	ref_panel->setRowStretch(0, 1);
+	ref_panel->setRowStretch(2, 1);
+	ref_panel->setRowStretch(4, 1);
+	ref_panel->setRowMinimumHeight(0, 27);
+	ref_panel->setRowMinimumHeight(2, 27);
+	ref_panel->setRowMinimumHeight(4, 27);
+	ref_panel->setColumnStretch(8, 1);
+	ref_panel->setColumnMinimumWidth(1, 300);
+	ref_panel->setColumnMinimumWidth(3, 200);
+	ref_panel->setColumnMinimumWidth(5, 200);
+	ref_panel->setColumnMinimumWidth(7, 200);
 
 	ref_area->setWidget(ref_wrap);
 	ref_area->setWidgetResizable(true);
 
-	ref_wrap->setLayout(ref_box);
+	ref_wrap->setLayout(ref_panel);
 
 	ref_frm->addWidget(ref_area);
 	ref_frm->setContentsMargins(0, 0, 0, 0);
@@ -671,7 +702,7 @@ void mainView::reset()
 	this->state.dnd = true;
 	this->state.reload = false;
 	this->state.vlx_pending = false;
-	this->state.refbox = list_reference->isVisible();
+	this->state.refpanel = list_reference->isVisible();
 	this->state.tc = 0;
 	this->state.ti = 0;
 	this->state.si = 0;
@@ -709,7 +740,7 @@ void mainView::reset()
 	this->action.list_dnd->setDisabled(true);
 	this->action.list_dnd->actions().first()->setDisabled(true);
 
-	updateReferenceBox();
+	updateReferencePanel();
 
 	resetStatusBar();
 
@@ -1369,8 +1400,8 @@ void mainView::listItemSelectionChanged()
 			tabSetFlag(gui::TabListPaste, true);
 	}
 
-	if (this->state.refbox)
-		updateReferenceBox();
+	if (this->state.refpanel)
+		updateReferencePanel();
 
 	tabUpdateFlags();
 }
@@ -3072,13 +3103,13 @@ void mainView::listReferenceToggle()
 	if (list_reference->isHidden())
 	{
 		list_reference->show();
-		this->state.refbox = true;
-		updateReferenceBox();
+		this->state.refpanel = true;
+		updateReferencePanel();
 	}
 	else
 	{
 		list_reference->hide();
-		this->state.refbox = false;
+		this->state.refpanel = false;
 	}
 }
 
@@ -4053,9 +4084,9 @@ void mainView::updateStatusBar(bool current)
 	tabSetStatusBar(msg);
 }
 
-void mainView::updateReferenceBox()
+void mainView::updateReferencePanel()
 {
-	// debug("updateReferenceBox");
+	// debug("updateReferencePanel");
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
@@ -4070,7 +4101,7 @@ void mainView::updateReferenceBox()
 	{
 		QTreeWidgetItem* item = selected[0];
 		string chid = item->data(ITEM_DATA_ROLE::chid, Qt::UserRole).toString().toStdString();
-		QString ssid, refid, txp, tns, bsls, ubls;
+		QString ssid, refid, txp, tns, bsls, ubls, sdatac, sdataf;
 
 		string bname = this->state.curr;
 		e2db::channel_reference chref;
@@ -4079,7 +4110,7 @@ void mainView::updateReferenceBox()
 			chref = dbih->userbouquets[bname].channels[chid];
 		}
 
-		// debug("updateReferenceBox", "chid", chid);
+		// debug("updateReferencePanel", "chid", chid);
 
 		// bouquets tree
 		if (this->state.tc)
@@ -4153,6 +4184,58 @@ void mainView::updateReferenceBox()
 			else
 			{
 				txp = tns = "< >";
+			}
+
+			if (ch.data.count(e2db::SDATA::c)) {
+				string vpid = dbih->value_channel_pid(ch, e2db::SDATA_PIDS::vpid);
+				string apid = dbih->value_channel_pid(ch, e2db::SDATA_PIDS::mpegapid);
+				string pcrpid = dbih->value_channel_pid(ch, e2db::SDATA_PIDS::pcrpid);
+
+				if (! vpid.empty() && ! pcrpid.empty() && ! apid.empty())
+				{
+					sdatac.append("VPID: " + (vpid.empty() ? "0" : QString::fromStdString(vpid)));
+					sdatac.append('\t');
+					sdatac.append("APID: " + (apid.empty() ? "0" : QString::fromStdString(apid)));
+					sdatac.append('\t');
+					sdatac.append("PCRPID: " + (pcrpid.empty() ? "0" : QString::fromStdString(pcrpid)));
+				}
+				else
+				{
+					sdatac = "< >";
+				}
+			}
+			else
+			{
+				sdatac = "< >";
+			}
+
+			if (ch.data.count(e2db::SDATA::f))
+			{
+				string fkeep = dbih->value_channel_flags(ch, e2db::SDATA_FLAGS::fkeep);
+				string fhide = dbih->value_channel_flags(ch, e2db::SDATA_FLAGS::fhide);
+				string fpid = dbih->value_channel_flags(ch, e2db::SDATA_FLAGS::fpid);
+				string fname = dbih->value_channel_flags(ch, e2db::SDATA_FLAGS::fname);
+				string fnew = dbih->value_channel_flags(ch, e2db::SDATA_FLAGS::fnew);
+
+				if (! fkeep.empty())
+					sdataf.append("NoSDT").append(' ');
+				if (! fhide.empty())
+					sdataf.append("Dontshow").append(' ');
+				if (! fpid.empty())
+					sdataf.append("NoDVB").append(' ');
+				if (! fname.empty())
+					sdataf.append("HoldName").append(' ');
+				if (! fnew.empty())
+					sdataf.append("NewFound").append(' ');
+
+				if (sdataf.isEmpty())
+					sdataf = "< >";
+				else
+					sdataf = sdataf.trimmed();
+			}
+			else
+			{
+				sdataf = "< >";
 			}
 		}
 		else if (chref.stream)
@@ -4234,18 +4317,21 @@ void mainView::updateReferenceBox()
 			}
 
 			tns = "<p style=\"line-height: 125%\">" + psys + "</p><p>" + purl + "</p>";
+			sdatac = sdataf = "< >";
 		}
 		else
 		{
-			ssid = txp = tns = "< >";
+			ssid = txp = tns = sdatac = sdataf = "< >";
 		}
 
 		ref_fields[LIST_REF::ReferenceID]->setText(refid);
-		ref_fields[LIST_REF::ServiceID]->setText(ssid);
-		ref_fields[LIST_REF::Transponder]->setText(txp);
-		ref_fields[LIST_REF::Userbouquets]->setText(ubls);
 		ref_fields[LIST_REF::Bouquets]->setText(bsls);
+		ref_fields[LIST_REF::Transponder]->setText(txp);
+		ref_fields[LIST_REF::ServiceFlags]->setText(sdataf);
+		ref_fields[LIST_REF::ServiceID]->setText(ssid);
+		ref_fields[LIST_REF::Userbouquets]->setText(ubls);
 		ref_fields[LIST_REF::Tuner]->setText(tns);
+		ref_fields[LIST_REF::ServicePIDs]->setText(sdatac);
 	}
 }
 
@@ -4583,8 +4669,8 @@ void mainView::didChange()
 	{
 		visualReloadList();
 
-		if (this->state.refbox)
-			updateReferenceBox();
+		if (this->state.refpanel)
+			updateReferencePanel();
 	}
 }
 
@@ -4606,8 +4692,8 @@ void mainView::update()
 
 		visualReloadList();
 
-		if (this->state.refbox)
-			updateReferenceBox();
+		if (this->state.refpanel)
+			updateReferencePanel();
 
 		this->state.tab_pending = false;
 	}

@@ -2,27 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ca_ES">
 <context>
-    <name>QCocoaMenu</name>
-    <message>
-        <source>Edit</source>
-        <extracomment>Platform: Edit menu in macOS Menu bar</extracomment>
-        <translation type="unfinished">Edita</translation>
-    </message>
-</context>
-<context>
-    <name>QCocoaMenuItem</name>
-    <message>
-        <source>Start Dictation...</source>
-        <extracomment>Platform: edit item in macOS Edit Menu | Encoding: preserve 3 singular dots</extracomment>
-        <translation type="unfinished">Inicia el dictat...</translation>
-    </message>
-    <message>
-        <source>Emoji &amp;&amp; Symbols</source>
-        <extracomment>Platform: edit item in macOS Edit Menu | Encoding: note double ampersand</extracomment>
-        <translation type="unfinished">Emojis i símbols</translation>
-    </message>
-</context>
-<context>
     <name>QFileDialog</name>
     <message>
         <source>&amp;Save</source>
@@ -2467,33 +2446,43 @@ Espereu uns minuts i torneu ho a provar.</translation>
     </message>
     <message>
         <source>Reference ID</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>Reference ID</translation>
     </message>
     <message>
         <source>Service ID</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>Service ID</translation>
     </message>
     <message>
         <source>Transponder</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>Transponder</translation>
     </message>
     <message>
         <source>Userbouquets</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>Userbouquets</translation>
     </message>
     <message>
         <source>Bouquets</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>Bouquets</translation>
     </message>
     <message>
+        <source>Flags</source>
+        <comment>reference-panel</comment>
+        <translation type="unfinished">Flags</translation>
+    </message>
+    <message>
         <source>Tuner</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>Tuner</translation>
+    </message>
+    <message>
+        <source>PIDs</source>
+        <comment>reference-panel</comment>
+        <translation type="unfinished">PID</translation>
     </message>
     <message>
         <source>Error</source>
@@ -4347,6 +4336,11 @@ Espereu uns minuts i torneu ho a provar.</translation>
         <translation>Error en executar la macro.</translation>
     </message>
     <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Ordena</translation>
+    </message>
+    <message>
         <source>Sort transponders</source>
         <comment>dialog</comment>
         <translation>Ordena transponders</translation>
@@ -4381,6 +4375,11 @@ Espereu uns minuts i torneu ho a provar.</translation>
     <message>
         <source>Apply to list selection</source>
         <translation>Aplica als seleccionats a la llista</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation type="unfinished">Cancel·la</translation>
     </message>
     <message>
         <source>Apply Sort</source>
@@ -4614,6 +4613,10 @@ Espereu uns minuts i torneu ho a provar.</translation>
         <translation>Jerarquia</translation>
     </message>
     <message>
+        <source>Index</source>
+        <translation type="unfinished">Índex</translation>
+    </message>
+    <message>
         <source>New Transponder</source>
         <comment>toolbar</comment>
         <translation>Nou Transponder</translation>
@@ -4710,6 +4713,10 @@ Espereu uns minuts i torneu ho a provar.</translation>
     <message>
         <source>Position</source>
         <translation>Posició</translation>
+    </message>
+    <message>
+        <source>Index</source>
+        <translation type="unfinished">Índex</translation>
     </message>
     <message>
         <source>Freq/Pol/SR</source>

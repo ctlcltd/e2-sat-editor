@@ -943,15 +943,10 @@ void transpondersView::updateListIndex()
 
 	dbih->index["txs"].clear();
 
-	qDebug() << "count 0: " << dbih->index["txs"].size();
-
 	int sort_column = list->sortColumn();
 	Qt::SortOrder sort_order = list->header()->sortIndicatorOrder();
 	bool sorted = sort_column != 0 && sort_order != Qt::AscendingOrder;
 	sort_column = sort_column == 1 ? 0 : sort_column;
-
-	qDebug() << "sorted: " << sorted;
-	qDebug() << "sort_column: " << sort_column;
 
 	if (sorted)
 		list->sortItems(0, Qt::AscendingOrder);
@@ -967,8 +962,6 @@ void transpondersView::updateListIndex()
 
 	if (sorted)
 		treeSortItems(list, sort_column, sort_order);
-
-	qDebug() << "count 1: " << dbih->index["txs"].size();
 
 	this->state.txx_pending = false;
 }

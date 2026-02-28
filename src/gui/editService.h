@@ -77,10 +77,10 @@ class editService : public dialAbstract
 		void newTransponder();
 		void store();
 		void retrieve();
-		string getPIDValue(e2db::service ch, e2db::SDATA_PIDS x);
-		vector<string> computePIDs(e2db::service ch, e2db::SDATA_PIDS x, string val);
-		string getFlagValue(e2db::service ch, e2db::SDATA_FLAGS x);
-		vector<string> computeFlags(e2db::service ch, e2db::SDATA_FLAGS x, string val);
+		string getPIDValue(e2db::service ch, e2db::SDATA_PIDS pid);
+		vector<string> computePIDs(e2db::service ch, e2db::SDATA_PIDS pid, string val);
+		string getFlagValue(e2db::service ch, e2db::SDATA_FLAGS bit);
+		vector<string> computeFlags(e2db::service ch, e2db::SDATA_FLAGS bit, string val);
 		bool checkCollision(e2db::service ch);
 
 		QTabWidget* dtwid;

@@ -2,27 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="nn_NO">
 <context>
-    <name>QCocoaMenu</name>
-    <message>
-        <source>Edit</source>
-        <extracomment>Platform: Edit menu in macOS Menu bar</extracomment>
-        <translation>Redigere</translation>
-    </message>
-</context>
-<context>
-    <name>QCocoaMenuItem</name>
-    <message>
-        <source>Start Dictation...</source>
-        <extracomment>Platform: edit item in macOS Edit Menu | Encoding: preserve 3 singular dots</extracomment>
-        <translation>Start diktering...</translation>
-    </message>
-    <message>
-        <source>Emoji &amp;&amp; Symbols</source>
-        <extracomment>Platform: edit item in macOS Edit Menu | Encoding: note double ampersand</extracomment>
-        <translation>Emoji &amp;&amp; symboler</translation>
-    </message>
-</context>
-<context>
     <name>QFileDialog</name>
     <message>
         <source>&amp;Save</source>
@@ -2467,33 +2446,43 @@ Vent noen minutter og prøv igjen.</translation>
     </message>
     <message>
         <source>Reference ID</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>Reference ID</translation>
     </message>
     <message>
         <source>Service ID</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>Service ID</translation>
     </message>
     <message>
         <source>Transponder</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>Transponder</translation>
     </message>
     <message>
         <source>Userbouquets</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>Userbouquets</translation>
     </message>
     <message>
         <source>Bouquets</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>Bouquets</translation>
     </message>
     <message>
+        <source>Flags</source>
+        <comment>reference-panel</comment>
+        <translation type="unfinished">Flags</translation>
+    </message>
+    <message>
         <source>Tuner</source>
-        <comment>reference-box</comment>
+        <comment>reference-panel</comment>
         <translation>Tuner</translation>
+    </message>
+    <message>
+        <source>PIDs</source>
+        <comment>reference-panel</comment>
+        <translation type="unfinished">PID</translation>
     </message>
     <message>
         <source>Error</source>
@@ -4347,6 +4336,11 @@ Vent noen minutter og prøv igjen.</translation>
         <translation>Feil under kjøring av makro.</translation>
     </message>
     <message>
+        <source>Sort</source>
+        <comment>menu</comment>
+        <translation type="unfinished">Sortere</translation>
+    </message>
+    <message>
         <source>Sort transponders</source>
         <comment>dialog</comment>
         <translation>Sorter transpondere</translation>
@@ -4381,6 +4375,11 @@ Vent noen minutter og prøv igjen.</translation>
     <message>
         <source>Apply to list selection</source>
         <translation>Bruk på valgt i listen</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <comment>dialog</comment>
+        <translation type="unfinished">Avbryt</translation>
     </message>
     <message>
         <source>Apply Sort</source>
@@ -4614,6 +4613,10 @@ Vent noen minutter og prøv igjen.</translation>
         <translation>Hierarki</translation>
     </message>
     <message>
+        <source>Index</source>
+        <translation type="unfinished">Indeks</translation>
+    </message>
+    <message>
         <source>New Transponder</source>
         <comment>toolbar</comment>
         <translation>Ny Transponder</translation>
@@ -4710,6 +4713,10 @@ Vent noen minutter og prøv igjen.</translation>
     <message>
         <source>Position</source>
         <translation>Posisjon</translation>
+    </message>
+    <message>
+        <source>Index</source>
+        <translation type="unfinished">Indeks</translation>
     </message>
     <message>
         <source>Freq/Pol/SR</source>

@@ -47,8 +47,8 @@ class mainView : public viewAbstract
 			bool reload = false;
 			// list visual refresh pending
 			bool vlx_pending = false;
-			// reference box shown
-			bool refbox = false;
+			// reference panel shown
+			bool refpanel = false;
 			// current tree { side = 0, tree = 1 }
 			int tc;
 			// tree current top level index
@@ -129,11 +129,13 @@ class mainView : public viewAbstract
 
 		enum LIST_REF {
 			ReferenceID,
-			ServiceID,
-			Transponder,
-			Userbouquets,
 			Bouquets,
-			Tuner
+			Transponder,
+			ServiceFlags,
+			ServiceID,
+			Userbouquets,
+			Tuner,
+			ServicePIDs
 		};
 
 		mainView(tab* tid, QWidget* cwid, dataHandler* data);
@@ -159,7 +161,7 @@ class mainView : public viewAbstract
 	protected:
 		void layout();
 		void searchLayout();
-		void referenceBoxLayout();
+		void referencePanelLayout();
 		void unpack();
 		void populate(QTreeWidget* tw);
 		void treeSwitched(QTreeWidget* tw, QTreeWidgetItem* item);
@@ -206,7 +208,7 @@ class mainView : public viewAbstract
 		void treeDropFromList(QTreeWidgetItem* current);
 		void updateFlags();
 		void updateStatusBar(bool current = false);
-		void updateReferenceBox();
+		void updateReferencePanel();
 		void updateTreeIndex();
 		void updateListIndex();
 		void updateListReferences(QTreeWidgetItem* current, QList<QTreeWidgetItem*> items);

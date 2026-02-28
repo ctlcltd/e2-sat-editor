@@ -24,7 +24,7 @@ Information on contributions, to contribute and send Pull Request, please see [C
 
 **To Improve:**
 
-- [ ] service and reference flags, show flags in the UI, eg. Issues (#33) [gui]
+- [x] service and reference flags, show flags in the UI, eg. Issues (#33) [gui]
 - [ ] convert lamedbx from and to zapitx, better visual feedback [gui] [tab.cpp]
 - [ ] cli history, load and save [cli] [e2db_termctl.cpp]
 - [ ] ftp connection messages, eg. "Connected", better visual feedback, status bar is not enough, eg. Issues (#35) [gui] [tab.cpp]
@@ -50,6 +50,7 @@ Information on contributions, to contribute and send Pull Request, please see [C
 - [ ] flatpak sandbox, capability to save directory with multiple files, `xdg-desktop-portal` [gui] [gui.cpp] [flatpak]
 - [ ] reload option, webif and|or telnet [gui] [tab.cpp] [settings.cpp] [ftpcom.cpp]
 - [ ] reload option, deactivate reload, manually [gui] [tab.cpp] [settings.cpp] [ftpcom.cpp]
+- [ ] service and reference flags, find and filtering, eg. Issues (#33) [gui]
 - [ ] FTPS, HTTPS support [networking] [gui] [settings.cpp] [fptcom.cpp]
 - [ ] lamedb5 comments support [e2db.cpp]
 - [ ] neutrino cable, atsc, unknown support [e2db.cpp]
