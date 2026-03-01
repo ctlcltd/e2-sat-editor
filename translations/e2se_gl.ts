@@ -3626,7 +3626,7 @@ Agarde uns minutos e ténteo de novo.</translation>
     <message>
         <source>FTP disconnected successfully.</source>
         <comment>message</comment>
-        <translation>FTP desconectouse.</translation>
+        <translation>FTP desconectado.</translation>
     </message>
     <message>
         <source>Cannot disconnect from FTP &quot;%1&quot;.</source>
@@ -3673,6 +3673,16 @@ Agarde uns minutos e ténteo de novo.</translation>
         <source>Cannot reload STB &quot;%1&quot;.</source>
         <comment>error</comment>
         <translation>Non se pode cargar de novo o STB &quot;%1&quot;.</translation>
+    </message>
+    <message>
+        <source>Connected</source>
+        <comment>message</comment>
+        <translation>Conectado</translation>
+    </message>
+    <message>
+        <source>Disconnected</source>
+        <comment>message</comment>
+        <translation>Desconectado</translation>
     </message>
     <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>

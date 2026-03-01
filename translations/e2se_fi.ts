@@ -3674,6 +3674,16 @@ Odota muutama minuutti ja yritä uudelleen.</translation>
         <translation>STB &quot;%1&quot; ei voi ladata uudelleen.</translation>
     </message>
     <message>
+        <source>Connected</source>
+        <comment>message</comment>
+        <translation>Yhdistetty</translation>
+    </message>
+    <message>
+        <source>Disconnected</source>
+        <comment>message</comment>
+        <translation>Yhteys katkaistu</translation>
+    </message>
+    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>

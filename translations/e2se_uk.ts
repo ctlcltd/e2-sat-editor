@@ -3679,6 +3679,16 @@ Please wait few minutes and try again.</source>
         <translation>Не вдається перезавантажити телеприставку &quot;%1&quot;.</translation>
     </message>
     <message>
+        <source>Connected</source>
+        <comment>message</comment>
+        <translation>Підключено</translation>
+    </message>
+    <message>
+        <source>Disconnected</source>
+        <comment>message</comment>
+        <translation>Відключено</translation>
+    </message>
+    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>

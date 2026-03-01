@@ -27,33 +27,41 @@ cwt () {
 }
 
 init () {
+	local check_bin=4
+
 	if [[ -z "$LUPDATE" ]]; then
 		if [[ -n $(type -t lupdate) ]]; then
 			LUPDATE="lupdate"
 		fi
+	else
+		check_bin=1
 	fi
 	if [[ -z "$LRELEASE" ]]; then
 		if [[ -n $(type -t lrelease) ]]; then
 			LRELEASE="lrelease"
 		fi
+	else
+		check_bin=2
 	fi
 	if [[ -z "$LCONVERT" ]]; then
 		if [[ -n $(type -t lconvert) ]]; then
 			LCONVERT="lconvert"
 		fi
+	else
+		check_bin=3
 	fi
 
-	if [[ -z $(type -t "$LUPDATE") ]]; then
+	if [[ "$check_bin" -eq 4 || "$check_bin" -eq 1 && -z $(type -t "$LUPDATE") ]]; then
 		echo "Qt Linguist lupdate not found."
 
 		exit 1;
 	fi
-	if [[ -z $(type -t "$LRELEASE") ]]; then
+	if [[ "$check_bin" -eq 4 || "$check_bin" -eq 2 && -z $(type -t "$LRELEASE") ]]; then
 		echo "Qt Linguist lrelease not found."
 
 		exit 1;
 	fi
-	if [[ -z $(type -t "$LCONVERT") ]]; then
+	if [[ "$check_bin" -eq 4 || "$check_bin" -eq 3 && -z $(type -t "$LCONVERT") ]]; then
 		echo "Qt Linguist lconvert not found."
 
 		exit 1;

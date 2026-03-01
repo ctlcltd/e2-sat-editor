@@ -3668,6 +3668,16 @@ Please wait few minutes and try again.</source>
         <translation>無法重新加載 STB “%1”。</translation>
     </message>
     <message>
+        <source>Connected</source>
+        <comment>message</comment>
+        <translation>已連接</translation>
+    </message>
+    <message>
+        <source>Disconnected</source>
+        <comment>message</comment>
+        <translation>已斷開連接</translation>
+    </message>
+    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>

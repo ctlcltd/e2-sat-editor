@@ -49,6 +49,7 @@ class tab : protected e2se::log_factory
 
 		static const int STATUSBAR_MESSAGE_DELAY = 1500;
 		static const int STATUSBAR_MESSAGE_TIMEOUT = 5000;
+		static const int BUBBLE_MESSAGE_TIMEOUT = 2000;
 
 		enum TOOLS_FILE {
 			tools_csv,
@@ -64,7 +65,9 @@ class tab : protected e2se::log_factory
 			writeNotice,
 			importNotice,
 			exportNotice,
-			utilsNotice
+			utilsNotice,
+			ftpConnectedBubble,
+			ftpDisconnectedBubble
 		};
 
 		tab(gui* gid, QWidget* cwid);
@@ -152,6 +155,7 @@ class tab : protected e2se::log_factory
 		void errorMessage(QString title, QString message);
 		void errorMessage(string error);
 		void noticeMessage(vector<pair<string, string>> errors, MSG_CODE code);
+		void bubbleMessage(MSG_CODE code, const QRect& rect = {});
 		void demoMessage();
 
 #ifdef E2SE_DEMO
@@ -176,17 +180,17 @@ class tab : protected e2se::log_factory
 		void ftpStbConnectingNotify();
 		void ftpStbDisconnectingNotify();
 		void ftpStbHandlingNotify();
-		void ftpStbReloadingNotify();
 		void ftpStbDownloadNotify(int files_count);
 		void ftpStbDownloadNotify(string filename);
 		void ftpStbUploadNotify(int files_count);
 		void ftpStbUploadNotify(string filename);
-		void ftpStbReloadSuccessNotify();
-		void ftpStbReloadErrorNotify(vector<pair<string, string>> errors);
+		void ftpStbReloadingNotify();
 		void ftpStbConnectSuccessNotify();
-		void ftpStbConnectErrorNotify();
 		void ftpStbDisconnectSuccessNotify();
+		void ftpStbReloadSuccessNotify();
+		void ftpStbConnectErrorNotify();
 		void ftpStbDisconnectErrorNotify();
+		void ftpStbReloadErrorNotify(vector<pair<string, string>> errors);
 		void loadSeeds();
 
 		static QToolBar* toolBar(int type);
@@ -219,6 +223,7 @@ class tab : protected e2se::log_factory
 		QMenu* tools_menu = nullptr;
 		QWidget* popup_wid = nullptr;
 		QPoint popup_pos;
+		vector<pair<int, QWidget*>> bubblemsg;
 
 		unordered_map<string, e2se_ftpcom::ftpcom::ftpcom_file> ftp_files;
 		vector<pair<string, string>> ftp_errors;

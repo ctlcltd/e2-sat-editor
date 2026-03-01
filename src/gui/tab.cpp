@@ -38,6 +38,7 @@
 #include <QClipboard>
 #include <QMimeData>
 #include <QMouseEvent>
+#include <QToolTip>
 #ifdef Q_OS_WIN
 #include <QStyleFactory>
 #include <QScrollBar>
@@ -2773,6 +2774,32 @@ void tab::ftpStbHandlingNotify()
 	}
 }
 
+void tab::ftpStbDownloadNotify(int files_count)
+{
+	if (statusBarIsVisible())
+		statusBarMessage(tr("Downloaded %n files", "message", files_count));
+}
+
+void tab::ftpStbDownloadNotify(string filename)
+{
+	if (statusBarIsVisible())
+		statusBarQuickMessage(tr("Downloading file: %1", "message").arg(filename.data()));
+}
+
+void tab::ftpStbUploadNotify(int files_count)
+{
+	if (statusBarIsVisible())
+		statusBarMessage(tr("Uploaded %n files", "message", files_count));
+	else
+		infoMessage(tr("Uploaded %n files", "message", files_count));
+}
+
+void tab::ftpStbUploadNotify(string filename)
+{
+	if (statusBarIsVisible())
+		statusBarQuickMessage(tr("Uploading file: %1", "message").arg(filename.data()));
+}
+
 void tab::ftpStbReloadingNotify()
 {
 	if (statusBarIsVisible())
@@ -2782,9 +2809,35 @@ void tab::ftpStbReloadingNotify()
 void tab::ftpStbConnectSuccessNotify()
 {
 	if (statusBarIsVisible())
+	{
+		bubbleMessage(MSG_CODE::ftpConnectedBubble);
 		statusBarMessage(tr("FTP connected successfully.", "message"));
+	}
 	else
+	{
 		infoMessage(tr("FTP connected successfully.", "message"));
+	}
+}
+
+void tab::ftpStbDisconnectSuccessNotify()
+{
+	if (statusBarIsVisible())
+	{
+		bubbleMessage(MSG_CODE::ftpDisconnectedBubble);
+		statusBarMessage(tr("FTP disconnected successfully.", "message"));
+	}
+	else
+	{
+		infoMessage(tr("FTP disconnected successfully.", "message"));
+	}
+}
+
+void tab::ftpStbReloadSuccessNotify()
+{
+	if (statusBarIsVisible())
+		statusBarMessage(tr("STB reload done.", "message"));
+	else
+		infoMessage(tr("STB reload done.", "message"));
 }
 
 void tab::ftpStbConnectErrorNotify()
@@ -2804,14 +2857,6 @@ void tab::ftpStbConnectErrorNotify()
 	errorMessage(tr("FTP Error", "error"), tr("Cannot connect to FTP Server!", "error"));
 }
 
-void tab::ftpStbDisconnectSuccessNotify()
-{
-	if (statusBarIsVisible())
-		statusBarMessage(tr("FTP disconnected successfully.", "message"));
-	else
-		infoMessage(tr("FTP disconnected successfully.", "message"));
-}
-
 void tab::ftpStbDisconnectErrorNotify()
 {
 	string hostname;
@@ -2827,40 +2872,6 @@ void tab::ftpStbDisconnectErrorNotify()
 	error("ftpStbDisconnectErrorNotify", tr("FTP Error", "error").toStdString(), tr("Cannot disconnect from FTP \"%1\".", "error").arg(hostname.data()).toStdString());
 
 	errorMessage(tr("FTP Error", "error"), tr("Cannot disconnect from FTP Server!", "error"));
-}
-
-void tab::ftpStbUploadNotify(int files_count)
-{
-	if (statusBarIsVisible())
-		statusBarMessage(tr("Uploaded %n files", "message", files_count));
-	else
-		infoMessage(tr("Uploaded %n files", "message", files_count));
-}
-
-void tab::ftpStbUploadNotify(string filename)
-{
-	if (statusBarIsVisible())
-		statusBarQuickMessage(tr("Uploading file: %1", "message").arg(filename.data()));
-}
-
-void tab::ftpStbDownloadNotify(int files_count)
-{
-	if (statusBarIsVisible())
-		statusBarMessage(tr("Downloaded %n files", "message", files_count));
-}
-
-void tab::ftpStbDownloadNotify(string filename)
-{
-	if (statusBarIsVisible())
-		statusBarQuickMessage(tr("Downloading file: %1", "message").arg(filename.data()));
-}
-
-void tab::ftpStbReloadSuccessNotify()
-{
-	if (statusBarIsVisible())
-		statusBarMessage(tr("STB reload done.", "message"));
-	else
-		infoMessage(tr("STB reload done.", "message"));
 }
 
 void tab::ftpStbReloadErrorNotify(vector<pair<string, string>> errors)
@@ -2954,7 +2965,7 @@ QTimer* tab::statusBarMessage(QString message)
 	// note: rand SEGFAULT with widget in thread
 	QTimer* timer = new QTimer(this->widget);
 	timer->setSingleShot(true);
-	timer->setInterval(STATUSBAR_MESSAGE_TIMEOUT);
+	timer->setInterval(tab::STATUSBAR_MESSAGE_TIMEOUT);
 	timer->callOnTimeout([=]() { this->resetStatusBar(true); timer->stop(); });
 	timer->start();
 
@@ -2966,7 +2977,7 @@ void tab::statusBarMessage(QTimer* timer)
 	if (timer != nullptr)
 	{
 		timer->stop();
-		timer->setInterval(STATUSBAR_MESSAGE_DELAY);
+		timer->setInterval(tab::STATUSBAR_MESSAGE_DELAY);
 		timer->start();
 	}
 }
@@ -3197,6 +3208,96 @@ void tab::noticeMessage(vector<pair<string, string>> errors, MSG_CODE code)
 	msg.setDetailedText(error_detailed);
 
 	msg.exec();
+}
+
+void tab::bubbleMessage(MSG_CODE code, const QRect& rect)
+{
+	QString message;
+
+	switch (code)
+	{
+		case MSG_CODE::ftpConnectedBubble: message = tr("Connected", "message"); break;
+		case MSG_CODE::ftpDisconnectedBubble: message = tr("Disconnected", "message"); break;
+		default: return;
+	}
+		
+	QRect geometry;
+
+	if (rect.isNull())
+	{
+		int w = this->top_toolbar->width();
+		QPoint pos = this->top_toolbar->mapToGlobal(this->top_toolbar->pos());
+		int width = int (message.length()) * 13 + 72;
+		int height = 65;
+		geometry = QRect((w / 2  - width / 2), (pos.y() + height + 22), width, height);
+	}
+	else
+	{
+		geometry = QRect(rect);
+
+		if (rect.width() == 0)
+			geometry.setWidth(int (message.length()) * 13 + 72);
+		if (rect.height() == 0)
+			geometry.setHeight(65);
+		if (rect.x() == 0)
+		{
+			int w = this->top_toolbar->width();
+			geometry.setX((w / 2  - geometry.width() / 2));
+		}
+		if (rect.y() == 0)
+		{
+			QPoint pos = this->top_toolbar->mapToGlobal(this->top_toolbar->pos());
+			geometry.setY((pos.y() + geometry.height() + 22));
+		}
+	}
+
+	QColor bubblebackground = QPalette().color(QPalette::Base);
+	QColor bubblecolor;
+	QString bubblebackground_hexArgb, bubblecolor_hexArgb;
+	if (theme::absLuma())
+	{
+		bubblebackground = bubblebackground.lighter(167);
+		bubblecolor = QColor(Qt::white);
+	}
+	else
+	{
+		bubblebackground = bubblebackground.darker(110);
+		bubblecolor = QColor(Qt::black);
+	}
+	bubblebackground.setAlphaF(0.95);
+	bubblecolor.setAlphaF(0.92);
+	bubblebackground_hexArgb = bubblebackground.name(QColor::HexArgb);
+	bubblecolor_hexArgb = bubblecolor.name(QColor::HexArgb);
+
+	for (auto & x : this->bubblemsg)
+	{
+		this->cwid->killTimer(x.first);
+		//TODO TEST potential SEGFAULT
+		x.second->close();
+	}
+	this->bubblemsg.clear();
+
+	QWidget* bubble = new QWidget(this->cwid);
+	bubble->setObjectName("bubblemsg");
+	bubble->setStyleSheet("#bubblemsg QLabel { padding-top: 1ex; padding-right: 2ex; padding-bottom: 1ex; padding-left: 2ex; border: 0; border-radius: 13px; background: " + bubblebackground_hexArgb + "; color: " + bubblecolor_hexArgb + "; font-size: 19px; }");
+	bubble->setGeometry(geometry);
+	QHBoxLayout* frame = new QHBoxLayout(bubble);
+	frame->setSizeConstraint(QHBoxLayout::SetMinAndMaxSize);
+	frame->setContentsMargins(0, 0, 0, 0);
+	QLabel* label = new QLabel(message);
+	label->setAlignment(Qt::AlignCenter);
+	frame->addWidget(label, 1, Qt::AlignCenter);
+	bubble->show();
+
+	QTimer* timer = new QTimer(this->cwid);
+	this->bubblemsg.emplace_back(pair (timer->timerId(), bubble));
+	timer->setSingleShot(true);
+	timer->setInterval(tab::BUBBLE_MESSAGE_TIMEOUT);
+	timer->callOnTimeout([=]() {
+		bubble->close();
+		timer->stop();
+	});
+	timer->start();
 }
 
 void tab::demoMessage()

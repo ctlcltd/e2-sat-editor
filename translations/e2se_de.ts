@@ -3675,6 +3675,16 @@ Bitte warten Sie einige Minuten und versuchen Sie es erneut.</translation>
         <translation>STB „%1“ kann nicht neu geladen werden.</translation>
     </message>
     <message>
+        <source>Connected</source>
+        <comment>message</comment>
+        <translation>Verbunden</translation>
+    </message>
+    <message>
+        <source>Disconnected</source>
+        <comment>message</comment>
+        <translation>Getrennt</translation>
+    </message>
+    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>

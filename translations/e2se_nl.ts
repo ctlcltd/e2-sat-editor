@@ -3675,6 +3675,16 @@ Wacht een paar minuten en probeer het opnieuw.</translation>
         <translation>Kan STB &quot;%1&quot; niet opnieuw laden.</translation>
     </message>
     <message>
+        <source>Connected</source>
+        <comment>message</comment>
+        <translation>Verbonden</translation>
+    </message>
+    <message>
+        <source>Disconnected</source>
+        <comment>message</comment>
+        <translation>Verbroken</translation>
+    </message>
+    <message>
         <source>For debugging purpose.%1Set application.seeds absolute path under Settings &gt; Advanced tab, then restart the software.%2Source seeds available at:%3</source>
         <comment>message</comment>
         <extracomment>HTML formattation: text%1text%2text%3 treat them as spaces</extracomment>
