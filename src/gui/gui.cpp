@@ -76,7 +76,7 @@ gui::gui(int argc, char* argv[])
 	mroot->setOrganizationDomain("io.github.ctlcltd");
 	mroot->setApplicationName("e2se");
 	mroot->setApplicationDisplayName("e2 SAT Editor");
-	mroot->setApplicationVersion("1.8");
+	mroot->setApplicationVersion("1.9");
 
 	mroot->connect(mroot, &QApplication::focusChanged, [=]() { this->windowChanged(); });
 
@@ -318,12 +318,13 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::TabTreeEditBouquet] = menuBarAction(medit, tr("Edit Bouquet", "menu"), [=]() { this->tabAction(TAB_ATS::TreeEditBouquet); });
 	gmenu[GUI_CXE::TabTreeEditPosition] = menuBarAction(medit, tr("Edit Position", "menu"), [=]() { this->tabAction(TAB_ATS::TreeEditPosition); });
 	gmenu[GUI_CXE::TabDialEditSettings] = menuBarAction(medit, tr("Edit Settings", "menu"), [=]() { this->tabAction(TAB_ATS::DialEditSettings); });
+	gmenu[GUI_CXE::TabListEditPicon] = menuBarAction(medit, tr("Change picon", "menu"), [=]() { this->tabAction(TAB_ATS::ListEditPicon); });
 	menuBarSeparator(medit);
 	gmenu[GUI_CXE::TabListEditTransponder] = menuBarAction(medit, tr("Edit Transponder", "menu"), [=]() { this->tabAction(TAB_ATS::ListEditTransponder); });
 	gmenu[GUI_CXE::TabListEditService] = menuBarAction(medit, tr("Edit Service", "menu"), [=]() { this->tabAction(TAB_ATS::ListEditService); });
 	gmenu[GUI_CXE::TabListEditFavourite] = menuBarAction(medit, tr("Edit Favourite", "menu"), [=]() { this->tabAction(TAB_ATS::ListEditFavourite); });
 	gmenu[GUI_CXE::TabListEditMarker] = menuBarAction(medit, tr("Edit Marker", "menu"), [=]() { this->tabAction(TAB_ATS::ListEditMarker); });
-	gmenu[GUI_CXE::TabListEditPicon] = menuBarAction(medit, tr("Change picon", "menu"), [=]() { this->tabAction(TAB_ATS::ListEditPicon); });
+	gmenu[GUI_CXE::TabListBatchPicon] = menuBarAction(medit, tr("Execute batch command", "menu"), [=]() { this->tabAction(TAB_ATS::ListBatchPicon); });
 
 	//: Platform: Find menu
 	QMenu* mfind = menuBarMenu(menubar, tr("&Find", "menu"));
@@ -751,6 +752,12 @@ void gui::updateSettings()
 		if (mroot->applicationVersion().toFloat() > version)
 			settings.setValue("application/version", mroot->applicationVersion());
 
+		if (version < 1.9)
+		{
+			settings.setValue("preference/piconsAllowBatchCommand", false);
+			settings.setValue("preference/piconsBatchCommand", "");
+			settings.setValue("preference/piconsBatchReload", false);
+		}
 		if (version < 1.7)
 		{
 			int profile_sel = settings.value("profile/selected", 0).toInt();

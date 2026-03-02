@@ -656,6 +656,12 @@ void settings::preferencesLayout()
 	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf4bp);
 	dtf4->addRow(dtf4bp);
 
+	QCheckBox* dtf4px = new QCheckBox(tr("Allow external batch command"));
+	dtf4px->setProperty("field", "piconsAllowBatchCommand");
+	dtf4px->setChecked(false);
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf4px);
+	dtf4->addRow(dtf4px);
+
 	QFormLayout* dtf41 = new QFormLayout;
 	dtf41->setSpacing(10);
 	dtf41->setFormAlignment(Qt::AlignLeading);
@@ -683,6 +689,46 @@ void settings::preferencesLayout()
 	dtf41->addRow(dtf4sn);
 
 	dtf4->addRow(dtf41);
+
+	QFormLayout* dtf42 = new QFormLayout;
+	dtf42->setSpacing(10);
+	dtf42->setFormAlignment(Qt::AlignLeading);
+	dtf42->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
+
+	QLabel* dth42 = new QLabel(tr("External batch command"));
+	dth42->setStyleSheet("min-height: 20px");
+	dth42->setAlignment(dth42->layoutDirection() == Qt::LeftToRight ? Qt::AlignLeft : Qt::AlignRight);
+	dtf42->addRow(dth42);
+
+	QVBoxLayout* dtb4p = new QVBoxLayout;
+	dtb4p->setSpacing(6);
+	dtb4p->setContentsMargins(0, 0, 0, 4);
+	QLabel* dtf4p1 = new QLabel;
+	dtf4p1->setText(tr("eg. %1").arg("/path/to/your/software --input \"%piconFile%\" --output \"%piconFile%\""));
+	dtf4p1->setStyleSheet("font-size: 12px");
+	dtb4p->addWidget(dtf4p1);
+	QLabel* dtf4p2 = new QLabel;
+	dtf4p2->setText(tr("eg. %1").arg("/path/to/your/script -i \"/my/path/%piconFilename%\" -o \"%piconFile%\""));
+	dtf4p2->setStyleSheet("font-size: 12px");
+	dtb4p->addWidget(dtf4p2);
+	dtf42->addRow(dtb4p);
+
+	QVBoxLayout* dtb42 = new QVBoxLayout;
+	QLineEdit* dtf4pc = new QLineEdit;
+	dtf4pc->setProperty("field", "piconsBatchCommand");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf4pc);
+	platform::osLineEdit(dtf4pc);
+	QLabel* dth4a = new QLabel(tr("Command"));
+	dtb42->addWidget(dth4a);
+	dtb42->addWidget(dtf4pc);
+	dtf42->addRow(dtb42);
+
+	QCheckBox* dtf4pr = new QCheckBox(tr("Reload picons after batch command"));
+	dtf4pr->setProperty("field", "piconsBatchReload");
+	prefs[PREF_SECTIONS::Preferences].emplace_back(dtf4pr);
+	dtf42->addRow(dtf4pr);
+
+	dtf4->addRow(dtf42);
 
 	dtl0->setLayout(dtf0);
 	dtl1->setLayout(dtf1);

@@ -28,7 +28,7 @@ There are several points To Do and To Evaluate.
 - [ ] merge options on import [gui] [tab.cpp] [e2db.cpp]
 - [ ] custom channel number as LCN (Logical Channel Number) [gui] [e2db.cpp]
 - [ ] provide reference custom data [e2db.cpp]
-- [ ] picon image transformation, eg. resize, mask [gui] [piconsView.cpp]
+- [x] picon image transformation, eg. resize, mask [gui] [piconsView.cpp]
 - [ ] improve m3u support, import and export [gui] [e2db.cpp]
 - [ ] wasm, capability to open and save the directory with multiple files [qt-wasm] [gui] [gui.cpp]
 

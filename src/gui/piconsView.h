@@ -87,11 +87,12 @@ class piconsView : public viewAbstract
 		void listItemChanged();
 		void listItemSelectionChanged();
 		void listItemDoubleClicked();
-		void listChangedPiconsPath();
+		void visualReloadList();
 		QMenu* listPrefsCornerMenu();
 		void editPicon();
 		void changePicon(QListWidgetItem* item, QString path);
 		/*void changePicon(QListWidgetItem* item, QByteArray data);*/
+		void executeBatchCommand();
 		void showListEditContextMenu(QPoint& pos);
 		void actionCall(int bit);
 		void updateFlags();

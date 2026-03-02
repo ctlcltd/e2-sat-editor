@@ -1520,12 +1520,7 @@ void tunersetsView::showListEditContextMenu(QPoint& pos)
 
 	QList<QTreeWidgetItem*> selected = list->selectedItems();
 
-	bool editable = false;
-
-	if (selected.count() == 1)
-	{
-		editable = true;
-	}
+	bool editable = (selected.count() == 1);
 
 	QMenu* list_edit = contextMenu();
 

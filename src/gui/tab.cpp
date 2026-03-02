@@ -2054,6 +2054,7 @@ void tab::actionCall(int bit)
 		case gui::TAB_ATS::ListEditFavourite:
 		case gui::TAB_ATS::ListEditMarker:
 		case gui::TAB_ATS::ListEditPicon:
+		case gui::TAB_ATS::ListBatchPicon:
 			view->actionCall(bit);
 		break;
 

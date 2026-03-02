@@ -32,6 +32,11 @@
 #include <QScrollBar>
 #endif
 
+#ifndef Q_OS_WASM
+#include <QThread>
+#include <QProcess>
+#endif
+
 #include "../e2se_defs.h"
 #include "platforms/platform.h"
 
@@ -39,6 +44,8 @@
 #include "theme.h"
 #include "tab.h"
 #include "gui.h"
+
+using std::to_string;
 
 using namespace e2se;
 
@@ -173,7 +180,11 @@ void piconsView::layout()
 
 	QToolBar* list_ats = toolBar();
 
-	this->action.list_browse = toolBarWidget(list_ats, tr("&Browse…", "toolbar"), list_browse);
+	this->action.list_browse = toolBarWidget(list_ats, tr("&Browse…", "toolbar"), this->list_browse);
+	QWidget* spacer = toolBarSpacer(list_ats);
+	spacer->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
+	spacer->setMinimumWidth(25);
+	this->action.list_search = toolBarButton(list_ats, tr("Reload", "toolbar"), [=]() { this->visualReloadList(); });
 	toolBarSpacer(list_ats);
 	this->action.list_search = toolBarButton(list_ats, tr("Find…", "toolbar"), theme->dynamicIcon("search"), [=]() { this->listSearchToggle(); });
 
@@ -212,6 +223,7 @@ void piconsView::browseLayout()
 	this->state.picons_dir = QSettings().value("application/piconsBrowsePath").toString();
 
 	this->list_browse = new QWidget;
+	this->list_browse->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
 
 	QFormLayout* browsef = new QFormLayout;
 	browsef->setFormAlignment(Qt::AlignLeading);
@@ -220,6 +232,7 @@ void piconsView::browseLayout()
 	QHBoxLayout* browsebox = new QHBoxLayout;
 
 	QLineEdit* browseinput = new QLineEdit;
+	browseinput->setMinimumWidth(240);
 	browseinput->setReadOnly(true);
 	browseinput->setText(this->state.picons_dir);
 	platform::osLineEdit(browseinput);
@@ -237,7 +250,7 @@ void piconsView::browseLayout()
 			browseinput->setText(dir);
 			QSettings().setValue("application/piconsBrowsePath", dir);
 
-			listChangedPiconsPath();
+			visualReloadList();
 		}
 #else
 		tid->demoMessage();
@@ -288,7 +301,7 @@ void piconsView::reset()
 {
 	debug("reset");
 
-	this->state.picons_dir = "";
+	this->state.picons_dir = QSettings().value("application/piconsBrowsePath").toString();
 	this->state.curr_picon = "";
 	this->state.tab_pending = false;
 	this->state.q_piconsUseChname = QSettings().value("preference/piconsUseChname").toBool();
@@ -439,12 +452,14 @@ void piconsView::listItemSelectionChanged()
 		tabSetFlag(gui::TabListCut, false);
 		tabSetFlag(gui::TabListCopy, false);
 		tabSetFlag(gui::TabListDelete, false);
+		tabSetFlag(gui::TabListBatchPicon, false);
 	}
 	else
 	{
 		tabSetFlag(gui::TabListCut, true);
 		tabSetFlag(gui::TabListCopy, true);
 		tabSetFlag(gui::TabListDelete, true);
+		tabSetFlag(gui::TabListBatchPicon, QSettings().value("preference/piconsAllowBatchCommand").toBool());
 	}
 
 	if (selected.count() == 1)
@@ -619,9 +634,9 @@ void piconsView::listFindClearSelection(bool hidden)
 	}
 }
 
-void piconsView::listChangedPiconsPath()
+void piconsView::visualReloadList()
 {
-	debug("listChangedPiconsPath");
+	debug("visualReloadList");
 
 	int i = 0;
 	int j = list->count();
@@ -668,6 +683,18 @@ QMenu* piconsView::listPrefsCornerMenu()
 			action->connect(action, &QAction::triggered, [=](bool checked) {
 				QSettings settings;
 				settings.setValue("preference/piconsBackup", checked);
+				settings.sync();
+				action->setChecked(checked);
+			});
+			menu->addAction(action);
+		}
+		{
+			QAction* action = new QAction;
+			action->setText(tr("Allow external batch command"));
+			action->setCheckable(true);
+			action->connect(action, &QAction::triggered, [=](bool checked) {
+				QSettings settings;
+				settings.setValue("preference/piconsAllowBatchCommand", checked);
 				settings.sync();
 				action->setChecked(checked);
 			});
@@ -726,8 +753,9 @@ QMenu* piconsView::listPrefsCornerMenu()
 		act->setChecked(false);
 
 	actions.at(1)->setChecked(settings.value("preference/piconsBackup", true).toBool());
-	actions.at(4)->setChecked(settings.value("preference/piconsUseRefid", true).toBool());
-	actions.at(5)->setChecked(settings.value("preference/piconsUseChname", false).toBool());
+	actions.at(2)->setChecked(settings.value("preference/piconsAllowBatchCommand", false).toBool());
+	actions.at(5)->setChecked(settings.value("preference/piconsUseRefid", true).toBool());
+	actions.at(6)->setChecked(settings.value("preference/piconsUseChname", false).toBool());
 
 	return menu;
 }
@@ -795,6 +823,8 @@ void piconsView::changePicon(QListWidgetItem* item, QString path)
 	{
 		error("changePicon", tr("File Error", "error").toStdString(), tr("Error writing file \"%1\".", "error").arg(filepath).toStdString());
 
+		tid->errorMessage(tr("File Error", "error"), tr("Error writing file \"%1\".", "error").arg(filepath));
+
 		item->setIcon(QIcon(":/icons/picon.png"));
 	}
 }
@@ -841,9 +871,146 @@ void piconsView::changePicon(QListWidgetItem* item, QString path)
 	{
 		error("changePicon", tr("File Error", "error").toStdString(), tr("Error writing file \"%1\".", "error").arg(filepath).toStdString());
 
+		tid->errorMessage(tr("File Error",, "error").toStdString(), tr("Error writing file \"%1\".", "error").arg(filepath).toStdString());
+
 		item->setIcon(QIcon(":/icons/picon.png"));
 	}
 }*/
+
+void piconsView::executeBatchCommand()
+{
+	QSettings settings;
+
+	bool allow = settings.value("preference/piconsAllowBatchCommand", false).toBool();
+	QString command = settings.value("preference/piconsBatchCommand").toString();
+
+	debug("executeBatchCommand", "allow", allow);
+	debug("executeBatchCommand", "command", command.toStdString());
+
+	if (! allow)
+	{
+		error("executeBatchCommand", tr("Error", "error").toStdString(), tr("Operation not allowed.", "error").toStdString());
+
+		return;
+	}
+
+	QList<QListWidgetItem*> selected = list->selectedItems();
+
+	if (selected.empty())
+		return;
+
+#ifdef E2SE_DEMO
+	return;
+#endif
+#ifndef Q_OS_WASM
+	bool VERBOSE = e2se::logger::OBJECT->debug;
+	bool notify = tid->statusBarIsVisible();
+	bool reload = settings.value("preference/piconsBatchReload", false).toBool();
+	QList<QString> files;
+
+	for (auto & item : selected)
+	{
+		QString filepath = item->data(Qt::UserRole).toString();
+
+		if (QFile::exists(filepath))
+			files.append(filepath);
+	}
+
+	if (allow && ! command.isEmpty())
+	{
+		QThread* thread = QThread::create([=]() {
+			for (auto & filepath : files)
+			{
+				QString program = QString(command);
+				QStringList arguments;
+				QFileInfo fi = QFileInfo(filepath);
+				QString filename = fi.fileName();
+
+				if (program.contains("%piconFile%"))
+					program.replace("%piconFile%", filepath);
+				if (program.contains("%piconFilename%"))
+					program.replace("%piconFilename%", filename);
+
+#if QT_VERSION < QT_VERSION_CHECK(6, 6, 0)
+				arguments = QProcess::splitCommand(program);
+				program = arguments[0];
+				arguments.removeAt(0);
+#endif
+
+				QProcess* process = new QProcess;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
+				process->startCommand(program);
+#else
+				process->start(program, arguments);
+#endif
+
+				if (VERBOSE)
+				{
+					process->connect(process, &QProcess::readyReadStandardOutput, [=]() {
+						qDebug() << "picons batch command stdout:";
+						qDebug() << process->readAllStandardOutput();
+						qDebug() << "";
+					});
+					process->connect(process, &QProcess::readyReadStandardError, [=]() {
+						qDebug() << "picons batch command stderr:";
+						qDebug() << process->readAllStandardError();
+						qDebug() << "";
+					});
+					process->connect(process, &QProcess::started, [=]() {
+						qDebug() << "picons batch command:" " " << program << " " << arguments;
+					});
+				}
+				process->connect(process, &QProcess::errorOccurred, [=](QProcess::ProcessError error) {
+					QString message = tr("An error occured during operation.\nReason: %1", "error");
+					QString reason;
+
+					switch (error)
+					{
+						case QProcess::FailedToStart: reason = "Failed to start"; break;
+						case QProcess::Crashed: reason = "Crashed"; break;
+						case QProcess::Timedout: reason = "Timed out"; break;
+						default: reason = "Process error";
+					}
+
+					QMetaObject::invokeMethod(this->cwid, [=]() {
+						this->error("executeBatchCommand", tr("Process Error", "error").toStdString(), to_string(int (error)));
+
+						this->tid->errorMessage(tr("Process Error", "error"), message.arg(reason));
+					}, Qt::QueuedConnection);
+				});
+				process->connect(process, &QProcess::finished, [=](int exitCode) {
+					if (notify && exitCode == 0)
+					{
+						QMetaObject::invokeMethod(this->cwid, [=]() {
+							tid->statusBarMessage(tr("Batch processed file: %1", "message").arg(filename));
+						}, Qt::QueuedConnection);
+					}
+					else if (exitCode != 0)
+					{
+						QString message = tr("An error occured during operation.\nReason: %1", "error");
+						QString reason = "Abnormal termination exit";
+
+						QMetaObject::invokeMethod(this->cwid, [=]() {
+							this->error("executeBatchCommand", tr("Command Error", "error").toStdString(), to_string(exitCode));
+
+							this->tid->errorMessage(tr("Command Error", "error"), message.arg(reason));
+						}, Qt::QueuedConnection);
+					}
+				});
+
+				process->waitForStarted();
+				process->waitForFinished();
+			}
+		});
+		thread->connect(thread, &QThread::finished, [=]() {
+			if (reload)
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->visualReloadList(); }, Qt::QueuedConnection);
+		});
+		thread->start();
+		thread->quit();
+	}
+#endif
+}
 
 //TODO listItemCut
 void piconsView::listItemCopy(bool cut)
@@ -1005,16 +1172,13 @@ void piconsView::showListEditContextMenu(QPoint& pos)
 	if (selected.empty() && list->count() != 0)
 		return;
 
-	bool editable = false;
-
-	if (selected.count() == 1)
-	{
-		editable = true;
-	}
+	bool editable = (selected.count() == 1);
 
 	QMenu* list_edit = contextMenu();
 
 	contextMenuAction(list_edit, tr("Change picon", "context-menu"), [=]() { this->editPicon(); }, editable && tabGetFlag(gui::TabListEditPicon));
+	contextMenuSeparator(list_edit);
+	contextMenuAction(list_edit, tr("Execute batch command", "context-menu"), [=]() { this->executeBatchCommand(); }, tabGetFlag(gui::TabListBatchPicon));
 	contextMenuSeparator(list_edit);
 	contextMenuAction(list_edit, tr("Cu&t", "context-menu"), [=]() { this->listItemCut(); }, tabGetFlag(gui::TabListCut), QKeySequence::Cut);
 	contextMenuAction(list_edit, tr("&Copy", "context-menu"), [=]() { this->listItemCopy(); }, tabGetFlag(gui::TabListCopy), QKeySequence::Copy);
@@ -1034,6 +1198,9 @@ void piconsView::actionCall(int bit)
 	{
 		case gui::TAB_ATS::ListEditPicon:
 			editPicon();
+		break;
+		case gui::TAB_ATS::ListBatchPicon:
+			executeBatchCommand();
 		break;
 	}
 }
