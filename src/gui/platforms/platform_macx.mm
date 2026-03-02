@@ -237,6 +237,9 @@ void _platform_macx::_osMenuPopup(QMenu* menu, QWidget* widget, QPoint pos)
 	NSView* view = (NSView*)top->winId();
 	NSMenu* nsMenu = menu->toNSMenu();
 
+	//workaround: macx >= 13 text elision, eg. "Text item" is "Tex...item"
+	[nsMenu setMinimumWidth:[nsMenu size].width];
+
 	QPoint globalPos = widget->mapTo(top, pos);
 
 	NSPoint nsPos = NSMakePoint(globalPos.x(), globalPos.y());
