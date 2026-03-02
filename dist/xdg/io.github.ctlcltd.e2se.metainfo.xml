@@ -45,6 +45,7 @@
             <li>Reference panel revamped, now with PIDs and Flags</li>
             <li>Fix favourite reference on copy-paste</li>
             <li>Fix Tools menu defect</li>
+            <li>Fix FTP on before upload, save sorting</li>
             <li>Fix edit transponders, save sorting</li>
             <li>Bugfix</li>
             <li>Updated dependencies</li>

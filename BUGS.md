@@ -9,7 +9,7 @@ Information on contributions, to contribute and send Pull Request, please see [C
 **To Fix:**
 
 - [x] favourite reference, on copy-paste, `#DESCRIPTION` is placed everywhere on userbouquet file [mainView.cpp]
-- [ ] ftp upload, the current tree list is not stored before upload [tab.cpp] [viewAbstract.cpp] [mainView.cpp]
+- [x] ftp upload, the current tree list is not stored before upload [tab.cpp] [viewAbstract.cpp] [mainView.cpp]
 - [x] edit transponders, sort ordering is not stored [transpondersView.cpp] [tunersetsView.cpp]
 - [x] tools popover defects, native `QMenu` `QComboBox` [macos] [gui] [tools.cpp]
 - [x] find match cache, is cached after channel deletetion [gui] [viewAbstract.cpp]
@@ -28,7 +28,7 @@ Information on contributions, to contribute and send Pull Request, please see [C
 - [x] ftp connection messages, eg. "Connected", better visual feedback, status bar is not enough, eg. Issues (#35) [gui] [tab.cpp]
 - [ ] convert lamedbx from and to zapitx, better visual feedback [gui] [tab.cpp]
 - [ ] cli history, load and save [cli] [e2db_termctl.cpp]
-- [ ] ftp error messages, from "Access denied to remote resource." to "No such file or directory." [ftp] [fptcom.cpp]
+- [x] ftp error messages, from "Access denied to remote resource." to file error. [ftp] [fptcom.cpp]
 - [ ] service flags and compatibility, `dvbfrontend` [gui] [e2db.cpp]
 - [ ] reference flags and compatibility, `dvbfrontend` [gui] [e2db.cpp]
 - [ ] neutrino feparams and versions, unknown compatibility [gui] [e2db.cpp]

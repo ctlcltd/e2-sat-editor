@@ -2406,6 +2406,9 @@ void tab::ftpUpload()
 	this->files.clear();
 	this->ftp_files.clear();
 
+	if (this->data->hasChanged())
+		this->updateIndex();
+
 	try
 	{
 		this->files = dbih->get_output();

@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 - Reference panel revamped, now with PIDs and Flags
 - Fix favourite reference on copy-paste
 - Fix Tools menu defect
+- Fix FTP on before upload, save sorting
 - Fix edit transponders, save sorting
 - Bugfix
 - Updated dependencies

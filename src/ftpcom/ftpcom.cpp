@@ -147,7 +147,7 @@ bool ftpcom::connect()
 
 	curl_easy_setopt(cph, CURLOPT_WRITEFUNCTION, data_discard_func);
 	CURLcode res = perform(cph);
-	return (res == CURLE_OK);
+	return (res == CURLcode::CURLE_OK);
 }
 
 bool ftpcom::disconnect()
@@ -203,7 +203,10 @@ vector<string> ftpcom::list_dir(string basedir)
 		{
 			CURLcode res = (CURLcode) code;
 
-			error("list_dir", "FTP Error", msg(curl_easy_strerror(res))); // var error string
+			if (res == CURLcode::CURLE_REMOTE_ACCESS_DENIED)
+				error("list_dir", "FTP Error", msg("File \"%s\" not exists.", basedir));
+			else
+				error("list_dir", "FTP Error", msg(curl_easy_strerror(res))); // var error string
 		}
 	}
 	catch (...)
@@ -234,7 +237,7 @@ vector<string> ftpcom::list_dir_nlst(string basedir)
 	curl_easy_setopt(cph, CURLOPT_WRITEDATA, &data);
 	CURLcode res = perform(cph);
 
-	if (res != CURLE_OK)
+	if (res != CURLcode::CURLE_OK)
 	{
 		reset(cph, rph);
 		data.clear();
@@ -294,7 +297,7 @@ vector<string> ftpcom::list_dir_mlsd(string basedir)
 	curl_easy_setopt(cph, CURLOPT_WRITEDATA, &data);
 	CURLcode res = perform(cph);
 
-	if (res != CURLE_OK)
+	if (res != CURLcode::CURLE_OK)
 	{
 		reset(cph, rph);
 		data.clear();
@@ -417,7 +420,7 @@ void ftpcom::download_data(string basedir, string filename, ftpcom_file& file)
 
 	sio data;
 	data.size = 0;
-	CURLcode res = CURLE_GOT_NOTHING;
+	CURLcode res = CURLcode::CURLE_GOT_NOTHING;
 
 	if (basedir.size() && basedir[basedir.size() - 1] != '/')
 		basedir.append("/");
@@ -432,9 +435,12 @@ void ftpcom::download_data(string basedir, string filename, ftpcom_file& file)
 	curl_easy_setopt(cph, CURLOPT_WRITEDATA, &data);
 	res = perform(cph);
 
-	if (res != CURLE_OK)
+	if (res != CURLcode::CURLE_OK)
 	{
-		error("download_data", "FTP Error", msg(curl_easy_strerror(res))); // var error string
+		if (res == CURLcode::CURLE_REMOTE_ACCESS_DENIED)
+			error("download_data", "FTP Error", msg("File \"%s\" not exists.", path));
+		else
+			error("download_data", "FTP Error", msg(curl_easy_strerror(res))); // var error string
 
 		reset(cph, rph);
 
@@ -445,7 +451,7 @@ void ftpcom::download_data(string basedir, string filename, ftpcom_file& file)
 
 	string mime = file_mime_value(path);
 
-	if (FIX_CRLF)
+	if (ftpcom::FIX_CRLF)
 	{
 		if (mime.find("text/") != string::npos)
 		{
@@ -483,7 +489,7 @@ void ftpcom::upload_data(string basedir, string filename, ftpcom_file file)
 	data.data = file.data.data();
 	data.size = file.size;
 	size_t len = 0;
-	CURLcode res = CURLE_GOT_NOTHING;
+	CURLcode res = CURLcode::CURLE_GOT_NOTHING;
 
 	if (basedir.size() && basedir[basedir.size() - 1] != '/')
 		basedir.append("/");
@@ -502,7 +508,7 @@ void ftpcom::upload_data(string basedir, string filename, ftpcom_file file)
 	curl_easy_setopt(cph, CURLOPT_READDATA, &data);
 	curl_easy_setopt(cph, CURLOPT_WRITEFUNCTION, data_discard_func);
 
-	for (int a = 0; (res != CURLE_OK) && (a < MAX_RESUME_ATTEMPTS); a++)
+	for (int a = 0; (res != CURLcode::CURLE_OK) && (a < ftpcom::MAX_RESUME_ATTEMPTS); a++)
 	{
 		debug("upload_data", "attempt", (a + 1));
 
@@ -511,7 +517,7 @@ void ftpcom::upload_data(string basedir, string filename, ftpcom_file file)
 			curl_easy_setopt(cph, CURLOPT_NOBODY, true);
 			curl_easy_setopt(cph, CURLOPT_HEADER, true);
 			res = perform(cph);
-			if (res != CURLE_OK)
+			if (res != CURLcode::CURLE_OK)
 				continue;
 			curl_easy_setopt(cph, CURLOPT_NOBODY, false);
 			curl_easy_setopt(cph, CURLOPT_HEADER, false);
@@ -526,7 +532,7 @@ void ftpcom::upload_data(string basedir, string filename, ftpcom_file file)
 		res = perform(cph);
 	}
 
-	if (res != CURLE_OK)
+	if (res != CURLcode::CURLE_OK)
 	{
 		error("upload_data", "FTP Error", msg(curl_easy_strerror(res))); // var error string
 
@@ -769,11 +775,11 @@ bool ftpcom::cmd_ifreload()
 
 	CURLcode res = perform(csh);
 
-	if (res != CURLE_OK)
+	if (res != CURLcode::CURLE_OK)
 	{
 		string message;
 
-		if (res == CURLE_COULDNT_CONNECT)
+		if (res == CURLcode::CURLE_COULDNT_CONNECT)
 			message = msg("Couldn't connect to STB Webif");
 		else
 			message = msg(curl_easy_strerror(res)); // var error string
@@ -847,11 +853,11 @@ bool ftpcom::cmd_tnreload()
 
 	CURLcode res = perform(cth);
 
-	if (res != CURLE_OK)
+	if (res != CURLcode::CURLE_OK)
 	{
 		string message;
 
-		if (res == CURLE_COULDNT_CONNECT)
+		if (res == CURLcode::CURLE_COULDNT_CONNECT)
 			message = msg("Couldn't connect to STB Telnet");
 		else
 			message = msg(curl_easy_strerror(res)); // var error string
