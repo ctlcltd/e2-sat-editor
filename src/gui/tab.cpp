@@ -38,7 +38,6 @@
 #include <QClipboard>
 #include <QMimeData>
 #include <QMouseEvent>
-#include <QToolTip>
 #ifdef Q_OS_WIN
 #include <QStyleFactory>
 #include <QScrollBar>
@@ -3272,11 +3271,14 @@ void tab::bubbleMessage(MSG_CODE code, const QRect& rect)
 	for (auto & x : this->bubblemsg)
 	{
 		this->cwid->killTimer(x.first);
+
 		//TODO TEST potential SEGFAULT
-		x.second->close();
+		if (x.second)
+			x.second->close();
 	}
 	this->bubblemsg.clear();
 
+	// note: not deleted
 	QWidget* bubble = new QWidget(this->cwid);
 	bubble->setObjectName("bubblemsg");
 	bubble->setStyleSheet("#bubblemsg QLabel { padding-top: 1ex; padding-right: 2ex; padding-bottom: 1ex; padding-left: 2ex; border: 0; border-radius: 13px; background: " + bubblebackground_hexArgb + "; color: " + bubblecolor_hexArgb + "; font-size: 19px; }");

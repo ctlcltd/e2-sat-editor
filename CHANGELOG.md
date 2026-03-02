@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 
 
+## [v1.9.0]
+
+**Version**: 1.9.0  
+**Release Date**: *unreleased*  
+**Full Changelog**: [v1.8.1...HEAD](https://github.com/ctlcltd/e2-sat-editor/compare/v1.8.1...HEAD)
+
+- FTP connection messages, UX improvement
+- Reference panel revamped, now with PIDs and Flags
+- Fix favourite reference on copy-paste
+- Fix Tools menu defect
+- Fix edit transponders, save sorting
+- Bugfix
+- Updated dependencies
+
+
 ## [v1.8.1]
 
 **Version**: 1.8.1  
@@ -15,7 +30,7 @@ All notable changes to this project will be documented in this file.
 
 ## [v1.8.0]
 
-**Version**: 1.8  
+**Version**: 1.8.0  
 **Release Date**: 2024-11-28  
 **Full Changelog**: [v1.7.0...v1.8.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.7.0...v1.8.0)
 
@@ -31,7 +46,7 @@ All notable changes to this project will be documented in this file.
 
 ## [v1.7.0]
 
-**Version**: 1.7  
+**Version**: 1.7.0  
 **Release Date**: 2024-10-31  
 **Full Changelog**: [v1.6.0...v1.7.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.6.0...v1.7.0)
 
@@ -46,7 +61,7 @@ All notable changes to this project will be documented in this file.
 
 ## [v1.6.0]
 
-**Version**: 1.6  
+**Version**: 1.6.0  
 **Release Date**: 2024-07-25  
 **Full Changelog**: [v1.5.0...v1.6.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.5.0...v1.6.0)
 
@@ -56,50 +71,50 @@ All notable changes to this project will be documented in this file.
 - Added support for 519 bouquet hidden
 - Fix soft errors when listing with FTP command NLST
 - Added cross-platform support for CRLF end line on read
-- Fix end line from CRLF to LF on write \[Windows\]
+- Fix end line from CRLF to LF on write [Windows]
 - Added button to calculate DVBNS transponder
 - Improved merge
-- Fix tree highlight color theme bugs \[Windows\]
+- Fix tree highlight color theme bugs [Windows]
 - Updated translations
 
 
 ## [v1.5.0]
 
-**Version**: 1.5  
+**Version**: 1.5.0  
 **Release Date**: 2024-05-20  
 **Full Changelog**: [v1.4.0...v1.5.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.4.0...v1.5.0)
 
 - Improved Edit menu and context menu
 - Fix orbital position with West values
 - Added new favourite types, ie. 5001 gstplayer, 5002 exteplayer3
-- Fix context menu interfering with Drag and Drop \[macOS\]
+- Fix context menu interfering with Drag and Drop [macOS]
 
 
 ## [v1.4.0]
 
-**Version**: 1.4  
+**Version**: 1.4.0  
 **Release Date**: 2024-04-26  
 **Full Changelog**: [v1.3.0...v1.4.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.3.0...v1.4.0)
 
-- Fix FTP issues \[Windows\]
-- Fix reading files with end of line CRLF \[Windows\]
+- Fix FTP issues [Windows]
+- Fix reading files with end of line CRLF [Windows]
 - Fix add favourite, stream type
 - Fix edit transponder
 - Fix merge, clear XML comments
 - Fix reference ID and marker number
 - Revised transponder feparams
-- Win11 initial support \[Windows\]
+- Win11 initial support [Windows]
 - Prevent crashes
 
 
 ## [v1.3.0]
 
-**Version**: 1.3  
+**Version**: 1.3.0  
 **Release Date**: 2024-03-30  
 **Full Changelog**: [v1.2.0...v1.3.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.2.0...v1.3.0)
 
 - Stream type reference support
-- Calculate \[dvbns\] namespace
+- Calculate dvbns namespace
 - M3U import and export
 - Automatic and manual checking for updates
 - Bugfix
@@ -107,7 +122,7 @@ All notable changes to this project will be documented in this file.
 
 ## [v1.2.0]
 
-**Version**: 1.2  
+**Version**: 1.2.0  
 **Release Date**: 2024-02-22  
 **Full Changelog**: [v1.1.1...v1.2.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.1.1...v1.2.0)
 
@@ -129,7 +144,7 @@ All notable changes to this project will be documented in this file.
 
 ## [v1.1.0]
 
-**Version**: 1.1  
+**Version**: 1.1.0  
 **Release Date**: 2024-01-15  
 **Full Changelog**: [v1.0.0...v1.1.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.0.0...v1.1.0)
 
@@ -139,7 +154,7 @@ All notable changes to this project will be documented in this file.
 
 ## [v1.0.0]
 
-**Version**: 1.0  
+**Version**: 1.0.0  
 **Release Date**: 2024-01-04  
 **Full Changelog**: [v0.9.0...v1.0.0](https://github.com/ctlcltd/e2-sat-editor/compare/v0.9.0...v1.0.0)
 
@@ -150,18 +165,18 @@ All notable changes to this project will be documented in this file.
 
 ## [v0.9.0]
 
-**Version**: 0.9  
+**Version**: 0.9.0  
 **Release Date**: 2023-09-26  
 **Full Changelog**: [v0.8.0...v0.9.0](https://github.com/ctlcltd/e2-sat-editor/compare/v0.8.0...v0.9.0)
 
 - Translations, 33 languages (same as qt-base): Arabic, Bulgarian, Catalan, Czech, Danish, German, Spanish, Persian, Finnish, French, Gaelic, Galician, Hebrew, Croatian, Hungarian, Italian, Japanese, Korean, Lithuanian, Latvian, Dutch, Norwegian Nynorsk, Polish, Portuguese (Brazil), Portuguese (Portugal), Russian, Slovak, Slovenian, Swedish, Turkish, Ukrainian, Chinese (China), Chinese (Taiwan)
 - Bugfix
-- Win10 dark mode \[Windows\]
+- Win10 dark mode [Windows]
 
 
 ## [v0.8.0]
 
-**Version**: 0.8  
+**Version**: 0.8.0  
 **Release Date**: 2023-06-13  
 **Full Changelog**: [v0.7.0...v0.8.0](https://github.com/ctlcltd/e2-sat-editor/compare/v0.7.0...v0.8.0)
 
@@ -174,19 +189,19 @@ All notable changes to this project will be documented in this file.
 
 ## [v0.7.0]
 
-**Version**: 0.7  
+**Version**: 0.7.0  
 **Release Date**: 2023-05-21  
 **Full Changelog**: [v0.6.0-pre...v0.7.0](https://github.com/ctlcltd/e2-sat-editor/compare/v0.6.0-pre...v0.7.0)
 
 - Improvements: tree views, log inspector, logger, icon resources
 - Testing and fixing for platforms
 - Added initial CLI
-- Added WASM support Qt for WebAssembly \[Wasm\]
+- Added WASM support Qt for WebAssembly [Wasm]
 
 
 ## [v0.6.0-pre]
 
-**Version**: 0.6 pre-release  
+**Version**: 0.6.0-pre  
 **Release Date**: 2023-04-07  
 **Full Changelog**: [v0.5.0-pre...v0.6.0-pre](https://github.com/ctlcltd/e2-sat-editor/compare/v0.5.0-pre...v0.6.0-pre)
 
@@ -199,7 +214,7 @@ All notable changes to this project will be documented in this file.
 
 ## [v0.5.0-pre]
 
-**Version**: 0.5 pre-release  
+**Version**: 0.5.0-pre  
 **Release Date**: 2023-03-18  
 **Full Changelog**: [v0.4.0-pre...v0.5.0-pre](https://github.com/ctlcltd/e2-sat-editor/compare/v0.4.0-pre...v0.5.0-pre)
 
@@ -212,7 +227,7 @@ All notable changes to this project will be documented in this file.
 
 ## [v0.4.0-pre]
 
-**Version**: 0.4 pre-release  
+**Version**: 0.4.0-pre  
 **Release Date**: 2023-02-25  
 **Full Changelog**: [v0.3.0-pre...v0.4.0-pre](https://github.com/ctlcltd/e2-sat-editor/compare/v0.3.0-pre...v0.4.0-pre)
 
@@ -224,12 +239,12 @@ All notable changes to this project will be documented in this file.
 
 ## [v0.3.0-pre]
 
-**Version**: 0.3 pre-release  
+**Version**: 0.3.0-pre  
 **Release date**: 2023-01-24  
 **Full Changelog**: [v0.3.0-pre](https://github.com/ctlcltd/e2-sat-editor/commits/v0.3.0-pre)
 
 - Fix Qt6 and Qt5 compatibility
 - Revised layout and Qt stylesheet
-- Macx style improvements \[macOS\]
+- Macx style improvements [macOS]
 - First pre-release
 
