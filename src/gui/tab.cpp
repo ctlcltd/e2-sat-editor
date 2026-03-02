@@ -2837,9 +2837,14 @@ void tab::ftpStbDisconnectSuccessNotify()
 void tab::ftpStbReloadSuccessNotify()
 {
 	if (statusBarIsVisible())
+	{
+		bubbleMessage(MSG_CODE::ftpStbReloadedBubble);
 		statusBarMessage(tr("STB reload done.", "message"));
+	}
 	else
+	{
 		infoMessage(tr("STB reload done.", "message"));
+	}
 }
 
 void tab::ftpStbConnectErrorNotify()
@@ -3220,6 +3225,7 @@ void tab::bubbleMessage(MSG_CODE code, const QRect& rect)
 	{
 		case MSG_CODE::ftpConnectedBubble: message = tr("Connected", "message"); break;
 		case MSG_CODE::ftpDisconnectedBubble: message = tr("Disconnected", "message"); break;
+		case MSG_CODE::ftpStbReloadedBubble: message = QString(tr("STB reload done.", "message")).replace(".", ""); break;
 		default: return;
 	}
 		

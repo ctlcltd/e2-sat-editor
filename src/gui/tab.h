@@ -67,7 +67,8 @@ class tab : protected e2se::log_factory
 			exportNotice,
 			utilsNotice,
 			ftpConnectedBubble,
-			ftpDisconnectedBubble
+			ftpDisconnectedBubble,
+			ftpStbReloadedBubble
 		};
 
 		tab(gui* gid, QWidget* cwid);

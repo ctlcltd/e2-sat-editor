@@ -746,11 +746,6 @@ bool ftpcom::cmd_ifreload()
 		curl_url_set(rsh, CURLUPART_URL, ifreload.c_str(), 0);
 	}
 
-	// char* url;
-	// curl_url_get(rsh, CURLUPART_URL, &url, 0);
-	// debug("cmd_ifreload", "URL", url);
-	// url = NULL;
-
 #if LIBCURL_VERSION_NUM < 0x075500
 	curl_easy_setopt(csh, CURLOPT_PROTOCOLS, CURLPROTO_HTTP);
 #else
@@ -792,17 +787,22 @@ bool ftpcom::cmd_ifreload()
 		return false;
 	}
 
-	bool cmd = false;
+	bool ret = false;
 
 	if (data.str().find("True") != string::npos)
-		cmd = true;
+		ret = true;
 
-	// debug("cmd_ifreload", "data", data.str());
+	if (ftpcom::VERBOSE)
+	{
+		debug("cmd_ifreload", "url", ifreload);
+		debug("cmd_ifreload", "data", data.str());
+		debug("cmd_ifreload", "done", ret);
+	}
 
 	reset(csh, rsh);
 	data.clear();
 
-	return cmd;
+	return ret;
 }
 
 bool ftpcom::cmd_tnreload()
@@ -849,8 +849,6 @@ bool ftpcom::cmd_tnreload()
 	if (ftpcom::VERBOSE)
 		curl_easy_setopt(cth, CURLOPT_VERBOSE, true);
 
-	// debug("cmd_tnreload", "stdout", "start");
-
 	CURLcode res = perform(cth);
 
 	if (res != CURLcode::CURLE_OK)
@@ -869,11 +867,20 @@ bool ftpcom::cmd_tnreload()
 		return false;
 	}
 
-	// debug("cmd_tnreload", "stdout", "end");
+	bool ret = (data.step >= 2);
+
+	if (ftpcom::VERBOSE)
+	{
+		debug("cmd_tnreload", "cmd", data.cmd);
+		debug("cmd_tnreload", "user", data.user);
+		debug("cmd_tnreload", "send", data.send);
+		debug("cmd_tnreload", "step", data.step);
+		debug("cmd_tnreload", "done", ret);
+	}
 
 	reset(cth, rth);
 
-	return true;
+	return ret;
 }
 
 }

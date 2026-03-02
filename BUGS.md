@@ -16,19 +16,17 @@ Information on contributions, to contribute and send Pull Request, please see [C
 - [x] check update, when disconnected, there is no connection error dialog [checkUpdate.cpp]
 - [x] check update, when disconnected, version string `%1` replacement error [checkUpdate.cpp]
 - [x] html markup errors `<tr>` `<thead>` [printable.cpp] [e2db_converter.cpp]
+- [x] telnet reload, when connected is always True also when not reloading [ftp] [ftpcom.cpp]
 - [ ] cli on terminal emulation, cli history, PgUp and PgDown inversion [linux] [cli] [e2db_termctl.cpp]
-- [ ] telnet reload, when connected is always True also when not reloading [ftp] [ftpcom.cpp]
-- [ ] telnet reload, it connects but seems to not working [ftp] [ftpcom.cpp]
-- [ ] telnet emulation py script, seems to not working [workspace] [start-telnet.py]
 
 
 **To Improve:**
 
 - [x] service and reference flags, show flags in the UI, eg. Issues (#33) [gui]
 - [x] ftp connection messages, eg. "Connected", better visual feedback, status bar is not enough, eg. Issues (#35) [gui] [tab.cpp]
+- [x] ftp error messages, from "Access denied to remote resource." to file error. [ftp] [fptcom.cpp]
 - [ ] convert lamedbx from and to zapitx, better visual feedback [gui] [tab.cpp]
 - [ ] cli history, load and save [cli] [e2db_termctl.cpp]
-- [x] ftp error messages, from "Access denied to remote resource." to file error. [ftp] [fptcom.cpp]
 - [ ] service flags and compatibility, `dvbfrontend` [gui] [e2db.cpp]
 - [ ] reference flags and compatibility, `dvbfrontend` [gui] [e2db.cpp]
 - [ ] neutrino feparams and versions, unknown compatibility [gui] [e2db.cpp]
@@ -81,4 +79,6 @@ Information on contributions, to contribute and send Pull Request, please see [C
 - [ ] `onid == 0x0001` is `valid = (tsid > 0x0001)`, `valid = true` is False on STB [e2db.cpp]
 - [ ] edit service from Channel Book [gui] [channelBookView.cpp]
 - [ ] import from ftp, tools and demo, expending `import_blob` + `parse_e2db` [e2db.cpp]
+- [x] telnet reload, it connects but seems to not working [ftp] [ftpcom.cpp]
+- [x] telnet emulation py script, seems to not working [workspace] [start-telnet.py]
 
