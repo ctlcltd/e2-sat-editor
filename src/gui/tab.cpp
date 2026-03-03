@@ -2511,9 +2511,7 @@ void tab::ftpUpload()
 			}
 
 			if (this->ftp_files.empty())
-			{
 				return;
-			}
 
 			int files_count = int (this->ftp_files.size());
 
@@ -2682,8 +2680,8 @@ void tab::ftpDownload()
 				QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(this->data->getErrors(), MSG_CODE::parseNotice); }, Qt::QueuedConnection);
 
 			QMetaObject::invokeMethod(this->cwid, [=]() {
-				view->reset();
-				view->load();
+				this->view->reset();
+				this->view->load();
 
 				this->data->setChanged(true);
 			}, Qt::QueuedConnection);

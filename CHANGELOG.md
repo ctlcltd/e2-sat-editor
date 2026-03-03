@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 
 - FTP connection messages, UX improvement
 - Reference panel revamped, now with PIDs and Flags
+- New in Picons editor, batch external command
 - Fix favourite reference on copy-paste
 - Fix Tools menu defect
 - Fix FTP on before upload, save sorting

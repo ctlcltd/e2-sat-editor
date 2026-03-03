@@ -35,6 +35,7 @@
 #ifndef Q_OS_WASM
 #include <QThread>
 #include <QProcess>
+#include <QDebug>
 #endif
 
 #include "../e2se_defs.h"

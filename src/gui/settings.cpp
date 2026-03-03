@@ -704,12 +704,17 @@ void settings::preferencesLayout()
 	dtb4p->setSpacing(6);
 	dtb4p->setContentsMargins(0, 0, 0, 4);
 	QLabel* dtf4p1 = new QLabel;
-	dtf4p1->setText(tr("eg. %1").arg("/path/to/your/software --input \"%piconFile%\" --output \"%piconFile%\""));
 	dtf4p1->setStyleSheet("font-size: 12px");
-	dtb4p->addWidget(dtf4p1);
 	QLabel* dtf4p2 = new QLabel;
-	dtf4p2->setText(tr("eg. %1").arg("/path/to/your/script -i \"/my/path/%piconFilename%\" -o \"%piconFile%\""));
 	dtf4p2->setStyleSheet("font-size: 12px");
+#ifndef Q_OS_WIN
+	dtf4p1->setText(tr("eg. %1").arg("/your/software --input \"%piconFile%\" --output \"%piconFile%\""));
+	dtf4p2->setText(tr("eg. %1").arg("/path/to/shell /path/your/script.sh -i \"/path/your/path/%piconFilename%\" -o \"%piconFile%\""));
+#else
+	dtf4p1->setText(tr("eg. %1").arg("A:\\your\\software.exe --input \"%piconFile%\" --output \"%piconFile%\""));
+	dtf4p2->setText(tr("eg. %1").arg("B:\\Path\\To\\pwsh.exe \"\\your\\Script.ps1\" -i \"\\your\\path\\%piconFilename%\" -o \"%piconFile%\""));
+#endif
+	dtb4p->addWidget(dtf4p1);
 	dtb4p->addWidget(dtf4p2);
 	dtf42->addRow(dtb4p);
 

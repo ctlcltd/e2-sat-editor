@@ -43,6 +43,7 @@
         <ul>
             <li>FTP connection messages, usability improvement</li>
             <li>Reference panel revamped, now with PIDs and Flags</li>
+            <li>New in Picons editor, batch external command</li>
             <li>Fix favourite reference on copy-paste</li>
             <li>Fix Tools menu defect</li>
             <li>Fix FTP on before upload, save sorting</li>
