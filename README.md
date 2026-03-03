@@ -28,13 +28,13 @@ And it supports also Neutrino xml (api v1, v2, v3, v4).
 ## Screenshot
 
 *Sample of the software running on Windows*
-[![e2 SAT Editor (screenshot sample on Windows)](https://github.com/ctlcltd/e2-sat-editor/raw/main/res/screenshot-wlw.webp "Sample of the software running on Windows")](https://github.com/ctlcltd/e2-sat-editor/blob/main/res/screenshot-wlw.webp?raw=true)
+[![e2 SAT Editor (screenshot sample on Windows)](https://github.com/ctlcltd/e2-sat-editor/raw/main/res/screenshot-wlw.webp "Sample of the software running on Windows")](https://github.com/ctlcltd/e2-sat-editor/blob/main/res/screenshot-wlw.webp)
 
 *Sample of the software running on macOS with dark appearance variant*
-[![e2 SAT Editor (screenshot sample on macOS)](https://github.com/ctlcltd/e2-sat-editor/raw/main/res/screenshot-mdm.webp "Sample of the software running on macOS with dark appearance variant")](https://github.com/ctlcltd/e2-sat-editor/blob/main/res/screenshot-mdm.webp?raw=true)
+[![e2 SAT Editor (screenshot sample on macOS)](https://github.com/ctlcltd/e2-sat-editor/raw/main/res/screenshot-mdm.webp "Sample of the software running on macOS with dark appearance variant")](https://github.com/ctlcltd/e2-sat-editor/blob/main/res/screenshot-mdm.webp)
 
 *Sample of the software running with (Qt) Fusion appearance*
-[![e2 SAT Editor (screenshot sample)](https://github.com/ctlcltd/e2-sat-editor/raw/main/res/screenshot-flf.webp "Sample of the software running with (Qt) Fusion appearance")](https://github.com/ctlcltd/e2-sat-editor/blob/main/res/screenshot-flf.webp?raw=true)
+[![e2 SAT Editor (screenshot sample)](https://github.com/ctlcltd/e2-sat-editor/raw/main/res/screenshot-flf.webp "Sample of the software running with (Qt) Fusion appearance")](https://github.com/ctlcltd/e2-sat-editor/blob/main/res/screenshot-flf.webp)
 
 
 ## Contributing
