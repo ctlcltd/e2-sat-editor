@@ -17,7 +17,7 @@ Information on contributions, to contribute and send Pull Request, please see [C
 - [x] check update, when disconnected, version string `%1` replacement error [checkUpdate.cpp]
 - [x] html markup errors `<tr>` `<thead>` [printable.cpp] [e2db_converter.cpp]
 - [x] telnet reload, when connected is always True also when not reloading [ftp] [ftpcom.cpp]
-- [ ] cli on terminal emulation, cli history, PgUp and PgDown inversion [linux] [cli] [e2db_termctl.cpp]
+- [x] cli history, PgUp history back [linux] [cli] [e2db_termctl.cpp]
 
 
 **To Improve:**

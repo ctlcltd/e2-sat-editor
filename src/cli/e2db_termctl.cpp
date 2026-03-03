@@ -155,7 +155,7 @@ void e2db_termctl::input(bool shell, bool ins)
 									pos = history->tellg() != last ? history->tellg() : pos;
 								else
 									pos = history->tellg() != history->tellp() ? history->tellg() : pos;
-								if (last == history->tellg())
+								if (last == history->tellg() || history->tellp() == history->tellg())
 									break;
 							}
 							history->clear();

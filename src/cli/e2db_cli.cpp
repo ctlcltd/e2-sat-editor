@@ -780,9 +780,24 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 		}
 
 		if (type == "output")
+		{
 			shell_preference_output(format);
+		}
+		else if (type.empty())
+		{
+			string id;
+			switch (__objio.out)
+			{
+				case OBJIO::byline: id = "byline"; break;
+				case OBJIO::json: id = "json"; break;
+				default: id = "tabular";
+			}
+			cout << "Output format: " << id << endl;
+		}
 		else
+		{
 			cerr << "Type Error: " << msg("Unknown entry type: %s", type) << endl;
+		}
 	}
 	else
 	{
