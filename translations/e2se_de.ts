@@ -1610,6 +1610,11 @@ Bitte warten Sie einige Minuten und versuchen Sie es erneut.</translation>
         <translation>&amp;Alles auswählen</translation>
     </message>
     <message>
+        <source>Execute batch command</source>
+        <comment>menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&amp;Find</source>
         <comment>menu</comment>
         <extracomment>Platform: Find menu</extracomment>
@@ -2735,6 +2740,11 @@ Bitte warten Sie einige Minuten und versuchen Sie es erneut.</translation>
         <translation>&amp;Durchsuche…</translation>
     </message>
     <message>
+        <source>Reload</source>
+        <comment>toolbar</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Find…</source>
         <comment>toolbar</comment>
         <translation>Finden…</translation>
@@ -2791,6 +2801,10 @@ Bitte warten Sie einige Minuten und versuchen Sie es erneut.</translation>
         <translation>Backup Picon, wenn es ersetzt wird</translation>
     </message>
     <message>
+        <source>Allow external batch command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Filename format</source>
         <translation>Dateinamenformat</translation>
     </message>
@@ -2818,6 +2832,32 @@ Bitte warten Sie einige Minuten und versuchen Sie es erneut.</translation>
         <translation>Fehler beim Schreiben der Datei „%1“.</translation>
     </message>
     <message>
+        <source>Operation not allowed.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>An error occured during operation.
+Reason: %1</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Process Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Batch processed file: %1</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Command Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Delete images</source>
         <comment>message</comment>
         <translation>Bilder löschen</translation>
@@ -2831,6 +2871,11 @@ Bitte warten Sie einige Minuten und versuchen Sie es erneut.</translation>
         <source>Change picon</source>
         <comment>context-menu</comment>
         <translation>Picon ändern</translation>
+    </message>
+    <message>
+        <source>Execute batch command</source>
+        <comment>context-menu</comment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -3199,6 +3244,10 @@ Bitte warten Sie einige Minuten und versuchen Sie es erneut.</translation>
         <translation>Backup Picon, wenn es ersetzt wird</translation>
     </message>
     <message>
+        <source>Allow external batch command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Filename format</source>
         <translation>Dateinamenformat</translation>
     </message>
@@ -3209,6 +3258,22 @@ Bitte warten Sie einige Minuten und versuchen Sie es erneut.</translation>
     <message>
         <source>Use service name</source>
         <translation>Servicenamen verwenden</translation>
+    </message>
+    <message>
+        <source>External batch command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>eg. %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reload picons after batch command</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Preferences</source>

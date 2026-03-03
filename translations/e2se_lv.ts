@@ -1608,6 +1608,11 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <translation>&amp;Izvēlēties visu</translation>
     </message>
     <message>
+        <source>Execute batch command</source>
+        <comment>menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&amp;Find</source>
         <comment>menu</comment>
         <extracomment>Platform: Find menu</extracomment>
@@ -2733,6 +2738,11 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <translation>Pārlūkot…</translation>
     </message>
     <message>
+        <source>Reload</source>
+        <comment>toolbar</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Find…</source>
         <comment>toolbar</comment>
         <translation>Meklēt…</translation>
@@ -2789,6 +2799,10 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <translation>Rezerves picon pēc nomaiņas</translation>
     </message>
     <message>
+        <source>Allow external batch command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Filename format</source>
         <translation>Faila nosaukuma formāts</translation>
     </message>
@@ -2816,6 +2830,32 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <translation>Kļūda, rakstot failu &quot;%1&quot;.</translation>
     </message>
     <message>
+        <source>Operation not allowed.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>An error occured during operation.
+Reason: %1</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Process Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Batch processed file: %1</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Command Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Delete images</source>
         <comment>message</comment>
         <translation>Dzēst attēlus</translation>
@@ -2829,6 +2869,11 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <source>Change picon</source>
         <comment>context-menu</comment>
         <translation>Mainīt picon</translation>
+    </message>
+    <message>
+        <source>Execute batch command</source>
+        <comment>context-menu</comment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -3197,6 +3242,10 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <translation>Rezerves picon pēc nomaiņas</translation>
     </message>
     <message>
+        <source>Allow external batch command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Filename format</source>
         <translation>Faila nosaukuma formāts</translation>
     </message>
@@ -3207,6 +3256,22 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
     <message>
         <source>Use service name</source>
         <translation>Izmantojiet pakalpojuma nosaukumu</translation>
+    </message>
+    <message>
+        <source>External batch command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>eg. %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reload picons after batch command</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Preferences</source>

@@ -1609,6 +1609,11 @@ Attendere qualche minuto e riprovare.</translation>
         <translation>Seleziona tutto</translation>
     </message>
     <message>
+        <source>Execute batch command</source>
+        <comment>menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&amp;Find</source>
         <comment>menu</comment>
         <extracomment>Platform: Find menu</extracomment>
@@ -2734,6 +2739,11 @@ Attendere qualche minuto e riprovare.</translation>
         <translation>Sfoglia…</translation>
     </message>
     <message>
+        <source>Reload</source>
+        <comment>toolbar</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Find…</source>
         <comment>toolbar</comment>
         <translation>Cerca…</translation>
@@ -2790,6 +2800,10 @@ Attendere qualche minuto e riprovare.</translation>
         <translation>Backup della picon quando sostituisci</translation>
     </message>
     <message>
+        <source>Allow external batch command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Filename format</source>
         <translation>Formato nome file</translation>
     </message>
@@ -2817,6 +2831,32 @@ Attendere qualche minuto e riprovare.</translation>
         <translation>Errore di scrittura su file &quot;%1&quot;.</translation>
     </message>
     <message>
+        <source>Operation not allowed.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>An error occured during operation.
+Reason: %1</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Process Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Batch processed file: %1</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Command Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Delete images</source>
         <comment>message</comment>
         <translation>Eliminazione immagini</translation>
@@ -2830,6 +2870,11 @@ Attendere qualche minuto e riprovare.</translation>
         <source>Change picon</source>
         <comment>context-menu</comment>
         <translation>Sostituisci picon</translation>
+    </message>
+    <message>
+        <source>Execute batch command</source>
+        <comment>context-menu</comment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -3225,6 +3270,10 @@ Attendere qualche minuto e riprovare.</translation>
         <translation>Backup della picon quando sostituita</translation>
     </message>
     <message>
+        <source>Allow external batch command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Filename format</source>
         <translation>Formato nome file</translation>
     </message>
@@ -3235,6 +3284,22 @@ Attendere qualche minuto e riprovare.</translation>
     <message>
         <source>Use service name</source>
         <translation>Utilizza nome servizio</translation>
+    </message>
+    <message>
+        <source>External batch command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>eg. %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reload picons after batch command</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Settings</source>

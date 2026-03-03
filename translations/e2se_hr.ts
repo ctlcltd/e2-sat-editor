@@ -1611,6 +1611,11 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <translation>&amp;Odaberi sve</translation>
     </message>
     <message>
+        <source>Execute batch command</source>
+        <comment>menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&amp;Find</source>
         <comment>menu</comment>
         <extracomment>Platform: Find menu</extracomment>
@@ -2736,6 +2741,11 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <translation>Pretraživati…</translation>
     </message>
     <message>
+        <source>Reload</source>
+        <comment>toolbar</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Find…</source>
         <comment>toolbar</comment>
         <translation>Nađi…</translation>
@@ -2792,6 +2802,10 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <translation>Picon sigurnosne kopije kada se zamijeni</translation>
     </message>
     <message>
+        <source>Allow external batch command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Filename format</source>
         <translation>Format naziva datoteke</translation>
     </message>
@@ -2819,6 +2833,32 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <translation>Pogreška pri pisanju datoteke &quot;%1&quot;.</translation>
     </message>
     <message>
+        <source>Operation not allowed.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>An error occured during operation.
+Reason: %1</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Process Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Batch processed file: %1</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Command Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Delete images</source>
         <comment>message</comment>
         <translation>Brisanje slika</translation>
@@ -2832,6 +2872,11 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <source>Change picon</source>
         <comment>context-menu</comment>
         <translation>Promjena picon</translation>
+    </message>
+    <message>
+        <source>Execute batch command</source>
+        <comment>context-menu</comment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -3200,6 +3245,10 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <translation>Picon sigurnosne kopije kada se zamijeni</translation>
     </message>
     <message>
+        <source>Allow external batch command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Filename format</source>
         <translation>Format naziva datoteke</translation>
     </message>
@@ -3210,6 +3259,22 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
     <message>
         <source>Use service name</source>
         <translation>Koristite naziv usluge</translation>
+    </message>
+    <message>
+        <source>External batch command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>eg. %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reload picons after batch command</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Preferences</source>

@@ -1609,6 +1609,11 @@ Počakajte nekaj minut in poskusite znova.</translation>
         <translation>Izberi &amp;vse</translation>
     </message>
     <message>
+        <source>Execute batch command</source>
+        <comment>menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&amp;Find</source>
         <comment>menu</comment>
         <extracomment>Platform: Find menu</extracomment>
@@ -2734,6 +2739,11 @@ Počakajte nekaj minut in poskusite znova.</translation>
         <translation>Prebrskaj...</translation>
     </message>
     <message>
+        <source>Reload</source>
+        <comment>toolbar</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Find…</source>
         <comment>toolbar</comment>
         <translation>Najti…</translation>
@@ -2790,6 +2800,10 @@ Počakajte nekaj minut in poskusite znova.</translation>
         <translation>Varnostna kopija picon ob zamenjavi</translation>
     </message>
     <message>
+        <source>Allow external batch command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Filename format</source>
         <translation>Oblika imena datoteke</translation>
     </message>
@@ -2817,6 +2831,32 @@ Počakajte nekaj minut in poskusite znova.</translation>
         <translation>Napaka pri pisanju datoteke &quot;%1&quot;.</translation>
     </message>
     <message>
+        <source>Operation not allowed.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>An error occured during operation.
+Reason: %1</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Process Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Batch processed file: %1</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Command Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Delete images</source>
         <comment>message</comment>
         <translation>Brisanje slik</translation>
@@ -2830,6 +2870,11 @@ Počakajte nekaj minut in poskusite znova.</translation>
         <source>Change picon</source>
         <comment>context-menu</comment>
         <translation>Spremeni picon</translation>
+    </message>
+    <message>
+        <source>Execute batch command</source>
+        <comment>context-menu</comment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -3198,6 +3243,10 @@ Počakajte nekaj minut in poskusite znova.</translation>
         <translation>Varnostna kopija picon ob zamenjavi</translation>
     </message>
     <message>
+        <source>Allow external batch command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Filename format</source>
         <translation>Oblika imena datoteke</translation>
     </message>
@@ -3208,6 +3257,22 @@ Počakajte nekaj minut in poskusite znova.</translation>
     <message>
         <source>Use service name</source>
         <translation>Uporabite ime storitve</translation>
+    </message>
+    <message>
+        <source>External batch command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>eg. %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reload picons after batch command</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Preferences</source>

@@ -1602,6 +1602,11 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <translation>Tümünü &amp;Seç</translation>
     </message>
     <message>
+        <source>Execute batch command</source>
+        <comment>menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&amp;Find</source>
         <comment>menu</comment>
         <extracomment>Platform: Find menu</extracomment>
@@ -2727,6 +2732,11 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <translation>Araştır…</translation>
     </message>
     <message>
+        <source>Reload</source>
+        <comment>toolbar</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Find…</source>
         <comment>toolbar</comment>
         <translation>Bul…</translation>
@@ -2783,6 +2793,10 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <translation>Değiştirildiğinde yedek picon</translation>
     </message>
     <message>
+        <source>Allow external batch command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Filename format</source>
         <translation>Dosya adı formatı</translation>
     </message>
@@ -2810,6 +2824,32 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <translation>&quot;%1&quot; dosyası yazılırken hata oluştu.</translation>
     </message>
     <message>
+        <source>Operation not allowed.</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>An error occured during operation.
+Reason: %1</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Process Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Batch processed file: %1</source>
+        <comment>message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Command Error</source>
+        <comment>error</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Delete images</source>
         <comment>message</comment>
         <translation>Resimleri sil</translation>
@@ -2823,6 +2863,11 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <source>Change picon</source>
         <comment>context-menu</comment>
         <translation>Picon değiştir</translation>
+    </message>
+    <message>
+        <source>Execute batch command</source>
+        <comment>context-menu</comment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -3191,6 +3236,10 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
         <translation>Değiştirildiğinde yedek picon</translation>
     </message>
     <message>
+        <source>Allow external batch command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Filename format</source>
         <translation>Dosya adı formatı</translation>
     </message>
@@ -3201,6 +3250,22 @@ Lütfen birkaç dakika bekleyip tekrar deneyin.</translation>
     <message>
         <source>Use service name</source>
         <translation>Hizmet adını kullan</translation>
+    </message>
+    <message>
+        <source>External batch command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>eg. %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reload picons after batch command</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Preferences</source>
