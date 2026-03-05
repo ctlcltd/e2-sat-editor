@@ -129,9 +129,19 @@ build () {
 	cmake --build build
 }
 
+deploy_script () {
+	printf "%s\n\n" "download deploy script."
+
+	src
+    curl -L https://github.com/e2se/deployqtwin/archive/refs/heads/main.tar.gz -o main.tar.gz
+    tar -xf main.tar.gz
+    mv deployqtwin-main/deployqtwin.sh scripts/deployqtwin.sh
+}
+
 release () {
 	printf "%s\n\n" "release."
 
+	deploy_script
 	src
 
 	printf "%s\n\n" "pre actions ..."
@@ -162,6 +172,7 @@ release () {
 release_early () {
 	printf "%s\n\n" "release-early."
 
+	deploy_script
 	src
 
 	printf "%s\n\n" "pre actions ..."

@@ -111,10 +111,20 @@ xcodeproj () {
 	$QMAKE -spec macx-xcode
 }
 
+deploy_script () {
+	printf "%s\n\n" "download deploy script."
+
+	src
+    curl -L https://github.com/e2se/deployqtmacx/archive/refs/heads/main.tar.gz -o main.tar.gz
+    tar -xf main.tar.gz
+    mv deployqtmacx-main/deployqtmacx.sh scripts/deployqtmacx.sh
+}
+
 release () {
 	printf "%s\n\n" "release."
 
 	src
+	deploy_script
 
 	cp -R "e2 SAT Editor.app" "build/e2 SAT Editor.app"
 

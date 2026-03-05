@@ -17,12 +17,11 @@ on:
 
 jobs:
   build:
-
     runs-on: ${{ inputs.runs-on }}
 
     steps:
     - run: git config --global core.autocrlf input
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         repository: ctlcltd/e2se-site
         path: e2se-site

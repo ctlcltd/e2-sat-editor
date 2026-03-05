@@ -10,16 +10,14 @@ jobs:
       runs-on: ubuntu-latest
 
   build:
-
     runs-on: windows-2022
     needs: user-manual
-
     env:
       BUILD_TYPE: Release
 
     steps:
     - run: git config --global core.autocrlf input
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         repository: ctlcltd/e2-sat-editor
         path: e2-sat-editor
@@ -49,11 +47,20 @@ jobs:
       run: cmake --build build --config ${{ env.BUILD_TYPE }}
 
     - name: Download user-manual artifact
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: user-manual
         path: user-manual
         run-id: ${{ needs.user-manual.outputs.run-id }}
+
+    - name: Download deploy script
+      working-directory: ${{github.workspace}}/e2-sat-editor
+      continue-on-error: true
+      shell: msys2 {0}
+      run: |
+        curl -L https://github.com/e2se/deployqtwin/archive/refs/heads/main.tar.gz -o main.tar.gz
+        tar -xf main.tar.gz
+        mv deployqtwin-main/deployqtwin.sh scripts/deployqtwin.sh
 
     - name: Deploy artifact
       working-directory: ${{github.workspace}}/e2-sat-editor/src
@@ -71,7 +78,7 @@ jobs:
         # run deploy script
         bash ../scripts/deployqtwin.sh "AppDir/Program Files (x86)/e2-sat-editor/bin/e2-sat-editor.exe" \
         --verbose \
-        -qt-version 6.9.2 \
+        -qt-version 6.10.1 \
         -modules Core,Gui,Widgets,PrintSupport \
         -libraries libcurl-4.dll,libcrypto-3-x64.dll,libidn2-0.dll,libnghttp2-14.dll,libnghttp3-9.dll,libngtcp2-16.dll,libngtcp2_crypto_ossl-0.dll,libpsl-5.dll,libssh2-1.dll,libssl-3-x64.dll,libunistring-5.dll
         # cleanup
@@ -80,6 +87,7 @@ jobs:
         mkdir -p ../artifact/{cli,user-manual}
         mv "AppDir/Program Files (x86)/e2-sat-editor/bin/Readme.txt" ../artifact/
         mv "AppDir/Program Files (x86)/e2-sat-editor/bin/License.txt" ../artifact/
+        mv "AppDir/Program Files (x86)/e2-sat-editor/bin/Third-Party.txt" ../artifact/
         mv "AppDir/Program Files (x86)/e2-sat-editor/bin/"*.dll ../artifact/
         mv "AppDir/Program Files (x86)/e2-sat-editor/bin/"{platforms,styles,translations} ../artifact/
         mv "AppDir/Program Files (x86)/e2-sat-editor/bin/ca-certificates" ../artifact/

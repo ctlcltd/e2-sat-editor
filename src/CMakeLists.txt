@@ -186,6 +186,7 @@ else()
 endif()
 
 configure_file("../dist/common/Readme.txt.in" "Readme.txt" @ONLY NEWLINE_STYLE ${NEWLINE})
+configure_file("../dist/common/Third-Party.txt.in" "Third-Party.txt" @ONLY NEWLINE_STYLE ${NEWLINE})
 configure_file("LICENSE-GPL-3.0-or-later" "License.txt" @ONLY NEWLINE_STYLE ${NEWLINE})
 
 if(UNIX AND NOT APPLE)
@@ -219,15 +220,21 @@ if(UNIX AND NOT APPLE)
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor)
 	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/License.txt"
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor)
+	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/Third-Party.txt"
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/e2-sat-editor)
 elseif(APPLE)
 	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/Readme.txt"
 			DESTINATION .)
 	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/License.txt"
 			DESTINATION .)
+	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/Third-Party.txt"
+			DESTINATION .)
 else()
 	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/Readme.txt"
 			DESTINATION bin)
 	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/License.txt"
+			DESTINATION bin)
+	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/Third-Party.txt"
 			DESTINATION bin)
 endif()
 

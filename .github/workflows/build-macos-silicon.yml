@@ -10,15 +10,13 @@ jobs:
       runs-on: ubuntu-latest
 
   build:
-
     runs-on: macos-15
     needs: user-manual
-
     env:
       BUILD_TYPE: Release
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         repository: ctlcltd/e2-sat-editor
         path: e2-sat-editor
@@ -54,11 +52,19 @@ jobs:
       run: cmake --build build --config ${{ env.BUILD_TYPE }}
 
     - name: Download user-manual artifact
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: user-manual
         path: user-manual
         run-id: ${{ needs.user-manual.outputs.run-id }}
+
+    - name: Download deploy script
+      working-directory: ${{github.workspace}}/e2-sat-editor
+      continue-on-error: true
+      run: |
+        curl -L https://github.com/e2se/deployqtmacx/archive/refs/heads/main.tar.gz -o main.tar.gz
+        tar -xf main.tar.gz
+        mv deployqtmacx-main/deployqtmacx.sh scripts/deployqtmacx.sh
 
     - name: Deploy artifact
       working-directory: ${{github.workspace}}/e2-sat-editor/src
@@ -89,6 +95,7 @@ jobs:
         mkdir -p ../artifact/{cli,user-manual}
         mv AppDir/usr/local/Readme.txt ../artifact/
         mv AppDir/usr/local/License.txt ../artifact/
+        mv AppDir/usr/local/Third-Party.txt ../artifact/
         mv AppDir/usr/local/e2\ SAT\ Editor.app ../artifact/
         mv AppDir/usr/local/e2se-cli ../artifact/cli/
         mv "${{github.workspace}}/user-manual" ../artifact/
