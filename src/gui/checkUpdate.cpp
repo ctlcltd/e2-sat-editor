@@ -163,7 +163,7 @@ void checkUpdate::show()
 
 	if (! this->state.checked)
 	{
-		error("show", "checked", 0);
+		error("show", "checked", "0");
 
 		return;
 	}

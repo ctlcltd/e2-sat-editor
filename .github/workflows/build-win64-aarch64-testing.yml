@@ -1,4 +1,4 @@
-name: build-win64
+name: build-win64-aarch64-testing
 
 on:
   workflow_dispatch:
@@ -10,7 +10,7 @@ jobs:
       runs-on: ubuntu-latest
 
   build:
-    runs-on: windows-2022
+    runs-on: windows-11-arm
     needs: user-manual
     env:
       BUILD_TYPE: Release
@@ -25,10 +25,10 @@ jobs:
     - name: Setup MSYS2
       uses: msys2/setup-msys2@v2
       with:
-        msystem: UCRT64
+        msystem: CLANGARM64
         update: true
         pacboy: >-
-          cc:u cmake:u ninja:u qt6-base:u qt6-translations:u curl:u
+          cc:a cmake:a ninja:a qt6-base:a qt6-translations:a curl:a
 
     - name: Configure CMake
       working-directory: ${{github.workspace}}/e2-sat-editor/src
@@ -72,16 +72,16 @@ jobs:
         QMDIR="AppDir/Program Files (x86)/e2-sat-editor/bin/translations"
         mkdir -p "$QMDIR"
         cp ../dist/translations/*.qm "$QMDIR"
-        cp /ucrt64/share/qt6/translations/qt_*.qm "$QMDIR"
-        cp /ucrt64/share/qt6/translations/qtbase_*.qm "$QMDIR"
+        cp /clangarm64/share/qt6/translations/qt_*.qm "$QMDIR"
+        cp /clangarm64/share/qt6/translations/qtbase_*.qm "$QMDIR"
         rm -R "$QMDIR"/qt_help_*.qm
         # run deploy script
         bash ../scripts/deployqtwin.sh "AppDir/Program Files (x86)/e2-sat-editor/bin/e2-sat-editor.exe" \
         --verbose \
-        -system UCRT64 \
+        -system CLANGARM64 \
         -qt-version 6.10.1 \
         -modules Core,Gui,Widgets,PrintSupport \
-        -libraries libcurl-4.dll,libcrypto-3-x64.dll,libidn2-0.dll,libnghttp2-14.dll,libnghttp3-9.dll,libngtcp2-16.dll,libngtcp2_crypto_ossl-0.dll,libpsl-5.dll,libssh2-1.dll,libssl-3-x64.dll,libunistring-5.dll
+        -libraries libcurl-4.dll,libcrypto-3-arm64.dll,libidn2-0.dll,libnghttp2-14.dll,libnghttp3-9.dll,libngtcp2-16.dll,libngtcp2_crypto_ossl-0.dll,libpsl-5.dll,libssh2-1.dll,libssl-3-arm64.dll,libunistring-5.dll
         # cleanup
         rm "AppDir/Program Files (x86)/e2-sat-editor/bin/platforms/qdirect2d.dll"
         # package
@@ -94,7 +94,7 @@ jobs:
         mv "AppDir/Program Files (x86)/e2-sat-editor/bin/ca-certificates" ../artifact/
         mv "AppDir/Program Files (x86)/e2-sat-editor/bin/e2-sat-editor.exe" ../artifact/
         mv "AppDir/Program Files (x86)/e2-sat-editor/bin/e2se-cli.exe" ../artifact/cli/
-        cp ../artifact/{libgcc_s_seh-1,libstdc++-6,libwinpthread-1}.dll ../artifact/cli/
+        cp ../artifact/{libc++,libunwind}.dll ../artifact/cli/
         mv "${{github.workspace}}/user-manual" ../artifact/
 
     - name: Upload artifact

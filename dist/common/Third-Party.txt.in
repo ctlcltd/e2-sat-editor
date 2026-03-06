@@ -20,7 +20,7 @@ Libraries
 The main libraries for this software are: Qt, libcurl.
 
 - Qt Toolkit (Qt Community Edition) library for the GUI
-- Curl Library (libcurl) library for the connectivity (HTTP, FTP, telnet, Webif)
+- Curl Library (libcurl) library for the connectivity (HTTP, FTP, Telnet, Webif)
 
 Libraries depend on other third party software libraries (dependencies).
 
@@ -117,5 +117,11 @@ Library | Description | License (SPDX)
 libgcc | GNU GCC runtime library | GPL-3.0-or-later GCC-exception-3.1
 libstdc++ | GNU GCC C++ runtime library | GPL-3.0-or-later GCC-exception-3.1
 libwinpthread | MinGW-w64 POSIX threading library | MIT, BSD-3-Clause-Clear
+libc++ | Clang LLVM C++ runtime library | Apache-2.0 LLVM-exception
+libunwind | MinGW-w64 C++ exceptions library | Apache-2.0 LLVM-exception
 ca-certificates | Common CA certificates from Mozilla | MPL-2.0
+AppImage/type2-runtime | AppImage type2 runtime library | MIT
+musl-libc | AppImage / musl libc library | MIT
+libfuse | AppImage / libfuse library | LGPL-2.1-only GPL-2.0-only
+squashfuse | AppImage / squashfuse library | BSD-2-Clause
 

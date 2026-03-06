@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 ## [v1.9.0]
 
 **Version**: 1.9.0  
-**Release Date**: *not released*  
+**Release Date**: 2026-03-07  
 **Full Changelog**: [v1.8.1...HEAD](https://github.com/ctlcltd/e2-sat-editor/compare/v1.8.1...HEAD)
 
 - FTP connection messages, UX improvement
