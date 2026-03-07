@@ -712,7 +712,7 @@ void settings::preferencesLayout()
 	dtf4p2->setText(tr("eg. %1").arg("/path/to/shell /path/your/script.sh -i \"/path/your/path/%piconFilename%\" -o \"%piconFile%\""));
 #else
 	dtf4p1->setText(tr("eg. %1").arg("A:\\your\\software.exe --input \"%piconFile%\" --output \"%piconFile%\""));
-	dtf4p2->setText(tr("eg. %1").arg("B:\\Path\\To\\pwsh.exe \"\\your\\Script.ps1\" -i \"\\your\\path\\%piconFilename%\" -o \"%piconFile%\""));
+	dtf4p2->setText(tr("eg. %1").arg("pwsh.exe \"B:\\your\\Script.ps1\" -i \"B:\\your\\path\\%piconFilename%\" -o \"%piconFile%\""));
 #endif
 	dtb4p->addWidget(dtf4p1);
 	dtb4p->addWidget(dtf4p2);
