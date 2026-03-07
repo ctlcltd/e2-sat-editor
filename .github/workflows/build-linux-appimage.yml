@@ -95,6 +95,7 @@ jobs:
         export LD_LIBRARY_PATH=
         # package
         mv e2_SAT_Editor-x86_64.AppImage ../artifact
+        # patch AppRun AppRun.wrapped script, see note in scripts/appimage-test.sh
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4

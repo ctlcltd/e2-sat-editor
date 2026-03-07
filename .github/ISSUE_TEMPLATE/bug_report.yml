@@ -43,10 +43,10 @@ body:
       label: Software version
       description: What version of our software are you running?
       options:
+        - 1.9
         - 1.8.1
         - 1.8
         - 1.7
-        - 1.6
         - other (please specify)
     validations:
       required: true
