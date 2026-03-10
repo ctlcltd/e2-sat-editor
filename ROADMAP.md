@@ -16,7 +16,7 @@ There are several points To Do and To Evaluate.
 - [ ] tree view mode, classic view with three tree side by side [gui]
 - [ ] tools duplicates, check for duplicate tunersets [tools.cpp] [e2db.cpp]
 - [ ] log inspector text filter, with regular expression, eg. `/e2db/` [gui]
-- [ ] multi-windowed GUI [gui] [gui.cpp] [tab.cpp]
+- [ ] multi-window GUI [gui] [gui.cpp] [tab.cpp]
 - [x] improve management of duplicate channels [gui] [mainView.cpp] [editService.cpp]
 - [x] mirror transponders Lamedb|XML [gui] [e2db.cpp] [tools.cpp]
 - [x] calculate dvbns namespace [gui] [e2db.cpp] [editService.cpp] [tools.cpp]

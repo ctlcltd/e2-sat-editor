@@ -60,12 +60,6 @@ chmod +x e2se-cli-x86_64.AppImage
 
 ./e2se-cli-x86_64.AppImage --appimage-extract
 
-# patch AppRun to AppRun.wrapped
-# patch AppRun bash script
-# because linuxdeploy::deployAppRunWrapperIfNecessary() is skipped in latest release
-# qt binary relies on squashfs-root/bin/qt.conf and current working directory
-# see here: https://github.com/linuxdeploy/linuxdeploy/blob/cc7b86472c3caa3fd729b9dc502fd2aa78394257/src/core/appdir_root_setup.cpp#L268
-
 appimagetool squashfs-root --sign --sign-key $MY_SIGN_KEY
 
 mv e2se-cli-x86_64.AppImage e2se-cli-$VERSION-x86_64.AppImage

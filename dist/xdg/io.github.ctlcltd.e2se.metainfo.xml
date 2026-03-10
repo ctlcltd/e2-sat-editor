@@ -30,6 +30,7 @@
     <name translate="no">Leonardo Laureti</name>
   </developer>
   <url type="homepage">https://e2sateditor.com</url>
+  <url type="vcs-browser">https://github.com/ctlcltd/e2-sat-editor</url>
   <url type="bugtracker">https://github.com/ctlcltd/e2-sat-editor/issues</url>
   <url type="contribute">https://github.com/ctlcltd/e2-sat-editor</url>
   <url type="help">https://e2sateditor.com/help/</url>
@@ -75,19 +76,7 @@
         </ul>
       </description>
     </release>
-    <release version="1.7.0" date="2024-10-31">
-      <description>
-        <ul>
-          <li>New utils: autofix, remove duplicates, fix/remove parameters and flags, sort</li>
-          <li>Improved lists compatibility Lamedb 2.x</li>
-          <li>Fix import multiple files</li>
-          <li>Fix convert menu and switcher</li>
-          <li>Fix connection profiles bug</li>
-          <li>Added Neutrino terrestrial services</li>
-          <li>Bugfix</li>
-        </ul>
-      </description>
-    </release>
+    <release version="1.7.0" date="2024-10-31" />
     <release version="1.6.0" date="2024-07-25" />
     <release version="1.5.0" date="2024-05-20" />
     <release version="1.4.0" date="2024-04-26" />

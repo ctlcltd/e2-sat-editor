@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(1,0,0,1,-2556,-3072)">
+        <g id="picons-view" transform="matrix(0.5,0,0,0.5,1632,1552)">
+            <rect x="1848" y="3040" width="128" height="128" style="fill:none;"/>
+            <g transform="matrix(2,0,0,2,-3488,-3104)">
+                <path d="M2682.76,3101.23L2717.25,3101.23C2717.25,3101.23 2731.18,3115.71 2728.72,3116.83C2727.65,3117.31 2722.59,3115.71 2717.19,3113.74L2717.19,3134L2682.8,3134L2682.8,3113.75C2677.41,3115.71 2672.37,3117.31 2671.3,3116.83C2668.84,3115.71 2682.76,3101.23 2682.76,3101.23Z"/>
+            </g>
+            <g transform="matrix(2,0,0,2,-3488,-3104)">
+                <path d="M2704.77,3083.36L2684.3,3083.36L2684.3,3096.55L2690.66,3096.55L2690.66,3086L2704.77,3086L2704.77,3083.36ZM2706.54,3088.64L2692.43,3088.64L2692.43,3096.55L2706.54,3096.55L2706.54,3088.64ZM2713.3,3082.4L2713.3,3096.55L2709.02,3096.55L2709.02,3087.32L2706.54,3087.32L2706.54,3082.4L2713.3,3082.4ZM2704.63,3075.48L2686.46,3075.48L2686.46,3080.76L2704.63,3080.76L2704.63,3075.48Z"/>
+            </g>
+        </g>
+    </g>
+</svg>
