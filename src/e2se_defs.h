@@ -82,4 +82,13 @@
 
 #endif
 
+
+#ifdef ENFORCEDSANDBOX
+#define E2SE_ENFORCEDSANDBOX
+#else
+#ifdef E2SE_DEMO
+#define E2SE_ENFORCEDSANDBOX
+#endif
+#endif
+
 #endif /* e2se_defs_h */

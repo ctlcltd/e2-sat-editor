@@ -93,6 +93,9 @@ class piconsView : public viewAbstract
 		void changePicon(QListWidgetItem* item, QString path);
 		/*void changePicon(QListWidgetItem* item, QByteArray data);*/
 		void executeBatchCommand();
+		void openPiconOnDesktop();
+		void revealPiconOnFileManager();
+		QString revealFileManagerString();
 		void showListEditContextMenu(QPoint& pos);
 		void actionCall(int bit);
 		void updateFlags();
@@ -112,6 +115,7 @@ class piconsView : public viewAbstract
 		static QString importFileDialog(QString path);
 
 		QWidget* cwid;
+		QIcon placeholder;
 };
 }
 #endif /* piconsView_h */

@@ -86,6 +86,8 @@ class gui : protected e2se::log_factory
 			TabListEditService = 36,
 			TabListEditFavourite = 37,
 			TabListEditMarker = 38,
+			TabListOpenPicon = 147,
+			TabListRevealPicon = 148,
 			TabListBatchPicon = 149,
 			TabListDelete = 46,
 			TabListSelectAll = 45,
@@ -253,6 +255,8 @@ class gui : protected e2se::log_factory
 			ListEditService = GUI_CXE::TabListEditService,
 			ListEditFavourite = GUI_CXE::TabListEditFavourite,
 			ListEditMarker = GUI_CXE::TabListEditMarker,
+			ListOpenPicon = GUI_CXE::TabListOpenPicon,
+			ListRevealPicon = GUI_CXE::TabListRevealPicon,
 			ListBatchPicon = GUI_CXE::TabListBatchPicon,
 			ListCut = GUI_CXE::TabListCut,
 			ListCopy = GUI_CXE::TabListCopy,
@@ -397,6 +401,7 @@ class gui : protected e2se::log_factory
 		void statusBarToggle();
 		void setStatusBar(status msg);
 		void resetStatusBar(bool message = false);
+		QString revealFileManagerString();
 		void fileOpen();
 		void fileSave();
 		void fileSaveAs();

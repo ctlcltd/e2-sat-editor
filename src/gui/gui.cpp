@@ -324,6 +324,10 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::TabListEditService] = menuBarAction(medit, tr("Edit Service", "menu"), [=]() { this->tabAction(TAB_ATS::ListEditService); });
 	gmenu[GUI_CXE::TabListEditFavourite] = menuBarAction(medit, tr("Edit Favourite", "menu"), [=]() { this->tabAction(TAB_ATS::ListEditFavourite); });
 	gmenu[GUI_CXE::TabListEditMarker] = menuBarAction(medit, tr("Edit Marker", "menu"), [=]() { this->tabAction(TAB_ATS::ListEditMarker); });
+	gmenu[GUI_CXE::TabListOpenPicon] = menuBarAction(medit, tr("Open picon file", "menu"), [=]() { this->tabAction(TAB_ATS::ListOpenPicon); });
+#ifndef E2SE_ENFORCEDSANDBOX
+	gmenu[GUI_CXE::TabListRevealPicon] = menuBarAction(medit, this->revealFileManagerString(), [=]() { this->tabAction(TAB_ATS::ListRevealPicon); });
+#endif
 	gmenu[GUI_CXE::TabListBatchPicon] = menuBarAction(medit, tr("Execute batch command", "menu"), [=]() { this->tabAction(TAB_ATS::ListBatchPicon); });
 
 	//: Platform: Find menu
@@ -1302,6 +1306,11 @@ void gui::tabViewChanged(TAB_VIEW ttv, int arg)
 	gmenu[GUI_CXE::TabListEditFavourite]->setVisible(false);
 	gmenu[GUI_CXE::TabListEditMarker]->setVisible(false);
 	gmenu[GUI_CXE::TabListEditPicon]->setVisible(false);
+	gmenu[GUI_CXE::TabListOpenPicon]->setVisible(false);
+#ifndef E2SE_ENFORCEDSANDBOX
+	gmenu[GUI_CXE::TabListRevealPicon]->setVisible(false);
+#endif
+	gmenu[GUI_CXE::TabListBatchPicon]->setVisible(false);
 
 	switch (ttv)
 	{
@@ -1333,6 +1342,11 @@ void gui::tabViewChanged(TAB_VIEW ttv, int arg)
 			gmenu[GUI_CXE::TabTreeFindNext]->setText(tr("Find N&ext Bouquet"));
 			gmenu[GUI_CXE::TabListFind]->setText(tr("&Find Channel"));
 			gmenu[GUI_CXE::TabListEditPicon]->setVisible(true);
+			gmenu[GUI_CXE::TabListOpenPicon]->setVisible(true);
+#ifndef E2SE_ENFORCEDSANDBOX
+			gmenu[GUI_CXE::TabListRevealPicon]->setVisible(true);
+#endif
+			gmenu[GUI_CXE::TabListBatchPicon]->setVisible(true);
 		break;
 		default:
 			gmenu[GUI_CXE::TabTreeFind]->setText(tr("Find &Bouquet"));
@@ -1801,6 +1815,23 @@ void gui::resetStatusBar(bool message)
 		sbwidl->setText("");
 		sbwidr->setText("");
 	}
+}
+
+QString gui::revealFileManagerString()
+{
+#if defined(Q_OS_WIN)
+	//: Platform: product name File Explorer on Windows
+	QString fileManager = tr("File Explorer", "menu");
+#elif defined(Q_OS_MAC)
+	//: Platform: product name Finder on macOS
+	QString fileManager = tr("Finder", "menu");
+#else
+	//: Platform: product name File Manager for generic Linux and Unix
+	QString fileManager = tr("File Manager", "menu");
+#endif
+
+	//: Platform: placeholder %1 for platform specific product name
+	return tr("Reveal in %1", "menu").arg(fileManager);
 }
 
 void gui::fileOpen()

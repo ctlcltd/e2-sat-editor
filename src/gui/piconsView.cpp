@@ -25,6 +25,8 @@
 #include <QMenu>
 #include <QWidgetAction>
 #include <QClipboard>
+#include <QUrl>
+#include <QDesktopServices>
 #include <QMimeData>
 #include <QMouseEvent>
 #ifdef Q_OS_WIN
@@ -62,6 +64,7 @@ piconsView::piconsView(tab* tid, QWidget* cwid, dataHandler* data)
 	this->data = data;
 	this->theme = new e2se_gui::theme;
 	this->widget = new QWidget;
+	this->placeholder = QIcon(":/icons/picon.png");
 
 	layout();
 }
@@ -412,7 +415,9 @@ void piconsView::populate()
 		if (! this->state.picons_dir.isEmpty() && QFile::exists(filepath))
 			item->setIcon(QIcon(filepath));
 		else
-			item->setIcon(QIcon(":/icons/picon.png"));
+			item->setIcon(this->placeholder);
+#else
+		item->setIcon(this->placeholder);
 #endif
 
 		s_item->setData(ITEM_DATA_ROLE::x, Qt::UserRole, entry[ITEM_DATA_ROLE::x]);
@@ -453,6 +458,7 @@ void piconsView::listItemSelectionChanged()
 		tabSetFlag(gui::TabListCut, false);
 		tabSetFlag(gui::TabListCopy, false);
 		tabSetFlag(gui::TabListDelete, false);
+		tabSetFlag(gui::TabListRevealPicon, false);
 		tabSetFlag(gui::TabListBatchPicon, false);
 	}
 	else
@@ -460,19 +466,23 @@ void piconsView::listItemSelectionChanged()
 		tabSetFlag(gui::TabListCut, true);
 		tabSetFlag(gui::TabListCopy, true);
 		tabSetFlag(gui::TabListDelete, true);
+		tabSetFlag(gui::TabListRevealPicon, true);
 		tabSetFlag(gui::TabListBatchPicon, QSettings().value("preference/piconsAllowBatchCommand").toBool());
 	}
 
 	if (selected.count() == 1)
 	{
-		tabSetFlag(gui::TabListEditPicon, true);
-
 		QListWidgetItem* item = selected.first();
+
+		tabSetFlag(gui::TabListEditPicon, true);
+		tabSetFlag(gui::TabListOpenPicon, item->icon().cacheKey() != this->placeholder.cacheKey());
+
 		this->state.curr_picon = item->toolTip().toStdString();
 	}
 	else
 	{
 		tabSetFlag(gui::TabListEditPicon, false);
+		tabSetFlag(gui::TabListOpenPicon, false);
 	}
 
 	if (QGuiApplication::clipboard()->text().isEmpty())
@@ -938,6 +948,7 @@ void piconsView::executeBatchCommand()
 				arguments.removeAt(0);
 #endif
 
+				// note: not parented, QObject, will be killed on QThread end
 				QProcess* process = new QProcess;
 #if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
 				process->startCommand(program);
@@ -1011,6 +1022,137 @@ void piconsView::executeBatchCommand()
 		thread->quit();
 	}
 #endif
+}
+
+void piconsView::openPiconOnDesktop()
+{
+	debug("openPiconOnDesktop");
+
+	QList<QListWidgetItem*> selected = list->selectedItems();
+
+	if (selected.empty())
+		return;
+
+#ifdef E2SE_DEMO
+	return tid->demoMessage();
+#endif
+
+	QUrl url;
+	url.setScheme("file");
+
+	// open singular file
+	if (selected.count() == 1)
+	{
+		QListWidgetItem* item = selected.first();
+		QString filepath = item->data(Qt::UserRole).toString();
+
+		if (QFile::exists(filepath))
+			url.setPath(filepath);
+		else
+			return;
+	}
+	else
+	{
+		return;
+	}
+
+	if (url.isLocalFile())
+	{
+		QFileInfo fi = QFileInfo(url.toLocalFile());
+		if (fi.isNativePath())
+			QDesktopServices::openUrl(url);
+	}
+}
+
+void piconsView::revealPiconOnFileManager()
+{
+#ifndef E2SE_ENFORCEDSANDBOX
+	debug("revealPiconOnFileManager");
+
+	QList<QListWidgetItem*> selected = list->selectedItems();
+
+	if (selected.empty())
+		return;
+
+#ifdef E2SE_DEMO
+	return tid->demoMessage();
+#endif
+
+	QUrl url;
+	url.setScheme("file");
+
+	// reveal directory in multiple selection
+	if (selected.count() > 1)
+	{
+		if (! this->state.picons_dir.isEmpty() && QFile::exists(this->state.picons_dir))
+			url.setPath(this->state.picons_dir);
+		else
+			return;
+	}
+	// reveal singular file
+	else
+	{
+		QListWidgetItem* item = selected.first();
+		QString filepath = item->data(Qt::UserRole).toString();
+
+		// reveal singular file if exists
+		if (QFile::exists(filepath))
+			url.setPath(filepath);
+		// fallback to reveal directory
+		else if (! this->state.picons_dir.isEmpty() && QFile::exists(this->state.picons_dir))
+			url.setPath(this->state.picons_dir);
+		else
+			return;
+	}
+
+	// for example see: qtcreator/src/plugins/coreplugin/fileutils.cpp
+	if (url.isLocalFile())
+	{
+		QFileInfo fi = QFileInfo(url.toLocalFile());
+		if (! fi.isNativePath())
+			return;
+
+	// note: file protocol separators and windows style separators
+#if defined(Q_OS_WIN)
+		QString program = "explorer.exe";
+		QString systemRoot = QSettings ("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", QSettings::NativeFormat);
+		if (! systemRoot.isEmpty() && systemRoot.contains("PathName") && QFile::exists(systemRoot.value("PathName").toString()))
+			program.prepend(systemRoot.value("PathName").toString()).prepend("\\");
+
+		QProcess::startDetached(program, {(fi.idDir() ? "/select" : NULL), fi.toNativeSeparators()});
+	// note: open command accepts the file protocol
+#elif defined(Q_OS_MAC)
+		if (fi.isDir())
+			QDesktopServices::openUrl(url);
+		else
+			QProcess::startDetached("/usr/bin/open", {"--reveal", url.toString()});
+	// note: D-Bus and XDG specification related support, Q_OS_LINUX includes android embeded
+#elif defined(Q_OS_LINUX) || defined(Q_OS_UNIX) 
+		QProcess::startDetached("dbus-send", {
+			"--session", "--dest=org.freedesktop.FileManager1", "--type=method_call",
+			"/org/freedesktop/FileManager1", "org.freedesktop.FileManager1.ShowItems",
+			"array:string:" + url.toString(), "string:"
+		});
+#endif
+	}
+#endif
+}
+
+QString piconsView::revealFileManagerString()
+{
+#if defined(Q_OS_WIN)
+	//: Platform: product name File Explorer on Windows
+	QString fileManager = tr("File Explorer", "menu");
+#elif defined(Q_OS_MAC)
+	//: Platform: product name Finder on macOS
+	QString fileManager = tr("Finder", "menu");
+#else
+	//: Platform: product name File Manager for generic Linux and Unix
+	QString fileManager = tr("File Manager", "menu");
+#endif
+
+	//: Platform: placeholder %1 for platform specific product name
+	return tr("Reveal in %1", "menu").arg(fileManager);
 }
 
 //TODO listItemCut
@@ -1174,11 +1316,16 @@ void piconsView::showListEditContextMenu(QPoint& pos)
 		return;
 
 	bool editable = (selected.count() == 1);
+	bool openable = editable && selected.first()->icon().cacheKey() != this->placeholder.cacheKey();
 
 	QMenu* list_edit = contextMenu();
 
 	contextMenuAction(list_edit, tr("Change picon", "context-menu"), [=]() { this->editPicon(); }, editable && tabGetFlag(gui::TabListEditPicon));
 	contextMenuSeparator(list_edit);
+	contextMenuAction(list_edit, tr("Open picon", "context-menu"), [=]() { this->openPiconOnDesktop(); }, openable && tabGetFlag(gui::TabListOpenPicon));
+#ifndef E2SE_ENFORCEDSANDBOX
+	contextMenuAction(list_edit, this->revealFileManagerString(), [=]() { this->revealPiconOnFileManager(); }, tabGetFlag(gui::TabListRevealPicon));
+#endif
 	contextMenuAction(list_edit, tr("Execute batch command", "context-menu"), [=]() { this->executeBatchCommand(); }, tabGetFlag(gui::TabListBatchPicon));
 	contextMenuSeparator(list_edit);
 	contextMenuAction(list_edit, tr("Cu&t", "context-menu"), [=]() { this->listItemCut(); }, tabGetFlag(gui::TabListCut), QKeySequence::Cut);
@@ -1199,6 +1346,12 @@ void piconsView::actionCall(int bit)
 	{
 		case gui::TAB_ATS::ListEditPicon:
 			editPicon();
+		break;
+		case gui::TAB_ATS::ListOpenPicon:
+			openPiconOnDesktop();
+		break;
+		case gui::TAB_ATS::ListRevealPicon:
+			revealPiconOnFileManager();
 		break;
 		case gui::TAB_ATS::ListBatchPicon:
 			executeBatchCommand();
