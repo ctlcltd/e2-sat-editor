@@ -32,6 +32,7 @@ parts:
       - -DCMAKE_INSTALL_PREFIX=/usr
       - -DRELEASE_MEDIUM=snapstore
       - -DWITHOUT_CLI=ON
+      - -DSANDBOXED=ON
     build-packages:
       - libcurl4-openssl-dev
     stage-packages:

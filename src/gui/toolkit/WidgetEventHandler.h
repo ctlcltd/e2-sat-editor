@@ -22,31 +22,33 @@ class WidgetEventHandler : public QObject
 {
 	public:
 		enum CALLEVENT {
+			closeEvent,
 			themeChanged,
 			fileDropped
 		};
 
-		void setEventCallback(std::function<void(CALLEVENT ce, const QString path)> func)
+		void setEventCallback(std::function<void(CALLEVENT event, const QString path)> func)
 		{
 			this->eventCallback = func;
 		}
 
 	protected:
 		bool eventFilter(QObject* object, QEvent* event);
+		bool eventClose(QObject* object, QEvent* event);
 		bool eventThemeChange(QObject* object, QEvent* event);
 		bool eventDragEnter(QObject* object, QEvent* event);
 		bool eventDragMove(QObject* object, QEvent* event);
 		bool eventDragLeave(QObject* object, QEvent* event);
 		bool eventDrop(QObject* object, QEvent* event);
 		void raiseWindow(QObject* object);
-		void callEventCallback(CALLEVENT ce, const QString path = nullptr)
+		void callEventCallback(CALLEVENT event, const QString path = nullptr)
 		{
 			if (this->eventCallback)
-				this->eventCallback(ce, path);
+				this->eventCallback(event, path);
 		}
 
 	private:
-		std::function<void(CALLEVENT ce, const QString path)> eventCallback;
+		std::function<void(CALLEVENT event, const QString path)> eventCallback;
 };
 }
 #endif /* WidgetEventHandler_h */

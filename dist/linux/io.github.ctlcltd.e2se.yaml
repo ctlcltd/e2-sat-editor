@@ -19,6 +19,7 @@ modules:
       - -DCMAKE_BUILD_TYPE=Release
       - -DRELEASE_MEDIUM=flathub
       - -DWITHOUT_CLI=ON
+      - -DSANDBOXED=ON
     subdir: src
     sources:
       - type: git

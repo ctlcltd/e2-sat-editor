@@ -664,7 +664,7 @@ void piconsView::visualReloadList()
 		if (! this->state.picons_dir.isEmpty() && QFile::exists(filepath))
 			item->setIcon(QIcon(filepath));
 		else
-			item->setIcon(QIcon(":/icons/picon.png"));
+			item->setIcon(this->placeholder);
 
 		i++;
 	}
@@ -836,7 +836,7 @@ void piconsView::changePicon(QListWidgetItem* item, QString path)
 
 		tid->errorMessage(tr("File Error", "error"), tr("Error writing file \"%1\".", "error").arg(filepath));
 
-		item->setIcon(QIcon(":/icons/picon.png"));
+		item->setIcon(this->placeholder);
 	}
 }
 
@@ -884,10 +884,11 @@ void piconsView::changePicon(QListWidgetItem* item, QString path)
 
 		tid->errorMessage(tr("File Error",, "error").toStdString(), tr("Error writing file \"%1\".", "error").arg(filepath).toStdString());
 
-		item->setIcon(QIcon(":/icons/picon.png"));
+		item->setIcon(this->placeholder);
 	}
 }*/
 
+// note: this feature is allowed by user preference, when sandboxed by sandbox permissions also
 void piconsView::executeBatchCommand()
 {
 	QSettings settings;
@@ -1064,9 +1065,10 @@ void piconsView::openPiconOnDesktop()
 	}
 }
 
+// note: sandbox check, excludes this typical feature, not delivered by Qt platform integration in the runtime
 void piconsView::revealPiconOnFileManager()
 {
-#ifndef E2SE_ENFORCEDSANDBOX
+#ifndef E2SE_SANDBOXED // sandbox check start
 	debug("revealPiconOnFileManager");
 
 	QList<QListWidgetItem*> selected = list->selectedItems();
@@ -1095,7 +1097,6 @@ void piconsView::revealPiconOnFileManager()
 		QListWidgetItem* item = selected.first();
 		QString filepath = item->data(Qt::UserRole).toString();
 
-		// reveal singular file if exists
 		if (QFile::exists(filepath))
 			url.setPath(filepath);
 		// fallback to reveal directory
@@ -1135,7 +1136,7 @@ void piconsView::revealPiconOnFileManager()
 		});
 #endif
 	}
-#endif
+#endif // sandbox check end
 }
 
 QString piconsView::revealFileManagerString()
@@ -1147,11 +1148,11 @@ QString piconsView::revealFileManagerString()
 	//: Platform: product name Finder on macOS
 	QString fileManager = tr("Finder", "menu");
 #else
-	//: Platform: product name File Manager for generic Linux and Unix
+	//: Platform: product name File Manager generic: Linux, Unix, WASM
 	QString fileManager = tr("File Manager", "menu");
 #endif
 
-	//: Platform: placeholder %1 for platform specific product name
+	//: Platform: %1 is platform specific product name
 	return tr("Reveal in %1", "menu").arg(fileManager);
 }
 
@@ -1323,7 +1324,7 @@ void piconsView::showListEditContextMenu(QPoint& pos)
 	contextMenuAction(list_edit, tr("Change picon", "context-menu"), [=]() { this->editPicon(); }, editable && tabGetFlag(gui::TabListEditPicon));
 	contextMenuSeparator(list_edit);
 	contextMenuAction(list_edit, tr("Open picon", "context-menu"), [=]() { this->openPiconOnDesktop(); }, openable && tabGetFlag(gui::TabListOpenPicon));
-#ifndef E2SE_ENFORCEDSANDBOX
+#ifndef E2SE_SANDBOXED
 	contextMenuAction(list_edit, this->revealFileManagerString(), [=]() { this->revealPiconOnFileManager(); }, tabGetFlag(gui::TabListRevealPicon));
 #endif
 	contextMenuAction(list_edit, tr("Execute batch command", "context-menu"), [=]() { this->executeBatchCommand(); }, tabGetFlag(gui::TabListBatchPicon));

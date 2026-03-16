@@ -83,12 +83,8 @@
 #endif
 
 
-#ifdef ENFORCEDSANDBOX
-#define E2SE_ENFORCEDSANDBOX
-#else
-#ifdef E2SE_DEMO
-#define E2SE_ENFORCEDSANDBOX
-#endif
+#ifdef SANDBOXED
+#define E2SE_SANDBOXED
 #endif
 
 #endif /* e2se_defs_h */

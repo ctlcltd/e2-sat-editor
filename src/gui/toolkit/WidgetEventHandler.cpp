@@ -22,11 +22,10 @@ namespace e2se_gui
 
 bool WidgetEventHandler::eventFilter(QObject* object, QEvent* event)
 {
-	if (event->type() == QEvent::ThemeChange)
+	if (event->type() == QEvent::Close)
+		return eventClose(object, event);
+	else if (event->type() == QEvent::ThemeChange)
 		return eventThemeChange(object, event);
-	//TODO call once
-	// else if (event->type() == QEvent::ApplicationPaletteChange)
-		// return eventThemeChange(object, event);
 	else if (event->type() == QEvent::DragEnter)
 		return eventDragEnter(object, event);
 	else if (event->type() == QEvent::DragMove)
@@ -35,6 +34,13 @@ bool WidgetEventHandler::eventFilter(QObject* object, QEvent* event)
 		return eventDragLeave(object, event);
 	else if (event->type() == QEvent::Drop)
 		return eventDrop(object, event);
+
+	return QObject::eventFilter(object, event);
+}
+
+bool WidgetEventHandler::eventClose(QObject* object, QEvent* event)
+{
+	callEventCallback(CALLEVENT::closeEvent);
 
 	return QObject::eventFilter(object, event);
 }

@@ -8,8 +8,8 @@ Information on contributions, to contribute and send Pull Request, please see [C
 
 **To Fix:**
 
-- [ ] preferences corner menus and QSettings syncronization [gui] [viewAbstract.cpp]
-- [ ] window geometry save and restoring [gui]
+- [x] restore window geometry [gui] [gui.cpp]
+- [x] preferences corner menus and QSettings syncronization [gui] [settings.cpp]
 - [x] favourite reference, on copy-paste, `#DESCRIPTION` is placed everywhere on userbouquet file [mainView.cpp]
 - [x] ftp upload, the current tree list is not stored before upload [tab.cpp] [viewAbstract.cpp] [mainView.cpp]
 - [x] edit transponders, sort ordering is not stored [transpondersView.cpp] [tunersetsView.cpp]

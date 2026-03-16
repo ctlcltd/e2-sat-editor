@@ -179,10 +179,12 @@ gui::gui(int argc, char* argv[])
 #endif
 
 	WidgetEventHandler* mwid_evth = new WidgetEventHandler;
-	mwid_evth->setEventCallback([=](WidgetEventHandler::CALLEVENT ce, const QString path) {
-		if (ce == WidgetEventHandler::CALLEVENT::themeChanged)
+	mwid_evth->setEventCallback([=](WidgetEventHandler::CALLEVENT event, const QString path) {
+		if (event == WidgetEventHandler::CALLEVENT::closeEvent)
+			QSettings().setValue("geometry", this->mwid->saveGeometry());
+		else if (event == WidgetEventHandler::CALLEVENT::themeChanged)
 			this->themeChanged();
-		else if (ce == WidgetEventHandler::CALLEVENT::fileDropped)
+		else if (event == WidgetEventHandler::CALLEVENT::fileDropped)
 			this->openFileTab(path.toStdString(), false);
 	});
 	mwid->setAcceptDrops(true);
@@ -325,7 +327,7 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::TabListEditFavourite] = menuBarAction(medit, tr("Edit Favourite", "menu"), [=]() { this->tabAction(TAB_ATS::ListEditFavourite); });
 	gmenu[GUI_CXE::TabListEditMarker] = menuBarAction(medit, tr("Edit Marker", "menu"), [=]() { this->tabAction(TAB_ATS::ListEditMarker); });
 	gmenu[GUI_CXE::TabListOpenPicon] = menuBarAction(medit, tr("Open picon file", "menu"), [=]() { this->tabAction(TAB_ATS::ListOpenPicon); });
-#ifndef E2SE_ENFORCEDSANDBOX
+#ifndef E2SE_SANDBOXED
 	gmenu[GUI_CXE::TabListRevealPicon] = menuBarAction(medit, this->revealFileManagerString(), [=]() { this->tabAction(TAB_ATS::ListRevealPicon); });
 #endif
 	gmenu[GUI_CXE::TabListBatchPicon] = menuBarAction(medit, tr("Execute batch command", "menu"), [=]() { this->tabAction(TAB_ATS::ListBatchPicon); });
@@ -1181,9 +1183,6 @@ void gui::windowChanged()
 #endif
 
 	updateMenu();
-
-	//TODO improve QApplication::focusChanged() is not enough
-	QSettings().setValue("geometry", mwid->saveGeometry());
 }
 
 void gui::tabChanged(int index)
@@ -1307,7 +1306,7 @@ void gui::tabViewChanged(TAB_VIEW ttv, int arg)
 	gmenu[GUI_CXE::TabListEditMarker]->setVisible(false);
 	gmenu[GUI_CXE::TabListEditPicon]->setVisible(false);
 	gmenu[GUI_CXE::TabListOpenPicon]->setVisible(false);
-#ifndef E2SE_ENFORCEDSANDBOX
+#ifndef E2SE_SANDBOXED
 	gmenu[GUI_CXE::TabListRevealPicon]->setVisible(false);
 #endif
 	gmenu[GUI_CXE::TabListBatchPicon]->setVisible(false);
@@ -1343,7 +1342,7 @@ void gui::tabViewChanged(TAB_VIEW ttv, int arg)
 			gmenu[GUI_CXE::TabListFind]->setText(tr("&Find Channel"));
 			gmenu[GUI_CXE::TabListEditPicon]->setVisible(true);
 			gmenu[GUI_CXE::TabListOpenPicon]->setVisible(true);
-#ifndef E2SE_ENFORCEDSANDBOX
+#ifndef E2SE_SANDBOXED
 			gmenu[GUI_CXE::TabListRevealPicon]->setVisible(true);
 #endif
 			gmenu[GUI_CXE::TabListBatchPicon]->setVisible(true);
@@ -1826,11 +1825,11 @@ QString gui::revealFileManagerString()
 	//: Platform: product name Finder on macOS
 	QString fileManager = tr("Finder", "menu");
 #else
-	//: Platform: product name File Manager for generic Linux and Unix
+	//: Platform: product name File Manager generic: Linux, Unix, WASM
 	QString fileManager = tr("File Manager", "menu");
 #endif
 
-	//: Platform: placeholder %1 for platform specific product name
+	//: Platform: %1 is platform specific product name
 	return tr("Reveal in %1", "menu").arg(fileManager);
 }
 

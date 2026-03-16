@@ -2015,6 +2015,8 @@ void settings::save()
 	else
 		store();
 
+	sets->sync();
+
 	gid->settingsChanged();
 
 	// delay too fast
