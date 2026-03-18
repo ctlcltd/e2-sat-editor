@@ -1612,6 +1612,11 @@ Please wait few minutes and try again.</source>
         <translation>&amp;Выделить всё</translation>
     </message>
     <message>
+        <source>Open picon file</source>
+        <comment>menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Execute batch command</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
@@ -2050,6 +2055,30 @@ Please wait few minutes and try again.</source>
         <source>Connection profile File</source>
         <comment>file-dialog</comment>
         <translation>Файл профиля подключения</translation>
+    </message>
+    <message>
+        <source>File Explorer</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name File Explorer on Windows</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finder</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name Finder on macOS</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File Manager</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reveal in %1</source>
+        <comment>menu</comment>
+        <extracomment>Platform: %1 is platform specific product name</extracomment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>File Error</source>
@@ -2860,6 +2889,30 @@ Reason: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>File Explorer</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name File Explorer on Windows</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finder</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name Finder on macOS</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File Manager</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reveal in %1</source>
+        <comment>menu</comment>
+        <extracomment>Platform: %1 is platform specific product name</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Delete images</source>
         <comment>message</comment>
         <translation>Удалить изображения</translation>
@@ -2873,6 +2926,11 @@ Reason: %1</source>
         <source>Change picon</source>
         <comment>context-menu</comment>
         <translation>Изменить picon</translation>
+    </message>
+    <message>
+        <source>Open picon</source>
+        <comment>context-menu</comment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Execute batch command</source>
