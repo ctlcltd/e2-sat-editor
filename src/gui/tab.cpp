@@ -693,7 +693,10 @@ bool tab::readFile(string path)
 		updateTabName(path);
 
 		if (this->data->haveErrors())
-			QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(this->data->getErrors(), MSG_CODE::readNotice); }, Qt::QueuedConnection);
+		{
+			auto errors = this->data->getErrors(); // note: will be deleted on tab, asyncronized, before the invokeMethod
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(errors, MSG_CODE::readNotice); }, Qt::QueuedConnection);
+		}
 	}
 	else
 	{
@@ -702,9 +705,14 @@ bool tab::readFile(string path)
 		error("readFile", tr("File Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(path.data()).toStdString());
 
 		if (this->data->haveErrors())
-			QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(this->data->getErrors(), MSG_CODE::readNotice); }, Qt::QueuedConnection);
+		{
+			auto errors = this->data->getErrors(); // note: will be deleted on tab, asyncronized, before the invokeMethod
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(errors, MSG_CODE::readNotice); }, Qt::QueuedConnection);
+		}
 		else
+		{
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(tr("File Error", "error"), tr("Error opening files.", "error")); }, Qt::QueuedConnection);
+		}
 
 		if (statusBarIsVisible())
 			statusBarMessage(timer);
@@ -2672,7 +2680,6 @@ void tab::ftpDownload()
 			{
 				this->files.clear();
 
-				//TODO TEST potential SEGFAULT
 				QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(); }, Qt::QueuedConnection);
 
 				return;
@@ -2962,7 +2969,6 @@ void tab::linkToOnlineHelp(int page)
 	gid->linkToOnlineHelp(page);
 }
 
-// note: tab::statusBarMessage this (gui*) is 0x0 with deleted tab* QTimer
 QTimer* tab::statusBarMessage(QString message)
 {
 	gui::status msg;
@@ -2970,11 +2976,13 @@ QTimer* tab::statusBarMessage(QString message)
 	msg.message = message.toStdString();
 	setStatusBar(msg);
 
-	// note: rand SEGFAULT with widget in thread
-	QTimer* timer = new QTimer(this->widget);
+	// note: cwid* and gid* are 0x0 with deleted tid* then timer* orphaned and no timeout call
+	auto* cwid = this->cwid;
+	auto* gid = this->gid;
+	QTimer* timer = new QTimer(cwid);
 	timer->setSingleShot(true);
 	timer->setInterval(tab::STATUSBAR_MESSAGE_TIMEOUT);
-	timer->callOnTimeout([=]() { this->resetStatusBar(true); timer->stop(); });
+	timer->callOnTimeout([=]() { gid->resetStatusBar(true); timer->stop(); });
 	timer->start();
 
 	return timer;
