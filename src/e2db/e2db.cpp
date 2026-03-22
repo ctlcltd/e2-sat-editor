@@ -1637,8 +1637,11 @@ void e2db::edit_tunersets_transponder(string trid, tunersets_transponder& tntxp,
 
 	char yname = value_transponder_type(tn.ytype);
 
+	if (tntxp.index == -1)
+		tntxp.index = int (index[tn.tnid].size()) + 1;
+
 	char nw_trid[25];
-	std::snprintf(nw_trid, 25, "%c:%04x:%04x", yname, tntxp.freq, tntxp.sr);
+	std::snprintf(nw_trid, 25, "%c:%04x:%04x", yname, tntxp.freq, tntxp.index);
 	tntxp.trid = nw_trid;
 
 	debug("edit_tunersets_transponder", "new trid", tntxp.trid);
@@ -2248,7 +2251,7 @@ map<e2db::ERRID, vector<e2db::errmsg>> e2db::error_checker()
 						{
 							char dsc[255];
 
-							std::snprintf(dsc, 255, "reference: %s type: %d freq: %d sr: %d", trid.c_str(), tn.ytype, tntxp.freq, tntxp.sr);
+							std::snprintf(dsc, 255, "reference: %s type: %d freq: %d index: %d", trid.c_str(), tn.ytype, tntxp.freq, tntxp.index);
 							string descr = string ("table: ").append(tnid).append(" ").append(dsc);
 
 							chkerr[ERRID::tni].emplace_back(errmsg(ERRID::tni, trid, msg("Tunersets transponder \"%s\" is not valid.", trid), descr));
@@ -2258,11 +2261,11 @@ map<e2db::ERRID, vector<e2db::errmsg>> e2db::error_checker()
 					{
 						char yname;
 						int freq = 0;
-						int sr = 0;
+						int idx = 0;
 						char dsc[255];
 
-						std::sscanf(trid.c_str(), "%c:%d:%d", &yname, &freq, &sr);
-						std::snprintf(dsc, 255, "type: %d freq: %d sr: %d", value_transponder_type(yname), freq, sr);
+						std::sscanf(trid.c_str(), "%c:%d:%d", &yname, &freq, &idx);
+						std::snprintf(dsc, 255, "type: %d freq: %d index: %d", value_transponder_type(yname), freq, idx);
 						string descr = string ("table: ").append(tnid).append(" ").append(dsc);
 
 						chkerr[ERRID::tni].emplace_back(errmsg(ERRID::tni, trid, msg("Tunersets transponder \"%s\" not exists.", trid), descr));

@@ -2404,7 +2404,7 @@ void e2db_converter::convert_csv_tunersets_list(vector<vector<string>>& sxv, e2d
 		tn.tnid = tnid;
 
 		char trid[25];
-		std::snprintf(trid, 25, "%c:%04x:%04x", yname, tntxp.freq, tntxp.sr);
+		std::snprintf(trid, 25, "%c:%04x:%04x", yname, tntxp.freq, tntxp.index);
 		tntxp.trid = trid;
 
 		if (! dst->tuners[tv.ytype].tables.count(tn.tnid))

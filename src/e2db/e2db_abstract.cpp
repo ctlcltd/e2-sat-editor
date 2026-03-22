@@ -738,23 +738,23 @@ string e2db_abstract::value_transponder_combo(transponder tx)
 	{
 		int pol = tx.pol != -1 ? tx.pol : 0;
 		int sr = tx.sr != -1 ? tx.sr : 0;
-		ptxp = to_string(tx.freq) + '/' + SAT_POL[pol] + '/' + to_string(sr);
+		ptxp = to_string(int (tx.freq / 1e3)) + '/' + SAT_POL[pol] + '/' + to_string(int (sr / 1e3));
 	}
 	else if (tx.ytype == YTYPE::terrestrial)
 	{
 		int tmod = tx.tmod != -1 ? tx.tmod : 3;
 		int band = tx.band != -1 ? tx.band : 3;
-		ptxp = to_string(tx.freq) + '/' + TER_MOD[tmod] + '/' + TER_BAND[band];
+		ptxp = to_string(int (tx.freq / 1e3)) + '/' + TER_MOD[tmod] + '/' + TER_BAND[band];
 	}
 	else if (tx.ytype == YTYPE::cable)
 	{
 		int cmod = tx.cmod != -1 ? tx.cmod : 0;
 		int sr = tx.sr != -1 ? tx.sr : 0;
-		ptxp = to_string(tx.freq) + '/' + CAB_MOD[cmod] + '/' + to_string(sr);
+		ptxp = to_string(int (tx.freq / 1e3)) + '/' + CAB_MOD[cmod] + '/' + to_string(int (sr / 1e3));
 	}
 	else if (tx.ytype == YTYPE::atsc)
 	{
-		ptxp = to_string(tx.freq);
+		ptxp = to_string(int (tx.freq / 1e3));
 	}
 	return ptxp;
 }
@@ -766,23 +766,23 @@ string e2db_abstract::value_transponder_combo(tunersets_transponder tntxp, tuner
 	{
 		int pol = tntxp.pol != -1 ? tntxp.pol : 0;
 		int sr = tntxp.sr != -1 ? tntxp.sr : 0;
-		ptxp = to_string(tntxp.freq) + '/' + SAT_POL[pol] + '/' + to_string(sr);
+		ptxp = to_string(int (tntxp.freq / 1e3)) + '/' + SAT_POL[pol] + '/' + to_string(int (sr / 1e3));
 	}
 	else if (tn.ytype == YTYPE::terrestrial)
 	{
 		int tmod = tntxp.tmod != -1 ? tntxp.tmod : 3;
 		int band = tntxp.band != -1 ? tntxp.band : 3;
-		ptxp = to_string(tntxp.freq) + '/' + TER_MOD[tmod] + '/' + TER_BAND[band];
+		ptxp = to_string(int (tntxp.freq / 1e3)) + '/' + TER_MOD[tmod] + '/' + TER_BAND[band];
 	}
 	else if (tn.ytype == YTYPE::cable)
 	{
 		int cmod = tntxp.cmod != -1 ? tntxp.cmod : 0;
 		int sr = tntxp.sr != -1 ? tntxp.sr : 0;
-		ptxp = to_string(tntxp.freq) + '/' + CAB_MOD[cmod] + '/' + to_string(sr);
+		ptxp = to_string(int (tntxp.freq / 1e3)) + '/' + CAB_MOD[cmod] + '/' + to_string(int (sr / 1e3));
 	}
 	else if (tn.ytype == YTYPE::atsc)
 	{
-		ptxp = to_string(tntxp.freq);
+		ptxp = to_string(int (tntxp.freq / 1e3));
 	}
 	return ptxp;
 }
@@ -860,6 +860,11 @@ string e2db_abstract::value_transponder_dvbns(int dvbns)
 	return cdvbns;
 }
 
+int e2db_abstract::value_transponder_frequency(int freq, bool display)
+{
+	return display ? int (freq / 1e3) : freq;
+}
+
 int e2db_abstract::value_transponder_polarization(string str)
 {
 	switch (str[0])
@@ -881,10 +886,10 @@ string e2db_abstract::value_transponder_polarization(int pol)
 	return "";
 }
 
-string e2db_abstract::value_transponder_sr(int sr)
+string e2db_abstract::value_transponder_sr(int sr, bool display)
 {
 	if (sr != -1)
-		return to_string(sr);
+		return to_string(display ? int (sr / 1e3) : sr);
 	return "";
 }
 
@@ -1753,7 +1758,7 @@ void e2db_abstract::add_tunersets_transponder(int idx, tunersets_transponder& tn
 	char yname = value_transponder_type(tn.ytype);
 
 	char trid[25];
-	std::snprintf(trid, 25, "%c:%04x:%04x", yname, tntxp.freq, tntxp.sr);
+	std::snprintf(trid, 25, "%c:%04x:%04x", yname, tntxp.freq, idx);
 	tntxp.trid = trid;
 	tntxp.index = idx;
 

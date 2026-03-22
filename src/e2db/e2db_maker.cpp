@@ -115,8 +115,8 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 		switch (tx.ytype)
 		{
 			case YTYPE::satellite: // DVB-S / DVB-S2
-				ss << int (tx.freq * 1e3);
-				ss << ':' << (tx.sr != -1 ? int (tx.sr * 1e3) : 0);
+				ss << tx.freq;
+				ss << ':' << (tx.sr != -1 ? tx.sr : 0);
 				ss << ':' << (tx.pol != -1 ? tx.pol : 0);
 				ss << ':' << (tx.fec != -1 ? tx.fec : 0);
 				ss << ':' << (tx.pos != -1 ? tx.pos : 0);
@@ -174,7 +174,7 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 				}
 			break;
 			case YTYPE::terrestrial: // DVB-T / DVB-T2
-				ss << int (tx.freq * 1e3);
+				ss << tx.freq;
 				ss << ':' << (tx.band != -1 ? tx.band : 3);
 				ss << ':' << (tx.hpfec != -1 ? tx.hpfec : 5);
 				ss << ':' << (tx.lpfec != -1 ? tx.lpfec : 5);
@@ -192,8 +192,8 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 				}
 			break;
 			case YTYPE::cable: // DVB-C
-				ss << int (tx.freq * 1e3);
-				ss << ':' << (tx.sr != -1 ? int (tx.sr * 1e3) : 0);
+				ss << tx.freq;
+				ss << ':' << (tx.sr != -1 ? tx.sr : 0);
 				ss << ':' << (tx.inv != -1 ? tx.inv : 0);
 				ss << ':' << (tx.cmod != -1 ? tx.cmod : 0);
 				ss << ':' << (tx.cfec != -1 ? tx.cfec : 0);
@@ -205,7 +205,7 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 				}
 			break;
 			case YTYPE::atsc: // ATSC / DVB-C ANNEX B
-				ss << int (tx.freq * 1e3);
+				ss << tx.freq;
 				ss << ':' << (tx.inv != -1 ? tx.inv : 0);
 				ss << ':' << (tx.amod != -1 ? tx.amod : 0);
 
@@ -904,9 +904,9 @@ void e2db_maker::make_tunersets_xml(string filename, int ytype, e2db_file& file)
 			{
 				case YTYPE::satellite:
 					if (tntxp.freq != -1)
-						ss << ' ' << "frequency=\"" << int (tntxp.freq * 1e3) << "\"";
+						ss << ' ' << "frequency=\"" << tntxp.freq << "\"";
 					if (tntxp.sr != -1)
-						ss << ' ' << "symbol_rate=\"" << int (tntxp.sr * 1e3) << "\"";
+						ss << ' ' << "symbol_rate=\"" << tntxp.sr << "\"";
 					if (tntxp.pol != -1)
 						ss << ' ' << "polarization=\"" << tntxp.pol << "\"";
 					if (tntxp.fec != -1)
@@ -938,7 +938,7 @@ void e2db_maker::make_tunersets_xml(string filename, int ytype, e2db_file& file)
 				break;
 				case YTYPE::terrestrial:
 					if (tntxp.freq != -1)
-						ss << ' ' << "centre_frequency=\"" << int (tntxp.freq * 1e3) << "\"";
+						ss << ' ' << "centre_frequency=\"" << tntxp.freq << "\"";
 					if (tntxp.band != -1)
 						ss << ' ' << "bandwidth=\"" << tntxp.band << "\"";
 					if (tntxp.hpfec != -1)
@@ -962,9 +962,9 @@ void e2db_maker::make_tunersets_xml(string filename, int ytype, e2db_file& file)
 				break;
 				case YTYPE::cable:
 					if (tntxp.freq != -1)
-						ss << ' ' << "frequency=\"" << int (tntxp.freq * 1e3) << "\"";
+						ss << ' ' << "frequency=\"" << tntxp.freq << "\"";
 					if (tntxp.sr != -1)
-						ss << ' ' << "symbol_rate=\"" << int (tntxp.sr * 1e3) << "\"";
+						ss << ' ' << "symbol_rate=\"" << tntxp.sr << "\"";
 					if (tntxp.cfec != -1)
 						ss << ' ' << "fec_inner=\"" << tntxp.cfec << "\"";
 					if (tntxp.inv != -1)
@@ -974,7 +974,7 @@ void e2db_maker::make_tunersets_xml(string filename, int ytype, e2db_file& file)
 				break;
 				case YTYPE::atsc:
 					if (tntxp.freq != -1)
-						ss << ' ' << "frequency=\"" << int (tntxp.freq * 1e3) << "\"";
+						ss << ' ' << "frequency=\"" << tntxp.freq << "\"";
 					if (tntxp.inv != -1)
 						ss << ' ' << "inversion=\"" << tntxp.inv << "\"";
 					if (tntxp.amod != -1)
@@ -1197,10 +1197,11 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 			{
 				ss << ' ' << "id=\"" << hex << setfill('0') << setw(4) << tx.tsid << dec << "\"";
 				ss << ' ' << "on=\"" << hex << setfill('0') << setw(4) << tx.onid << dec << "\"";
+				//TODO TEST
 				if (ver > 2 && zy.ytype == YTYPE::terrestrial)
-					ss << ' ' << "frq=\"" << int (tx.freq * 1e2) << "\"";
+					ss << ' ' << "frq=\"" << int (tx.freq / 1e2) << "\"";
 				else
-					ss << ' ' << "frq=\"" << int (tx.freq * 1e3) << "\"";
+					ss << ' ' << "frq=\"" << tx.freq << "\"";
 				ss << ' ' << "inv=\"" << (tx.inv != -1 && tx.inv != 0 ? tx.inv : 2) << "\"";
 				if (zy.ytype == YTYPE::terrestrial)
 				{
@@ -1209,7 +1210,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 				}
 				else
 				{
-					ss << ' ' << "sr=\"" << (tx.sr != -1 && tx.sr != 0 ? int (tx.sr * 1e3) : 0) << "\"";
+					ss << ' ' << "sr=\"" << (tx.sr != -1 && tx.sr != 0 ? tx.sr : 0) << "\"";
 				}
 				if (ver > 2 && zy.ytype == YTYPE::terrestrial)
 				{
@@ -1289,9 +1290,9 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 			{
 				ss << ' ' << "id=\"" << hex << setfill('0') << setw(4) << tx.tsid << dec << "\"";
 				ss << ' ' << "onid=\"" << hex << setfill('0') << setw(4) << tx.onid << dec << "\"";
-				ss << ' ' << "frequency=\"" << int (tx.freq * 1e3) << "\"";
+				ss << ' ' << "frequency=\"" << tx.freq << "\"";
 				ss << ' ' << "inversion=\"" << (tx.inv != 2 ? tx.inv : 0) << "\"";
-				ss << ' ' << "symbol_rate=\"" << (tx.sr != -1 && tx.sr != 0 ? int (tx.sr * 1e3) : 0) << "\"";
+				ss << ' ' << "symbol_rate=\"" << (tx.sr != -1 && tx.sr != 0 ? tx.sr : 0) << "\"";
 				{
 					int i = 0;
 					if (tx.fec <= 0)

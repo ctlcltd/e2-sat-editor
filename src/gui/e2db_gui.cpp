@@ -555,9 +555,9 @@ QStringList e2db::entryTransponder(transponder tx)
 	QString sys = QString::fromStdString(value_transponder_system(tx));
 	QString pos = QString::fromStdString(value_transponder_position(tx));
 	QString tname = QString::fromStdString(get_tuner_name(tx));
-	QString freq = QString::number(tx.freq);
+	QString freq = QString::number(value_transponder_frequency(tx.freq, true));
 	QString pol = QString::fromStdString(value_transponder_polarization(tx.pol));
-	QString sr = QString::fromStdString(value_transponder_sr(tx.sr));
+	QString sr = QString::fromStdString(value_transponder_sr(tx.sr, true));
 	QString fec;
 
 	switch (tx.ytype)
@@ -595,11 +595,16 @@ QStringList e2db::entryTransponder(transponder tx, bool extended)
 
 	QString txid = QString::fromStdString(tx.txid);
 	QString combo = QString::fromStdString(value_transponder_combo(tx));
+	QString freq = QString::number(value_transponder_frequency(tx.freq));
+	QString sr = QString::fromStdString(value_transponder_sr(tx.sr));
 	QString tsid = QString::number(tx.tsid);
 	QString dvbns = QString::fromStdString(value_transponder_dvbns(tx.dvbns));
 	QString onid = QString::number(tx.onid);
+	entry.replace(3, freq);
+	entry.replace(5, sr);
 	entry.insert(2, tsid);
 	entry.insert(3, dvbns);
+	//TODO FIX
 	entry.insert(4, onid);
 	if (tx.ytype == YTYPE::satellite)
 	{

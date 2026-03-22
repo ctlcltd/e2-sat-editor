@@ -676,8 +676,8 @@ void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transpo
 				std::sscanf(str.c_str(), "%8d:%8d:%1d:%1d:%5d:%1d:%d:%1d:%1d:%1d:%1d%c", &freq, &sr, &pol, &fec, &pos, &inv, &flags, &sys, &mod, &rol, &pil, &feopts);
 
 			tx.ytype = YTYPE::satellite;
-			tx.freq = int (freq / 1e3);
-			tx.sr = sr != -1 ? int (sr / 1e3) : -1;
+			tx.freq = freq;
+			tx.sr = sr != -1 ? sr : -1;
 			tx.pol = pol;
 			tx.fec = fec;
 			tx.pos = pos;
@@ -699,7 +699,7 @@ void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transpo
 			std::sscanf(str.c_str(), "%9d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%d:%1d:%d", &freq, &band, &hpfec, &lpfec, &tmod, &tmx, &guard, &hier, &inv, &flags, &sys, &plpid);
 
 			tx.ytype = YTYPE::terrestrial;
-			tx.freq = int (freq / 1e3);
+			tx.freq = freq;
 			tx.band = band;
 			tx.hpfec = hpfec;
 			tx.lpfec = lpfec;
@@ -719,8 +719,8 @@ void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transpo
 			std::sscanf(str.c_str(), "%8d:%8d:%1d:%1d:%1d:%d:%1d", &freq, &sr, &inv, &cmod, &cfec, &flags, &sys);
 
 			tx.ytype = YTYPE::cable;
-			tx.freq = int (freq / 1e3);
-			tx.sr = sr != -1 ? int (sr / 1e3) : 0;
+			tx.freq = freq;
+			tx.sr = sr != -1 ? sr : 0;
 			tx.inv = inv;
 			tx.cmod = cmod;
 			tx.cfec = cfec;
@@ -734,7 +734,7 @@ void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transpo
 			std::sscanf(str.c_str(), "%8d:%1d:%1d:%d:%1d", &freq, &inv, &amod, &flags, &sys);
 
 			tx.ytype = YTYPE::atsc;
-			tx.freq = int (freq / 1e3);
+			tx.freq = freq;
 			tx.inv = inv;
 			tx.amod = amod;
 			tx.flags = flags;
@@ -1356,7 +1356,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& itunxml)
 		if (line.find("<!") != string::npos)
 		{
 			comment s;
-			parse_xml_comment(line, s, ln);
+			parse_xml_comment(itunxml, line, s, ln);
 			comments[iname].emplace_back(s);
 			continue;
 		}
@@ -1413,9 +1413,9 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& itunxml)
 					else if (key == "position")
 						tn.pos = std::atoi(val.data());
 					else if (key == "frequency")
-						tntxp.freq = int (std::atoi(val.data()) / 1e3);
+						tntxp.freq = std::atoi(val.data());
 					else if (key == "symbol_rate")
-						tntxp.sr = int (std::atoi(val.data()) / 1e3);
+						tntxp.sr = std::atoi(val.data());
 					else if (key == "polarization")
 						tntxp.pol = std::atoi(val.data());
 					else if (key == "fec_inner")
@@ -1456,7 +1456,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& itunxml)
 					else if (key == "countrycode")
 						tn.country = val;
 					else if (key == "centre_frequency")
-						tntxp.freq = int (std::atoi(val.data()) / 1e3);
+						tntxp.freq = std::atoi(val.data());
 					else if (key == "bandwidth")
 						tntxp.band = std::atoi(val.data());
 					else if (key == "code_rate_hp")
@@ -1491,9 +1491,9 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& itunxml)
 					else if (key == "satfeed")
 						tn.feed = (val == "true" ? 1 : 0);
 					else if (key == "frequency")
-						tntxp.freq = int (std::atoi(val.data()) / 1e3);
+						tntxp.freq = std::atoi(val.data());
 					else if (key == "symbol_rate")
-						tntxp.sr = int (std::atoi(val.data()) / 1e3);
+						tntxp.sr = std::atoi(val.data());
 					else if (key == "inversion")
 						tntxp.inv = std::atoi(val.data());
 					else if (key == "modulation")
@@ -1510,7 +1510,7 @@ void e2db_parser::parse_tunersets_xml(int ytype, istream& itunxml)
 					else if (key == "flags")
 						tn.flags = std::atoi(val.data());
 					else if (key == "frequency")
-						tntxp.freq = int (std::atoi(val.data()) / 1e3);
+						tntxp.freq = std::atoi(val.data());
 					else if (key == "inversion")
 						tntxp.inv = std::atoi(val.data());
 					else if (key == "modulation")
@@ -1655,7 +1655,7 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 		if (line.find("<!") != string::npos)
 		{
 			comment s;
-			parse_xml_comment(line, s, ln);
+			parse_xml_comment(iservicesxml, line, s, ln);
 			comments[iname].emplace_back(s);
 			continue;
 		}
@@ -1720,10 +1720,11 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 					tx.onid = int (std::strtol(val.data(), NULL, 16));
 				else if (key == "frq")
 				{
+					//TODO TEST
 					if (ver > 2 && zy.ytype == YTYPE::terrestrial)
-						tx.freq = int (std::atoi(val.data()) / 1e2);
+						tx.freq = int (std::atoi(val.data()) * 1e2);
 					else
-						tx.freq = int (std::atoi(val.data()) / 1e3);
+						tx.freq = std::atoi(val.data());
 				}
 				else if (key == "inv")
 				{
@@ -1731,7 +1732,7 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 					tx.inv = (i != 2 ? i : 0);
 				}
 				else if (key == "sr")
-					tx.sr = int (std::atoi(val.data()) / 1e3);
+					tx.sr = std::atoi(val.data());
 				else if (key == "fec")
 				{
 					int i = std::atoi(val.data());
@@ -1910,14 +1911,14 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 				else if (key == "onid")
 					tx.onid = int (std::strtol(val.data(), NULL, 16));
 				else if (key == "frequency")
-					tx.freq = int (std::atoi(val.data()) / 1e3);
+					tx.freq = std::atoi(val.data());
 				else if (key == "inversion")
 				{
 					int i = std::atoi(val.data());
 					tx.inv = (i != 2 ? i : 0);
 				}
 				else if (key == "symbol_rate")
-					tx.sr = int (std::atoi(val.data()) / 1e3);
+					tx.sr = std::atoi(val.data());
 				else if (key == "fec_inner")
 				{
 					int i = std::atoi(val.data());
@@ -2052,7 +2053,7 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 		if (line.find("<!") != string::npos)
 		{
 			comment s;
-			parse_xml_comment(line, s, ln);
+			parse_xml_comment(ibouquetsxml, line, s, ln);
 			comments[iname].emplace_back(s);
 			continue;
 		}
@@ -2288,12 +2289,38 @@ bool e2db_parser::parse_xml_head(istream& ixml, string& charset)
 	return true;
 }
 
-void e2db_parser::parse_xml_comment(string line, comment& s, int ln)
+void e2db_parser::parse_xml_comment(istream& ixml, string line, comment& s, int ln)
 {
-	s.type = line.find('\n') != string::npos;
-	s.ln = ln;
-	s.text = line.substr(line.find("<!--") + 4);
-	s.text = s.text.substr(0, s.text.length() - 2);
+	if (line.rfind("--") == line.length() - 2)
+	{
+		s.type = line.rfind('\n') != string::npos;
+		s.ln = ln;
+		s.text = line;
+	}
+	else
+	{
+		s.type = 1;
+		s.ln = ln;
+
+		std::streampos pos = ixml.tellg();
+		//TODO TEST
+		pos -= line.length();
+		ixml.seekg(pos);
+		string line;
+
+		while (std::getline(ixml, line))
+		{
+			s.text.append(line);
+
+			if (line.rfind("-->") != string::npos)
+				break;
+
+			s.text.append("\n");
+		}
+	}
+
+	s.text = s.text.substr(s.text.find("<!--") + 4);
+	s.text = s.text.substr(0, s.text.rfind("--"));
 }
 
 void e2db_parser::parse_xml_tag(string line, string& tag, bool& closed)

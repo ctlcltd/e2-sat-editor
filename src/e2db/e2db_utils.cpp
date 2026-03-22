@@ -1038,6 +1038,7 @@ void e2db_utils::transform_transponders_to_tunersets()
 				tnref.tnid = tnid;
 				tnref.trid = trid;
 
+				//TODO TEST
 				char txy[37];
 				// %d:%4d:%8x:%8x:%8x
 				std::snprintf(txy, 37, "%d:%d:%x:%x:%x", tn.ytype, pos, tntxp.freq, tntxp.sr, tntxp.pol);
@@ -1133,7 +1134,7 @@ void e2db_utils::transform_transponders_to_tunersets()
 			idx++;
 
 			char trid[25];
-			std::snprintf(trid, 25, "%c:%04x:%04x", yname, tntxp.freq, tntxp.sr);
+			std::snprintf(trid, 25, "%c:%04x:%04x", yname, tntxp.freq, idx);
 			tntxp.trid = trid;
 
 			tntxp.index = idx;
