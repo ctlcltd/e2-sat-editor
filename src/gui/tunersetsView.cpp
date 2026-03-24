@@ -625,11 +625,11 @@ void tunersetsView::populate()
 		e2db::tunersets_transponder tntxp = tns.transponders[tpi.second];
 
 		QString x = QString::number(i++).rightJustified(pad_width, '0');
-		QString tnnum = QString::number(i);
+		QString trnum = QString::number(i);
 		QString idx = QString::number(tpi.first); // tunersets global index
 		QString trid = QString::fromStdString(tntxp.trid);
 		QStringList entry = dbih->entryTunersetsTransponder(tntxp, tns);
-		entry.prepend(tnnum);
+		entry.prepend(trnum);
 		entry.prepend(x);
 
 		QTreeWidgetItem* item = new QTreeWidgetItem(entry);
@@ -1026,6 +1026,7 @@ void tunersetsView::addTransponder()
 	QString x = QString::number(i++).rightJustified(pad_width, '0');
 	QString idx = QString::number(i);
 	QStringList entry = dbih->entryTunersetsTransponder(tntxp, tns);
+	entry.prepend(idx);
 	entry.prepend(x);
 
 	QTreeWidgetItem* item = new QTreeWidgetItem(entry);
@@ -1098,6 +1099,7 @@ void tunersetsView::editTransponder()
 	e2db::tunersets_transponder tntxp = tns.transponders[nw_trid];
 
 	QStringList entry = dbih->entryTunersetsTransponder(tntxp, tns);
+	entry.prepend(item->text(ITEM_ROW_ROLE::trnum));
 	entry.prepend(item->text(ITEM_ROW_ROLE::x));
 	for (int i = 0; i < entry.count(); i++)
 		item->setText(i, entry[i]);
@@ -1631,6 +1633,7 @@ void tunersetsView::updateFlags()
 	tabUpdateFlags();
 }
 
+//TODO FIX doubled entries after: list item edit, tree drag and drop, tab switch
 void tunersetsView::updateTreeIndex()
 {
 	debug("updateTreeIndex");

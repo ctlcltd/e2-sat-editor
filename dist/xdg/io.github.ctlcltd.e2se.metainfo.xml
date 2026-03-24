@@ -39,6 +39,15 @@
     <binary>e2-sat-editor</binary>
   </provides>
   <releases>
+    <release version="2.0.0" date="1970-01-01">
+      <description>
+        <ul>
+            <li>Bugfix and improvements</li>
+            <li>Transponder frequency and symbol-rate precision</li>
+            <li>Updated translations</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.9.0" date="2026-03-07">
       <description>
         <ul>

@@ -8,8 +8,16 @@ Information on contributions, to contribute and send Pull Request, please see [C
 
 **To Fix:**
 
+- [ ] tunersets table index, doubled entries after: list item edit, tree drag and drop, tab switch [gui] [tunersetsView.cpp]
+- [x] tunersets transponder, wrong tree list item after add and edit [gui] [tunersetsView.cpp]
+- [x] parse, transponder frequency and symbol-rate precision (#37) [gui] [e2db.cpp]
+- [x] parse, full XML multiline comment parsing (#37) [e2db.cpp]
+- [x] status bar message, message freezed on tab deleting, `QTimer` and timeout call [gui] [tab.cpp]
+- [x] drag and drop file, `SEGFAULT` on drop file [gui] [gui.cpp]
 - [x] restore window geometry [gui] [gui.cpp]
-- [x] preferences corner menus and QSettings syncronization [gui] [settings.cpp]
+- [x] preferences, corner menus and `QSettings` syncronization [gui] [settings.cpp]
+- [ ] AppImage deploy, broken bundle, Qt `QCoreApplication::applicationDirPath` logic and AppRun [qt] [linux]
+- [ ] AppImage deploy, compatibility, missing Qt QPA wayland plugin [qt] [linux]
 - [x] favourite reference, on copy-paste, `#DESCRIPTION` is placed everywhere on userbouquet file [mainView.cpp]
 - [x] ftp upload, the current tree list is not stored before upload [tab.cpp] [viewAbstract.cpp] [mainView.cpp]
 - [x] edit transponders, sort ordering is not stored [transpondersView.cpp] [tunersetsView.cpp]
@@ -24,8 +32,8 @@ Information on contributions, to contribute and send Pull Request, please see [C
 
 **To Improve:**
 
-- [x] service and reference flags, show flags in the UI, eg. Issues (#33) [gui]
-- [x] ftp connection messages, eg. "Connected", better visual feedback, status bar is not enough, eg. Issues (#35) [gui] [tab.cpp]
+- [x] service and reference flags, show flags in the UI (#33) [gui]
+- [x] ftp connection messages, eg. "Connected", better visual feedback, status bar is not enough (#35) [gui] [tab.cpp]
 - [x] ftp error messages, from "Access denied to remote resource." to file error. [ftp] [fptcom.cpp]
 - [ ] convert lamedbx from and to zapitx, better visual feedback [gui] [tab.cpp]
 - [ ] cli history, load and save [cli] [e2db_termctl.cpp]
@@ -41,14 +49,15 @@ Information on contributions, to contribute and send Pull Request, please see [C
 
 **To Evaluate:**
 
+- [ ] AppImage deploy, GLIBC/GCC/conda-forge and compatibility [qt] [linux]
 - [x] find match cache, is cached after reset, on debug [gui] [viewAbstract.cpp]
-- [ ] flatpak sandbox, capability to save directory with multiple files, `xdg-desktop-portal` [gui] [gui.cpp] [flatpak]
+- [x] flatpak sandbox, capability to save directory with multiple files, `xdg-desktop-portal` [gui] [gui.cpp] [flatpak]
 - [ ] reference, merge markers with same name [gui] [mainView.cpp]
 - [ ] force updates from TSV, CSV, eg. rename channels, to change channels data [gui] [mainView.cpp]
 - [ ] status bar closed, visual feedback `InfoMessage` downloaded files, no double dialog errors + infos [gui] [tab.cpp]
 - [ ] reload option, webif and|or telnet [gui] [tab.cpp] [settings.cpp] [ftpcom.cpp]
 - [ ] reload option, deactivate reload, manually [gui] [tab.cpp] [settings.cpp] [ftpcom.cpp]
-- [ ] service and reference flags, find and filtering, eg. Issues (#33) [gui]
+- [ ] service and reference flags, better visual feedback (#33) [gui]
 - [ ] FTPS, HTTPS support [networking] [gui] [settings.cpp] [fptcom.cpp]
 - [ ] find toolbar, look and feel [windows] [linux] [gui]
 - [ ] items move and copy, from and to, drag and drop is not enough [gui] [cli]
@@ -81,6 +90,6 @@ Information on contributions, to contribute and send Pull Request, please see [C
 - [ ] `onid == 0x0001` is `valid = (tsid > 0x0001)`, `valid = true` is False on STB [e2db.cpp]
 - [ ] edit service from Channel Book [gui] [channelBookView.cpp]
 - [ ] import from ftp, tools and demo, expending `import_blob` + `parse_e2db` [e2db.cpp]
-- [ ] settings dialog, on Enter keybind, is not saving settings [gui] [settings.cpp]
+- [ ] preferences, settings dialog, on Enter keybind, is not saving settings [gui] [settings.cpp]
 - [ ] runtime exceptions, eg. use of `std::runtime_error` causes segfault on mingw32 [code]
 

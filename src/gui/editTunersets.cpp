@@ -133,7 +133,6 @@ void editTunersets::store()
 
 		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
 			val = field->text().toStdString();
-		//TODO FIX line return
 		else if (QTextEdit* field = qobject_cast<QTextEdit*>(item))
 			val = field->toPlainText().toStdString();
 

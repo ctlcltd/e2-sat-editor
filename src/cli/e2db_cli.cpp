@@ -4097,8 +4097,8 @@ std::any e2db_cli::field(TYPE type, bool required)
 		case TYPE::chid: label = "CHID"; description = "Channel ID [ssid]:[tsid]:[dvbns] eg. 4d2:3e8:eeee0000"; break;
 		case TYPE::txid: label = "TXID"; description = "Transponder ID [tsid]:[dvbns] eg. 3e8:eeee0000"; break;
 		case TYPE::refid: label = "REFID"; description = "Reference ID, colon separated values"; break;
-		case TYPE::tnid: label = "TNID"; description = "Tunersets Table ID [yname]:[idx] eg. s:0001"; break;
-		case TYPE::trid: label = "TRID"; description = "Tunersets Transponder ID [yname]:[freq]:[idx] eg. s:2710:1000"; break;
+		case TYPE::tnid: label = "TNID"; description = "Tunersets Table ID [yname]:[index] eg. s:0001"; break;
+		case TYPE::trid: label = "TRID"; description = "Tunersets Transponder ID [yname]:[freq]:[index] eg. s:2710:1000"; break;
 		case TYPE::yname: label = "YNAME"; description = "Tuner Name, exact match: s = satellite, t = terrestrial, c = cable, a = atsc"; break;
 		case TYPE::ytype: label = "YTYPE"; description = "Tuner Type, exact match: 0 = satellite, 1 = terrestrial, 2 = cable, 3 = atsc"; break;
 		case TYPE::ssid: label = "SSID"; description = "Service ID, in digits"; break;

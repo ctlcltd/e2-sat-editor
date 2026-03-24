@@ -91,7 +91,8 @@ void editTunersetsTransponder::leadSatLayout()
 	dtf0sf->setProperty("field", "s_freq");
 	fields.emplace_back(dtf0sf);
 	dtf0sf->setMinimumWidth(100);
-	dtf0sf->setValidator(new QIntValidator(0, 99999999));
+	dtf0sf->setInputMask("00000.000");
+	dtf0sf->setValidator(new QDoubleValidator(0, 99999, 3));
 	dtf0sf->setMaxLength(8);
 	platform::osLineEdit(dtf0sf);
 	dtf0->addRow(tr("Frequency"), dtf0sf);
@@ -116,7 +117,8 @@ void editTunersetsTransponder::leadSatLayout()
 	dtf0ss->setProperty("field", "s_sr");
 	fields.emplace_back(dtf0ss);
 	dtf0ss->setMinimumWidth(100);
-	dtf0ss->setValidator(new QIntValidator(-1, 99999999));
+	dtf0ss->setInputMask("00000.000");
+	dtf0ss->setValidator(new QDoubleValidator(-1, 99999, 3));
 	dtf0ss->setMaxLength(8);
 	platform::osLineEdit(dtf0ss);
 	dtf0->addRow(tr("Symbol Rate"), dtf0ss);
@@ -168,7 +170,8 @@ void editTunersetsTransponder::leadTerrestrialLayout()
 	dtf0tf->setProperty("field", "t_freq");
 	fields.emplace_back(dtf0tf);
 	dtf0tf->setMinimumWidth(100);
-	dtf0tf->setValidator(new QIntValidator(0, 99999999));
+	dtf0tf->setInputMask("00000.000");
+	dtf0tf->setValidator(new QDoubleValidator(0, 99999, 3));
 	dtf0tf->setMaxLength(8);
 	platform::osLineEdit(dtf0tf);
 	dtf0->addRow(tr("Frequency"), dtf0tf);
@@ -250,7 +253,8 @@ void editTunersetsTransponder::leadCableLayout()
 	dtf0cf->setProperty("field", "c_freq");
 	fields.emplace_back(dtf0cf);
 	dtf0cf->setMinimumWidth(100);
-	dtf0cf->setValidator(new QIntValidator(0, 99999999));
+	dtf0cf->setInputMask("00000.000");
+	dtf0cf->setValidator(new QDoubleValidator(0, 99999, 3));
 	dtf0cf->setMaxLength(8);
 	platform::osLineEdit(dtf0cf);
 	dtf0->addRow(tr("Frequency"), dtf0cf);
@@ -275,7 +279,8 @@ void editTunersetsTransponder::leadCableLayout()
 	dtf0cs->setProperty("field", "c_sr");
 	fields.emplace_back(dtf0cs);
 	dtf0cs->setMinimumWidth(100);
-	dtf0cs->setValidator(new QIntValidator(-1, 99999999));
+	dtf0cs->setInputMask("00000.000");
+	dtf0cs->setValidator(new QDoubleValidator(-1, 99999, 3));
 	dtf0cs->setMaxLength(8);
 	platform::osLineEdit(dtf0cs);
 	dtf0->addRow(tr("Symbol Rate"), dtf0cs);
@@ -312,7 +317,8 @@ void editTunersetsTransponder::leadAtscLayout()
 	dtf0af->setProperty("field", "a_freq");
 	fields.emplace_back(dtf0af);
 	dtf0af->setMinimumWidth(100);
-	dtf0af->setValidator(new QIntValidator(0, 99999999));
+	dtf0af->setInputMask("00000.000");
+	dtf0af->setValidator(new QDoubleValidator(0, 99999, 3));
 	dtf0af->setMaxLength(8);
 	platform::osLineEdit(dtf0af);
 	dtf0->addRow(tr("Frequency"), dtf0af);
@@ -662,15 +668,22 @@ void editTunersetsTransponder::store()
 		int val = -1;
 
 		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
-			val = field->text().isEmpty() ? -1 : field->text().toInt();
+		{
+			if (key.find("_freq") != string::npos || key.find("_sr") != string::npos)
+				val = field->text().isEmpty() ? -1 : int (field->text().toDouble() * 1e3);
+			else
+				val = field->text().isEmpty() ? -1 : field->text().toInt();
+		}
 		else if (QComboBox* field = qobject_cast<QComboBox*>(item))
+		{
 			val = field->currentData().toInt();
+		}
 
 		if (this->state.yx == e2db::YTYPE::satellite)
 		{
-			if (key == "s_freq") //TODO 6 | 8
+			if (key == "s_freq")
 				tntxp.freq = val;
-			else if (key == "s_sr") //TODO 6 | 8
+			else if (key == "s_sr")
 				tntxp.sr = val;
 			else if (key == "s_pol")
 				tntxp.pol = val;
@@ -730,9 +743,9 @@ void editTunersetsTransponder::store()
 		}
 		else if (this->state.yx == e2db::YTYPE::cable)
 		{
-			if (key == "c_freq") //TODO 6 | 8
+			if (key == "c_freq")
 				tntxp.freq = val;
-			else if (key == "c_sr") //TODO 6 | 8
+			else if (key == "c_sr")
 				tntxp.sr = val;
 			else if (key == "c_cfec")
 				tntxp.cfec = val;
@@ -745,7 +758,7 @@ void editTunersetsTransponder::store()
 		}
 		else if (this->state.yx == e2db::YTYPE::atsc)
 		{
-			if (key == "a_freq") //TODO 6 | 8
+			if (key == "a_freq")
 				tntxp.freq = val;
 			else if (key == "a_amod")
 				tntxp.amod = val;

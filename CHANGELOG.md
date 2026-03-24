@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 
 
+## [v2.0.0]
+
+**Version**: 2.0.0  
+**Release Date**: *not released*  
+**Full Changelog**: [v1.9.0...HEAD](https://github.com/ctlcltd/e2-sat-editor/compare/v1.9.0...HEAD)
+
+- Bugfix and improvements
+- Transponder frequency and symbol-rate precision
+- Updated translations
+
+
 ## [v1.9.0]
 
 **Version**: 1.9.0  
