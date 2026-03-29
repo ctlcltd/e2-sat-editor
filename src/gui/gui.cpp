@@ -569,7 +569,21 @@ void gui::statusBarLayout()
 	this->sbwidl = new QLabel;
 	this->sbwidc = new QWidget;
 	this->sbwidr = new QLabel;
+	this->sbwidh = new QLabel;
 	this->sbwidi = new QPushButton;
+
+	// note: bad way to obtain styled pseudo separator
+	QWidget* sbwids = new QWidget;
+	QHBoxLayout* separator = new QHBoxLayout;
+	QWidget* frame = new QWidget;
+	frame->setAutoFillBackground(true);
+	frame->setBackgroundRole(QPalette::ToolTipBase);
+	frame->setContentsMargins(0, 0, 0, 0);
+	frame->setFixedSize(1, 10);
+	separator->setSpacing(0);
+	separator->setContentsMargins(5, 0, 5, 0);
+	separator->addWidget(frame);
+	sbwids->setLayout(separator);
 
 	sbwidl->setStyleSheet("padding: 0 2ex");
 	sbwidr->setStyleSheet("padding: 0 1ex");
@@ -578,7 +592,6 @@ void gui::statusBarLayout()
 	theme->dynamicStyleSheet(sbwid, "QStatusBar { background: transparent }");
 #endif
 
-	//TODO QStatusBar layout expanding
 	sbwid->layout()->setSpacing(0);
 
 	sbwidl->setAlignment(Qt::AlignVCenter);
@@ -586,6 +599,8 @@ void gui::statusBarLayout()
 	sbwidl->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Ignored);
 	sbwidc->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Ignored);
 	sbwidr->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Ignored);
+	sbwids->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Ignored);
+	sbwidh->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Ignored);
 	sbwidi->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Ignored);
 
 	sbwidi->setFlat(true);
@@ -601,6 +616,8 @@ void gui::statusBarLayout()
 	sbwid->addWidget(sbwidl, 0);
 	sbwid->addWidget(sbwidc, 1);
 	sbwid->addWidget(sbwidr, 0);
+	sbwid->addPermanentWidget(sbwids, 0);
+	sbwid->addPermanentWidget(sbwidh, 0);
 	sbwid->addPermanentWidget(sbwidi, 0);
 
 	mstatusb->addWidget(sbwid);
@@ -1743,11 +1760,17 @@ void gui::setStatusBar(status msg)
 				std::reverse(content.begin(), content.end());
 			sbwidr->setText(content.join(separator));
 
-			QString text = getFileFormatName(msg.version);
+			QString fromver = getFileFormatName(msg.version);
+			QString text = QString(fromver);
 			if (msg.convert != 0)
 			{
-				QString convert = getFileFormatName(msg.convert);
-				text = QString(QApplication::layoutDirection() == Qt::RightToLeft ? "%2 < %1" : "%1 > %2").arg(text).arg(convert);
+				QString tover = getFileFormatName(msg.convert);
+				text = QString(QApplication::layoutDirection() == Qt::RightToLeft ? "%2 < %1" : "%1 > %2").arg(text).arg(tover);
+				sbwidh->setText(tover.section(' ', 0, 1));
+			}
+			else
+			{
+				sbwidh->setText(fromver.section(' ', 0, 1));
 			}
 			sbwidi->setToolTip(text);
 		}

@@ -483,6 +483,7 @@ class gui : protected e2se::log_factory
 		QLabel* sbwidl;
 		QWidget* sbwidc;
 		QLabel* sbwidr;
+		QLabel* sbwidh;
 		QPushButton* sbwidi;
 		QTabWidget* twid;
 		QMenu* mwind;

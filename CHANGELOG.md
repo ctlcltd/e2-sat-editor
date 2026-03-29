@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 
 - Bugfix and improvements
 - Transponder frequency and symbol-rate precision
+- Channel list format and conversion, better visual feedback
 - Updated translations
 
 
