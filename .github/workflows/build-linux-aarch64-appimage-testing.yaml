@@ -61,6 +61,7 @@ jobs:
         -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} \
         -DRELEASE_MEDIUM=github \
         -DWITHOUT_CLI=ON \
+        -DAPPIMAGE=ON \
         -DDOWNLOAD_CURL_CABUNDLE=ON
 
     - name: Force fresh libcurl4 dependency

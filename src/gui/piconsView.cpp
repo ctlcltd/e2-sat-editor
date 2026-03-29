@@ -172,6 +172,7 @@ void piconsView::layout()
 			wnd->close();
 			this->action.acrn_prefs->topLevelWidget()->windowHandle()->requestActivate();
 			wnd->destroy();
+			//TODO QWidget::topLevelWidget deprecation
 		}
 #endif
 

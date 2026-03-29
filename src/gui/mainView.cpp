@@ -334,6 +334,7 @@ void mainView::layout()
 			wnd->close();
 			this->action.lcrn_prefs->topLevelWidget()->windowHandle()->requestActivate();
 			wnd->destroy();
+			//TODO QWidget::topLevelWidget deprecation
 		}
 #endif
 

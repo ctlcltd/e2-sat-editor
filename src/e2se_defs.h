@@ -87,4 +87,8 @@
 #define E2SE_SANDBOXED
 #endif
 
+#ifdef APPIMAGE
+#define E2SE_APPIMAGE
+#endif
+
 #endif /* e2se_defs_h */

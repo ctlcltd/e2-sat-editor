@@ -1633,7 +1633,6 @@ void tunersetsView::updateFlags()
 	tabUpdateFlags();
 }
 
-//TODO FIX doubled entries after: list item edit, tree drag and drop, tab switch
 void tunersetsView::updateTreeIndex()
 {
 	debug("updateTreeIndex");
@@ -1723,6 +1722,7 @@ void tunersetsView::update()
 		listFindClear();
 
 		tree->reset();
+		tree->clear();
 
 		unpack();
 

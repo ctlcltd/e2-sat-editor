@@ -8,16 +8,17 @@ Information on contributions, to contribute and send Pull Request, please see [C
 
 **To Fix:**
 
-- [ ] tunersets table index, doubled entries after: list item edit, tree drag and drop, tab switch [gui] [tunersetsView.cpp]
+- [x] tunersets table index, doubled entries after: list item edit, tree drag and drop, tab switch [gui] [tunersetsView.cpp]
 - [x] tunersets transponder, wrong tree list item after add and edit [gui] [tunersetsView.cpp]
-- [x] parse, transponder frequency and symbol-rate precision (#37) [gui] [e2db.cpp]
-- [x] parse, full XML multiline comment parsing (#37) [e2db.cpp]
+- [x] parser, transponder frequency and symbol-rate precision (#37) [gui] [e2db.cpp]
+- [x] parser, full XML multiline comment parsing (#37) [e2db.cpp]
+- [x] parser, wrong transponder internal ID, discarded entries (#37) [e2db.cpp]
 - [x] status bar message, message freezed on tab deleting, `QTimer` and timeout call [gui] [tab.cpp]
 - [x] drag and drop file, `SEGFAULT` on drop file [gui] [gui.cpp]
 - [x] restore window geometry [gui] [gui.cpp]
 - [x] preferences, corner menus and `QSettings` syncronization [gui] [settings.cpp]
-- [ ] AppImage deploy, broken bundle, Qt `QCoreApplication::applicationDirPath` logic and AppRun [qt] [linux]
-- [ ] AppImage deploy, compatibility, missing Qt QPA wayland plugin [qt] [linux]
+- [x] AppImage deploy using conda-forge, broken bundle, Qt `QCoreApplication::applicationFilePath` logic and AppRun [qt] [linux]
+- [x] AppImage deploy, compatibility, missing Qt QPA wayland plugin [qt] [linux]
 - [x] favourite reference, on copy-paste, `#DESCRIPTION` is placed everywhere on userbouquet file [mainView.cpp]
 - [x] ftp upload, the current tree list is not stored before upload [tab.cpp] [viewAbstract.cpp] [mainView.cpp]
 - [x] edit transponders, sort ordering is not stored [transpondersView.cpp] [tunersetsView.cpp]

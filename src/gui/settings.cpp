@@ -223,6 +223,7 @@ void settings::connectionsLayout()
 			// note: trick to re-gain window focus
 			wid->topLevelWidget()->parentWidget()->windowHandle()->requestActivate();
 			wid->topLevelWidget()->windowHandle()->requestActivate();
+			//TODO QWidget::topLevelWidget deprecation
 		}
 #endif
 	});
