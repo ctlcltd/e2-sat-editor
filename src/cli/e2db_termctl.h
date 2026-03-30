@@ -10,6 +10,8 @@
  */
 
 #include <iostream>
+#include <string>
+#include <vector>
 
 #ifndef e2db_termctl_h
 #define e2db_termctl_h
@@ -49,8 +51,12 @@ class e2db_termctl
 		std::istream* stream();
 		static int paged(int pos, int offset);
 		static std::pair<int, int> screensize();
-		void debugger();
-		void tmp_history();
+		void dump_log();
+		void load_history();
+		void save_history();
+
+		std::string history_file;
+		std::string log_file;
 
 	private:
 		static void tty_set_raw(int tty_fd = 0);

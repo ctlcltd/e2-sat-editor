@@ -23,10 +23,10 @@ int main(int argc, char* argv[])
 	DEBUG = true;
 #endif
 
-	const char* envp = std::getenv("DEBUG");
-	if (envp)
+	if (std::getenv("DEBUG") != NULL)
 	{
-		DEBUG = true;
+		const char* envp = std::getenv("DEBUG");
+		DEBUG = (envp == "1" || envp == "true");
 	}
 
 	for (int i = 0; i < argc; i++)

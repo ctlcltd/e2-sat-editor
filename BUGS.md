@@ -37,7 +37,7 @@ Information on contributions, to contribute and send Pull Request, please see [C
 - [x] ftp connection messages, eg. "Connected", better visual feedback, status bar is not enough (#35) [gui] [tab.cpp]
 - [x] ftp error messages, from "Access denied to remote resource." to file error. [ftp] [fptcom.cpp]
 - [x] convert lamedbx from and to zapitx, better visual feedback [gui] [tab.cpp]
-- [ ] cli history, load and save [cli] [e2db_termctl.cpp]
+- [x] cli history, load and save [cli] [e2db_termctl.cpp]
 - [ ] service flags and compatibility, `dvbfrontend` [gui] [e2db.cpp]
 - [ ] reference flags and compatibility, `dvbfrontend` [gui] [e2db.cpp]
 - [ ] neutrino feparams and versions, unknown compatibility [gui] [e2db.cpp]

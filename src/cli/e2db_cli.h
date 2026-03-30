@@ -54,6 +54,8 @@ class e2db_cli
 			parse,
 			make,
 			convert,
+			tool,
+			macro,
 			debug,
 			preferences
 		};
@@ -118,6 +120,11 @@ class e2db_cli
 			json = 2
 		};
 
+		enum HISTORY {
+			file = 0,
+			memory = 1
+		};
+
 		struct iosets
 		{
 			OBJIO in = OBJIO::_std;
@@ -126,6 +133,8 @@ class e2db_cli
 			bool hrv = true; // human readable pair value
 			bool ppg = true; // paged preamble
 		} __objio;
+
+		HISTORY history = HISTORY::file;
 
 		void options(int argc, char* argv[]);
 		void version(bool verbose);
@@ -150,10 +159,14 @@ class e2db_cli
 		void shell_command_set(istream* is) { shell_resolver(COMMAND::set, is); }
 		void shell_command_unset(istream* is) { shell_resolver(COMMAND::unset, is); }
 		void shell_command_print(istream* is) { shell_resolver(COMMAND::print, is); }
+		void shell_command_import(istream* is) { shell_resolver(COMMAND::fimport, is); }
+		void shell_command_export(istream* is) { shell_resolver(COMMAND::fexport, is); }
+		void shell_command_merge(istream* is) { shell_resolver(COMMAND::merge, is); }
 		void shell_command_parse(istream* is) { shell_resolver(COMMAND::parse, is); }
 		void shell_command_make(istream* is) { shell_resolver(COMMAND::make, is); }
 		void shell_command_convert(istream* is) { shell_resolver(COMMAND::convert, is); }
-		void shell_command_merge(istream* is) { shell_resolver(COMMAND::merge, is); }
+		void shell_command_tool(istream* is) { shell_resolver(COMMAND::tool, is); }
+		void shell_command_macro(istream* is) { shell_resolver(COMMAND::macro, is); }
 		void shell_command_debug(istream* is) { shell_resolver(COMMAND::debug, is); }
 		void shell_command_preferences(istream* is) { shell_resolver(COMMAND::preferences, is); }
 
@@ -161,13 +174,16 @@ class e2db_cli
 		void shell_usage(COMMAND hint, bool specs = true);
 		void shell_file_read(string path);
 		void shell_file_write(string path);
+		void shell_e2db_import(ENTRY entry_type, vector<string> paths, int ver = -1, bool dir = false);
+		void shell_e2db_export(ENTRY entry_type, vector<string> paths, int ver = -1, bool dir = false, string bname = "");
+		void shell_e2db_merge(ENTRY entry_type, string path, int ver = -1, bool dir = false);
+		void shell_e2db_merge(ENTRY entry_type, int ver = -1, string bname0 = "", string bname1 = "");
 		void shell_e2db_parse(ENTRY entry_type, string path, int ver = -1, bool dir = false);
 		void shell_e2db_make(ENTRY entry_type, string path, int ver = -1, bool dir = false, string bname = "");
 		void shell_e2db_convert(ENTRY entry_type, int fopt, int ftype, string path, string bname = "", int stype = -1, int ytype = -1);
-		void shell_e2db_merge(ENTRY entry_type, string path, int ver = -1, bool dir = false);
-		void shell_e2db_merge(ENTRY entry_type, int ver = -1, string bname0 = "", string bname1 = "");
-		void shell_e2db_import(ENTRY entry_type, vector<string> paths, int ver = -1, bool dir = false);
-		void shell_e2db_export(ENTRY entry_type, vector<string> paths, int ver = -1, bool dir = false, string bname = "");
+		void shell_e2db_tool(string id);
+		void shell_e2db_macro(string id);
+		void shell_e2db_macro(vector<string> pattern);
 		void shell_entry_list(ENTRY entry_type, string bname, int offset0, int offset1);
 		void shell_entry_list(ENTRY entry_type, int offset0, int offset1, string bname = "");
 		void shell_entry_list(ENTRY entry_type, bool paged = true, int limit = 0, int pos = 0, string bname = "");
@@ -183,6 +199,7 @@ class e2db_cli
 		void shell_print(int opt);
 		void shell_debug();
 		void shell_preference_output(OBJIO format);
+		void shell_preference_history(HISTORY type);
 
 		void print_obj_begin(int depth = 0);
 		void print_obj_end(int depth = 0);

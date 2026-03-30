@@ -12,11 +12,13 @@
 #include <cstdio>
 #include <clocale>
 #include <cstring>
+#include <cstdlib>
+#include <limits>
 #include <string>
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <limits>
+#include <filesystem>
 
 #if defined(unix) || defined(__unix__) || defined(__unix) || defined(linux) || defined(__linux__) || defined(__APPLE__)
 #define PLATFORM_UX
@@ -50,6 +52,30 @@ e2db_termctl::e2db_termctl()
 {
 	std::setlocale(LC_NUMERIC, "C");
 
+	this->history_file = "./e2se-cli_history";
+	this->log_file = "./e2se-cli_log.txt";
+
+#ifdef PLATFORM_UX
+	if (std::getenv("HOME") != NULL)
+	{
+		const char* homepath = std::getenv("HOME");
+
+		if (
+			std::filesystem::exists(homepath) &&
+			std::filesystem::is_directory(homepath) &&
+			! (
+				(std::filesystem::status(homepath).permissions() & std::filesystem::perms::owner_read) == std::filesystem::perms::none &&
+				(std::filesystem::status(homepath).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none
+			)
+		)
+		{
+			std::filesystem::path fp = std::filesystem::path(std::string (homepath));
+			fp /= "e2se-cli_history";
+			this->history_file = fp.u8string();
+		}
+	}
+#endif
+
 	std::stringbuf* is_buf = new std::stringbuf;
 	this->is = new std::iostream(is_buf);
 
@@ -57,15 +83,18 @@ e2db_termctl::e2db_termctl()
 	this->history = new std::iostream(history_buf);
 
 #if E2SE_BUILD == E2SE_TARGET_DEBUG
-	*history << "read directory-not-exists" << std::endl;
-	*history << "edit userbouquet id" << std::endl;
-	*history << "add tunersets id" << std::endl;
-	*history << "edit tunersets_transponder id" << std::endl;
-	*history << "add transponder" << std::endl;
-	*history << "edit service id" << std::endl;
-	*history << "list transponders" << std::endl;
-	*history << "list channels userbouquet.dbe01.tv" << std::endl;
-	*history << "read e2se-seeds/enigma_db" << std::endl;
+	if (! std::filesystem::exists(this->history_file))
+	{
+		*history << "read directory-not-exists" << std::endl;
+		*history << "edit userbouquet id" << std::endl;
+		*history << "add tunersets id" << std::endl;
+		*history << "edit tunersets_transponder id" << std::endl;
+		*history << "add transponder" << std::endl;
+		*history << "edit service id" << std::endl;
+		*history << "list transponders" << std::endl;
+		*history << "list channels userbouquet.dbe01.tv" << std::endl;
+		*history << "read e2se-seeds/enigma_db" << std::endl;
+	}
 #endif
 
 	this->last = this->history->tellg();
@@ -163,7 +192,6 @@ void e2db_termctl::input(bool shell, bool ins)
 						}
 
 						std::string line;
-
 						if (std::getline(*history, line))
 							last = pos;
 						else
@@ -205,7 +233,6 @@ void e2db_termctl::input(bool shell, bool ins)
 						}
 
 						std::string line;
-
 						if (std::getline(*history, line))
 							last = pos;
 						else if (input != is_buf->str())
@@ -291,11 +318,21 @@ void e2db_termctl::input(bool shell, bool ins)
 				std::stringbuf* is_buf = reinterpret_cast<std::stringbuf*>(is->rdbuf());
 
 				std::string str = is_buf->str();
-				try {
+				try
+				{
 					str.erase(cur - 1, 1);
-				} catch (...) {
+				}
+				catch (const std::out_of_range& err)
+				{
+					std::cerr << "Out of range exception: " << err.what() << std::endl;
 					std::string str = is_buf->str();
-					std::cerr << "out_of_range delete str:[" << str << "] cur:" << cur << " len:" << len << " size:" << str.size() << std::endl;
+					std::cerr << "erase str: [" << str << "], cur: " << cur << ", len: " << len << ", size: " << str.size() << std::endl;
+				}
+				catch (...)
+				{
+					std::cerr << "Uncaught exception" << std::endl;
+					std::string str = is_buf->str();
+					std::cerr << "erase str: [" << str << "], cur: " << cur << ", len: " << len << ", size: " << str.size() << std::endl;
 				}
 				is_buf->str(str);
 				is->sync();
@@ -364,11 +401,21 @@ void e2db_termctl::input(bool shell, bool ins)
 
 			for (size_t i = 0; i != n; i++)
 				std::putchar('\b');
-			try {
+			try
+			{
 				str.insert(cur, 1, c);
-			} catch (...) {
+			}
+			catch (const std::out_of_range& err)
+			{
+				std::cerr << "Out of range exception: " << err.what() << std::endl;
 				std::string str = is_buf->str();
-				std::cerr << "out_of_range append str:[" << str << "] cur:" << cur << " len:" << len << " size:" << str.size() << std::endl;
+				std::cerr << "insert str: [" << str << "], cur: " << cur << ", len: " << len << ", size: " << str.size() << std::endl;
+			}
+			catch (...)
+			{
+				std::cerr << "Uncaught exception" << std::endl;
+				std::string str = is_buf->str();
+				std::cerr << "insert str: [" << str << "], cur: " << cur << ", len: " << len << ", size: " << str.size() << std::endl;
 			}
 
 			is_buf->str(str);
@@ -506,43 +553,116 @@ std::pair<int, int> e2db_termctl::screensize()
 	return e2db_termctl::tty_get_screensize();
 }
 
-void e2db_termctl::debugger()
+void e2db_termctl::dump_log()
 {
-	std::ofstream log ("./e2se-cli_log.txt");
-	log.exceptions(std::ofstream::failbit | std::ofstream::badbit);
-	std::string line;
+	try
+	{
+		std::ofstream out (log_file);
+		out.exceptions(std::ofstream::failbit | std::ofstream::badbit);
 
-	log << "--- begin is      ---" << std::endl;
-	is->clear();
-	is->seekg(0);
-	while (std::getline(*is, line, '\0'))
-		log << line << std::endl;
-	log << "--- end   is      ---" << std::endl;
+		{
+			out << "--- begin is      ---" << std::endl;
+			is->clear();
+			is->seekg(0);
+			std::string line;
+			while (std::getline(*is, line, '\0'))
+				out << line << std::endl;
+			out << "--- end   is      ---" << std::endl;
+		}
+		{
+			out << "--- begin history ---" << std::endl;
+			history->clear();
+			history->seekg(0);
+			std::string line;
+			while (std::getline(*history, line))
+				out << line << std::endl;
+			out << "--- end   history ---" << std::endl;
+		}
+		out << std::endl;
 
-	log << "--- begin history ---" << std::endl;
-	history->clear();
-	history->seekg(0);
-	while (std::getline(*history, line))
-		log << line << std::endl;
-	log << "--- end   history ---" << std::endl;
-
-	log << std::endl;
-
-	log.close();
+		out.close();
+	}
+	catch (const std::filesystem::filesystem_error& err)
+	{
+		std::cerr << "Filesystem exception: " << err.what() << std::endl;
+		std::cerr << "access log_file: " << log_file << std::endl;
+	}
+	catch (const std::ofstream::failure& err)
+	{
+		std::cerr << "File write exception: " << err.what() << std::endl;
+		std::cerr << "write log_file: " << log_file << std::endl;
+	}
+	catch (...)
+	{
+		std::cerr << "Uncaught exception" << std::endl;
+		std::cerr << "file log_file: " << log_file << std::endl;
+	}
 }
 
-void e2db_termctl::tmp_history()
+void e2db_termctl::load_history()
 {
-	std::ofstream log ("./e2se-cli_history");
-	log.exceptions(std::ofstream::failbit | std::ofstream::badbit);
-	std::string line;
+	try
+	{
+		std::ifstream ifile (history_file);
+		ifile.exceptions(std::ifstream::badbit);
 
-	history->clear();
-	history->seekg(0);
-	while (std::getline(*history, line))
-		log << line << std::endl;
+		history->clear();
+		history->seekg(0);
+		std::string line;
+		while (std::getline(ifile, line))
+			*history << line << std::endl;
 
-	log.close();
+		ifile.close();
+
+		last = history->tellg();
+	}
+	catch (const std::filesystem::filesystem_error& err)
+	{
+		std::cerr << "Filesystem exception: " << err.what() << std::endl;
+		std::cerr << "access history_file: " << history_file << std::endl;
+	}
+	catch (const std::ifstream::failure& err)
+	{
+		std::cerr << "File read exception: " << err.what() << std::endl;
+		std::cerr << "read history_file: " << history_file << std::endl;
+	}
+	catch (...)
+	{
+		std::cerr << "Uncaught exception" << std::endl;
+		std::cerr << "file history_file: " << history_file << std::endl;
+	}
+}
+
+void e2db_termctl::save_history()
+{
+	try
+	{
+		std::ofstream out (history_file);
+		out.exceptions(std::ofstream::failbit | std::ofstream::badbit);
+
+		history->clear();
+		history->seekg(0);
+		std::string line;
+		while (std::getline(*history, line))
+			out << line << std::endl;
+
+		out.close();
+	}
+	catch (const std::filesystem::filesystem_error& err)
+	{
+		std::cerr << "Filesystem exception: " << err.what() << std::endl;
+		std::cerr << "access history_file: " << history_file << std::endl;
+	}
+	catch (const std::ofstream::failure& err)
+	{
+		std::cerr << "File write exception: " << err.what() << std::endl;
+		std::cerr << "write history_file: " << history_file << std::endl;
+	}
+	catch (...)
+	{
+		std::cerr << "Uncaught exception" << std::endl;
+		std::cerr << "file history_file: " << history_file << std::endl;
+	}
 }
 
 #ifdef PLATFORM_UX
