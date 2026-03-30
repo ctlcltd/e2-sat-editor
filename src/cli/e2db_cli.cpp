@@ -782,11 +782,44 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 	}
 	else if (command == COMMAND::tool)
 	{
-		shell_debug();
+		string fn, opt1, opt2, opt3;
+		*is >> std::skipws >> fn >> opt1 >> opt2 >> opt3;
+
+		if (fn == "sort_references")
+			shell_e2db_tool(fn, opt1, opt2, opt3 == "desc");
+		else if (fn.find("sort_") != string::npos)
+			shell_e2db_tool(fn, "", opt1, opt2 == "desc");
+		else if (! fn.empty())
+			shell_e2db_tool(fn);
+		else
+			shell_usage(command);
 	}
 	else if (command == COMMAND::macro)
 	{
-		shell_debug();
+		istream* cp_is = new istream (is->rdbuf());
+		string opts;
+		*cp_is >> opts;
+
+		if (opts.find(',') != string::npos)
+		{
+			vector<string> pattern;
+			string fn;
+
+			while (std::getline(*is, fn, ','))
+				pattern.emplace_back(fn);
+
+			shell_e2db_macro(pattern);
+		}
+		else if (! opts.empty())
+		{
+			string id = opts;
+
+			shell_e2db_macro(id);
+		}
+		else
+		{
+			shell_usage(command);
+		}
 	}
 	else if (command == COMMAND::debug)
 	{
@@ -797,58 +830,10 @@ void e2db_cli::shell_resolver(COMMAND command, istream* is)
 		string type, opt0;
 		*is >> std::skipws >> type >> opt0;
 
-		if (type == "output")
-		{
-			OBJIO format = OBJIO::tabular;
-
-			if (! opt0.empty())
-			{
-				if (opt0 == "tabular")
-					format = OBJIO::tabular;
-				else if (opt0 == "byline")
-					format = OBJIO::byline;
-				else if (opt0 == "json")
-					format = OBJIO::json;
-			}
-
-			shell_preference_output(format);
-		}
-		else if (type == "history")
-		{
-			HISTORY type = HISTORY::file;
-
-			if (! opt0.empty())
-			{
-				if (opt0 == "file")
-					type = HISTORY::file;
-				else if (opt0 == "memory")
-					type = HISTORY::memory;
-			}
-
-			shell_preference_history(type);
-		}
-		else if (type.empty())
-		{
-			string format;
-			string type;
-			switch (__objio.out)
-			{
-				case OBJIO::byline: format = "byline"; break;
-				case OBJIO::json: format = "json"; break;
-				default: format = "tabular";
-			}
-			switch (history)
-			{
-				case HISTORY::file: type = "file"; break;
-				case HISTORY::memory: type = "memory"; break;
-			}
-			cout << "Output format: " << format << endl;
-			cout << "History type: " << type << endl;
-		}
+		if (type.empty() || type == "output" || type == "history")
+			shell_preferences(type, opt0);
 		else
-		{
 			cerr << "Type Error: " << msg("Unknown entry type: %s", type) << endl;
-		}
 	}
 	else
 	{
@@ -945,6 +930,7 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 
 		if (specs)
 		{
+			cout << "  ", cout << "USAGE" << endl << endl;
 			cout << "  ", cout.width(7), cout << left << "list", cout << ' ';
 			cout.width(28), cout << left << "[ENTRY] [limit]", cout << ' ' << "Set the number of items to display per page." << endl;
 			cout.width(10), cout << ' ', cout.width(24), cout << left << "[ENTRY] [start] [limit]";
@@ -984,10 +970,16 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 	}
 	else if (hint == COMMAND::print)
 	{
-		cout << "  ", cout.width(7), cout << left << "print", cout << ' ';
-		cout.width(28), cout << left << "debug", cout << ' ' << "Print debug informations." << endl;
-		// cout.width(10), cout << ' ', cout << "index" << endl;
+		cout << "  ", cout.width(36), cout << left << "print", cout << ' ' << "Print debug informations." << endl;
 		cout << endl;
+
+		if (specs)
+		{
+			cout << "  ", cout << "USAGE" << endl << endl;
+			cout.width(28), cout << left << "debug", cout << ' ' << "Print debug log." << endl;
+			// cout.width(10), cout << ' ', cout.width(28), cout << left << "index", cout << ' ' << "Print index." << endl;
+			cout << endl;
+		}
 	}
 	else if (hint == COMMAND::fimport)
 	{
@@ -1007,6 +999,7 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 
 		if (specs)
 		{
+			cout << "  ", cout << "USAGE" << endl << endl;
 			cout << "  ", cout.width(7), cout << left << "import", cout << ' ';
 			cout.width(28), cout << left << "[ENTRY] [files] [version]", cout << ' ' << "Specific version (eg. Lamedb, Neutrino api)." << endl;
 			cout << endl;
@@ -1034,6 +1027,7 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 
 		if (specs)
 		{
+			cout << "  ", cout << "USAGE" << endl << endl;
 			cout << "  ", cout.width(7), cout << left << "export", cout << ' ';
 			cout.width(28), cout << left << "[ENTRY] [...] [version]", cout << ' ' << "Specific version (eg. Lamedb, Neutrino api)." << endl;
 			cout << endl;
@@ -1046,10 +1040,10 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 		cout.width(10), cout << ' ', cout.width(36), cout << left << "neutrino  [directory]", cout << ' ' << "Merge with Neutrino directory." << endl;
 		cout.width(10), cout << ' ', cout.width(36), cout << left << "lamedb  [file]", cout << ' ' << "Merge with Lamedb services file." << endl;
 		cout.width(10), cout << ' ', cout.width(36), cout << left << "bouquet  [file]", cout << ' ' << "Merge with Enigma bouquet file." << endl;
-		cout.width(10), cout << ' ', cout.width(36), cout << left << "bouquets  [bname] [bname]", cout << ' ' << "Merge two Enigma bouquet." << endl;
+		// cout.width(10), cout << ' ', cout.width(36), cout << left << "bouquets  [bname] [bname]", cout << ' ' << "Merge two Enigma bouquet." << endl;
 		cout.width(10), cout << ' ', cout.width(36), cout << left << "bouquets  [directory]", cout << ' ' << "Merge Enigma bouquet files from directory." << endl;
 		cout.width(10), cout << ' ', cout.width(36), cout << left << "userbouquet  [file]", cout << ' ' << "Merge with Enigma userbouquet file." << endl;
-		cout.width(10), cout << ' ', cout.width(36), cout << left << "userbouquets  [bname] [bname]", cout << ' ' << "Merge two Enigma userbouquet." << endl;
+		// cout.width(10), cout << ' ', cout.width(36), cout << left << "userbouquets  [bname] [bname]", cout << ' ' << "Merge two Enigma userbouquet." << endl;
 		cout.width(10), cout << ' ', cout.width(36), cout << left << "userbouquets  [directory]", cout << ' ' << "Merge Enigma userbouquet files from directory." << endl;
 		cout.width(10), cout << ' ', cout.width(36), cout << left << "zapit services  [file]", cout << ' ' << "Merge with Neutrino services file." << endl;
 		cout.width(10), cout << ' ', cout.width(36), cout << left << "zapit bouquets  [file]", cout << ' ' << "Merge with Neutrino bouquets file." << endl;
@@ -1062,6 +1056,7 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 
 		if (specs)
 		{
+			cout << "  ", cout << "USAGE" << endl << endl;
 			cout << "  ", cout.width(7), cout << left << "merge", cout << ' ';
 			cout.width(28), cout << left << "[ENTRY] [file] [version]", cout << ' ' << "Specific version (eg. Lamedb, Neutrino api)." << endl;
 			cout << endl;
@@ -1085,6 +1080,7 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 
 		if (specs)
 		{
+			cout << "  ", cout << "USAGE" << endl << endl;
 			cout << "  ", cout.width(7), cout << left << "parse", cout << ' ';
 			cout.width(28), cout << left << "[ENTRY] [file] [version]", cout << ' ' << "Specific version (eg. Lamedb, Neutrino api)." << endl;
 			cout << endl;
@@ -1112,6 +1108,7 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 
 		if (specs)
 		{
+			cout << "  ", cout << "USAGE" << endl << endl;
 			cout << "  ", cout.width(7), cout << left << "make", cout << ' ';
 			cout.width(28), cout << left << "[ENTRY] [...] [version]", cout << ' ' << "Specific version (eg. Lamedb, Neutrino api)." << endl;
 			cout << endl;
@@ -1161,24 +1158,78 @@ void e2db_cli::shell_usage(COMMAND hint, bool specs)
 	{
 		cout << "  ", cout.width(36), cout << left << "tool", cout << ' ' << "Utils for channel lists." << endl;
 		cout << endl;
+		cout << "  ", cout << "CLEAN" << endl << endl;
+		cout << "  ", cout.width(7), cout << left << "tool", cout << ' ';
+		cout.width(36), cout << left << "remove_orphaned_services", cout << ' ' << "Remove orphaned services." << endl;
+		cout.width(10), cout << ' ', cout.width(36), cout << left << "remove_orphaned_references", cout << ' ' << "Remove orphaned references." << endl;
+		cout.width(10), cout << ' ', cout.width(36), cout << left << "fix_bouquets", cout << ' ' << "Fix bouquets." << endl;
+		cout.width(10), cout << ' ', cout.width(36), cout << left << "fix_bouquets_uniq", cout << ' ' << "Fix bouquets unique userbouquets." << endl;
+		cout.width(10), cout << ' ', cout.width(36), cout << left << "fix_remove_references", cout << ' ' << "Fix (remove) reference with errors." << endl;
+		cout << endl;
+		cout << "  ", cout << "PARAMS" << endl << endl;
+		cout << "  ", cout.width(7), cout << left << "tool", cout << ' ';
+		cout.width(36), cout << left << "clear_services_cached", cout << ' ' << "Remove service cached." << endl;
+		cout.width(10), cout << ' ', cout.width(36), cout << left << "clear_services_caid", cout << ' ' << "Remove service CAID." << endl;
+		cout.width(10), cout << ' ', cout.width(36), cout << left << "clear_services_flags", cout << ' ' << "Remove service flags." << endl;
+		cout.width(10), cout << ' ', cout.width(36), cout << left << "clear_services_data", cout << ' ' << "Remove all service data." << endl;
+		cout.width(10), cout << ' ', cout.width(36), cout << left << "fix_dvbns", cout << ' ' << "Recalculate DVBNS for services." << endl;
+		cout << endl;
+		cout << "  ", cout << "REMOVE" << endl << endl;
+		cout << "  ", cout.width(7), cout << left << "tool", cout << ' ';
+		cout.width(36), cout << left << "clear_favourites", cout << ' ' << "Remove unreferenced entries (favourites)." << endl;
+		cout.width(10), cout << ' ', cout.width(36), cout << left << "clear_bouquets_unused_services", cout << ' ' << "Remove from bouquets (unused services)." << endl;
+		cout.width(10), cout << ' ', cout.width(36), cout << left << "remove_parentallock", cout << ' ' << "Remove parental lock." << endl;
+		cout.width(10), cout << ' ', cout.width(36), cout << left << "remove_bouquets", cout << ' ' << "Remove all bouquets." << endl;
+		cout.width(10), cout << ' ', cout.width(36), cout << left << "remove_userbouquets", cout << ' ' << "Remove all userbouquets." << endl;
+		cout << endl;
+		cout << "  ", cout << "DUPLICATES" << endl << endl;
+		cout << "  ", cout.width(7), cout << left << "tool", cout << ' ';
+		cout.width(36), cout << left << "remove_duplicates", cout << ' ' << "Remove all duplicates." << endl;
+		cout.width(10), cout << ' ', cout.width(36), cout << left << "remove_duplicates_transponders", cout << ' ' << "Remove duplicate transponders." << endl;
+		cout.width(10), cout << ' ', cout.width(36), cout << left << "remove_duplicates_services", cout << ' ' << "Remove duplicate services." << endl;
+		cout.width(10), cout << ' ', cout.width(36), cout << left << "remove_duplicates_references", cout << ' ' << "Remove duplicate references." << endl;
+		cout.width(10), cout << ' ', cout.width(36), cout << left << "remove_duplicates_markers", cout << ' ' << "Remove duplicate markers (names)." << endl;
+		cout << endl;
+		cout << "  ", cout << "TRANSFORM" << endl << endl;
+		cout << "  ", cout.width(7), cout << left << "tool", cout << ' ';
+		cout.width(36), cout << left << "transform_tunersets_to_transponders", cout << ' ' << "Transform transponders to XML settings." << endl;
+		cout.width(10), cout << ' ', cout.width(36), cout << left << "transform_transponders_to_tunersets", cout << ' ' << "Transform XML settings to transponders." << endl;
+		cout << endl;
+		cout << "  ", cout << "SORT" << endl << endl;
+		cout << "  ", cout.width(7), cout << left << "tool", cout << ' ';
+		cout.width(42), cout << left << "sort_transponders  [prop] [order]", cout << ' ' << "Sort transponders." << endl;
+		cout.width(10), cout << ' ', cout.width(42), cout << left << "sort_services  [prop] [order]", cout << ' ' << "Sort services." << endl;
+		cout.width(10), cout << ' ', cout.width(42), cout << left << "sort_userbouquets  [prop] [order]", cout << ' ' << "Sort userbouquets." << endl;
+		cout.width(10), cout << ' ', cout.width(42), cout << left << "sort_references  [bname] [prop] [order]", cout << ' ' << "Sort references." << endl;
+		cout << endl;
 
 		if (specs)
 		{
-			cout << "  ", cout << "TODO" << endl << endl;
+			cout << "  ", cout << "USAGE" << endl << endl;
+			cout << "  ", cout.width(7), cout << left << "sort_transponders", cout << ' ';
+			cout << "[tsid,onid,dvbns,ytype,pos,freq,sr,pol,sys,index] [asc,desc]" << endl;
+			cout << "  ", cout.width(7), cout << left << "sort_services", cout << ' ';
+			cout << "[chname,sdata_p,ssid,tsid,onid,dvbns,stype,snum,srcid,parental,txr,index] [asc,desc]" << endl;
+			cout << "  ", cout.width(7), cout << left << "sort_userbouquets", cout << ' ';
+			cout << "[ubname,name,utype,parental,index] [asc,desc]" << endl;
+			cout << "  ", cout.width(7), cout << left << "sort_transponders", cout << ' ';
+			cout << "[bname] [chname,ssid,tsid,onid,dvbns,url,value,inum,txr,index] [asc,desc]" << endl;
+			cout << endl;
 		}
 	}
 	else if (hint == COMMAND::macro)
 	{
 		cout << "  ", cout.width(36), cout << left << "macro", cout << ' ' << "Execute tools macro." << endl;
 		cout << endl;
+		cout << "  ", cout.width(7), cout << left << "macro", cout << ' ';
+		cout.width(28), cout << left << "autofix", cout << ' ' << "Autofix macro." << endl;
+		cout.width(10), cout << ' ', cout.width(28), cout << left << "[util],[util],[...]", cout << ' ' << "Apply utils sequentially." << endl;
+		cout << endl;
 
 		if (specs)
 		{
-			cout << "  ", cout << "TODO" << endl << endl;
-
-			cout << "  ", cout.width(7), cout << left << "macro", cout << ' ';
-			cout.width(28), cout << left << "autofix", cout << ' ' << "Autofix macro." << endl;
-			cout.width(10), cout << ' ', cout.width(28), cout << left << "[util],[util],[...]", cout << ' ' << "Apply utils sequentially." << endl;
+			cout << "  ", cout << "USAGE" << endl << endl;
+			cout << "  ", cout << "Type \"help tool\" for full util lists." << endl;
 			cout << endl;
 		}
 	}
@@ -2427,10 +2478,171 @@ void e2db_cli::shell_entry_list(ENTRY entry_type, bool paged, int limit, int pos
 	}
 }
 
-//TODO
-void e2db_cli::shell_e2db_tool(string id)
+void e2db_cli::shell_e2db_tool(string fn, string bname, string prop, int order)
 {
-	cout << "TODO" << endl;
+	e2db::uoopts opts;
+
+	if (fn.find("sort_") != string::npos)
+	{
+		e2db::SORT_ITEM model = e2db::SORT_ITEM::item_reference;
+
+		if (fn == "sort_transponders")
+			model = e2db::SORT_ITEM::item_transponder;
+		else if (fn == "sort_services")
+			model = e2db::SORT_ITEM::item_service;
+		else if (fn == "sort_userbouquets")
+			model = e2db::SORT_ITEM::item_userbouquet;
+		else if (fn == "sort_references")
+			model = e2db::SORT_ITEM::item_reference;
+		else
+		{
+			cerr << "Error: " << msg("Wrong util name \"%s\".", fn);
+
+			return;
+		}
+
+		if (model == e2db::SORT_ITEM::item_reference && ! bname.empty())
+			opts.iname = bname;
+
+		opts.order = (order ? e2db::SORT_ORDER::sort_desc : e2db::SORT_ORDER::sort_asc);
+
+		if (! prop.empty())
+		{
+			if (model == e2db::SORT_ITEM::item_userbouquet)
+			{
+				if (prop == "ubname") opts.prop = prop;
+				else if (prop == "name") opts.prop = prop;
+				else if (prop == "utype") opts.prop = prop;
+				else if (prop == "parental") opts.prop = prop;
+				else if (prop == "index") opts.prop = prop;
+				else
+					cerr << "Error: " << msg("Wrong property name \"%s\".", prop);
+			}
+			else if (model == e2db::SORT_ITEM::item_reference)
+			{
+				if (prop == "chname") opts.prop = prop;
+				else if (prop == "ssid") opts.prop = prop;
+				else if (prop == "tsid") opts.prop = prop;
+				else if (prop == "onid") opts.prop = prop;
+				else if (prop == "dvbns") opts.prop = prop;
+				else if (prop == "url") opts.prop = prop;
+				else if (prop == "value") opts.prop = prop;
+				else if (prop == "inum") opts.prop = prop;
+				else if (prop == "txr") opts.prop = prop;
+				else if (prop == "index") opts.prop = prop;
+				else
+					cerr << "Error: " << msg("Wrong property name \"%s\".", prop);
+			}
+			else if (model == e2db::SORT_ITEM::item_service)
+			{
+				if (prop == "chname") opts.prop = prop;
+				else if (prop == "sdata_p") opts.prop = prop;
+				else if (prop == "ssid") opts.prop = prop;
+				else if (prop == "tsid") opts.prop = prop;
+				else if (prop == "onid") opts.prop = prop;
+				else if (prop == "dvbns") opts.prop = prop;
+				else if (prop == "stype") opts.prop = prop;
+				else if (prop == "snum") opts.prop = prop;
+				else if (prop == "srcid") opts.prop = prop;
+				else if (prop == "parental") opts.prop = prop;
+				else if (prop == "txr") opts.prop = prop;
+				else if (prop == "index") opts.prop = prop;
+				else
+					cerr << "Error: " << msg("Wrong property name \"%s\".", prop);
+			}
+			else if (model == e2db::SORT_ITEM::item_transponder)
+			{
+				if (prop == "tsid") opts.prop = prop;
+				else if (prop == "onid") opts.prop = prop;
+				else if (prop == "dvbns") opts.prop = prop;
+				else if (prop == "ytype") opts.prop = prop;
+				else if (prop == "pos") opts.prop = prop;
+				else if (prop == "freq") opts.prop = prop;
+				else if (prop == "sr") opts.prop = prop;
+				else if (prop == "pol") opts.prop = prop;
+				else if (prop == "sys") opts.prop = prop;
+				else if (prop == "index") opts.prop = prop;
+				else
+					cerr << "Error: " << msg("Wrong property name \"%s\".", prop);
+			}
+		}
+	}
+
+	try
+	{
+		if (fn.empty())
+			throw std::runtime_error (msg("Wrong util name."));
+		else if (fn == "remove_orphaned_services")
+			dbih->remove_orphaned_services();
+		else if (fn == "remove_orphaned_references")
+			dbih->remove_orphaned_references();
+		else if (fn == "fix_remove_references")
+			dbih->fix_remove_references();
+		else if (fn == "fix_bouquets")
+			dbih->fix_bouquets(false);
+		else if (fn == "fix_bouquets_uniq")
+			dbih->fix_bouquets(true);
+		else if (fn == "fix_dvbns")
+			dbih->fix_dvbns();
+		else if (fn == "clear_services_cached")
+			dbih->clear_services_cached();
+		else if (fn == "clear_services_caid")
+			dbih->clear_services_caid();
+		else if (fn == "clear_services_flags")
+			dbih->clear_services_flags();
+		else if (fn == "clear_services_data")
+			dbih->clear_services_data();
+		else if (fn == "clear_favourites")
+			dbih->clear_favourites();
+		else if (fn == "clear_bouquets_unused_services")
+			dbih->clear_bouquets_unused_services();
+		else if (fn == "remove_parentallock")
+			dbih->remove_parentallock();
+		else if (fn == "remove_bouquets")
+			dbih->remove_bouquets();
+		else if (fn == "remove_userbouquets")
+			dbih->remove_userbouquets();
+		else if (fn == "remove_duplicates")
+			dbih->remove_duplicates();
+		else if (fn == "remove_duplicates_transponders")
+			dbih->remove_duplicates_transponders();
+		else if (fn == "remove_duplicates_services")
+			dbih->remove_duplicates_services();
+		else if (fn == "remove_duplicates_references")
+			dbih->remove_duplicates_references();
+		else if (fn == "remove_duplicates_markers")
+			dbih->remove_duplicates_markers();
+		else if (fn == "transform_tunersets_to_transponders")
+			dbih->transform_tunersets_to_transponders();
+		else if (fn == "transform_transponders_to_tunersets")
+			dbih->transform_transponders_to_tunersets();
+		else if (fn == "sort_transponders")
+			dbih->sort_transponders(opts);
+		else if (fn == "sort_services")
+			dbih->sort_services(opts);
+		else if (fn == "sort_userbouquets")
+			dbih->sort_userbouquets(opts);
+		else if (fn == "sort_references")
+			dbih->sort_references(opts);
+		else
+			throw std::runtime_error (msg("Wrong util name \"%s\".", fn));
+		}
+	catch (const std::invalid_argument& err)
+	{
+		cerr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << endl;
+	}
+	catch (const std::out_of_range& err)
+	{
+		cerr << "Error: " << msg(MSG::except_out_of_range, err.what()) << endl;
+	}
+	catch (const std::runtime_error& err)
+	{
+		cerr << "Error: " << err.what() << endl;
+	}
+	catch (...)
+	{
+		cerr << "Error: " << msg(MSG::except_uncaught) << endl;
+	}
 }
 
 void e2db_cli::shell_e2db_macro(string id)
@@ -2452,10 +2664,17 @@ void e2db_cli::shell_e2db_macro(string id)
 	}
 }
 
-//TODO
 void e2db_cli::shell_e2db_macro(vector<string> pattern)
 {
-	cout << "TODO" << endl;
+	if (pattern.size() == 0)
+	{
+		cerr << "Error: " << msg("Wrong parameter pattern.") << endl;
+	}
+	else
+	{
+		for (string & fn : pattern)
+			shell_e2db_tool(fn);
+	}
 }
 
 //TODO improve
@@ -3650,7 +3869,63 @@ void e2db_cli::shell_debug()
 	cout << log->str();
 }
 
-void e2db_cli::shell_preference_output(OBJIO format)
+void e2db_cli::shell_preferences(string type, string val)
+{
+	if (type == "output")
+	{
+		OBJIO format = OBJIO::tabular;
+
+		if (! val.empty())
+		{
+			if (val == "tabular")
+				format = OBJIO::tabular;
+			else if (val == "byline")
+				format = OBJIO::byline;
+			else if (val == "json")
+				format = OBJIO::json;
+		}
+
+		shell_preferences(format);
+	}
+	else if (type == "history")
+	{
+		HISTORY type = HISTORY::file;
+
+		if (! val.empty())
+		{
+			if (val == "file")
+				type = HISTORY::file;
+			else if (val == "memory")
+				type = HISTORY::memory;
+		}
+
+		shell_preferences(type);
+	}
+	else if (type.empty())
+	{
+		string format;
+		string type;
+		switch (__objio.out)
+		{
+			case OBJIO::byline: format = "byline"; break;
+			case OBJIO::json: format = "json"; break;
+			default: format = "tabular";
+		}
+		switch (history)
+		{
+			case HISTORY::file: type = "file"; break;
+			case HISTORY::memory: type = "memory"; break;
+		}
+		cout << "Output format: " << format << endl;
+		cout << "History type: " << type << endl;
+	}
+	else
+	{
+		cerr << "Error: " << msg("Wrong parameter type.") << endl;
+	}
+}
+
+void e2db_cli::shell_preferences(OBJIO format)
 {
 	if (format == OBJIO::tabular)
 	{
@@ -3673,7 +3948,7 @@ void e2db_cli::shell_preference_output(OBJIO format)
 	}
 }
 
-void e2db_cli::shell_preference_history(HISTORY type)
+void e2db_cli::shell_preferences(HISTORY type)
 {
 	if (type == HISTORY::file)
 		history = HISTORY::file;

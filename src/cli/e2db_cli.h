@@ -181,7 +181,7 @@ class e2db_cli
 		void shell_e2db_parse(ENTRY entry_type, string path, int ver = -1, bool dir = false);
 		void shell_e2db_make(ENTRY entry_type, string path, int ver = -1, bool dir = false, string bname = "");
 		void shell_e2db_convert(ENTRY entry_type, int fopt, int ftype, string path, string bname = "", int stype = -1, int ytype = -1);
-		void shell_e2db_tool(string id);
+		void shell_e2db_tool(string fn, string bname = "", string prop = "", int order = 0);
 		void shell_e2db_macro(string id);
 		void shell_e2db_macro(vector<string> pattern);
 		void shell_entry_list(ENTRY entry_type, string bname, int offset0, int offset1);
@@ -198,8 +198,9 @@ class e2db_cli
 		void shell_entry_parentallock(ENTRY entry_type, string id, bool flag);
 		void shell_print(int opt);
 		void shell_debug();
-		void shell_preference_output(OBJIO format);
-		void shell_preference_history(HISTORY type);
+		void shell_preferences(string type, string val);
+		void shell_preferences(OBJIO format);
+		void shell_preferences(HISTORY type);
 
 		void print_obj_begin(int depth = 0);
 		void print_obj_end(int depth = 0);
