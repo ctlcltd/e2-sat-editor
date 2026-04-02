@@ -24,7 +24,8 @@ using std::string, std::pair, std::vector, std::map, std::unordered_map, std::bi
 #include <QTimer>
 #include <QApplication>
 #include <QWidget>
-#include <QGridLayout>
+#include <QMainWindow>
+#include <QDockWidget>
 #include <QToolBar>
 #include <QMenu>
 #include <QWidgetAction>
@@ -105,6 +106,10 @@ class tab : protected e2se::log_factory
 		bool statusBarIsHidden();
 		void setStatusBar(gui::status msg);
 		void resetStatusBar(bool messsage = false);
+		void addDockWidget(Qt::DockWidgetArea area, QDockWidget* widget);
+		void removeDockWidget(QDockWidget* dockwidget);
+		void addPermanentDockWidget(Qt::DockWidgetArea area, QDockWidget* widget);
+		void removePermanentDockWidget(QDockWidget* widget);
 		void viewMain();
 		void viewTransponders(tab* parent);
 		void viewTunersets(tab* parent, int ytype);
@@ -121,12 +126,12 @@ class tab : protected e2se::log_factory
 		void infoFile();
 		void convertFormat(gui::GUI_CXE bit);
 		void convertFormat(int bit);
-		void toolsLogInspector();
 		void toolsErrorChecker();
 		void toolsImportFromFile(TOOLS_FILE ftype, e2db::FCONVS fci);
 		void toolsExportToFile(TOOLS_FILE ftype, e2db::FCONVS fco);
 		void toolsAutofixMacro();
 		void toolsUtils(int bit, bool selecting = false, bool contextual = false);
+		void toolsConsole();
 		void settingsDialog();
 		void lastPopupFocusWidget(QWidget* wid, QPoint pos);
 		QWidget* lastPopupFocusWidget();
@@ -163,7 +168,7 @@ class tab : protected e2se::log_factory
 		void demoLaunch() { this->loadSeeds(); }
 #endif
 
-		QWidget* widget = nullptr;
+		QMainWindow* widget = nullptr;
 		dataHandler* data = nullptr;
 		ftpHandler* ftph = nullptr;
 		e2se_gui::tools* tools = nullptr;
@@ -217,7 +222,6 @@ class tab : protected e2se::log_factory
 		gui::TAB_VIEW ttv; // tab view
 		int tty = 0; // tab argument
 		viewAbstract* view;
-		QGridLayout* root;
 		QToolBar* top_toolbar;
 		QToolBar* bottom_toolbar;
 		QComboBox* ftp_combo;

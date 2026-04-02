@@ -10,7 +10,7 @@
  */
 
 #include "../logger/logger.h"
-#include "e2db_cli.h"
+#include "cli.h"
 
 int main(int argc, char* argv[])
 {
@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
 	e2se::logger::OBJECT->debug = false;
 	e2se::logger::OBJECT->cli = true;
 
-	e2se_cli::e2db_cli* cli = new e2se_cli::e2db_cli(argc, argv);
+	e2se_cli::cli* cli = new e2se_cli::cli(argc, argv);
 
 	return cli->exited();
 }

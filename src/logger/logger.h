@@ -19,8 +19,8 @@
 
 using std::string, std::vector;
 
-#ifndef logger_h
-#define logger_h
+#ifndef e2se_logger_h
+#define e2se_logger_h
 namespace e2se
 {
 class logger
@@ -104,4 +104,4 @@ struct log_factory
 		logger* log;
 };
 }
-#endif /* logger_h */
+#endif /* e2se_logger_h */

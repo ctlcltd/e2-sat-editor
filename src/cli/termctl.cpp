@@ -1,5 +1,5 @@
 /*!
- * e2-sat-editor/src/cli/e2db_termctl.cpp
+ * e2-sat-editor/src/cli/termctl.cpp
  *
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
@@ -38,7 +38,7 @@
 #endif
 
 #include "../e2se_defs.h"
-#include "e2db_termctl.h"
+#include "termctl.h"
 
 namespace e2se_cli
 {
@@ -48,7 +48,7 @@ bool tty_raw = false;
 struct termios tty_attr;
 #endif
 
-e2db_termctl::e2db_termctl()
+termctl::termctl()
 {
 	std::setlocale(LC_NUMERIC, "C");
 
@@ -100,21 +100,21 @@ e2db_termctl::e2db_termctl()
 	this->last = this->history->tellg();
 }
 
-e2db_termctl::~e2db_termctl()
+termctl::~termctl()
 {
 	reset();
 
 	delete this->is;
 }
 
-void e2db_termctl::reset()
+void termctl::reset()
 {
 #ifdef PLATFORM_UX
 	tty_set_sane();
 #endif
 }
 
-void e2db_termctl::input(bool shell, bool ins)
+void termctl::input(bool shell, bool ins)
 {
 #ifdef PLATFORM_UX
 	tty_set_raw();
@@ -446,14 +446,14 @@ void e2db_termctl::input(bool shell, bool ins)
 #endif
 }
 
-const std::string e2db_termctl::str()
+const std::string termctl::str()
 {
 	std::string str;
 	*is >> str;
 	return str;
 }
 
-std::istream* e2db_termctl::stream()
+std::istream* termctl::stream()
 {
 	is->sync();
 
@@ -464,14 +464,14 @@ std::istream* e2db_termctl::stream()
 	return new std::istream(cp_buf);
 }
 
-void e2db_termctl::clear()
+void termctl::clear()
 {
 	std::stringbuf* is_buf = reinterpret_cast<std::stringbuf*>(is->rdbuf());
 	is->clear();
 	is_buf->str("");
 }
 
-int e2db_termctl::paged(int pos, int offset)
+int termctl::paged(int pos, int offset)
 {
 #ifdef PLATFORM_UX
 	tty_set_raw();
@@ -548,12 +548,12 @@ int e2db_termctl::paged(int pos, int offset)
 	return curr;
 }
 
-std::pair<int, int> e2db_termctl::screensize()
+std::pair<int, int> termctl::screensize()
 {
-	return e2db_termctl::tty_get_screensize();
+	return termctl::tty_get_screensize();
 }
 
-void e2db_termctl::dump_log()
+void termctl::dump_log()
 {
 	try
 	{
@@ -599,7 +599,7 @@ void e2db_termctl::dump_log()
 	}
 }
 
-void e2db_termctl::load_history()
+void termctl::load_history()
 {
 	try
 	{
@@ -633,7 +633,7 @@ void e2db_termctl::load_history()
 	}
 }
 
-void e2db_termctl::save_history()
+void termctl::save_history()
 {
 	try
 	{
@@ -666,7 +666,7 @@ void e2db_termctl::save_history()
 }
 
 #ifdef PLATFORM_UX
-void e2db_termctl::tty_set_raw(int tty_fd)
+void termctl::tty_set_raw(int tty_fd)
 {
 	struct termios ta;
 	tcgetattr(tty_fd, &ta);
@@ -676,7 +676,7 @@ void e2db_termctl::tty_set_raw(int tty_fd)
 	tcsetattr(tty_fd, TCSANOW, &ta);
 }
 
-void e2db_termctl::tty_set_sane(int tty_fd)
+void termctl::tty_set_sane(int tty_fd)
 {
 	if (tty_raw)
 		tcsetattr(tty_fd, TCSANOW, &tty_attr);
@@ -684,7 +684,7 @@ void e2db_termctl::tty_set_sane(int tty_fd)
 }
 #endif
 
-std::pair<int, int> e2db_termctl::tty_get_screensize()
+std::pair<int, int> termctl::tty_get_screensize()
 {
 #if defined(PLATFORM_WIN)
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -700,7 +700,7 @@ std::pair<int, int> e2db_termctl::tty_get_screensize()
 #endif
 }
 
-void e2db_termctl::tty_gotoxy(int x, int y)
+void termctl::tty_gotoxy(int x, int y)
 {
 #ifdef PLATFORM_WIN
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -712,7 +712,7 @@ void e2db_termctl::tty_gotoxy(int x, int y)
 #endif
 }
 
-void e2db_termctl::tty_goforward()
+void termctl::tty_goforward()
 {
 #ifdef PLATFORM_WIN
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -725,7 +725,7 @@ void e2db_termctl::tty_goforward()
 #endif
 }
 
-void e2db_termctl::tty_gobackward()
+void termctl::tty_gobackward()
 {
 #ifdef PLATFORM_WIN
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -739,12 +739,12 @@ void e2db_termctl::tty_gobackward()
 #endif
 }
 
-void e2db_termctl::tty_delchar()
+void termctl::tty_delchar()
 {
 	std::printf("\b\033[P");
 }
 
-void e2db_termctl::tty_eraseline(int cols)
+void termctl::tty_eraseline(int cols)
 {
 	std::printf("\r\b\033[2K");
 	// std::printf("\r  ");
@@ -752,7 +752,7 @@ void e2db_termctl::tty_eraseline(int cols)
 	// 	std::putchar(' ');
 }
 
-void e2db_termctl::tty_bell()
+void termctl::tty_bell()
 {
 	std::putchar('\a');
 }

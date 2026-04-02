@@ -27,9 +27,11 @@ using std::string, std::vector, std::unordered_map, std::bitset;
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QTabWidget>
+#include <QDockWidget>
 #include <QActionGroup>
 #include <QLabel>
 #include <QPushButton>
+#include <QList>
 
 #include "../logger/logger.h"
 #include "theme.h"
@@ -37,6 +39,7 @@ using std::string, std::vector, std::unordered_map, std::bitset;
 namespace e2se_gui
 {
 class tab;
+class inspector;
 
 class gui : protected e2se::log_factory
 {
@@ -105,6 +108,7 @@ class gui : protected e2se::log_factory
 			TunersetsAtsc = 64,
 			Picons = 65,
 			OpenChannelBook = 67,
+			ToolsConsole = 70,
 			ToolsAutofixMacro = 80,
 			ToolsErrorChecker = 90,
 			ToolsUtilsOrphaned_services = 91,
@@ -178,8 +182,9 @@ class gui : protected e2se::log_factory
 			GUI_CXE::TunersetsTerrestrial,
 			GUI_CXE::TunersetsCable,
 			GUI_CXE::TunersetsAtsc,
-			GUI_CXE::ToolsErrorChecker,
+			GUI_CXE::ToolsConsole,
 			GUI_CXE::ToolsAutofixMacro,
+			GUI_CXE::ToolsErrorChecker,
 			GUI_CXE::ToolsUtilsOrphaned_services,
 			GUI_CXE::ToolsUtilsOrphaned_references,
 			GUI_CXE::ToolsUtilsFixRemove,
@@ -274,8 +279,9 @@ class gui : protected e2se::log_factory
 			EditTunersetsAtsc = GUI_CXE::TunersetsAtsc,
 			EditPicons = GUI_CXE::Picons,
 			ShowChannelBook = GUI_CXE::OpenChannelBook,
-			ErrorChecker = GUI_CXE::ToolsErrorChecker,
+			Console = GUI_CXE::ToolsConsole,
 			AutofixMacro = GUI_CXE::ToolsAutofixMacro,
+			ErrorChecker = GUI_CXE::ToolsErrorChecker,
 			UtilsOrphaned_services = GUI_CXE::ToolsUtilsOrphaned_services,
 			UtilsOrphaned_references = GUI_CXE::ToolsUtilsOrphaned_references,
 			UtilsFixRemove = GUI_CXE::ToolsUtilsFixRemove,
@@ -387,13 +393,14 @@ class gui : protected e2se::log_factory
 		int openTab(TAB_VIEW ttv, int arg = 0, bool rievoke = true);
 		bool closeTab(int index = -1);
 		void closeAllTabs();
+		void changeTabName(int ttid, string path = "");
 		string openFileDialog();
 		string saveFileDialog(string path);
 		vector<string> importFileDialog(gui::GUI_DPORTS gde, int& bit);
 		vector<string> importFileDialog(gui::GUI_DPORTS gde);
 		string exportFileDialog(GUI_DPORTS gde, string path, int& bit);
 		string exportFileDialog(GUI_DPORTS gde, string path);
-		void changeTabName(int ttid, string path = "");
+		void logInspector();
 		bool statusBarIsVisible();
 		bool statusBarIsHidden();
 		void statusBarShow();
@@ -454,6 +461,9 @@ class gui : protected e2se::log_factory
 		void tabViewChanged(TAB_VIEW ttv, int arg);
 		void tabAction(TAB_ATS action);
 		void windowChanged();
+		void addPermanentDockWidget(Qt::DockWidgetArea area, QDockWidget* widget);
+		void removePermanentDockWidget(QDockWidget* widget);
+		void docksChanged();
 		int getTabId(int index);
 		int getCurrentTabId();
 		tab* getCurrentTabHandler();
@@ -494,6 +504,10 @@ class gui : protected e2se::log_factory
 		unordered_map<int, QAction*> gmenu;
 		unordered_map<int, QAction*> ttmenu;
 		unordered_map<int, tab*> ttabs;
+		int index = 0;
+		QList<QDockWidget*> dwids;
+		QByteArray state;
+		inspector* inspect = nullptr;
 };
 }
 #endif /* gui_h */

@@ -56,7 +56,6 @@ tools::tools(tab* tid, gui* gid, QWidget* cwid, dataHandler* data)
 	this->cwid = cwid;
 	this->data = data;
 	this->theme = new e2se_gui::theme;
-	this->inspect_curr = INSPECT_FILTER::AllLog;
 }
 
 tools::~tools()
@@ -65,152 +64,6 @@ tools::~tools()
 
 	delete this->theme;
 	delete this->log;
-}
-
-void tools::logInspector()
-{
-	debug("logInspector");
-
-	QDialog* dial = new QDialog(nullptr, Qt::WindowStaysOnTopHint);
-	dial->setObjectName("logInspector");
-	dial->setWindowTitle(tr("Log Inspector", "dialog"));
-	dial->setMinimumSize(450, 520);
-
-#ifdef Q_OS_WIN
-	theme->win_flavor_fix(dial);
-#endif
-
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-	dial->connect(dial, &QDialog::finished, [=]() { QTimer::singleShot(0, [=]() { this->inspectReset(); delete dial; }); });
-#else
-	dial->connect(dial, &QDialog::finished, [=]() { this->inspectReset(); delete dial; });
-#endif
-
-	QGridLayout* dfrm = new QGridLayout(dial);
-
-	QTextEdit* dcnt = new QTextEdit;
-	dcnt->setReadOnly(true);
-	//TODO i18n rtl QTextDocument
-	dcnt->document()->setDefaultStyleSheet("* { margin: 0; padding: 0 } i { font-style: normal } pre { font-size: 11px }");
-	dcnt->setHtml("</div>");
-#ifdef Q_OS_WIN
-	if (! theme::isOverridden() && (theme::isFluentWin() || theme::absLuma() || ! theme::isDefault()))
-	{
-		QStyle* style;
-
-		if (theme::isFluentWin())
-			style = QStyleFactory::create("windows11");
-		else
-			style = QStyleFactory::create("fusion");
-
-		dcnt->verticalScrollBar()->setStyle(style);
-		dcnt->horizontalScrollBar()->setStyle(style);
-	}
-#endif
-	platform::osTextEdit(dcnt);
-
-	QComboBox* dtft = new QComboBox;
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
-	dtft->setPlaceholderText(QString("<%1>").arg(tr("Filter", "ui")));
-#endif
-	dtft->addItem(tr("All Log"));
-	dtft->addItem("Debug");
-	dtft->addItem("Info");
-	dtft->addItem("Error");
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-	dtft->connect(dtft, &QComboBox::currentIndexChanged, [=](int index) {
-#else
-	dtft->connect(dtft, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) {
-#endif
-		this->inspectUpdate(dcnt, index);
-	});
-	platform::osComboBox(dtft);
-
-	inspectUpdate(dcnt);
-
-	dfrm->setContentsMargins(0, 0, 0, 0);
-	dfrm->addWidget(dcnt);
-	dfrm->addWidget(dtft);
-	dial->setLayout(dfrm);
-	dial->open();
-
-	QTimer* timer = new QTimer(dial);
-	timer->callOnTimeout([=]() { this->inspectUpdate(dcnt, this->inspect_curr); });
-	timer->start(1000);
-}
-
-//TODO TEST escape html
-QString tools::inspectContent(string str, int filter)
-{
-	QString text = QString::fromStdString(str);
-	QString separator;
-
-	if (text.endsWith("\r\n"))
-		separator = "\r\n";
-	else if (text.endsWith("\r"))
-		separator = "\r";
-	else
-		separator = "\n";
-
-	if (text.endsWith(separator))
-		text.remove(text.size() - separator.size(), separator.size());
-
-	QStringList data = text.split(separator);
-
-	QString selector;
-	switch (filter)
-	{
-		case INSPECT_FILTER::Debug: selector = "<Debug>"; break;
-		case INSPECT_FILTER::Info: selector = "<Info>"; break;
-		case INSPECT_FILTER::Error: selector = "<Error>"; break;
-	}
-
-	bool valid = true;
-
-	for (int i = 0; i < data.size(); i++)
-	{
-		if (filter && ! data[i].contains(selector))
-		{
-			data[i] = "";
-		}
-		else
-		{
-			QString before = data[i];
-
-			if (data[i].replace(QRegularExpression("^([^ ]+ [^ ]+) <([^>]+)> ([^ ]+) ([^:]+)::([^:]+)(.*)$"), "<pre>\\1 <i>&lt;\\2&gt;</i> \\3 <b>\\4</b>::\\5\\6</pre>") == before)
-			{
-				valid = false;
-				break;
-			}
-		}
-	}
-
-	return valid ? data.join("\n") : "";
-}
-
-void tools::inspectUpdate(QTextEdit* view, int filter)
-{
-	if (this->inspect_curr == filter)
-	{
-		if (this->log->size() != this->inspect_pos)
-		{
-			view->append(inspectContent(this->log->str().substr(this->inspect_pos), filter));
-			this->inspect_pos = this->log->size();
-		}
-	}
-	else
-	{
-		view->setHtml("</div>");
-		view->setHtml(inspectContent(this->log->str(), filter));
-		this->inspect_pos = this->log->size();
-		this->inspect_curr = static_cast<INSPECT_FILTER>(filter);
-	}
-}
-
-void tools::inspectReset()
-{
-	this->inspect_pos = 0;
-	this->inspect_curr = INSPECT_FILTER::AllLog;
 }
 
 void tools::errorChecker()
@@ -1352,6 +1205,19 @@ vector<QPair<QString, QString>> tools::sortComboBoxProps(SORT_ITEM model)
 	return {};
 }
 
+void tools::console()
+{
+	debug("console");
+
+	QTextEdit* widget = new QTextEdit;
+	this->dwig = new DialogDockWidget;
+	dwig->setWindowTitle(tr("Console", "dialog"));
+	dwig->setBaseSize(520, 288);
+	dwig->setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+	dwig->setWidget(widget);
+
+	tid->addPermanentDockWidget(Qt::BottomDockWidgetArea, dwig);
+}
 
 void tools::destroy()
 {

@@ -19,7 +19,9 @@ set(SOURCES
 	e2db/e2db_parser.cpp
 	e2db/e2db_utils.cpp
 	e2db/e2db.cpp
+	e2db/e2db_console.cpp
 	gui/platforms/platform.h
+	gui/toolkit/DialogDockWidget.cpp
 	gui/toolkit/InputControlEditEventObserver.cpp
 	gui/toolkit/ListIconDragDropEventHandler.cpp
 	gui/toolkit/ListProxyStyle.h
@@ -39,6 +41,7 @@ set(SOURCES
 	gui/dialChannelBook.cpp
 	gui/dialConvertM3u.cpp
 	gui/e2db_gui.cpp
+	gui/e2db_console_gui.cpp
 	gui/editBouquet.cpp
 	gui/editFavourite.cpp
 	gui/editMarker.cpp
@@ -50,6 +53,7 @@ set(SOURCES
 	gui/editUserbouquet.cpp
 	gui/ftpHandler.cpp
 	gui/gui.cpp
+	gui/inspector.cpp
 	gui/l10n.h
 	gui/mainView.cpp
 	gui/piconsView.cpp

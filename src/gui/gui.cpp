@@ -48,9 +48,11 @@
 
 #include "toolkit/WidgetEventHandler.h"
 #include "toolkit/TabBarProxyStyle.h"
+#include "toolkit/DialogDockWidget.h"
 #include "gui.h"
 #include "theme.h"
 #include "tab.h"
+#include "inspector.h"
 #include "settings.h"
 #include "about.h"
 
@@ -191,7 +193,6 @@ gui::gui(int argc, char* argv[])
 	mwid->installEventFilter(mwid_evth);
 
 	QClipboard* clipboard = mroot->clipboard();
-	//TODO TEST potential SEGFAULT
 	clipboard->connect(clipboard, &QClipboard::dataChanged, [=]() { this->clipboardDataChanged(); });
 
 	platform::osWindowBlend(mwid);
@@ -406,10 +407,11 @@ void gui::menuBarLayout()
 	gmenu[GUI_CXE::ToolsUtilsSort_transponders] = menuBarAction(tmsort, tr("Sort transponders…", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsSort_transponders); });
 	gmenu[GUI_CXE::ToolsUtilsSort_userbouquets] = menuBarAction(tmsort, tr("Sort userbouquets…", "menu"), [=]() { this->tabAction(TAB_ATS::UtilsSort_userbouquets); });
 	menuBarSeparator(mtools);
-	gmenu[GUI_CXE::ToolsErrorChecker] = menuBarAction(mtools, tr("Error Checker", "menu"), [=]() { this->tabAction(TAB_ATS::ErrorChecker); }, Qt::CTRL | Qt::ALT | Qt::Key_I);
+	gmenu[GUI_CXE::ToolsErrorChecker] = menuBarAction(mtools, tr("Error Checker", "menu"), [=]() { this->tabAction(TAB_ATS::ErrorChecker); }, Qt::CTRL | Qt::ALT | Qt::Key_C);
 	gmenu[GUI_CXE::ToolsAutofixMacro] = menuBarAction(mtools, tr("Autofix", "menu"), [=]() { this->tabAction(TAB_ATS::AutofixMacro); }, Qt::CTRL | Qt::ALT | Qt::Key_A);
 	menuBarSeparator(mtools);
-	gmenu[GUI_CXE::ToolsLogInspector] = menuBarAction(mtools, tr("Log Inspector", "menu"), [=]() { this->tabAction(TAB_ATS::Inspect); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
+	gmenu[GUI_CXE::ToolsConsole] = menuBarAction(mtools, tr("Console", "menu"), [=]() { this->tabAction(TAB_ATS::Console); }, Qt::CTRL | Qt::ALT | Qt::Key_I);
+	gmenu[GUI_CXE::ToolsLogInspector] = menuBarAction(mtools, tr("Log Inspector", "menu"), [=]() { this->logInspector(); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
 
 	QMenu* meditor = menuBarMenu(menubar, tr("Edit&or", "menu"));
 	gmenu[GUI_CXE::Transponders] = menuBarAction(meditor, tr("Edit Transponders", "menu"), [=]() { this->tabAction(TAB_ATS::EditTransponders); }, Qt::CTRL | Qt::SHIFT | Qt::Key_T);
@@ -630,7 +632,9 @@ void gui::settingsChanged()
 	for (auto & x : ttabs)
 	{
 		tab* tab = x.second;
-		tab->settingsChanged();
+
+		if (tab != nullptr)
+			tab->settingsChanged();
 	}
 }
 
@@ -643,7 +647,9 @@ void gui::themeChanged()
 	for (auto & x : ttabs)
 	{
 		tab* tab = x.second;
-		tab->themeChanged();
+
+		if (tab != nullptr)
+			tab->themeChanged();
 	}
 }
 
@@ -654,7 +660,9 @@ void gui::clipboardDataChanged()
 	for (auto & x : ttabs)
 	{
 		tab* tab = x.second;
-		tab->clipboardDataChanged();
+
+		if (tab != nullptr)
+			tab->clipboardDataChanged();
 	}
 }
 
@@ -1114,6 +1122,18 @@ bool gui::closeTab(int index)
 			return false;
 	}
 
+	if (! dwids.empty())
+	{
+		if (QMainWindow* wid = qobject_cast<QMainWindow*>(ttab->widget))
+			this->state = wid->saveState();
+
+		for (auto & item : dwids)
+		{
+			if (DialogDockWidget* dwid = qobject_cast<DialogDockWidget*>(item))
+				dwid->setWidgetParent(twid);
+		}
+	}
+
 	mwind->removeAction(ttmenu[ttid]);
 	mwtabs->removeAction(ttmenu[ttid]);
 	twid->removeTab(index);
@@ -1171,7 +1191,7 @@ void gui::closeAllTabs()
 	{
 		tab* tab = x.second;
 
-		if (! tab->isChild())
+		if (tab != nullptr && ! tab->isChild())
 			i_wids.emplace_back(tab->widget);
 	}
 
@@ -1217,6 +1237,8 @@ void gui::tabChanged(int index)
 		ttab->tabSwitch();
 		TAB_VIEW ttv = ttab->getTabView();
 		tabViewChanged(ttv);
+		docksChanged();
+		this->index = index;
 	}
 }
 
@@ -1682,6 +1704,118 @@ string gui::exportFileDialog(GUI_DPORTS gde, string path)
 {
 	int bit = 0;
 	return exportFileDialog(gde, path, bit);
+}
+
+void gui::logInspector()
+{
+	debug("logInspector");
+
+	if (this->inspect == nullptr)
+		this->inspect = new inspector;
+
+	DialogDockWidget* widget = inspect->logInspector();
+
+	widget->connect(widget, &DialogDockWidget::finished, [=]() {
+		removePermanentDockWidget(widget);
+	});
+
+	if (! widget->isDocked())
+	{
+		widget->raiseWindow();
+	}
+	else
+	{
+		Qt::DockWidgetArea area = QApplication::layoutDirection() == Qt::LeftToRight ? Qt::RightDockWidgetArea : Qt::LeftDockWidgetArea;
+		addPermanentDockWidget(area, widget);
+	}
+}
+
+void gui::addPermanentDockWidget(Qt::DockWidgetArea area, QDockWidget* widget)
+{
+	debug("addPermanentDockWidget");
+
+	tab* ttab = getCurrentTabHandler();
+
+	if (ttab != nullptr)
+	{
+		if (dwids.indexOf(widget) != -1)
+		{
+			if (! widget->isVisible() && ! widget->isFloating())
+			{
+				widget->setParent(ttab->widget);
+				widget->show();
+
+				if (QMainWindow* wid = qobject_cast<QMainWindow*>(ttab->widget))
+				{
+					wid->restoreState(this->state);
+					wid->restoreDockWidget(widget);
+				}
+			}
+		}
+		else
+		{
+			ttab->addPermanentDockWidget(area, widget);
+
+			if (QMainWindow* wid = qobject_cast<QMainWindow*>(ttab->widget))
+				this->state = wid->saveState();
+		}
+	}
+
+	dwids.append(widget);
+}
+
+void gui::removePermanentDockWidget(QDockWidget* widget)
+{
+	debug("removePermanentDockWidget");
+
+	tab* ttab = getCurrentTabHandler();
+	if (ttab != nullptr)
+		ttab->removePermanentDockWidget(widget);
+
+	if (QMainWindow* wid = qobject_cast<QMainWindow*>(ttab->widget))
+		this->state = wid->saveState();
+
+	dwids.removeAll(widget);
+	dwids.squeeze();
+}
+
+void gui::docksChanged()
+{
+	if (dwids.empty())
+		return;
+
+	QWidget* previous = nullptr;
+	QWidget* current = twid->currentWidget();
+
+	QWidget* wid = twid->widget(this->index);
+
+	if (wid != nullptr && wid != current)
+		previous = wid;
+
+	QByteArray state = this->state;
+
+	if (previous != nullptr)
+	{
+		qDebug() << "saving state";
+		if (QMainWindow* wid = qobject_cast<QMainWindow*>(previous))
+			state = wid->saveState();
+	}
+
+	for (auto & item : dwids)
+	{
+		if (DialogDockWidget* dwid = qobject_cast<DialogDockWidget*>(item))
+		{
+			dwid->setWidgetParent(current);
+
+			if (QMainWindow* wid = qobject_cast<QMainWindow*>(current))
+			{
+				wid->restoreState(state);
+
+				if (! dwid->isFloating())
+					wid->restoreDockWidget(dwid);
+			}
+		}
+	}
 }
 
 bool gui::statusBarIsVisible()

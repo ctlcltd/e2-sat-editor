@@ -566,7 +566,7 @@ void viewAbstract::updateFlags()
 	int lamedb_ver = dbih->get_lamedb_version();
 	int zapit_ver = dbih->get_zapit_version();
 
-	gui::GUI_CXE dstbit;
+	gui::GUI_CXE dstbit = gui::GUI_CXE::init;
 
 	if (srctype == 0)
 	{
@@ -598,7 +598,7 @@ void viewAbstract::updateFlags()
 	}
 
 	vector<int> bits = {72, 73, 74, 75, 76, 77, 78, 79};
-
+		
 	for (int & bit : bits)
 		tabSetFlag(gui::GUI_CXE (bit), bit == dstbit);
 }

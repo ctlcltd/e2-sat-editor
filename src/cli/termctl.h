@@ -1,5 +1,5 @@
 /*!
- * e2-sat-editor/src/cli/e2db_termctl.h
+ * e2-sat-editor/src/cli/termctl.h
  * 
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
@@ -13,11 +13,13 @@
 #include <string>
 #include <vector>
 
-#ifndef e2db_termctl_h
-#define e2db_termctl_h
+#ifndef e2se_termctl_h
+#define e2se_termctl_h
+#include "../e2db/e2db_console.h"
+
 namespace e2se_cli
 {
-class e2db_termctl
+class termctl : public ::e2se_e2db::termiface
 {
 	public:
 
@@ -42,8 +44,8 @@ class e2db_termctl
 			StdinRelease = KeyReturn
 		};
 
-		e2db_termctl();
-		~e2db_termctl();
+		termctl();
+		~termctl();
 		static void reset();
 		void input(bool shell = false, bool ins = false);
 		void clear();
@@ -74,4 +76,4 @@ class e2db_termctl
 		std::streampos last;
 };
 }
-#endif /* e2db_termctl_h */
+#endif /* e2se_termctl_h */

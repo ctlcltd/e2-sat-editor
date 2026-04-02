@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
 
 	if (std::getenv("DEBUG") != NULL)
 	{
-		const char* envp = std::getenv("DEBUG");
+		const std::string envp = std::getenv("DEBUG");
 		DEBUG = (envp == "1" || envp == "true");
 	}
 

@@ -21,15 +21,16 @@
 
 #include <QtGlobal>
 #include <QGuiApplication>
-#include <QWindow>
 #include <QList>
 #include <QSettings>
 #include <QStyle>
 #include <QMessageBox>
+#include <QGridLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QFormLayout>
 #include <QSplitter>
+#include <QTextEdit>
 #include <QGroupBox>
 #include <QTreeWidget>
 #include <QHeaderView>
@@ -89,7 +90,7 @@ tab::tab(gui* gid, QWidget* cwid)
 	this->gid = gid;
 	this->cwid = cwid;
 	this->theme = new e2se_gui::theme;
-	this->widget = new QWidget;
+	this->widget = new QMainWindow;
 }
 
 tab::~tab()
@@ -290,6 +291,34 @@ void tab::resetStatusBar(bool message)
 		gid->resetStatusBar(message);
 }
 
+void tab::addDockWidget(Qt::DockWidgetArea area, QDockWidget* widget)
+{
+	debug("addDockWidget");
+
+	this->widget->addDockWidget(area, widget);
+}
+
+void tab::removeDockWidget(QDockWidget* widget)
+{
+	debug("removeDockWidget");
+
+	this->widget->removeDockWidget(widget);
+}
+
+void tab::addPermanentDockWidget(Qt::DockWidgetArea area, QDockWidget* widget)
+{
+	debug("addPermanentDockWidget");
+
+	this->widget->addDockWidget(area, widget);
+}
+
+void tab::removePermanentDockWidget(QDockWidget* widget)
+{
+	debug("removePermanentDockWidget");
+
+	this->widget->removeDockWidget(widget);
+}
+
 void tab::viewMain()
 {
 	debug("viewMain");
@@ -303,7 +332,7 @@ void tab::viewMain()
 
 	layout();
 
-	this->root->addWidget(view->widget, 0, 0, 1, 1);
+	this->widget->setCentralWidget(view->widget);
 
 	newFile();
 }
@@ -326,7 +355,7 @@ void tab::viewTransponders(tab* parent)
 
 	layout();
 
-	this->root->addWidget(view->widget, 0, 0, 1, 1);
+	this->widget->setCentralWidget(view->widget);
 
 	load();
 }
@@ -350,7 +379,7 @@ void tab::viewTunersets(tab* parent, int ytype)
 
 	layout();
 
-	this->root->addWidget(view->widget, 0, 0, 1, 1);
+	this->widget->setCentralWidget(view->widget);
 
 	load();
 }
@@ -373,7 +402,7 @@ void tab::viewPicons(tab* parent)
 
 	layout();
 
-	this->root->addWidget(view->widget, 0, 0, 1, 1);
+	this->widget->setCentralWidget(view->widget);
 
 	load();
 }
@@ -396,7 +425,7 @@ void tab::viewChannelBook(tab* parent)
 
 	layout();
 
-	this->root->addWidget(view->widget, 0, 0, 1, 1);
+	this->widget->setCentralWidget(view->widget);
 
 	load();
 }
@@ -435,13 +464,8 @@ void tab::layout()
 {
 	debug("layout");
 
+	widget->setContentsMargins(0, 0, 0, 0);
 	widget->setStyleSheet("QGroupBox { spacing: 0; padding: 20px 0 0 0; border: 0 } QGroupBox::title { margin: 0 12px }");
-
-	QGridLayout* frm = new QGridLayout(widget);
-
-	QHBoxLayout* top = new QHBoxLayout;
-	QGridLayout* container = new QGridLayout;
-	QHBoxLayout* bottom = new QHBoxLayout;
 
 	this->top_toolbar = toolBar(1);
 	this->bottom_toolbar = toolBar(0);
@@ -498,6 +522,7 @@ void tab::layout()
 		toolBarAction(bottom_toolbar, "§ Reset", [=]() { this->newFile(); this->updateTabName(); });
 	}
 	toolBarSpacer(bottom_toolbar);
+	toolBarAction(bottom_toolbar, tr("console", "toolbar"), [=]() { this->toolsConsole(); });
 	toolBarAction(bottom_toolbar, tr("autofix", "toolbar"), [=]() { this->toolsAutofixMacro(); });
 #ifndef E2SE_DEMO
 	toolBarSeparator(bottom_toolbar);
@@ -505,19 +530,10 @@ void tab::layout()
 #endif
 	toolBarEnding(bottom_toolbar);
 
-	top->addWidget(top_toolbar);
-	bottom->addWidget(bottom_toolbar);
-	container->setContentsMargins(0, 0, 0, 0);
-
-	frm->setSpacing(0);
-	frm->setContentsMargins(0, 0, 0, 0);
-	frm->addLayout(top, 0, 0);
-	frm->addLayout(container, 1, 0);
-	frm->addLayout(bottom, 2, 0);
-
-	this->root = container;
-
-	widget->setLayout(frm);
+	widget->addToolBar(Qt::TopToolBarArea, top_toolbar);
+	widget->addToolBar(Qt::BottomToolBarArea, bottom_toolbar);
+	widget->setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::AllowNestedDocks | QMainWindow::GroupedDragging);
+	widget->setDockNestingEnabled(true);
 
 	toolBarStyleSheet();
 }
@@ -1481,7 +1497,7 @@ void tab::convertFormat(int bit)
 	auto* dbih = this->data->dbih;
 
 	e2db::FPORTS fpx = static_cast<e2db::FPORTS>(bit);
-	gui::GUI_CXE dstbit;
+	gui::GUI_CXE dstbit = gui::GUI_CXE::init;
 
 	int srctype = dbih->get_e2db_services_type();
 	int srcver = dbih->get_e2db_services_version();
@@ -1643,7 +1659,7 @@ QMenu* tab::toolsMenu()
 		menuAction(tmsort, tr("Sort transponders…", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsSort_transponders); });
 		menuAction(tmsort, tr("Sort userbouquets…", "menu"), [=]() { this->toolsUtils(gui::TAB_ATS::UtilsSort_userbouquets); });
 		menuSeparator(menu);
-		menuAction(menu, tr("Error Checker", "menu"), [=]() { this->toolsErrorChecker(); }, Qt::CTRL | Qt::ALT | Qt::Key_I);
+		menuAction(menu, tr("Error Checker", "menu"), [=]() { this->toolsErrorChecker(); }, Qt::CTRL | Qt::ALT | Qt::Key_C);
 		menuAction(menu, tr("Autofix", "menu"), [=]() { this->toolsAutofixMacro(); }, Qt::CTRL | Qt::ALT | Qt::Key_A);
 		menuSeparator(menu);
 		QMenu* tmimport = menuMenu(menu, tr("Import", "menu"));
@@ -1675,30 +1691,13 @@ QMenu* tab::toolsMenu()
 		menuAction(tmexporthtml, tr("Export Userbouquets", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_userbouquets); });
 		menuAction(tmexporthtml, tr("Export Tuner settings", "menu"), [=]() { this->toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_tunersets); });
 		menuSeparator(menu);
-		menuAction(menu, tr("Log Inspector", "menu"), [=]() { this->toolsLogInspector(); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
+		menuAction(menu, tr("Console", "menu"), [=]() { this->toolsConsole(); }, Qt::CTRL | Qt::ALT | Qt::Key_I);
+		menuAction(menu, tr("Log Inspector", "menu"), [=]() { gid->logInspector(); }, Qt::CTRL | Qt::ALT | Qt::Key_J);
 	}
 
 	QMenu* menu = this->tools_menu;
 
 	return menu;
-}
-
-void tab::toolsLogInspector()
-{
-	for (auto & q : QGuiApplication::allWindows())
-	{
-		if (q->isWindowType() && q->objectName() == "logInspectorWindow")
-		{
-			debug("toolsLogInspector", "hit", 1);
-
-			q->requestActivate();
-			return q->raise();
-		}
-	}
-
-	debug("toolsLogInspector");
-
-	tools->logInspector();
 }
 
 void tab::toolsErrorChecker()
@@ -2032,6 +2031,13 @@ void tab::toolsUtils(int bit, bool selecting, bool contextual)
 	}
 }
 
+void tab::toolsConsole()
+{
+	debug("toolsConsole");
+
+	tools->console();
+}
+
 void tab::actionCall(int bit)
 {
 	debug("actionCall", "bit", bit);
@@ -2178,6 +2184,9 @@ void tab::actionCall(int bit)
 			toolsExportToFile(TOOLS_FILE::tools_html, e2db::FCONVS::convert_tunersets);
 		break;
 
+		case gui::TAB_ATS::Console:
+			toolsConsole();
+		break;
 		case gui::TAB_ATS::ErrorChecker:
 			toolsErrorChecker();
 		break; 
@@ -2213,7 +2222,7 @@ void tab::actionCall(int bit)
 		break;
 
 		case gui::TAB_ATS::Inspect:
-			toolsLogInspector();
+			gid->logInspector();
 		break;
 	}
 }
@@ -3379,6 +3388,9 @@ void tab::loadSeeds()
 QToolBar* tab::toolBar(int type)
 {
 	QToolBar* toolbar = new QToolBar;
+	toolbar->setMovable(false);
+	toolbar->setFloatable(false);
+
 	// 1: top
 	if (type)
 	{
@@ -3386,12 +3398,14 @@ QToolBar* tab::toolBar(int type)
 		toolbar->setIconSize(QSize(32, 32));
 		toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 		toolbar->setStyleSheet("QToolBar { padding: 0 12px } QToolButton { font-size: 18px }");
+		toolbar->setAllowedAreas(Qt::TopToolBarArea);
 	}
 	else
 	// 0: bottom
 	{
 		toolbar->setObjectName("tab_bottom_toolbar");
 		toolbar->setStyleSheet("QToolBar { padding: 8px 12px } QToolButton { font-size: 16px; font-weight: bold }");
+		toolbar->setAllowedAreas(Qt::BottomToolBarArea);
 	}
 
 #ifndef Q_OS_MAC

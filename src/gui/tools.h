@@ -23,6 +23,7 @@ using std::string, std::vector, std::map;
 #include <QDialog>
 
 #include "../logger/logger.h"
+#include "toolkit/DialogDockWidget.h"
 #include "theme.h"
 #include "dataHandler.h"
 
@@ -37,13 +38,6 @@ class tools : protected e2se::log_factory
 
 	public:
 
-		enum INSPECT_FILTER {
-			AllLog,
-			Debug,
-			Info,
-			Error
-		};
-
 		using SORT_ITEM = e2db::SORT_ITEM;
 
 		struct sort_context
@@ -56,7 +50,6 @@ class tools : protected e2se::log_factory
 
 		tools(tab* tid, gui* gid, QWidget* cwid, dataHandler* data);
 		virtual ~tools();
-		void logInspector();
 		void errorChecker();
 		void applyUtils(int bit, e2db::uoopts& opts, bool contextual = false);
 		void execMacro(vector<string> pattern);
@@ -66,12 +59,10 @@ class tools : protected e2se::log_factory
 		void exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts);
 		void importFileM3U(e2db::FCONVS fci, e2db::fcopts opts);
 		void exportFileM3U(e2db::FCONVS fco, e2db::fcopts opts);
+		void console();
 		void destroy();
 
 	protected:
-		QString inspectContent(string str, int filter = 0);
-		void inspectUpdate(QTextEdit* view, int filter = 0);
-		void inspectReset();
 		void chkerrUpdate(QTextEdit* view);
 		void status(QString message);
 		bool done(bool exec);
@@ -88,10 +79,10 @@ class tools : protected e2se::log_factory
 		tab* tid;
 		QWidget* cwid;
 		dataHandler* data = nullptr;
-		size_t inspect_pos = 0;
-		INSPECT_FILTER inspect_curr;
 		sort_context* sort_ctx = nullptr;
 		map<SORT_ITEM, sort_context*> sort_stg;
+		//TODO rename
+		DialogDockWidget* dwig = nullptr;
 };
 }
 #endif /* tools_h */
