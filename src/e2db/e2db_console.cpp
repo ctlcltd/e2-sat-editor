@@ -23,41 +23,38 @@
 
 #include "e2db_console.h"
 
-using std::pair, std::endl, std::left, std::ifstream, std::ofstream;
-using std::cout;
+using std::pair, std::ifstream, std::ofstream;
 
 namespace e2se_e2db
 {
 
-void e2db_console::version(bool verbose)
+string e2db_console::version()
 {
-	if (verbose)
-		pout << "e2-sat-editor" << ' ';
-	pout << "1.9.0" << endl;
+	return "1.9.0";
 }
 
 void e2db_console::console_exit()
 {
-	term_reset();
+	termctl->reset();
 	exit(0);
 }
 
 void e2db_console::console_header()
 {
-	version(true);
-	pout << endl;
-	pout << "Enter \"help\" to display usage informations." << endl;
-	pout << endl;
+	console_version();
+	*pout << pout->endl();
+	*pout << "Enter \"help\" to display usage informations." << pout->endl();
+	*pout << pout->endl();
 }
 
 void e2db_console::console_error(const string& cmd)
 {
-	perr << "Error: " << msg("Syntax error near: %s", cmd) << endl;
+	*perr << "Error: " << msg("Syntax error near: %s", cmd) << pout->endl();
 }
 
-void e2db_console::command_version()
+void e2db_console::console_version()
 {
-	version(true);
+	*pout << "e2-sat-editor" << ' ' << version() << pout->endl();
 }
 
 void e2db_console::console_resolver(COMMAND command, istream* is)
@@ -110,14 +107,14 @@ void e2db_console::console_resolver(COMMAND command, istream* is)
 			console_usage(COMMAND::tool);
 		else if (hint == "macro")
 			console_usage(COMMAND::macro);
-		else if (hint == "debug")
-			console_usage(COMMAND::debug);
+		else if (hint == "inspect")
+			console_usage(COMMAND::inspect);
 		else if (hint == "preferences")
 			console_usage(COMMAND::preferences);
 		else
 		{
-			perr << "Type Error: " << msg("Unknown usage type: %s", hint) << endl;
-			pout << endl;
+			*perr << "Type Error: " << msg("Unknown usage type: %s", hint) << pout->endl();
+			*pout << pout->endl();
 
 			console_usage(COMMAND::usage);
 		}
@@ -171,7 +168,7 @@ void e2db_console::console_resolver(COMMAND command, istream* is)
 		else if (type.empty())
 			console_usage(command);
 		else
-			perr << "Type Error: " << msg("Unknown entry type: %s", type) << endl;
+			*perr << "Type Error: " << msg("Unknown entry type: %s", type) << pout->endl();
 	}
 	else if (command == COMMAND::add)
 	{
@@ -201,7 +198,7 @@ void e2db_console::console_resolver(COMMAND command, istream* is)
 		else if (type.empty())
 			console_usage(command);
 		else
-			perr << "Type Error" << msg("Unknown entry type: %s", type) << endl;
+			*perr << "Type Error" << msg("Unknown entry type: %s", type) << pout->endl();
 	}
 	else if (command == COMMAND::edit)
 	{
@@ -231,7 +228,7 @@ void e2db_console::console_resolver(COMMAND command, istream* is)
 		else if (type.empty())
 			console_usage(command);
 		else
-			perr << "Type Error: " << msg("Unknown entry type: %s", type) << endl;
+			*perr << "Type Error: " << msg("Unknown entry type: %s", type) << pout->endl();
 	}
 	else if (command == COMMAND::remove)
 	{
@@ -259,7 +256,7 @@ void e2db_console::console_resolver(COMMAND command, istream* is)
 		else if (type.empty())
 			console_usage(command);
 		else
-			perr << "Type Error: " << msg("Unknown entry type: %s", type) << endl;
+			*perr << "Type Error: " << msg("Unknown entry type: %s", type) << pout->endl();
 	}
 	else if (command == COMMAND::set)
 	{
@@ -273,7 +270,7 @@ void e2db_console::console_resolver(COMMAND command, istream* is)
 		else if (type.empty())
 			console_usage(command);
 		else
-			perr << "Type Error: " << msg("Unknown entry type: %s", type) << endl;
+			*perr << "Type Error: " << msg("Unknown entry type: %s", type) << pout->endl();
 	}
 	else if (command == COMMAND::unset)
 	{
@@ -287,7 +284,7 @@ void e2db_console::console_resolver(COMMAND command, istream* is)
 		else if (type.empty())
 			console_usage(command);
 		else
-			perr << "Type Error: " << msg("Unknown entry type: %s", type) << endl;
+			*perr << "Type Error: " << msg("Unknown entry type: %s", type) << pout->endl();
 	}
 	else if (command == COMMAND::print)
 	{
@@ -301,7 +298,7 @@ void e2db_console::console_resolver(COMMAND command, istream* is)
 		else if (type.empty())
 			console_usage(command);
 		else
-			perr << "Type Error" << msg("Unknown print type: %s", type) << endl;
+			*perr << "Type Error" << msg("Unknown print type: %s", type) << pout->endl();
 	}
 	else if (command == COMMAND::fimport)
 	{
@@ -346,7 +343,7 @@ void e2db_console::console_resolver(COMMAND command, istream* is)
 		else if (type.empty())
 			console_usage(command);
 		else
-			perr << "Type Error: " << msg("Unknown entry type: %s", type) << endl;
+			*perr << "Type Error: " << msg("Unknown entry type: %s", type) << pout->endl();
 	}
 	else if (command == COMMAND::fexport)
 	{
@@ -399,7 +396,7 @@ void e2db_console::console_resolver(COMMAND command, istream* is)
 		else if (type.empty())
 			console_usage(command);
 		else
-			perr << "Type Error: " << msg("Unknown entry type: %s", type) << endl;
+			*perr << "Type Error: " << msg("Unknown entry type: %s", type) << pout->endl();
 	}
 	else if (command == COMMAND::merge)
 	{
@@ -457,7 +454,7 @@ void e2db_console::console_resolver(COMMAND command, istream* is)
 		else if (type.empty())
 			console_usage(command);
 		else
-			perr << "Type Error: " << msg("Unknown entry type: %s", type) << endl;
+			*perr << "Type Error: " << msg("Unknown entry type: %s", type) << pout->endl();
 	}
 	else if (command == COMMAND::parse)
 	{
@@ -502,7 +499,7 @@ void e2db_console::console_resolver(COMMAND command, istream* is)
 		else if (type.empty())
 			console_usage(command);
 		else
-			perr << "Type Error: " << msg("Unknown entry type: %s", type) << endl;
+			*perr << "Type Error: " << msg("Unknown entry type: %s", type) << pout->endl();
 	}
 	else if (command == COMMAND::make)
 	{
@@ -558,7 +555,7 @@ void e2db_console::console_resolver(COMMAND command, istream* is)
 		else if (type.empty())
 			console_usage(command);
 		else
-			perr << "Type Error: " << msg("Unknown entry type: %s", type) << endl;
+			*perr << "Type Error: " << msg("Unknown entry type: %s", type) << pout->endl();
 	}
 	else if (command == COMMAND::convert)
 	{
@@ -619,7 +616,7 @@ void e2db_console::console_resolver(COMMAND command, istream* is)
 		else if (type.empty())
 			console_e2db_convert(ENTRY::all, fopt, ftype, path);
 		else
-			perr << "Type Error: " << msg("Unknown entry type: %s", type) << endl;
+			*perr << "Type Error: " << msg("Unknown entry type: %s", type) << pout->endl();
 	}
 	else if (command == COMMAND::tool)
 	{
@@ -663,9 +660,9 @@ void e2db_console::console_resolver(COMMAND command, istream* is)
 			console_usage(command);
 		}
 	}
-	else if (command == COMMAND::debug)
+	else if (command == COMMAND::inspect)
 	{
-		console_debug();
+		console_inspect();
 	}
 	else if (command == COMMAND::preferences)
 	{
@@ -675,422 +672,426 @@ void e2db_console::console_resolver(COMMAND command, istream* is)
 		if (type.empty() || type == "output" || type == "history")
 			console_preferences(type, opt1);
 		else
-			perr << "Type Error: " << msg("Unknown entry type: %s", type) << endl;
+			*perr << "Type Error: " << msg("Unknown entry type: %s", type) << pout->endl();
 	}
 	else
 	{
-		perr << "Error: " << msg("Unknown command") << endl;
+		*perr << "Error: " << msg("Unknown command") << pout->endl();
 	}
 }
 
-void e2db_console::console_usage(COMMAND hint, bool specs)
+void e2db_console::console_usage(COMMAND hint, int level)
 {
 	if (hint == COMMAND::usage)
 	{
-		console_usage(COMMAND::add, false);
-		console_usage(COMMAND::edit, false);
-		console_usage(COMMAND::remove, false);
-		console_usage(COMMAND::list, false);
-		console_usage(COMMAND::set, false);
-		console_usage(COMMAND::unset, false);
-		console_usage(COMMAND::fread, false);
-		console_usage(COMMAND::fwrite, false);
-		console_usage(COMMAND::print, false);
-		console_usage(COMMAND::debug, false);
-		console_usage(COMMAND::preferences, false);
+		console_usage(COMMAND::add, 0);
+		console_usage(COMMAND::edit, 0);
+		console_usage(COMMAND::remove, 0);
+		console_usage(COMMAND::list, 0);
+		console_usage(COMMAND::set, 0);
+		console_usage(COMMAND::unset, 0);
+		console_usage(COMMAND::fread, 0);
+		console_usage(COMMAND::fwrite, 0);
+		console_usage(COMMAND::print, 0);
+		console_usage(COMMAND::inspect, 0);
+		console_usage(COMMAND::preferences, 0);
 
-		pout << "  ", cout.width(36), pout << left << "version", pout << ' ' << "Display version." << endl;
-		pout << endl;
+		*pout << "  ", pout->width(36), *pout << pout->left() << "version", *pout << ' ' << "Display version." << pout->endl();
+		*pout << pout->endl();
 
-		pout << "  ", cout.width(36), pout << left << "help", pout << ' ' << "Display usage hints." << endl;
-		cout.width(10), pout << ' ', pout << "list" << endl;
-		cout.width(10), pout << ' ', pout << "import" << endl;
-		cout.width(10), pout << ' ', pout << "export" << endl;
-		cout.width(10), pout << ' ', pout << "merge" << endl;
-		cout.width(10), pout << ' ', pout << "parse" << endl;
-		cout.width(10), pout << ' ', pout << "make" << endl;
-		cout.width(10), pout << ' ', pout << "convert" << endl;
-		cout.width(10), pout << ' ', pout << "tool" << endl;
-		cout.width(10), pout << ' ', pout << "macro" << endl;
-		cout.width(10), pout << ' ', pout << "preferences" << endl;
+		*pout << "  ", pout->width(36), *pout << pout->left() << "help", *pout << ' ' << "Display usage hints." << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "list" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "import" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "export" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "merge" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "parse" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "make" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "convert" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "tool" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "macro" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "preferences" << pout->endl();
 	}
 	else if (hint == COMMAND::add)
 	{
-		pout << "  ", cout.width(7), pout << left << "add", pout << ' ';
-		cout.width(28), pout << left << "transponder", pout << ' ' << "Add new entry." << endl;
-		cout.width(10), pout << ' ', pout << "service" << endl;
-		cout.width(10), pout << ' ', pout << "bouquet" << endl;
-		cout.width(10), pout << ' ', pout << "userbouquet" << endl;
-		cout.width(10), pout << ' ', pout << "tunersets" << endl;
-		cout.width(10), pout << ' ', pout << "tunersets-table" << endl;
-		cout.width(10), pout << ' ', pout << "tunersets-transponder" << endl;
-		cout.width(10), pout << ' ', cout.width(28), pout << left << "channel  [chid] [bname]", pout << ' ' << "Add service reference to userbouquet." << endl;
-		cout.width(10), pout << ' ', cout.width(28), pout << left << "marker  [bname]", pout << ' ' << "Add marker to userbouquet." << endl;
-		cout.width(10), pout << ' ', cout.width(28), pout << left << "stream  [bname]", pout << ' ' << "Add stream to userbouquet." << endl;
-		pout << endl;
+		*pout << "  ", pout->width(7), *pout << pout->left() << "add", *pout << ' ';
+		pout->width(28), *pout << pout->left() << "transponder", *pout << ' ' << "Add new entry." << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "service" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "bouquet" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "userbouquet" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "tunersets" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "tunersets-table" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "tunersets-transponder" << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(28), *pout << pout->left() << "channel  [chid] [bname]", *pout << ' ' << "Add service reference to userbouquet." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(28), *pout << pout->left() << "marker  [bname]", *pout << ' ' << "Add marker to userbouquet." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(28), *pout << pout->left() << "stream  [bname]", *pout << ' ' << "Add stream to userbouquet." << pout->endl();
+		*pout << pout->endl();
 	}
 	else if (hint == COMMAND::edit)
 	{
-		pout << "  ", cout.width(7), pout << left << "edit", pout << ' ';
-		cout.width(28), pout << left << "transponder  [txid]", pout << ' ' << "Edit an entry." << endl;
-		cout.width(10), pout << ' ', pout << "service  [txid]" << endl;
-		cout.width(10), pout << ' ', pout << "bouquet  [bname]" << endl;
-		cout.width(10), pout << ' ', pout << "userbouquet  [bname]" << endl;
-		cout.width(10), pout << ' ', pout << "tunersets  [ytype]" << endl;
-		cout.width(10), pout << ' ', pout << "tunersets-table  [tnid]" << endl;
-		cout.width(10), pout << ' ', pout << "tunersets-transponder  [trid]" << endl;
-		cout.width(10), pout << ' ', cout.width(28), pout << left << "marker  [chid] [bname]", pout << ' ' << "Edit marker from userbouquet." << endl;
-		pout << endl;
+		*pout << "  ", pout->width(7), *pout << pout->left() << "edit", *pout << ' ';
+		pout->width(28), *pout << pout->left() << "transponder  [txid]", *pout << ' ' << "Edit an entry." << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "service  [txid]" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "bouquet  [bname]" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "userbouquet  [bname]" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "tunersets  [ytype]" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "tunersets-table  [tnid]" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "tunersets-transponder  [trid]" << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(28), *pout << pout->left() << "marker  [chid] [bname]", *pout << ' ' << "Edit marker from userbouquet." << pout->endl();
+		*pout << pout->endl();
 	}
 	else if (hint == COMMAND::remove)
 	{
-		pout << "  ", cout.width(7), pout << left << "remove", pout << ' ';
-		cout.width(28), pout << left << "transponder  [txid]", pout << ' ' << "Remove an entry." << endl;
-		cout.width(10), pout << ' ', pout << "service  [txid]" << endl;
-		cout.width(10), pout << ' ', pout << "bouquet  [bname]" << endl;
-		cout.width(10), pout << ' ', pout << "userbouquet  [bname]" << endl;
-		cout.width(10), pout << ' ', pout << "tunersets  [ytype]" << endl;
-		cout.width(10), pout << ' ', pout << "tunersets-table  [tnid]" << endl;
-		cout.width(10), pout << ' ', pout << "tunersets-transponder  [trid]" << endl;
-		cout.width(10), pout << ' ', cout.width(28), pout << left << "channel  [chid] [bname]", pout << ' ' << "Remove service reference from userbouquet." << endl;
-		cout.width(10), pout << ' ', cout.width(28), pout << left << "marker  [chid] [bname]", pout << ' ' << "Remove marker from userbouquet." << endl;
-		cout.width(10), pout << ' ', cout.width(28), pout << left << "stream  [chid] [bname]", pout << ' ' << "Remove stream from userbouquet." << endl;
-		pout << endl;
+		*pout << "  ", pout->width(7), *pout << pout->left() << "remove", *pout << ' ';
+		pout->width(28), *pout << pout->left() << "transponder  [txid]", *pout << ' ' << "Remove an entry." << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "service  [txid]" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "bouquet  [bname]" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "userbouquet  [bname]" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "tunersets  [ytype]" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "tunersets-table  [tnid]" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "tunersets-transponder  [trid]" << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(28), *pout << pout->left() << "channel  [chid] [bname]", *pout << ' ' << "Remove service reference from userbouquet." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(28), *pout << pout->left() << "marker  [chid] [bname]", *pout << ' ' << "Remove marker from userbouquet." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(28), *pout << pout->left() << "stream  [chid] [bname]", *pout << ' ' << "Remove stream from userbouquet." << pout->endl();
+		*pout << pout->endl();
 	}
 	else if (hint == COMMAND::list)
 	{
-		pout << "  ", cout.width(7), pout << left << "list", pout << ' ';
-		cout.width(28), pout << left << "transponders", pout << ' ' << "List entries." << endl;
-		cout.width(10), pout << ' ', pout << "services" << endl;
-		cout.width(10), pout << ' ', pout << "bouquets" << endl;
-		cout.width(10), pout << ' ', pout << "userbouquets" << endl;
-		cout.width(10), pout << ' ', pout << "tunersets" << endl;
-		cout.width(10), pout << ' ', pout << "tunersets-tables" << endl;
-		cout.width(10), pout << ' ', pout << "tunersets-transponders" << endl;
-		cout.width(10), pout << ' ', cout.width(28), pout << left << "channels  [bname]", pout << ' ' << "List channels from userbouquet." << endl;
-		pout << endl;
+		*pout << "  ", pout->width(7), *pout << pout->left() << "list", *pout << ' ';
+		pout->width(28), *pout << pout->left() << "transponders", *pout << ' ' << "List entries." << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "services" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "bouquets" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "userbouquets" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "tunersets" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "tunersets-tables" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "tunersets-transponders" << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(28), *pout << pout->left() << "channels  [bname]", *pout << ' ' << "List channels from userbouquet." << pout->endl();
+		*pout << pout->endl();
 
-		if (specs)
+		if (level & 1)
 		{
-			pout << "  ", pout << "USAGE" << endl << endl;
-			pout << "  ", cout.width(7), pout << left << "list", pout << ' ';
-			cout.width(28), pout << left << "[ENTRY] [limit]", pout << ' ' << "Set the number of items to display per page." << endl;
-			cout.width(10), pout << ' ', cout.width(24), pout << left << "[ENTRY] [start] [limit]";
-			pout << endl << endl;
-			pout << "  ", pout << "EXAMPLE" << endl << endl;
-			pout << "  ", cout.width(24), pout << left << "list services 15", pout << ' ' << "Displays 15 items per page." << endl;
-			pout << "  ", cout.width(24), pout << left << "list services 20 15", pout << ' ' << "Displays 15 items per page starting from 20." << endl;
-			pout << "  ", cout.width(24), pout << left << "list services 0", pout << ' ' << "Turn off pagination." << endl;
-			pout << endl;
+			*pout << "  ", *pout << "USAGE" << pout->endl() << pout->endl();
+			*pout << "  ", pout->width(7), *pout << pout->left() << "list", *pout << ' ';
+			pout->width(28), *pout << pout->left() << "[ENTRY] [limit]", *pout << ' ' << "Set the number of items to display per page." << pout->endl();
+			pout->width(10), *pout << ' ', pout->width(24), *pout << pout->left() << "[ENTRY] [start] [limit]";
+			*pout << pout->endl();
+		}
+		if (level & 2)
+		{
+			*pout << pout->endl();
+			*pout << "  ", *pout << "EXAMPLE" << pout->endl() << pout->endl();
+			*pout << "  ", pout->width(24), *pout << pout->left() << "list services 15", *pout << ' ' << "Displays 15 items per page." << pout->endl();
+			*pout << "  ", pout->width(24), *pout << pout->left() << "list services 20 15", *pout << ' ' << "Displays 15 items per page starting from 20." << pout->endl();
+			*pout << "  ", pout->width(24), *pout << pout->left() << "list services 0", *pout << ' ' << "Turn off pagination." << pout->endl();
+			*pout << pout->endl();
 		}
 	}
 	else if (hint == COMMAND::set)
 	{
-		pout << "  ", cout.width(7), pout << left << "set", pout << ' ';
-		cout.width(32), pout << left << "parentallock service  [chid]", pout << ' ' << "Set parental lock." << endl;
-		cout.width(10), pout << ' ', pout << "parentallock userbouquet  [bname]" << endl;
-		pout << endl;
+		*pout << "  ", pout->width(7), *pout << pout->left() << "set", *pout << ' ';
+		pout->width(32), *pout << pout->left() << "parentallock service  [chid]", *pout << ' ' << "Set parental lock." << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "parentallock userbouquet  [bname]" << pout->endl();
+		*pout << pout->endl();
 	}
 	else if (hint == COMMAND::unset)
 	{
-		pout << "  ", cout.width(7), pout << left << "unset", pout << ' ';
-		cout.width(32), pout << left << "parentallock service  [chid]", pout << ' ' << "Unset parental lock." << endl;
-		cout.width(10), pout << ' ', pout << "parentallock userbouquet  [bname]" << endl;
-		pout << endl;
+		*pout << "  ", pout->width(7), *pout << pout->left() << "unset", *pout << ' ';
+		pout->width(32), *pout << pout->left() << "parentallock service  [chid]", *pout << ' ' << "Unset parental lock." << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "parentallock userbouquet  [bname]" << pout->endl();
+		*pout << pout->endl();
 	}
 	else if (hint == COMMAND::fread)
 	{
-		pout << "  ", cout.width(7), pout << left << "read", pout << ' ';
-		cout.width(28), pout << left << "[directory]", pout << ' ' << "Read from directory file." << endl;
-		pout << endl;
+		*pout << "  ", pout->width(7), *pout << pout->left() << "read", *pout << ' ';
+		pout->width(28), *pout << pout->left() << "[directory]", *pout << ' ' << "Read from directory file." << pout->endl();
+		*pout << pout->endl();
 	}
 	else if (hint == COMMAND::fwrite)
 	{
-		pout << "  ", cout.width(7), pout << left << "write", pout << ' ';
-		cout.width(28), pout << left << "[directory]", pout << ' ' << "Write to directory file." << endl;
-		pout << endl;
+		*pout << "  ", pout->width(7), *pout << pout->left() << "write", *pout << ' ';
+		pout->width(28), *pout << pout->left() << "[directory]", *pout << ' ' << "Write to directory file." << pout->endl();
+		*pout << pout->endl();
 	}
 	else if (hint == COMMAND::print)
 	{
-		pout << "  ", cout.width(36), pout << left << "print", pout << ' ' << "Print debug informations." << endl;
-		pout << endl;
+		*pout << "  ", pout->width(36), *pout << pout->left() << "print", *pout << ' ' << "Print debug informations." << pout->endl();
+		*pout << pout->endl();
 
-		if (specs)
+		if (level & 1)
 		{
-			pout << "  ", pout << "USAGE" << endl << endl;
-			cout.width(28), pout << left << "debug", pout << ' ' << "Print debug log." << endl;
-			// cout.width(10), pout << ' ', cout.width(28), pout << left << "index", pout << ' ' << "Print index." << endl;
-			pout << endl;
+			*pout << "  ", *pout << "USAGE" << pout->endl() << pout->endl();
+			pout->width(28), *pout << pout->left() << "debug", *pout << ' ' << "Print debug info." << pout->endl();
+			// pout->width(10), *pout << ' ', pout->width(28), *pout << pout->left() << "index", *pout << ' ' << "Print index." << pout->endl();
+			*pout << pout->endl();
 		}
 	}
 	else if (hint == COMMAND::fimport)
 	{
-		pout << "  ", cout.width(7), pout << left << "import", pout << ' ';
-		cout.width(36), pout << left << "enigma  [directory]", pout << ' ' << "Import Enigma directory." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "neutrino  [directory]", pout << ' ' << "Import Neutrino directory." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "lamedb  [files]", pout << ' ' << "Import Lamedb services files." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "bouquets  [files]", pout << ' ' << "Import Enigma bouquet files." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "userbouquets  [files]", pout << ' ' << "Import Enigma userbouquet files." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "zapit services  [files]", pout << ' ' << "Import Neutrino services files." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "zapit bouquets  [files]", pout << ' ' << "Import Neutrino bouquets files." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "tunersets  [files]", pout << ' ' << "Import tuner settings xml files." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "parentallock blacklist  [file]", pout << ' ' << "Import Enigma blacklist parental lock file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "parentallock whitelist  [file]", pout << ' ' << "Import Enigma whitelist parental lock file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "parentallock locked  [file]", pout << ' ' << "Import Enigma .locked parental lock file." << endl;
-		pout << endl;
+		*pout << "  ", pout->width(7), *pout << pout->left() << "import", *pout << ' ';
+		pout->width(36), *pout << pout->left() << "enigma  [directory]", *pout << ' ' << "Import Enigma directory." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "neutrino  [directory]", *pout << ' ' << "Import Neutrino directory." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "lamedb  [files]", *pout << ' ' << "Import Lamedb services files." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "bouquets  [files]", *pout << ' ' << "Import Enigma bouquet files." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "userbouquets  [files]", *pout << ' ' << "Import Enigma userbouquet files." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "zapit services  [files]", *pout << ' ' << "Import Neutrino services files." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "zapit bouquets  [files]", *pout << ' ' << "Import Neutrino bouquets files." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "tunersets  [files]", *pout << ' ' << "Import tuner settings xml files." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "parentallock blacklist  [file]", *pout << ' ' << "Import Enigma blacklist parental lock file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "parentallock whitelist  [file]", *pout << ' ' << "Import Enigma whitelist parental lock file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "parentallock locked  [file]", *pout << ' ' << "Import Enigma .locked parental lock file." << pout->endl();
+		*pout << pout->endl();
 
-		if (specs)
+		if (level & 1)
 		{
-			pout << "  ", pout << "USAGE" << endl << endl;
-			pout << "  ", cout.width(7), pout << left << "import", pout << ' ';
-			cout.width(28), pout << left << "[ENTRY] [files] [version]", pout << ' ' << "Specific version (eg. Lamedb, Neutrino api)." << endl;
-			pout << endl;
+			*pout << "  ", *pout << "USAGE" << pout->endl() << pout->endl();
+			*pout << "  ", pout->width(7), *pout << pout->left() << "import", *pout << ' ';
+			pout->width(28), *pout << pout->left() << "[ENTRY] [files] [version]", *pout << ' ' << "Specific version (eg. Lamedb, Neutrino api)." << pout->endl();
+			*pout << pout->endl();
 		}
 	}
 	else if (hint == COMMAND::fexport)
 	{
-		pout << "  ", cout.width(7), pout << left << "export", pout << ' ';
-		cout.width(36), pout << left << "enigma  [directory]", pout << ' ' << "Export Enigma files to directory." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "neutrino  [directory]", pout << ' ' << "Export Neutrino files to directory." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "lamedb  [file]", pout << ' ' << "Export Lamedb services files." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "bouquet  [bname] [file]", pout << ' ' << "Export Enigma bouquet file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "bouquets  [directory]", pout << ' ' << "Export Enigma bouquet files to directory." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "userbouquet  [bname] [file]", pout << ' ' << "Export Enigma userbouquet files." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "userbouquets  [directory]", pout << ' ' << "Export Enigma userbouquet files to directory." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "zapit services  [files]", pout << ' ' << "Export Neutrino services files." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "zapit bouquets  [files]", pout << ' ' << "Export Neutrino bouquets files." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "tunersets  [file]", pout << ' ' << "Export tuner settings xml file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "tunersets  [directory]", pout << ' ' << "Export tuner settings xml files to directory." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "parentallock blacklist  [file]", pout << ' ' << "Export Enigma blacklist parental lock file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "parentallock whitelist  [file]", pout << ' ' << "Export Enigma whitelist parental lock file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "parentallock locked  [file]", pout << ' ' << "Export Enigma .locked parental lock file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "parentallock  [directory]", pout << ' ' << "Export Enigma parental lock files to directory." << endl;
-		pout << endl;
+		*pout << "  ", pout->width(7), *pout << pout->left() << "export", *pout << ' ';
+		pout->width(36), *pout << pout->left() << "enigma  [directory]", *pout << ' ' << "Export Enigma files to directory." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "neutrino  [directory]", *pout << ' ' << "Export Neutrino files to directory." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "lamedb  [file]", *pout << ' ' << "Export Lamedb services files." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "bouquet  [bname] [file]", *pout << ' ' << "Export Enigma bouquet file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "bouquets  [directory]", *pout << ' ' << "Export Enigma bouquet files to directory." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "userbouquet  [bname] [file]", *pout << ' ' << "Export Enigma userbouquet files." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "userbouquets  [directory]", *pout << ' ' << "Export Enigma userbouquet files to directory." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "zapit services  [files]", *pout << ' ' << "Export Neutrino services files." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "zapit bouquets  [files]", *pout << ' ' << "Export Neutrino bouquets files." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "tunersets  [file]", *pout << ' ' << "Export tuner settings xml file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "tunersets  [directory]", *pout << ' ' << "Export tuner settings xml files to directory." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "parentallock blacklist  [file]", *pout << ' ' << "Export Enigma blacklist parental lock file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "parentallock whitelist  [file]", *pout << ' ' << "Export Enigma whitelist parental lock file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "parentallock locked  [file]", *pout << ' ' << "Export Enigma .locked parental lock file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "parentallock  [directory]", *pout << ' ' << "Export Enigma parental lock files to directory." << pout->endl();
+		*pout << pout->endl();
 
-		if (specs)
+		if (level & 1)
 		{
-			pout << "  ", pout << "USAGE" << endl << endl;
-			pout << "  ", cout.width(7), pout << left << "export", pout << ' ';
-			cout.width(28), pout << left << "[ENTRY] [...] [version]", pout << ' ' << "Specific version (eg. Lamedb, Neutrino api)." << endl;
-			pout << endl;
+			*pout << "  ", *pout << "USAGE" << pout->endl() << pout->endl();
+			*pout << "  ", pout->width(7), *pout << pout->left() << "export", *pout << ' ';
+			pout->width(28), *pout << pout->left() << "[ENTRY] [...] [version]", *pout << ' ' << "Specific version (eg. Lamedb, Neutrino api)." << pout->endl();
+			*pout << pout->endl();
 		}
 	}
 	else if (hint == COMMAND::merge)
 	{
-		pout << "  ", cout.width(7), pout << left << "merge", pout << ' ';
-		cout.width(36), pout << left << "enigma  [directory]", pout << ' ' << "Merge with Enigma directory." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "neutrino  [directory]", pout << ' ' << "Merge with Neutrino directory." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "lamedb  [file]", pout << ' ' << "Merge with Lamedb services file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "bouquet  [file]", pout << ' ' << "Merge with Enigma bouquet file." << endl;
-		// cout.width(10), pout << ' ', cout.width(36), pout << left << "bouquets  [bname] [bname]", pout << ' ' << "Merge two Enigma bouquet." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "bouquets  [directory]", pout << ' ' << "Merge Enigma bouquet files from directory." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "userbouquet  [file]", pout << ' ' << "Merge with Enigma userbouquet file." << endl;
-		// cout.width(10), pout << ' ', cout.width(36), pout << left << "userbouquets  [bname] [bname]", pout << ' ' << "Merge two Enigma userbouquet." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "userbouquets  [directory]", pout << ' ' << "Merge Enigma userbouquet files from directory." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "zapit services  [file]", pout << ' ' << "Merge with Neutrino services file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "zapit bouquets  [file]", pout << ' ' << "Merge with Neutrino bouquets file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "tunersets  [file]", pout << ' ' << "Merge with tuner settings xml file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "tunersets  [directory]", pout << ' ' << "Merge tuner settings xml files from directory." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "parentallock blacklist  [file]", pout << ' ' << "Merge with Enigma blacklist parental lock file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "parentallock whitelist  [file]", pout << ' ' << "Merge with Enigma whitelist parental lock file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "parentallock locked  [file]", pout << ' ' << "Merge with Enigma .locked parental lock file." << endl;
-		pout << endl;
+		*pout << "  ", pout->width(7), *pout << pout->left() << "merge", *pout << ' ';
+		pout->width(36), *pout << pout->left() << "enigma  [directory]", *pout << ' ' << "Merge with Enigma directory." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "neutrino  [directory]", *pout << ' ' << "Merge with Neutrino directory." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "lamedb  [file]", *pout << ' ' << "Merge with Lamedb services file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "bouquet  [file]", *pout << ' ' << "Merge with Enigma bouquet file." << pout->endl();
+		// pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "bouquets  [bname] [bname]", *pout << ' ' << "Merge two Enigma bouquet." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "bouquets  [directory]", *pout << ' ' << "Merge Enigma bouquet files from directory." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "userbouquet  [file]", *pout << ' ' << "Merge with Enigma userbouquet file." << pout->endl();
+		// pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "userbouquets  [bname] [bname]", *pout << ' ' << "Merge two Enigma userbouquet." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "userbouquets  [directory]", *pout << ' ' << "Merge Enigma userbouquet files from directory." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "zapit services  [file]", *pout << ' ' << "Merge with Neutrino services file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "zapit bouquets  [file]", *pout << ' ' << "Merge with Neutrino bouquets file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "tunersets  [file]", *pout << ' ' << "Merge with tuner settings xml file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "tunersets  [directory]", *pout << ' ' << "Merge tuner settings xml files from directory." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "parentallock blacklist  [file]", *pout << ' ' << "Merge with Enigma blacklist parental lock file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "parentallock whitelist  [file]", *pout << ' ' << "Merge with Enigma whitelist parental lock file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "parentallock locked  [file]", *pout << ' ' << "Merge with Enigma .locked parental lock file." << pout->endl();
+		*pout << pout->endl();
 
-		if (specs)
+		if (level & 1)
 		{
-			pout << "  ", pout << "USAGE" << endl << endl;
-			pout << "  ", cout.width(7), pout << left << "merge", pout << ' ';
-			cout.width(28), pout << left << "[ENTRY] [file] [version]", pout << ' ' << "Specific version (eg. Lamedb, Neutrino api)." << endl;
-			pout << endl;
+			*pout << "  ", *pout << "USAGE" << pout->endl() << pout->endl();
+			*pout << "  ", pout->width(7), *pout << pout->left() << "merge", *pout << ' ';
+			pout->width(28), *pout << pout->left() << "[ENTRY] [file] [version]", *pout << ' ' << "Specific version (eg. Lamedb, Neutrino api)." << pout->endl();
+			*pout << pout->endl();
 		}
 	}
 	else if (hint == COMMAND::parse)
 	{
-		pout << "  ", cout.width(7), pout << left << "parse", pout << ' ';
-		cout.width(36), pout << left << "enigma  [directory]", pout << ' ' << "Parse Enigma directory." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "neutrino  [directory]", pout << ' ' << "Parse Neutrino directory." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "lamedb  [file]", pout << ' ' << "Parse Lamedb services file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "bouquet  [file]", pout << ' ' << "Parse Enigma bouquet file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "userbouquet  [file]", pout << ' ' << "Parse Enigma userbouquet file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "zapit services  [file]", pout << ' ' << "Parse Neutrino services file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "zapit bouquets  [file]", pout << ' ' << "Parse Neutrino bouquets file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "tunersets  [file]", pout << ' ' << "Parse tuner settings xml file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "parentallock blacklist  [file]", pout << ' ' << "Parse Enigma blacklist parental lock file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "parentallock whitelist  [file]", pout << ' ' << "Parse Enigma whitelist parental lock file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "parentallock locked  [file]", pout << ' ' << "Parse Enigma .locked parental lock file." << endl;
-		pout << endl;
+		*pout << "  ", pout->width(7), *pout << pout->left() << "parse", *pout << ' ';
+		pout->width(36), *pout << pout->left() << "enigma  [directory]", *pout << ' ' << "Parse Enigma directory." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "neutrino  [directory]", *pout << ' ' << "Parse Neutrino directory." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "lamedb  [file]", *pout << ' ' << "Parse Lamedb services file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "bouquet  [file]", *pout << ' ' << "Parse Enigma bouquet file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "userbouquet  [file]", *pout << ' ' << "Parse Enigma userbouquet file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "zapit services  [file]", *pout << ' ' << "Parse Neutrino services file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "zapit bouquets  [file]", *pout << ' ' << "Parse Neutrino bouquets file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "tunersets  [file]", *pout << ' ' << "Parse tuner settings xml file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "parentallock blacklist  [file]", *pout << ' ' << "Parse Enigma blacklist parental lock file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "parentallock whitelist  [file]", *pout << ' ' << "Parse Enigma whitelist parental lock file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "parentallock locked  [file]", *pout << ' ' << "Parse Enigma .locked parental lock file." << pout->endl();
+		*pout << pout->endl();
 
-		if (specs)
+		if (level & 1)
 		{
-			pout << "  ", pout << "USAGE" << endl << endl;
-			pout << "  ", cout.width(7), pout << left << "parse", pout << ' ';
-			cout.width(28), pout << left << "[ENTRY] [file] [version]", pout << ' ' << "Specific version (eg. Lamedb, Neutrino api)." << endl;
-			pout << endl;
+			*pout << "  ", *pout << "USAGE" << pout->endl() << pout->endl();
+			*pout << "  ", pout->width(7), *pout << pout->left() << "parse", *pout << ' ';
+			pout->width(28), *pout << pout->left() << "[ENTRY] [file] [version]", *pout << ' ' << "Specific version (eg. Lamedb, Neutrino api)." << pout->endl();
+			*pout << pout->endl();
 		}
 	}
 	else if (hint == COMMAND::make)
 	{
-		pout << "  ", cout.width(7), pout << left << "make", pout << ' ';
-		cout.width(36), pout << left << "enigma  [directory]", pout << ' ' << "Make Enigma files to directory." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "neutrino  [directory]", pout << ' ' << "Make Neutrino files to directory." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "lamedb  [file]", pout << ' ' << "Make Lamedb services file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "bouquet  [bname] [file]", pout << ' ' << "Make Enigma bouquet file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "bouquets  [directory]", pout << ' ' << "Make Enigma bouquet files to directory." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "userbouquet  [bname] [file]", pout << ' ' << "Make Enigma userbouquet file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "userbouquets  [directory]", pout << ' ' << "Make Enigma userbouquet files to directory." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "zapit services  [file]", pout << ' ' << "Make Neutrino services file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "zapit bouquets  [file]", pout << ' ' << "Make Neutrino bouquets file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "tunersets  [file]", pout << ' ' << "Make tuner settings xml file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "tunersets  [directory]", pout << ' ' << "Make tuner settings xml files." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "parentallock blacklist  [file]", pout << ' ' << "Make Enigma blacklist parental lock file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "parentallock whitelist  [file]", pout << ' ' << "Make Enigma whitelist parental lock file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "parentallock locked  [file]", pout << ' ' << "Make Enigma .locked parental lock file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "parentallock  [directory]", pout << ' ' << "Make Enigma parental lock files to directory." << endl;
-		pout << endl;
+		*pout << "  ", pout->width(7), *pout << pout->left() << "make", *pout << ' ';
+		pout->width(36), *pout << pout->left() << "enigma  [directory]", *pout << ' ' << "Make Enigma files to directory." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "neutrino  [directory]", *pout << ' ' << "Make Neutrino files to directory." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "lamedb  [file]", *pout << ' ' << "Make Lamedb services file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "bouquet  [bname] [file]", *pout << ' ' << "Make Enigma bouquet file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "bouquets  [directory]", *pout << ' ' << "Make Enigma bouquet files to directory." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "userbouquet  [bname] [file]", *pout << ' ' << "Make Enigma userbouquet file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "userbouquets  [directory]", *pout << ' ' << "Make Enigma userbouquet files to directory." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "zapit services  [file]", *pout << ' ' << "Make Neutrino services file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "zapit bouquets  [file]", *pout << ' ' << "Make Neutrino bouquets file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "tunersets  [file]", *pout << ' ' << "Make tuner settings xml file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "tunersets  [directory]", *pout << ' ' << "Make tuner settings xml files." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "parentallock blacklist  [file]", *pout << ' ' << "Make Enigma blacklist parental lock file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "parentallock whitelist  [file]", *pout << ' ' << "Make Enigma whitelist parental lock file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "parentallock locked  [file]", *pout << ' ' << "Make Enigma .locked parental lock file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "parentallock  [directory]", *pout << ' ' << "Make Enigma parental lock files to directory." << pout->endl();
+		*pout << pout->endl();
 
-		if (specs)
+		if (level & 1)
 		{
-			pout << "  ", pout << "USAGE" << endl << endl;
-			pout << "  ", cout.width(7), pout << left << "make", pout << ' ';
-			cout.width(28), pout << left << "[ENTRY] [...] [version]", pout << ' ' << "Specific version (eg. Lamedb, Neutrino api)." << endl;
-			pout << endl;
+			*pout << "  ", *pout << "USAGE" << pout->endl() << pout->endl();
+			*pout << "  ", pout->width(7), *pout << pout->left() << "make", *pout << ' ';
+			pout->width(28), *pout << pout->left() << "[ENTRY] [...] [version]", *pout << ' ' << "Specific version (eg. Lamedb, Neutrino api)." << pout->endl();
+			*pout << pout->endl();
 		}
 	}
 	else if (hint == COMMAND::convert)
 	{
-		pout << "  ", cout.width(7), pout << left << "convert", pout << ' ';
-		cout.width(36), pout << left << "from csv services  [file]", pout << ' ' << "Convert from CSV services file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "from csv bouquets  [file]", pout << ' ' << "Convert from CSV bouquets file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "from csv userbouquets  [file]", pout << ' ' << "Convert from CSV userbouquets file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "from csv tunersets  [file]", pout << ' ' << "Convert from CSV tuner settings file." << endl;
-		pout << endl;
-		pout << "  ", cout.width(7), pout << left << "convert", pout << ' ';
-		cout.width(36), pout << left << "to csv  [file]", pout << ' ' << "Convert all the entries to CSV file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "to csv services  [file]", pout << ' ' << "Convert to CSV services file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "to csv services  [stype] [file]", pout << ' ' << "Convert services of type to CSV services file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "to csv bouquets  [file]", pout << ' ' << "Convert to CSV bouquets file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "to csv bouquet  [bname] [file]", pout << ' ' << "Convert a bouquet to CSV bouquet file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "to csv userbouquets  [file]", pout << ' ' << "Convert to CSV userbouquets file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "to csv userbouquet  [bname] [file]", pout << ' ' << "Convert an userbouquet to CSV userbouquet file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "to csv tunersets  [file]", pout << ' ' << "Convert to CSV tuner settings file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "to csv tunersets  [ytype] [file]", pout << ' ' << "Convert a tuner settings to CSV tuner settings file." << endl;
-		pout << endl;
-		pout << "  ", cout.width(7), pout << left << "convert", pout << ' ';
-		cout.width(36), pout << left << "from m3u  [file]", pout << ' ' << "Convert from M3U file." << endl;
-		pout << endl;
-		pout << "  ", cout.width(7), pout << left << "convert", pout << ' ';
-		cout.width(36), pout << left << "to m3u  [file]", pout << ' ' << "Convert entries to M3U file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "to m3u userbouquets  [file]", pout << ' ' << "Convert userbouquets to M3U file." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "to m3u userbouquet  [bname] [file]", pout << ' ' << "Convert an userbouquet to M3U file." << endl;
-		pout << endl;
-		pout << "  ", cout.width(7), pout << left << "convert", pout << ' ';
-		cout.width(36), pout << left << "to html  [file]", pout << ' ' << "Convert all the entries to HTML files." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "to html index  [file]", pout << ' ' << "Convert to HTML index of contents files." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "to html services  [file]", pout << ' ' << "Convert to HTML services files." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "to html services  [stype] [file]", pout << ' ' << "Convert services of type to HTML services files." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "to html bouquets  [file]", pout << ' ' << "Convert to HTML bouquets files." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "to html bouquet  [bname] [file]", pout << ' ' << "Convert a bouquet to HTML bouquets files." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "to html userbouquets  [file]", pout << ' ' << "Convert to HTML userbouquets files." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "to html userbouquet  [bname] [file]", pout << ' ' << "Convert an userbouquet to HTML userbouquets files." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "to html tunersets  [file]", pout << ' ' << "Convert to HTML tuner settings files." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "to html tunersets  [ytype] [file]", pout << ' ' << "Convert a tuner settings to HTML tuner settings files." << endl;
-		pout << endl;
+		*pout << "  ", pout->width(7), *pout << pout->left() << "convert", *pout << ' ';
+		pout->width(36), *pout << pout->left() << "from csv services  [file]", *pout << ' ' << "Convert from CSV services file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "from csv bouquets  [file]", *pout << ' ' << "Convert from CSV bouquets file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "from csv userbouquets  [file]", *pout << ' ' << "Convert from CSV userbouquets file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "from csv tunersets  [file]", *pout << ' ' << "Convert from CSV tuner settings file." << pout->endl();
+		*pout << pout->endl();
+		*pout << "  ", pout->width(7), *pout << pout->left() << "convert", *pout << ' ';
+		pout->width(36), *pout << pout->left() << "to csv  [file]", *pout << ' ' << "Convert all the entries to CSV file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "to csv services  [file]", *pout << ' ' << "Convert to CSV services file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "to csv services  [stype] [file]", *pout << ' ' << "Convert services of type to CSV services file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "to csv bouquets  [file]", *pout << ' ' << "Convert to CSV bouquets file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "to csv bouquet  [bname] [file]", *pout << ' ' << "Convert a bouquet to CSV bouquet file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "to csv userbouquets  [file]", *pout << ' ' << "Convert to CSV userbouquets file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "to csv userbouquet  [bname] [file]", *pout << ' ' << "Convert an userbouquet to CSV userbouquet file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "to csv tunersets  [file]", *pout << ' ' << "Convert to CSV tuner settings file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "to csv tunersets  [ytype] [file]", *pout << ' ' << "Convert a tuner settings to CSV tuner settings file." << pout->endl();
+		*pout << pout->endl();
+		*pout << "  ", pout->width(7), *pout << pout->left() << "convert", *pout << ' ';
+		pout->width(36), *pout << pout->left() << "from m3u  [file]", *pout << ' ' << "Convert from M3U file." << pout->endl();
+		*pout << pout->endl();
+		*pout << "  ", pout->width(7), *pout << pout->left() << "convert", *pout << ' ';
+		pout->width(36), *pout << pout->left() << "to m3u  [file]", *pout << ' ' << "Convert entries to M3U file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "to m3u userbouquets  [file]", *pout << ' ' << "Convert userbouquets to M3U file." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "to m3u userbouquet  [bname] [file]", *pout << ' ' << "Convert an userbouquet to M3U file." << pout->endl();
+		*pout << pout->endl();
+		*pout << "  ", pout->width(7), *pout << pout->left() << "convert", *pout << ' ';
+		pout->width(36), *pout << pout->left() << "to html  [file]", *pout << ' ' << "Convert all the entries to HTML files." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "to html index  [file]", *pout << ' ' << "Convert to HTML index of contents files." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "to html services  [file]", *pout << ' ' << "Convert to HTML services files." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "to html services  [stype] [file]", *pout << ' ' << "Convert services of type to HTML services files." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "to html bouquets  [file]", *pout << ' ' << "Convert to HTML bouquets files." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "to html bouquet  [bname] [file]", *pout << ' ' << "Convert a bouquet to HTML bouquets files." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "to html userbouquets  [file]", *pout << ' ' << "Convert to HTML userbouquets files." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "to html userbouquet  [bname] [file]", *pout << ' ' << "Convert an userbouquet to HTML userbouquets files." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "to html tunersets  [file]", *pout << ' ' << "Convert to HTML tuner settings files." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "to html tunersets  [ytype] [file]", *pout << ' ' << "Convert a tuner settings to HTML tuner settings files." << pout->endl();
+		*pout << pout->endl();
 	}
 	else if (hint == COMMAND::tool)
 	{
-		pout << "  ", cout.width(36), pout << left << "tool", pout << ' ' << "Utils for channel lists." << endl;
-		pout << endl;
-		pout << "  ", pout << "CLEAN" << endl << endl;
-		pout << "  ", cout.width(7), pout << left << "tool", pout << ' ';
-		cout.width(36), pout << left << "remove_orphaned_services", pout << ' ' << "Remove orphaned services." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "remove_orphaned_references", pout << ' ' << "Remove orphaned references." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "fix_bouquets", pout << ' ' << "Fix bouquets." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "fix_bouquets_uniq", pout << ' ' << "Fix bouquets unique userbouquets." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "fix_remove_references", pout << ' ' << "Fix (remove) reference with errors." << endl;
-		pout << endl;
-		pout << "  ", pout << "PARAMS" << endl << endl;
-		pout << "  ", cout.width(7), pout << left << "tool", pout << ' ';
-		cout.width(36), pout << left << "clear_services_cached", pout << ' ' << "Remove service cached." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "clear_services_caid", pout << ' ' << "Remove service CAID." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "clear_services_flags", pout << ' ' << "Remove service flags." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "clear_services_data", pout << ' ' << "Remove all service data." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "fix_dvbns", pout << ' ' << "Recalculate DVBNS for services." << endl;
-		pout << endl;
-		pout << "  ", pout << "REMOVE" << endl << endl;
-		pout << "  ", cout.width(7), pout << left << "tool", pout << ' ';
-		cout.width(36), pout << left << "clear_favourites", pout << ' ' << "Remove unreferenced entries (favourites)." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "clear_bouquets_unused_services", pout << ' ' << "Remove from bouquets (unused services)." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "remove_parentallock", pout << ' ' << "Remove parental lock." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "remove_bouquets", pout << ' ' << "Remove all bouquets." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "remove_userbouquets", pout << ' ' << "Remove all userbouquets." << endl;
-		pout << endl;
-		pout << "  ", pout << "DUPLICATES" << endl << endl;
-		pout << "  ", cout.width(7), pout << left << "tool", pout << ' ';
-		cout.width(36), pout << left << "remove_duplicates", pout << ' ' << "Remove all duplicates." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "remove_duplicates_transponders", pout << ' ' << "Remove duplicate transponders." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "remove_duplicates_services", pout << ' ' << "Remove duplicate services." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "remove_duplicates_references", pout << ' ' << "Remove duplicate references." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "remove_duplicates_markers", pout << ' ' << "Remove duplicate markers (names)." << endl;
-		pout << endl;
-		pout << "  ", pout << "TRANSFORM" << endl << endl;
-		pout << "  ", cout.width(7), pout << left << "tool", pout << ' ';
-		cout.width(36), pout << left << "transform_tunersets_to_transponders", pout << ' ' << "Transform transponders to XML settings." << endl;
-		cout.width(10), pout << ' ', cout.width(36), pout << left << "transform_transponders_to_tunersets", pout << ' ' << "Transform XML settings to transponders." << endl;
-		pout << endl;
-		pout << "  ", pout << "SORT" << endl << endl;
-		pout << "  ", cout.width(7), pout << left << "tool", pout << ' ';
-		cout.width(42), pout << left << "sort_transponders  [prop] [order]", pout << ' ' << "Sort transponders." << endl;
-		cout.width(10), pout << ' ', cout.width(42), pout << left << "sort_services  [prop] [order]", pout << ' ' << "Sort services." << endl;
-		cout.width(10), pout << ' ', cout.width(42), pout << left << "sort_userbouquets  [prop] [order]", pout << ' ' << "Sort userbouquets." << endl;
-		cout.width(10), pout << ' ', cout.width(42), pout << left << "sort_references  [bname] [prop] [order]", pout << ' ' << "Sort references." << endl;
-		pout << endl;
+		*pout << "  ", pout->width(36), *pout << pout->left() << "tool", *pout << ' ' << "Utils for channel lists." << pout->endl();
+		*pout << pout->endl();
+		*pout << "  ", *pout << "CLEAN" << pout->endl() << pout->endl();
+		*pout << "  ", pout->width(7), *pout << pout->left() << "tool", *pout << ' ';
+		pout->width(36), *pout << pout->left() << "remove_orphaned_services", *pout << ' ' << "Remove orphaned services." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "remove_orphaned_references", *pout << ' ' << "Remove orphaned references." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "fix_bouquets", *pout << ' ' << "Fix bouquets." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "fix_bouquets_uniq", *pout << ' ' << "Fix bouquets unique userbouquets." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "fix_remove_references", *pout << ' ' << "Fix (remove) reference with errors." << pout->endl();
+		*pout << pout->endl();
+		*pout << "  ", *pout << "PARAMS" << pout->endl() << pout->endl();
+		*pout << "  ", pout->width(7), *pout << pout->left() << "tool", *pout << ' ';
+		pout->width(36), *pout << pout->left() << "clear_services_cached", *pout << ' ' << "Remove service cached." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "clear_services_caid", *pout << ' ' << "Remove service CAID." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "clear_services_flags", *pout << ' ' << "Remove service flags." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "clear_services_data", *pout << ' ' << "Remove all service data." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "fix_dvbns", *pout << ' ' << "Recalculate DVBNS for services." << pout->endl();
+		*pout << pout->endl();
+		*pout << "  ", *pout << "REMOVE" << pout->endl() << pout->endl();
+		*pout << "  ", pout->width(7), *pout << pout->left() << "tool", *pout << ' ';
+		pout->width(36), *pout << pout->left() << "clear_favourites", *pout << ' ' << "Remove unreferenced entries (favourites)." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "clear_bouquets_unused_services", *pout << ' ' << "Remove from bouquets (unused services)." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "remove_parentallock", *pout << ' ' << "Remove parental lock." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "remove_bouquets", *pout << ' ' << "Remove all bouquets." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "remove_userbouquets", *pout << ' ' << "Remove all userbouquets." << pout->endl();
+		*pout << pout->endl();
+		*pout << "  ", *pout << "DUPLICATES" << pout->endl() << pout->endl();
+		*pout << "  ", pout->width(7), *pout << pout->left() << "tool", *pout << ' ';
+		pout->width(36), *pout << pout->left() << "remove_duplicates", *pout << ' ' << "Remove all duplicates." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "remove_duplicates_transponders", *pout << ' ' << "Remove duplicate transponders." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "remove_duplicates_services", *pout << ' ' << "Remove duplicate services." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "remove_duplicates_references", *pout << ' ' << "Remove duplicate references." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "remove_duplicates_markers", *pout << ' ' << "Remove duplicate markers (names)." << pout->endl();
+		*pout << pout->endl();
+		*pout << "  ", *pout << "TRANSFORM" << pout->endl() << pout->endl();
+		*pout << "  ", pout->width(7), *pout << pout->left() << "tool", *pout << ' ';
+		pout->width(36), *pout << pout->left() << "transform_tunersets_to_transponders", *pout << ' ' << "Transform transponders to XML settings." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(36), *pout << pout->left() << "transform_transponders_to_tunersets", *pout << ' ' << "Transform XML settings to transponders." << pout->endl();
+		*pout << pout->endl();
+		*pout << "  ", *pout << "SORT" << pout->endl() << pout->endl();
+		*pout << "  ", pout->width(7), *pout << pout->left() << "tool", *pout << ' ';
+		pout->width(42), *pout << pout->left() << "sort_transponders  [prop] [order]", *pout << ' ' << "Sort transponders." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(42), *pout << pout->left() << "sort_services  [prop] [order]", *pout << ' ' << "Sort services." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(42), *pout << pout->left() << "sort_userbouquets  [prop] [order]", *pout << ' ' << "Sort userbouquets." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(42), *pout << pout->left() << "sort_references  [bname] [prop] [order]", *pout << ' ' << "Sort references." << pout->endl();
+		*pout << pout->endl();
 
-		if (specs)
+		if (level & 1)
 		{
-			pout << "  ", pout << "USAGE" << endl << endl;
-			pout << "  ", cout.width(7), pout << left << "sort_transponders", pout << ' ';
-			pout << "[tsid,onid,dvbns,ytype,pos,freq,sr,pol,sys,index] [asc,desc]" << endl;
-			pout << "  ", cout.width(7), pout << left << "sort_services", pout << ' ';
-			pout << "[chname,sdata_p,ssid,tsid,onid,dvbns,stype,snum,srcid,parental,txr,index] [asc,desc]" << endl;
-			pout << "  ", cout.width(7), pout << left << "sort_userbouquets", pout << ' ';
-			pout << "[ubname,name,utype,parental,index] [asc,desc]" << endl;
-			pout << "  ", cout.width(7), pout << left << "sort_transponders", pout << ' ';
-			pout << "[bname] [chname,ssid,tsid,onid,dvbns,url,value,inum,txr,index] [asc,desc]" << endl;
-			pout << endl;
+			*pout << "  ", *pout << "USAGE" << pout->endl() << pout->endl();
+			*pout << "  ", pout->width(7), *pout << pout->left() << "sort_transponders", *pout << ' ';
+			*pout << "[tsid,onid,dvbns,ytype,pos,freq,sr,pol,sys,index] [asc,desc]" << pout->endl();
+			*pout << "  ", pout->width(7), *pout << pout->left() << "sort_services", *pout << ' ';
+			*pout << "[chname,sdata_p,ssid,tsid,onid,dvbns,stype,snum,srcid,parental,txr,index] [asc,desc]" << pout->endl();
+			*pout << "  ", pout->width(7), *pout << pout->left() << "sort_userbouquets", *pout << ' ';
+			*pout << "[ubname,name,utype,parental,index] [asc,desc]" << pout->endl();
+			*pout << "  ", pout->width(7), *pout << pout->left() << "sort_transponders", *pout << ' ';
+			*pout << "[bname] [chname,ssid,tsid,onid,dvbns,url,value,inum,txr,index] [asc,desc]" << pout->endl();
+			*pout << pout->endl();
 		}
 	}
 	else if (hint == COMMAND::macro)
 	{
-		pout << "  ", cout.width(36), pout << left << "macro", pout << ' ' << "Execute tools macro." << endl;
-		pout << endl;
-		pout << "  ", cout.width(7), pout << left << "macro", pout << ' ';
-		cout.width(28), pout << left << "autofix", pout << ' ' << "Autofix macro." << endl;
-		cout.width(10), pout << ' ', cout.width(28), pout << left << "[util],[util],[...]", pout << ' ' << "Apply utils sequentially." << endl;
-		pout << endl;
+		*pout << "  ", pout->width(36), *pout << pout->left() << "macro", *pout << ' ' << "Execute tools macro." << pout->endl();
+		*pout << pout->endl();
+		*pout << "  ", pout->width(7), *pout << pout->left() << "macro", *pout << ' ';
+		pout->width(28), *pout << pout->left() << "autofix", *pout << ' ' << "Autofix macro." << pout->endl();
+		pout->width(10), *pout << ' ', pout->width(28), *pout << pout->left() << "[util],[util],[...]", *pout << ' ' << "Apply utils sequentially." << pout->endl();
+		*pout << pout->endl();
 
-		if (specs)
+		if (level & 1)
 		{
-			pout << "  ", pout << "USAGE" << endl << endl;
-			pout << "  ", pout << "Type \"help tool\" for full util lists." << endl;
-			pout << endl;
+			*pout << "  ", *pout << "USAGE" << pout->endl() << pout->endl();
+			*pout << "  ", *pout << "Type \"help tool\" for full util lists." << pout->endl();
+			*pout << pout->endl();
 		}
 	}
-	else if (hint == COMMAND::debug)
+	else if (hint == COMMAND::inspect)
 	{
-		pout << "  ", cout.width(36), pout << left << "debug", pout << ' ' << "Display debug info." << endl;
-		pout << endl;
+		*pout << "  ", pout->width(36), *pout << pout->left() << "inspect", *pout << ' ' << "Display log." << pout->endl();
+		*pout << pout->endl();
 	}
 	else if (hint == COMMAND::preferences)
 	{
-		pout << "  ", cout.width(36), pout << left << "preferences", pout << ' ' << "CLI preferences." << endl;
-		pout << endl;
+		*pout << "  ", pout->width(36), *pout << pout->left() << "preferences", *pout << ' ' << "CLI preferences." << pout->endl();
+		*pout << pout->endl();
 
-		if (specs)
+		if (level & 1)
 		{
-			pout << "  ", cout.width(7), pout << left << "preferences", pout << ' ';
-			cout.width(24), pout << left << "output  [format]", pout << ' ' << "Output format (tabular, byline, json)" << endl;
-			cout.width(14), pout << ' ', cout.width(24), pout << left << "history  [type]", pout << ' ' << "History type (file, memory)" << endl;
-			pout << endl;
+			*pout << "  ", pout->width(7), *pout << pout->left() << "preferences", *pout << ' ';
+			pout->width(24), *pout << pout->left() << "output  [format]", *pout << ' ' << "Output format (tabular, byline, json)" << pout->endl();
+			pout->width(14), *pout << ' ', pout->width(24), *pout << pout->left() << "history  [type]", *pout << ' ' << "History type (file, memory)" << pout->endl();
+			*pout << pout->endl();
 		}
 	}
 }
@@ -1101,27 +1102,27 @@ void e2db_console::console_print(int opt)
 	try
 	{
 		if (opt)
-			pout << "TODO" << endl;
+			*pout << "TODO" << pout->endl();
 		else
 			dbih->dump();
 	}
 	catch (const std::invalid_argument& err)
 	{
-		perr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << pout->endl();
 	}
 	catch (const std::out_of_range& err)
 	{
-		perr << "Error: " << msg(MSG::except_out_of_range, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_out_of_range, err.what()) << pout->endl();
 	}
 	catch (...)
 	{
-		perr << "Error: " << msg(MSG::except_uncaught) << endl;
+		*perr << "Error: " << msg(MSG::except_uncaught) << pout->endl();
 	}
 }
 
-void e2db_console::console_debug()
+void e2db_console::console_inspect()
 {
-	pout << log->str();
+	*pout << plog->str();
 }
 
 void e2db_console::console_preferences(string type, string val)
@@ -1171,12 +1172,12 @@ void e2db_console::console_preferences(string type, string val)
 			case HISTORY::file: type = "file"; break;
 			case HISTORY::memory: type = "memory"; break;
 		}
-		pout << "Output format: " << format << endl;
-		pout << "History type: " << type << endl;
+		*pout << "Output format: " << format << pout->endl();
+		*pout << "History type: " << type << pout->endl();
 	}
 	else
 	{
-		perr << "Error: " << msg("Wrong parameter type.") << endl;
+		*perr << "Error: " << msg("Wrong parameter type.") << pout->endl();
 	}
 }
 
@@ -1199,7 +1200,7 @@ void e2db_console::console_preferences(OBJIO format)
 	}
 	else
 	{
-		perr << "Error: " << msg("Wrong parameter format.") << endl;
+		*perr << "Error: " << msg("Wrong parameter format.") << pout->endl();
 	}
 }
 
@@ -1210,7 +1211,7 @@ void e2db_console::console_preferences(HISTORY type)
 	else if (type == HISTORY::memory)
 		history = HISTORY::memory;
 	else
-		perr << "Error: " << msg("Wrong parameter type.") << endl;
+		*perr << "Error: " << msg("Wrong parameter type.") << pout->endl();
 }
 
 void e2db_console::console_file_read(string path)
@@ -1218,31 +1219,31 @@ void e2db_console::console_file_read(string path)
 	try
 	{
 		if (dbih->read(path))
-			pout << "Info: " << msg("File read: %s", path) << endl;
+			*pout << "Info: " << msg("File read: %s", path) << pout->endl();
 	}
 	catch (const std::invalid_argument& err)
 	{
-		perr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << pout->endl();
 	}
 	catch (const std::out_of_range& err)
 	{
-		perr << "Error: " << msg(MSG::except_out_of_range, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_out_of_range, err.what()) << pout->endl();
 	}
 	catch (const std::filesystem::filesystem_error& err)
 	{
-		perr << "Error: " << msg(MSG::except_filesystem, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_filesystem, err.what()) << pout->endl();
 	}
 	catch (const std::ifstream::failure& err)
 	{
-		perr << "Error" << msg("File \"%s\" is not readable.", path) << endl;
+		*perr << "Error" << msg("File \"%s\" is not readable.", path) << pout->endl();
 	}
 	catch (const std::runtime_error& err)
 	{
-		perr << "Error: " << err.what() << endl;
+		*perr << "Error: " << err.what() << pout->endl();
 	}
 	catch (...)
 	{
-		perr << "Error: " << msg(MSG::except_uncaught) << endl;
+		*perr << "Error: " << msg(MSG::except_uncaught) << pout->endl();
 	}
 }
 
@@ -1251,31 +1252,31 @@ void e2db_console::console_file_write(string path)
 	try
 	{
 		if (dbih->write(path))
-			pout << "Info: " << msg("File written: %s", path) << endl;
+			*pout << "Info: " << msg("File written: %s", path) << pout->endl();
 	}
 	catch (const std::invalid_argument& err)
 	{
-		perr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << pout->endl();
 	}
 	catch (const std::out_of_range& err)
 	{
-		perr << "Error: " << msg(MSG::except_out_of_range, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_out_of_range, err.what()) << pout->endl();
 	}
 	catch (const std::filesystem::filesystem_error& err)
 	{
-		perr << "Error: " << msg(MSG::except_filesystem, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_filesystem, err.what()) << pout->endl();
 	}
 	catch (const std::ofstream::failure& err)
 	{
-		perr << "Error" << msg("File \"%s\" is not writable.", path) << endl;
+		*perr << "Error" << msg("File \"%s\" is not writable.", path) << pout->endl();
 	}
 	catch (const std::runtime_error& err)
 	{
-		perr << "Error: " << err.what() << endl;
+		*perr << "Error: " << err.what() << pout->endl();
 	}
 	catch (...)
 	{
-		perr << "Error: " << msg(MSG::except_uncaught) << endl;
+		*perr << "Error: " << msg(MSG::except_uncaught) << pout->endl();
 	}
 }
 
@@ -1283,7 +1284,7 @@ void e2db_console::console_e2db_import(ENTRY entry_type, vector<string> paths, i
 {
 	if (paths.size() == 0)
 	{
-		perr << "Error: " << msg("Wrong parameter paths.") << endl;
+		*perr << "Error: " << msg("Wrong parameter paths.") << pout->endl();
 
 		return;
 	}
@@ -1371,27 +1372,27 @@ void e2db_console::console_e2db_import(ENTRY entry_type, vector<string> paths, i
 	}
 	catch (const std::invalid_argument& err)
 	{
-		perr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << pout->endl();
 	}
 	catch (const std::out_of_range& err)
 	{
-		perr << "Error: " << msg(MSG::except_out_of_range, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_out_of_range, err.what()) << pout->endl();
 	}
 	catch (const std::filesystem::filesystem_error& err)
 	{
-		perr << "Error: " << msg(MSG::except_filesystem, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_filesystem, err.what()) << pout->endl();
 	}
 	catch (const std::ifstream::failure& err)
 	{
-		perr << "Error" << msg("File Error") << endl;
+		*perr << "Error" << msg("File Error") << pout->endl();
 	}
 	catch (const std::runtime_error& err)
 	{
-		perr << "Error: " << err.what() << endl;
+		*perr << "Error: " << err.what() << pout->endl();
 	}
 	catch (...)
 	{
-		perr << "Error: " << msg(MSG::except_uncaught) << endl;
+		*perr << "Error: " << msg(MSG::except_uncaught) << pout->endl();
 	}
 }
 
@@ -1399,7 +1400,7 @@ void e2db_console::console_e2db_export(ENTRY entry_type, vector<string> paths, i
 {
 	if (paths.size() == 0)
 	{
-		perr << "Error: " << msg("Wrong parameter paths.") << endl;
+		*perr << "Error: " << msg("Wrong parameter paths.") << pout->endl();
 
 		return;
 	}
@@ -1531,27 +1532,27 @@ void e2db_console::console_e2db_export(ENTRY entry_type, vector<string> paths, i
 	}
 	catch (const std::invalid_argument& err)
 	{
-		perr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << pout->endl();
 	}
 	catch (const std::out_of_range& err)
 	{
-		perr << "Error: " << msg(MSG::except_out_of_range, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_out_of_range, err.what()) << pout->endl();
 	}
 	catch (const std::filesystem::filesystem_error& err)
 	{
-		perr << "Error: " << msg(MSG::except_filesystem, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_filesystem, err.what()) << pout->endl();
 	}
 	catch (const std::ofstream::failure& err)
 	{
-		perr << "Error" << msg("File Error") << endl;
+		*perr << "Error" << msg("File Error") << pout->endl();
 	}
 	catch (const std::runtime_error& err)
 	{
-		perr << "Error: " << err.what() << endl;
+		*perr << "Error: " << err.what() << pout->endl();
 	}
 	catch (...)
 	{
-		perr << "Error: " << msg(MSG::except_uncaught) << endl;
+		*perr << "Error: " << msg(MSG::except_uncaught) << pout->endl();
 	}
 }
 
@@ -1559,7 +1560,7 @@ void e2db_console::console_e2db_merge(ENTRY entry_type, string path, int ver, bo
 {
 	if (path.empty())
 	{
-		perr << "Error: " << msg("Wrong parameter path.") << endl;
+		*perr << "Error: " << msg("Wrong parameter path.") << pout->endl();
 
 		return;
 	}
@@ -1654,41 +1655,41 @@ void e2db_console::console_e2db_merge(ENTRY entry_type, string path, int ver, bo
 	}
 	catch (const std::invalid_argument& err)
 	{
-		perr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << pout->endl();
 	}
 	catch (const std::out_of_range& err)
 	{
-		perr << "Error: " << msg(MSG::except_out_of_range, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_out_of_range, err.what()) << pout->endl();
 	}
 	catch (const std::filesystem::filesystem_error& err)
 	{
-		perr << "Error: " << msg(MSG::except_filesystem, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_filesystem, err.what()) << pout->endl();
 	}
 	catch (const std::ifstream::failure& err)
 	{
-		perr << "Error" << msg("File \"%s\" is not readable.", path) << endl;
+		*perr << "Error" << msg("File \"%s\" is not readable.", path) << pout->endl();
 	}
 	catch (const std::runtime_error& err)
 	{
-		perr << "Error: " << err.what() << endl;
+		*perr << "Error: " << err.what() << pout->endl();
 	}
 	catch (...)
 	{
-		perr << "Error: " << msg(MSG::except_uncaught) << endl;
+		*perr << "Error: " << msg(MSG::except_uncaught) << pout->endl();
 	}
 }
 
 //TODO
 void e2db_console::console_e2db_merge(ENTRY entry_type, int ver, string bname0, string bname1)
 {
-	pout << "TODO" << endl;
+	*pout << "TODO" << pout->endl();
 }
 
 void e2db_console::console_e2db_parse(ENTRY entry_type, string path, int ver, bool dir)
 {
 	if (path.empty())
 	{
-		perr << "Error: " << msg("Wrong parameter path.") << endl;
+		*perr << "Error: " << msg("Wrong parameter path.") << pout->endl();
 
 		return;
 	}
@@ -1902,27 +1903,27 @@ void e2db_console::console_e2db_parse(ENTRY entry_type, string path, int ver, bo
 	}
 	catch (const std::invalid_argument& err)
 	{
-		perr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << pout->endl();
 	}
 	catch (const std::out_of_range& err)
 	{
-		perr << "Error: " << msg(MSG::except_out_of_range, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_out_of_range, err.what()) << pout->endl();
 	}
 	catch (const std::filesystem::filesystem_error& err)
 	{
-		perr << "Error: " << msg(MSG::except_filesystem, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_filesystem, err.what()) << pout->endl();
 	}
 	catch (const std::ifstream::failure& err)
 	{
-		perr << "Error" << msg("File \"%s\" is not readable.", path) << endl;
+		*perr << "Error" << msg("File \"%s\" is not readable.", path) << pout->endl();
 	}
 	catch (const std::runtime_error& err)
 	{
-		perr << "Error: " << err.what() << endl;
+		*perr << "Error: " << err.what() << pout->endl();
 	}
 	catch (...)
 	{
-		perr << "Error: " << msg(MSG::except_uncaught) << endl;
+		*perr << "Error: " << msg(MSG::except_uncaught) << pout->endl();
 	}
 }
 
@@ -1931,7 +1932,7 @@ void e2db_console::console_e2db_make(ENTRY entry_type, string path, int ver, boo
 {
 	if (path.empty())
 	{
-		perr << "Error: " << msg("Wrong parameter path.") << endl;
+		*perr << "Error: " << msg("Wrong parameter path.") << pout->endl();
 
 		return;
 	}
@@ -2221,27 +2222,27 @@ void e2db_console::console_e2db_make(ENTRY entry_type, string path, int ver, boo
 	}
 	catch (const std::invalid_argument& err)
 	{
-		perr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << pout->endl();
 	}
 	catch (const std::out_of_range& err)
 	{
-		perr << "Error: " << msg(MSG::except_out_of_range, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_out_of_range, err.what()) << pout->endl();
 	}
 	catch (const std::filesystem::filesystem_error& err)
 	{
-		perr << "Error: " << msg(MSG::except_filesystem, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_filesystem, err.what()) << pout->endl();
 	}
 	catch (const std::ofstream::failure& err)
 	{
-		perr << "Error: " << msg("File \"%s\" is not writable.", path) << endl;
+		*perr << "Error: " << msg("File \"%s\" is not writable.", path) << pout->endl();
 	}
 	catch (const std::runtime_error& err)
 	{
-		perr << "Error: " << err.what() << endl;
+		*perr << "Error: " << err.what() << pout->endl();
 	}
 	catch (...)
 	{
-		perr << "Error: " << msg(MSG::except_uncaught) << endl;
+		*perr << "Error: " << msg(MSG::except_uncaught) << pout->endl();
 	}
 }
 
@@ -2249,7 +2250,7 @@ void e2db_console::console_e2db_convert(ENTRY entry_type, int fopt, int ftype, s
 {
 	if (path.empty())
 	{
-		perr << "Error: " << msg("Wrong parameter path.") << endl;
+		*perr << "Error: " << msg("Wrong parameter path.") << pout->endl();
 
 		return;
 	}
@@ -2329,30 +2330,30 @@ void e2db_console::console_e2db_convert(ENTRY entry_type, int fopt, int ftype, s
 	}
 	catch (const std::invalid_argument& err)
 	{
-		perr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << pout->endl();
 	}
 	catch (const std::out_of_range& err)
 	{
-		perr << "Error: " << msg(MSG::except_out_of_range, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_out_of_range, err.what()) << pout->endl();
 	}
 	catch (const std::filesystem::filesystem_error& err)
 	{
-		perr << "Error: " << msg(MSG::except_filesystem, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_filesystem, err.what()) << pout->endl();
 	}
 	catch (const std::ios_base::failure& err)
 	{
 		if (fopt == 0)
-			perr << "Error" << msg("File \"%s\" is not readable.", path) << endl;
+			*perr << "Error" << msg("File \"%s\" is not readable.", path) << pout->endl();
 		else if (fopt == 1)
-			perr << "Error" << msg("File \"%s\" is not writable.", path) << endl;
+			*perr << "Error" << msg("File \"%s\" is not writable.", path) << pout->endl();
 	}
 	catch (const std::runtime_error& err)
 	{
-		perr << "Error: " << err.what() << endl;
+		*perr << "Error: " << err.what() << pout->endl();
 	}
 	catch (...)
 	{
-		perr << "Error: " << msg(MSG::except_uncaught) << endl;
+		*perr << "Error: " << msg(MSG::except_uncaught) << pout->endl();
 	}
 }
 
@@ -2406,7 +2407,7 @@ void e2db_console::entry_list(ENTRY entry_type, bool paged, int limit, int pos, 
 	{
 		if (limit == 0)
 		{
-			auto screensize = term_screensize();
+			auto screensize = termctl->screensize();
 			offset = screensize.first ? screensize.first / rows : 1;
 		}
 
@@ -2416,11 +2417,11 @@ void e2db_console::entry_list(ENTRY entry_type, bool paged, int limit, int pos, 
 		{
 			if (limit == 0)
 			{
-				auto screensize = term_screensize();
+				auto screensize = termctl->screensize();
 				offset = screensize.first ? screensize.first / rows : 1;
 			}
 
-			int curr = term_paged(pos, offset);
+			int curr = termctl->paged(pos, offset);
 
 			switch (curr)
 			{
@@ -2456,7 +2457,7 @@ void e2db_console::console_e2db_tool(string fn, string bname, string prop, int o
 			model = e2db::SORT_ITEM::item_reference;
 		else
 		{
-			perr << "Error: " << msg("Wrong util name \"%s\".", fn);
+			*perr << "Error: " << msg("Wrong util name \"%s\".", fn);
 
 			return;
 		}
@@ -2476,7 +2477,7 @@ void e2db_console::console_e2db_tool(string fn, string bname, string prop, int o
 				else if (prop == "parental") opts.prop = prop;
 				else if (prop == "index") opts.prop = prop;
 				else
-					perr << "Error: " << msg("Wrong property name \"%s\".", prop);
+					*perr << "Error: " << msg("Wrong property name \"%s\".", prop);
 			}
 			else if (model == e2db::SORT_ITEM::item_reference)
 			{
@@ -2491,7 +2492,7 @@ void e2db_console::console_e2db_tool(string fn, string bname, string prop, int o
 				else if (prop == "txr") opts.prop = prop;
 				else if (prop == "index") opts.prop = prop;
 				else
-					perr << "Error: " << msg("Wrong property name \"%s\".", prop);
+					*perr << "Error: " << msg("Wrong property name \"%s\".", prop);
 			}
 			else if (model == e2db::SORT_ITEM::item_service)
 			{
@@ -2508,7 +2509,7 @@ void e2db_console::console_e2db_tool(string fn, string bname, string prop, int o
 				else if (prop == "txr") opts.prop = prop;
 				else if (prop == "index") opts.prop = prop;
 				else
-					perr << "Error: " << msg("Wrong property name \"%s\".", prop);
+					*perr << "Error: " << msg("Wrong property name \"%s\".", prop);
 			}
 			else if (model == e2db::SORT_ITEM::item_transponder)
 			{
@@ -2523,7 +2524,7 @@ void e2db_console::console_e2db_tool(string fn, string bname, string prop, int o
 				else if (prop == "sys") opts.prop = prop;
 				else if (prop == "index") opts.prop = prop;
 				else
-					perr << "Error: " << msg("Wrong property name \"%s\".", prop);
+					*perr << "Error: " << msg("Wrong property name \"%s\".", prop);
 			}
 		}
 	}
@@ -2589,19 +2590,19 @@ void e2db_console::console_e2db_tool(string fn, string bname, string prop, int o
 		}
 	catch (const std::invalid_argument& err)
 	{
-		perr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << pout->endl();
 	}
 	catch (const std::out_of_range& err)
 	{
-		perr << "Error: " << msg(MSG::except_out_of_range, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_out_of_range, err.what()) << pout->endl();
 	}
 	catch (const std::runtime_error& err)
 	{
-		perr << "Error: " << err.what() << endl;
+		*perr << "Error: " << err.what() << pout->endl();
 	}
 	catch (...)
 	{
-		perr << "Error: " << msg(MSG::except_uncaught) << endl;
+		*perr << "Error: " << msg(MSG::except_uncaught) << pout->endl();
 	}
 }
 
@@ -2620,7 +2621,7 @@ void e2db_console::console_e2db_macro(string id)
 	}
 	else
 	{
-		perr << "Error: " << msg("Wrong parameter identifier.") << endl;
+		*perr << "Error: " << msg("Wrong parameter identifier.") << pout->endl();
 	}
 }
 
@@ -2628,7 +2629,7 @@ void e2db_console::console_e2db_macro(vector<string> pattern)
 {
 	if (pattern.size() == 0)
 	{
-		perr << "Error: " << msg("Wrong parameter pattern.") << endl;
+		*perr << "Error: " << msg("Wrong parameter pattern.") << pout->endl();
 	}
 	else
 	{
@@ -3067,7 +3068,7 @@ void e2db_console::entry_list(ENTRY entry_type, int pos, int offset, int& end, s
 		{
 			if (! dbih->userbouquets.count(bname))
 			{
-				perr << "Error: " << msg("Userbouquet \"%s\" not exists.", bname) << endl;
+				*perr << "Error: " << msg("Userbouquet \"%s\" not exists.", bname) << pout->endl();
 
 				end = 1;
 
@@ -3161,23 +3162,23 @@ void e2db_console::entry_list(ENTRY entry_type, int pos, int offset, int& end, s
 	}
 	catch (const std::invalid_argument& err)
 	{
-		perr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << pout->endl();
 	}
 	catch (const std::out_of_range& err)
 	{
-		perr << "Error: " << msg(MSG::except_out_of_range, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_out_of_range, err.what()) << pout->endl();
 	}
 	catch (const std::bad_any_cast& err)
 	{
-		perr << "Error: " << msg(MSG::except_bad_any_cast, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_bad_any_cast, err.what()) << pout->endl();
 	}
 	catch (const std::runtime_error& err)
 	{
-		perr << "Error: " << err.what() << endl;
+		*perr << "Error: " << err.what() << pout->endl();
 	}
 	catch (...)
 	{
-		perr << "Error: " << msg(MSG::except_uncaught) << endl;
+		*perr << "Error: " << msg(MSG::except_uncaught) << pout->endl();
 	}
 }
 
@@ -3208,7 +3209,7 @@ void e2db_console::entry_edit(ENTRY entry_type, bool edit, string id, int ref, s
 
 	if (edit && id.empty())
 	{
-		perr << "Error: " << msg("Wrong parameter identifier.") << endl;
+		*perr << "Error: " << msg("Wrong parameter identifier.") << pout->endl();
 
 		return;
 	}
@@ -3605,23 +3606,23 @@ void e2db_console::entry_edit(ENTRY entry_type, bool edit, string id, int ref, s
 
 	catch (const std::invalid_argument& err)
 	{
-		perr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << pout->endl();
 	}
 	catch (const std::out_of_range& err)
 	{
-		perr << "Error: " << msg(MSG::except_out_of_range, err.what()) << endl;
+		*perr << "Error: " << msg(MSG::except_out_of_range, err.what()) << pout->endl();
 	}
 	catch (const std::bad_any_cast& err)
 	{
-		perr << "Error: " << msg("Wrong input data in \"%s\" field.", this->last_label) << endl;
+		*perr << "Error: " << msg("Wrong input data in \"%s\" field.", this->curr_field) << pout->endl();
 	}
 	catch (const std::runtime_error& err)
 	{
-		perr << "Error: " << err.what() << endl;
+		*perr << "Error: " << err.what() << pout->endl();
 	}
 	catch (...)
 	{
-		perr << "Error: " << msg(MSG::except_uncaught) << endl;
+		*perr << "Error: " << msg(MSG::except_uncaught) << pout->endl();
 	}
 }
 
@@ -3634,7 +3635,7 @@ void e2db_console::entry_remove(ENTRY entry_type, string id, string bname)
 {
 	if (id.empty())
 	{
-		perr << "Error: " << msg("Wrong parameter identifier.") << endl;
+		*perr << "Error: " << msg("Wrong parameter identifier.") << pout->endl();
 
 		return;
 	}
@@ -3751,11 +3752,11 @@ void e2db_console::entry_remove(ENTRY entry_type, string id, string bname)
 	}
 	catch (const std::runtime_error& err)
 	{
-		perr << "Error: " << err.what() << endl;
+		*perr << "Error: " << err.what() << pout->endl();
 	}
 	catch (...)
 	{
-		perr << "Error: " << msg(MSG::except_uncaught) << endl;
+		*perr << "Error: " << msg(MSG::except_uncaught) << pout->endl();
 	}
 }
 
@@ -3763,7 +3764,7 @@ void e2db_console::entry_parentallock(ENTRY entry_type, string id, bool flag)
 {
 	if (id.empty())
 	{
-		perr << "Error: " << msg("Wrong parameter identifier.") << endl;
+		*perr << "Error: " << msg("Wrong parameter identifier.") << pout->endl();
 
 		return;
 	}
@@ -3793,11 +3794,11 @@ void e2db_console::entry_parentallock(ENTRY entry_type, string id, bool flag)
 	}
 	catch (const std::runtime_error& err)
 	{
-		perr << "Error: " << err.what() << endl;
+		*perr << "Error: " << err.what() << pout->endl();
 	}
 	catch (...)
 	{
-		perr << "Error: " << msg(MSG::except_uncaught) << endl;
+		*perr << "Error: " << msg(MSG::except_uncaught) << pout->endl();
 	}
 }
 
@@ -3806,19 +3807,19 @@ void e2db_console::print_obj_begin(int depth)
 	if (__objio.out == OBJIO::tabular)
 	{
 		if (depth)
-			pout << '[' << ' ';
+			*pout << '[' << ' ';
 	}
 	else if (__objio.out == OBJIO::byline)
 	{
 		if (depth)
-			pout << '[' << endl;
+			*pout << '[' << pout->endl();
 	}
 	else if (__objio.out == OBJIO::json)
 	{
 		if (depth == 1)
-			pout << '[';
+			*pout << '[';
 		else
-			pout << '{';
+			*pout << '{';
 	}
 }
 
@@ -3827,19 +3828,19 @@ void e2db_console::print_obj_end(int depth)
 	if (__objio.out == OBJIO::tabular)
 	{
 		if (depth)
-			pout << ' ' << ']';
+			*pout << ' ' << ']';
 	}
 	else if (__objio.out == OBJIO::byline)
 	{
 		if (depth)
-			pout << ']' << endl;
+			*pout << ']' << pout->endl();
 	}
 	else if (__objio.out == OBJIO::json)
 	{
 		if (depth == 1)
-			pout << ']';
+			*pout << ']';
 		else
-			pout << '}';
+			*pout << '}';
 	}
 }
 
@@ -3848,16 +3849,16 @@ void e2db_console::print_obj_sep(int xpos)
 	if (__objio.out == OBJIO::tabular)
 	{
 		if (xpos == 0)
-			pout << '\t' << ' ';
+			*pout << '\t' << ' ';
 	}
 	else if (__objio.out == OBJIO::byline)
 	{
-		pout << endl;
+		*pout << pout->endl();
 	}
 	else if (__objio.out == OBJIO::json)
 	{
 		if (xpos == 0)
-			pout << ',' << ' ';
+			*pout << ',' << ' ';
 	}
 }
 
@@ -3868,23 +3869,23 @@ void e2db_console::print_obj_dlm(int depth, int xpos)
 		if (depth == 2)
 		{
 			if (xpos == 0)
-				pout << '\t';
+				*pout << '\t';
 		}
 		else
 		{
-			pout << endl << endl;
+			*pout << pout->endl() << pout->endl();
 		}
 	}
 	else if (__objio.out == OBJIO::byline)
 	{
-		pout << endl;
+		*pout << pout->endl();
 	}
 	else if (__objio.out == OBJIO::json)
 	{
 		if (xpos == 0)
-			pout << ',' << ' ';
+			*pout << ',' << ' ';
 		if (depth == 0)
-			pout << endl << endl;
+			*pout << pout->endl() << pout->endl();
 	}
 }
 
@@ -4265,23 +4266,23 @@ void e2db_console::print_obj_pair(TYPE type, std::any val)
 		break;
 	}
 
-	pout << obj_escape(ESCAPE::name_begin, value_type);
-	pout << name;
-	pout << obj_escape(ESCAPE::name_end, value_type);
-	pout << obj_escape(ESCAPE::divider, value_type);
-	pout << obj_escape(ESCAPE::value_begin, value_type);
+	*pout << obj_escape(ESCAPE::name_begin, value_type);
+	*pout << name;
+	*pout << obj_escape(ESCAPE::name_end, value_type);
+	*pout << obj_escape(ESCAPE::divider, value_type);
+	*pout << obj_escape(ESCAPE::value_begin, value_type);
 	if (value_type == VALUE::val_int)
 	{
-		pout << d;
+		*pout << d;
 	}
 	else if (value_type == VALUE::val_obj)
 	{
 	}
 	else
 	{
-		pout << str;
+		*pout << str;
 	}
-	pout << obj_escape(ESCAPE::value_end, value_type);
+	*pout << obj_escape(ESCAPE::value_end, value_type);
 }
 
 string e2db_console::obj_escape(ESCAPE esc, VALUE value_type)
@@ -4405,18 +4406,16 @@ std::any e2db_console::field(TYPE type, bool required)
 		default: return -1;
 	}
 
-	auto* termctl = term();
-
 	while (true)
 	{
-		pout << label;
+		*pout << label;
 		if (! description.empty())
-			pout << ' ' << '(' << description << ')';
+			*pout << ' ' << '(' << description << ')';
 		if (required)
-			pout << ' ' << '*';
-		pout << ':' << ' ';
+			*pout << ' ' << '*';
+		*pout << ':' << ' ';
 
-		termctl->input();
+		termctl->handler();
 		string str = termctl->str();
 		termctl->clear();
 
@@ -4424,7 +4423,7 @@ std::any e2db_console::field(TYPE type, bool required)
 		str.erase(0, str.find_first_not_of(" \n\r\t\v\b\f"));
 		str.erase(str.find_last_not_of(" \n\r\t\v\b\f") + 1);
 
-		this->last_label = label;
+		this->curr_field = label;
 
 		if (! str.empty())
 		{

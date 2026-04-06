@@ -26,6 +26,32 @@ using namespace e2se_e2db;
 
 namespace e2se_cli
 {
+
+class stream : public streamiface
+{
+	public:
+		stream(std::ostream &p) : os(p) {}
+		virtual ~stream() = default;
+
+		streamiface &operator<<(int i) override { os << i; return *this; }
+		streamiface &operator<<(char c) override { os << c; return *this; }
+		streamiface &operator<<(const char* s) override { os << s; return *this; }
+		streamiface &operator<<(const std::string &s) override { os << s; return *this; }
+		streamiface &operator<<(const streamiface &) override { return *this; }
+		// streamiface &operator<<(std::ostream&(*p)(std::ostream&)) override { os << p; return *this; }
+		// streamiface &operator<<(std::ios_base&(*p)(std::ios_base&)) override { os << p; return *this; }
+
+		streamiface &endl() override { os << std::endl; return *this; }
+		streamiface &flush() override { os << std::flush; return *this; }
+		streamiface &left() override { os << std::left; return *this; }
+		streamiface &right() override { os << std::right; return *this; }
+		int width() const override { return os.width(); }
+		int width(int width) override { return os.width(width); }
+
+	private:
+		std::ostream &os;
+};
+
 class cli : public e2db_console
 {
 	public:
@@ -34,19 +60,16 @@ class cli : public e2db_console
 		int exited();
 
 	protected:
-		HISTORY history = HISTORY::file;
-
 		void options(int argc, char* argv[]);
-		void version(bool verbose);
+
 		void cmd_shell();
 		void cmd_version();
-		void cmd_error(string option);
-		void cmd_usage(bool descriptive = false);
+		void cmd_error(string opt);
+		void cmd_usage();
 
-		::e2se_e2db::termiface* term() { return new termctl; }
-		static void term_reset() { return termctl::reset(); }
-		static int term_paged(int pos, int offset) { return termctl::paged(pos, offset); }
-		static std::pair<int, int> term_screensize() { return termctl::screensize(); }
+		void console_version();
+		void console_exit();
 };
+
 }
 #endif /* e2se_cli_h */

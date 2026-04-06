@@ -21,8 +21,7 @@
 
 #include "cli.h"
 
-using std::pair, std::endl, std::left;
-using std::cout;
+using std::pair;
 
 namespace e2se_cli
 {
@@ -31,8 +30,10 @@ cli::cli(int argc, char* argv[])
 {
 	std::setlocale(LC_NUMERIC, "C");
 
-	pout.rdbuf(std::cout.rdbuf());
-	perr.rdbuf(std::cerr.rdbuf());
+	pout = new stream(std::cout);
+	perr = new stream(std::cerr);
+
+	history = HISTORY::file;
 
 	if (__objio.out == OBJIO::byline)
 		__objio.hrn = false;
@@ -57,9 +58,6 @@ void cli::options(int argc, char* argv[])
 		if (i == 0)
 			continue;
 
-		// pout << "argc" << ':' << ' ' << i << endl;
-		// pout << "argv" << ':' << ' ' << argv[i] << endl;
-
 		string opt = argv[i];
 
 		if (opt == "-h" || opt == "--help")
@@ -77,39 +75,27 @@ void cli::options(int argc, char* argv[])
 	}
 }
 
-void cli::version(bool verbose)
-{
-	if (verbose)
-		pout << "e2se-cli" << ' ' << "version" << ' ';
-	pout << "1.9.0" << endl;
-}
-
 void cli::cmd_shell()
 {
-	console_header();
-
-	this->log = new e2se::logger("cli", "cmd_shell");
-	this->dbih = new e2db;
-
-	auto* termctl = term();
+	termctl = new e2se_cli::termctl;
 
 	if (history == HISTORY::file)
 		termctl->load_history();
 
+	console_header();
+
+	this->plog = new e2se::logger("cli", "cmd_shell");
+	this->dbih = new e2db;
+
 	while (true)
 	{
-		termctl->input(true);
+		termctl->handler(true);
 		string cmd = termctl->str();
-		std::istream* is = termctl->stream();
+		std::istream* is = termctl->ptr();
 		termctl->clear();
 
 		if (cmd == "quit" || cmd == "exit" || cmd == "q")
-		{
-			if (history == HISTORY::file)
-				termctl->save_history();
-
-			return console_exit();
-		}
+			return command_exit();
 		else if (cmd == "help" || cmd == "h")
 			command_help(is);
 		else if (cmd == "version" || cmd == "v")
@@ -152,8 +138,8 @@ void cli::cmd_shell()
 			command_tool(is);
 		else if (cmd == "macro")
 			command_macro(is);
-		else if (cmd == "debug")
-			command_debug(is);
+		else if (cmd == "inspect")
+			command_inspect(is);
 		else if (cmd == "preferences")
 			command_preferences(is);
 #if E2SE_BUILD == E2SE_TARGET_DEBUG
@@ -163,37 +149,48 @@ void cli::cmd_shell()
 		else if (! cmd.empty())
 			console_error(cmd);
 
-		// pout << "input: " << cmd << endl;
-
 		delete is;
 	}
 }
 
 void cli::cmd_version()
 {
-	version(false);
+	*pout << "e2se-cli" << ' ' << version() << pout->endl();
 }
 
-void cli::cmd_error(string option)
+void cli::cmd_error(string opt)
 {
-	term_reset();
+	termctl->reset();
 
-	perr << "e2se-cli: " << msg("Illegal option \"%s\"", option) << endl;
-	perr << endl;
+	*perr << "e2se-cli: " << msg("Illegal option \"%s\"", opt) << pout->endl();
+	*perr << pout->endl();
 
 	exit(1);
 }
 
-void cli::cmd_usage(bool descriptive)
+void cli::cmd_usage()
 {
-	if (descriptive)
-		pout << "e2se command line" << endl << endl;
+	*pout << "e2se-cli [OPTIONS]" << pout->endl();
+	*pout << pout->endl();
+	*pout << '\t', pout->width(18), *pout << pout->left() << "-s --shell", *pout << ' ' << "Interactive shell" << pout->endl();
+	*pout << '\t', pout->width(18), *pout << pout->left() << "-v --version", *pout << ' ' << "Display version" << pout->endl();
+	*pout << '\t', pout->width(18), *pout << pout->left() << "-h --help", *pout << ' ' << "Display this help and exit" << pout->endl();
+	*pout << pout->endl();
+}
 
-	pout << "e2se-cli [OPTIONS]" << endl;
-	pout << endl;
-	pout << '\t', cout.width(18), pout << left << "-s --shell", pout << ' ' << "Interactive shell" << endl;
-	pout << '\t', cout.width(18), pout << left << "-v --version", pout << ' ' << "Display version" << endl;
-	pout << '\t', cout.width(18), pout << left << "-h --help", pout << ' ' << "Display this help and exit" << endl;
+void cli::console_version()
+{
+	*pout << version() << pout->endl();
+}
+
+void cli::console_exit()
+{
+	termctl->reset();
+
+	if (history == HISTORY::file)
+		termctl->save_history();
+
+	exit(0);
 }
 
 }

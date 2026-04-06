@@ -24,17 +24,38 @@ using std::string, std::vector;
 namespace e2se_e2db
 {
 
+struct streamiface
+{
+	public:
+		virtual ~streamiface() = default;
+
+		virtual streamiface &operator<<(int i) = 0;
+		virtual streamiface &operator<<(char c) = 0;
+		virtual streamiface &operator<<(const char* s) = 0;
+		virtual streamiface &operator<<(const std::string &s) = 0;
+		virtual streamiface &operator<<(const streamiface &) = 0;
+		// virtual streamiface &operator<<(std::ostream&(*p)(std::ostream&)) = 0;
+		// virtual streamiface &operator<<(std::ios_base&(*p)(std::ios_base&)) = 0;
+
+		virtual streamiface &endl() = 0;
+		virtual streamiface &flush() = 0;
+		virtual streamiface &left() = 0;
+		virtual streamiface &right() = 0;
+		virtual int width() const = 0;
+		virtual int width(int width) = 0;
+};
+
 struct termiface
 {
 	public:
 		virtual ~termiface() = default;
-		static void reset() {}
-		virtual void input(bool shell = false, bool ins = false) = 0;
+		virtual void handler(bool command = false) = 0;
 		virtual void clear() = 0;
+		virtual std::istream* ptr() = 0;
 		virtual const std::string str() = 0;
-		virtual std::istream* stream() = 0;
-		static int paged(int pos, int offset) { return 0; }
-		static std::pair<int, int> screensize() { return {}; }
+		virtual void reset() = 0;
+		virtual int paged(int pos, int offset) = 0;
+		virtual std::pair<int, int> screensize() = 0;
 		virtual void dump_log() = 0;
 		virtual void load_history() = 0;
 		virtual void save_history() = 0;
@@ -44,6 +65,7 @@ class e2db_console
 {
 	public:
 		virtual ~e2db_console() = default;
+		std::string version();
 		int exited();
 
 	protected:
@@ -71,7 +93,7 @@ class e2db_console
 			convert,
 			tool,
 			macro,
-			debug,
+			inspect,
 			preferences
 		};
 
@@ -151,11 +173,11 @@ class e2db_console
 
 		HISTORY history = HISTORY::memory;
 
-		void version(bool verbose);
-		void console_exit();
 		void console_header();
 		void console_error(const string& cmd);
-		void command_version();
+		virtual void console_version();
+		virtual void console_exit();
+
 		void command_help(istream* is) { console_resolver(COMMAND::usage, is); }
 		void command_read(istream* is) { console_resolver(COMMAND::fread, is); }
 		void command_write(istream* is) { console_resolver(COMMAND::fwrite, is); }
@@ -176,13 +198,15 @@ class e2db_console
 		void command_convert(istream* is) { console_resolver(COMMAND::convert, is); }
 		void command_tool(istream* is) { console_resolver(COMMAND::tool, is); }
 		void command_macro(istream* is) { console_resolver(COMMAND::macro, is); }
-		void command_debug(istream* is) { console_resolver(COMMAND::debug, is); }
+		void command_inspect(istream* is) { console_resolver(COMMAND::inspect, is); }
 		void command_preferences(istream* is) { console_resolver(COMMAND::preferences, is); }
+		void command_version() { console_version(); }
+		void command_exit() { console_exit(); }
 
 		void console_resolver(COMMAND command, istream* is);
-		void console_usage(COMMAND hint, bool specs = true);
+		void console_usage(COMMAND hint, int level = 2);
 		void console_print(int opt);
-		void console_debug();
+		void console_inspect();
 		void console_preferences(string type, string val);
 		void console_preferences(OBJIO format);
 		void console_preferences(HISTORY type);
@@ -221,23 +245,19 @@ class e2db_console
 		string obj_escape(ESCAPE esc, VALUE value_type);
 		std::any field(TYPE type, bool required = false);
 
-		virtual termiface* term() { return nullptr; }
-		static void term_reset() {}
-		static int term_paged(int pos, int offset) { return 0; }
-		static std::pair<int, int> term_screensize() { return {}; }
-
 		using MSG = e2se::logger::MSG;
 		static string msg(string str, string param) { return e2se::logger::msg(str, param); }
 		static string msg(string str) { return e2se::logger::msg(str); }
 		static string msg(e2se::logger::MSG msg, const char* param) { return e2se::logger::msg(msg, param); }
 		static string msg(e2se::logger::MSG msg) { return e2se::logger::msg(msg); }
 
-		std::ostream pout = std::ostream(nullptr);
-		std::ostream perr = std::ostream(nullptr);
+		termiface* termctl = nullptr;
+		streamiface* pout = nullptr;
+		streamiface* perr = nullptr;
 
 		e2db* dbih = nullptr;
-		e2se::logger* log;
-		string last_label;
+		e2se::logger* plog;
+		string curr_field;
 };
 
 }

@@ -305,6 +305,7 @@ void tab::removeDockWidget(QDockWidget* widget)
 	this->widget->removeDockWidget(widget);
 }
 
+//TODO
 void tab::addPermanentDockWidget(Qt::DockWidgetArea area, QDockWidget* widget)
 {
 	debug("addPermanentDockWidget");
@@ -312,6 +313,7 @@ void tab::addPermanentDockWidget(Qt::DockWidgetArea area, QDockWidget* widget)
 	this->widget->addDockWidget(area, widget);
 }
 
+//TODO
 void tab::removePermanentDockWidget(QDockWidget* widget)
 {
 	debug("removePermanentDockWidget");

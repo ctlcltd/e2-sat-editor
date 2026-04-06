@@ -41,6 +41,7 @@
 #include "tab.h"
 #include "gui.h"
 #include "dialConvertM3u.h"
+#include "e2db_console_gui.h"
 
 using namespace e2se;
 
@@ -1205,18 +1206,19 @@ vector<QPair<QString, QString>> tools::sortComboBoxProps(SORT_ITEM model)
 	return {};
 }
 
+//TODO
 void tools::console()
 {
 	debug("console");
 
-	QTextEdit* widget = new QTextEdit;
 	this->dwig = new DialogDockWidget;
 	dwig->setWindowTitle(tr("Console", "dialog"));
 	dwig->setBaseSize(520, 288);
 	dwig->setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-	dwig->setWidget(widget);
 
 	tid->addPermanentDockWidget(Qt::BottomDockWidgetArea, dwig);
+
+	e2db_console_gui* dframe = new e2db_console_gui(dwig, this->data);
 }
 
 void tools::destroy()

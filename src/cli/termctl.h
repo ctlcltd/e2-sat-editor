@@ -30,7 +30,7 @@ class termctl : public ::e2se_e2db::termiface
 			KeyRight = 67,
 			KeyLeft = 68,
 			KeyDelete = 127,
-			KeyReturn = 10
+			KeyEnter = 10
 		};
 
 		enum EVENT {
@@ -41,29 +41,29 @@ class termctl : public ::e2se_e2db::termiface
 			CursorForward = KeyRight,
 			CursorBackward = KeyLeft,
 			DeleteChar = KeyDelete,
-			StdinRelease = KeyReturn
+			StdinReturn = KeyEnter
 		};
 
 		termctl();
 		~termctl();
-		static void reset();
-		void input(bool shell = false, bool ins = false);
+		void handler(bool command = false);
 		void clear();
+		std::istream* ptr();
 		const std::string str();
-		std::istream* stream();
-		static int paged(int pos, int offset);
-		static std::pair<int, int> screensize();
+		void reset();
+		int paged(int pos, int offset);
+		std::pair<int, int> screensize();
 		void dump_log();
 		void load_history();
 		void save_history();
 
-		std::string history_file;
 		std::string log_file;
+		std::string history_file;
 
 	private:
-		static void tty_set_raw(int tty_fd = 0);
-		static void tty_set_sane(int tty_fd = 0);
-		static std::pair<int, int> tty_get_screensize();
+		static void tty_setraw(int tty_fd = 0);
+		static void tty_setsane(int tty_fd = 0);
+		static std::pair<int, int> tty_screensize();
 		static void tty_gotoxy(int x, int y);
 		static void tty_goforward();
 		static void tty_gobackward();

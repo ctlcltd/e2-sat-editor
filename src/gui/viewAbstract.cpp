@@ -598,7 +598,7 @@ void viewAbstract::updateFlags()
 	}
 
 	vector<int> bits = {72, 73, 74, 75, 76, 77, 78, 79};
-		
+
 	for (int & bit : bits)
 		tabSetFlag(gui::GUI_CXE (bit), bit == dstbit);
 }

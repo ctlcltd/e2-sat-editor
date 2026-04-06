@@ -37,7 +37,6 @@
 #include <windows.h>
 #endif
 
-#include "../e2se_defs.h"
 #include "termctl.h"
 
 namespace e2se_cli
@@ -52,29 +51,8 @@ termctl::termctl()
 {
 	std::setlocale(LC_NUMERIC, "C");
 
-	this->history_file = "./e2se-cli_history";
 	this->log_file = "./e2se-cli_log.txt";
-
-#ifdef PLATFORM_UX
-	if (std::getenv("HOME") != NULL)
-	{
-		const char* homepath = std::getenv("HOME");
-
-		if (
-			std::filesystem::exists(homepath) &&
-			std::filesystem::is_directory(homepath) &&
-			! (
-				(std::filesystem::status(homepath).permissions() & std::filesystem::perms::owner_read) == std::filesystem::perms::none &&
-				(std::filesystem::status(homepath).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none
-			)
-		)
-		{
-			std::filesystem::path fp = std::filesystem::path(std::string (homepath));
-			fp /= "e2se-cli_history";
-			this->history_file = fp.u8string();
-		}
-	}
-#endif
+	this->history_file = "./e2se-cli_history";
 
 	std::stringbuf* is_buf = new std::stringbuf;
 	this->is = new std::iostream(is_buf);
@@ -82,19 +60,17 @@ termctl::termctl()
 	std::stringbuf* history_buf = new std::stringbuf;
 	this->history = new std::iostream(history_buf);
 
-#if E2SE_BUILD == E2SE_TARGET_DEBUG
-	if (! std::filesystem::exists(this->history_file))
-	{
-		*history << "read directory-not-exists" << std::endl;
-		*history << "edit userbouquet id" << std::endl;
-		*history << "add tunersets id" << std::endl;
-		*history << "edit tunersets_transponder id" << std::endl;
-		*history << "add transponder" << std::endl;
-		*history << "edit service id" << std::endl;
-		*history << "list transponders" << std::endl;
-		*history << "list channels userbouquet.dbe01.tv" << std::endl;
-		*history << "read e2se-seeds/enigma_db" << std::endl;
-	}
+	// test
+#if 0
+	*history << "read directory-not-exists" << std::endl;
+	*history << "edit userbouquet id" << std::endl;
+	*history << "add tunersets id" << std::endl;
+	*history << "edit tunersets_transponder id" << std::endl;
+	*history << "add transponder" << std::endl;
+	*history << "edit service id" << std::endl;
+	*history << "list transponders" << std::endl;
+	*history << "list channels userbouquet.dbe01.tv" << std::endl;
+	*history << "read e2se-seeds/enigma_db" << std::endl;
 #endif
 
 	this->last = this->history->tellg();
@@ -102,28 +78,21 @@ termctl::termctl()
 
 termctl::~termctl()
 {
-	reset();
+#ifdef PLATFORM_UX
+	tty_setsane();
+#endif
 
 	delete this->is;
 }
 
-void termctl::reset()
+void termctl::handler(bool command)
 {
 #ifdef PLATFORM_UX
-	tty_set_sane();
-#endif
-}
-
-void termctl::input(bool shell, bool ins)
-{
-#ifdef PLATFORM_UX
-	tty_set_raw();
+	tty_setraw();
 #endif
 
-	if (shell)
-	{
+	if (command)
 		std::printf("> ");
-	}
 
 	size_t cur, len;
 	cur = len = 0;
@@ -147,7 +116,7 @@ void termctl::input(bool shell, bool ins)
 
 					next = EVENT::HistoryBack;
 
-					if (shell)
+					if (command)
 					{
 						is->sync();
 						std::stringbuf* is_buf = reinterpret_cast<std::stringbuf*>(is->rdbuf());
@@ -217,7 +186,7 @@ void termctl::input(bool shell, bool ins)
 
 					next = EVENT::HistoryForward;
 
-					if (shell)
+					if (command)
 					{
 						is->sync();
 						std::stringbuf* is_buf = reinterpret_cast<std::stringbuf*>(is->rdbuf());
@@ -349,16 +318,16 @@ void termctl::input(bool shell, bool ins)
 			prev = next;
 			continue;
 		}
-		else if (c == KEY_MAP::KeyReturn)
+		else if (c == KEY_MAP::KeyEnter)
 		{
-			next = EVENT::StdinRelease;
+			next = EVENT::StdinReturn;
 
 			is->seekp(0, std::ios_base::beg);
 
 			is->sync();
 			std::stringbuf* is_buf = reinterpret_cast<std::stringbuf*>(is->rdbuf());
 
-			if (shell && ! is_buf->str().empty())
+			if (command && ! is_buf->str().empty())
 			{
 				history->clear();
 				history->seekp(0, std::ios_base::end);
@@ -384,7 +353,7 @@ void termctl::input(bool shell, bool ins)
 		// std::printf("char: '%c'\n", c);
 
 		// append
-		if (! ins && cur != len)
+		if (1 && cur != len)
 		{
 			std::streamoff offset = is->tellp();
 
@@ -432,7 +401,7 @@ void termctl::input(bool shell, bool ins)
 		}
 
 		// insert
-		if (ins && cur != len)
+		if (0 && cur != len)
 			cur++;
 		// append | replace
 		else
@@ -442,18 +411,18 @@ void termctl::input(bool shell, bool ins)
 	}
 
 #ifdef PLATFORM_UX
-	tty_set_sane();
+	tty_setsane();
 #endif
 }
 
-const std::string termctl::str()
+void termctl::clear()
 {
-	std::string str;
-	*is >> str;
-	return str;
+	std::stringbuf* is_buf = reinterpret_cast<std::stringbuf*>(is->rdbuf());
+	is->clear();
+	is_buf->str("");
 }
 
-std::istream* termctl::stream()
+std::istream* termctl::ptr()
 {
 	is->sync();
 
@@ -464,17 +433,24 @@ std::istream* termctl::stream()
 	return new std::istream(cp_buf);
 }
 
-void termctl::clear()
+const std::string termctl::str()
 {
-	std::stringbuf* is_buf = reinterpret_cast<std::stringbuf*>(is->rdbuf());
-	is->clear();
-	is_buf->str("");
+	std::string str;
+	*is >> str;
+	return str;
+}
+
+void termctl::reset()
+{
+#ifdef PLATFORM_UX
+	tty_setsane();
+#endif
 }
 
 int termctl::paged(int pos, int offset)
 {
 #ifdef PLATFORM_UX
-	tty_set_raw();
+	tty_setraw();
 #endif
 
 	std::printf("Press key [Up] | [Down] to Move, [q] to Exit");
@@ -522,7 +498,7 @@ int termctl::paged(int pos, int offset)
 				break;
 			}
 		}
-		else if (c == KEY_MAP::KeyReturn)
+		else if (c == KEY_MAP::KeyEnter)
 		{
 			curr = EVENT::PageNext;
 			break;
@@ -542,7 +518,7 @@ int termctl::paged(int pos, int offset)
 	tty_eraseline();
 
 #ifdef PLATFORM_UX
-	tty_set_sane();
+	tty_setsane();
 #endif
 
 	return curr;
@@ -550,7 +526,7 @@ int termctl::paged(int pos, int offset)
 
 std::pair<int, int> termctl::screensize()
 {
-	return termctl::tty_get_screensize();
+	return termctl::tty_screensize();
 }
 
 void termctl::dump_log()
@@ -601,6 +577,27 @@ void termctl::dump_log()
 
 void termctl::load_history()
 {
+#ifdef PLATFORM_UX
+	if (std::getenv("HOME") != NULL)
+	{
+		const char* homepath = std::getenv("HOME");
+
+		if (
+			std::filesystem::exists(homepath) &&
+			std::filesystem::is_directory(homepath) &&
+			! (
+				(std::filesystem::status(homepath).permissions() & std::filesystem::perms::owner_read) == std::filesystem::perms::none &&
+				(std::filesystem::status(homepath).permissions() & std::filesystem::perms::group_read) == std::filesystem::perms::none
+			)
+		)
+		{
+			std::filesystem::path fp = std::filesystem::path(std::string (homepath));
+			fp /= "e2se-cli_history";
+			this->history_file = fp.u8string();
+		}
+	}
+#endif
+
 	try
 	{
 		std::ifstream ifile (history_file);
@@ -666,7 +663,7 @@ void termctl::save_history()
 }
 
 #ifdef PLATFORM_UX
-void termctl::tty_set_raw(int tty_fd)
+void termctl::tty_setraw(int tty_fd)
 {
 	struct termios ta;
 	tcgetattr(tty_fd, &ta);
@@ -675,8 +672,10 @@ void termctl::tty_set_raw(int tty_fd)
 	ta.c_lflag &= ~(ECHO | ICANON);
 	tcsetattr(tty_fd, TCSANOW, &ta);
 }
+#endif
 
-void termctl::tty_set_sane(int tty_fd)
+#ifdef PLATFORM_UX
+void termctl::tty_setsane(int tty_fd)
 {
 	if (tty_raw)
 		tcsetattr(tty_fd, TCSANOW, &tty_attr);
@@ -684,7 +683,7 @@ void termctl::tty_set_sane(int tty_fd)
 }
 #endif
 
-std::pair<int, int> termctl::tty_get_screensize()
+std::pair<int, int> termctl::tty_screensize()
 {
 #if defined(PLATFORM_WIN)
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
