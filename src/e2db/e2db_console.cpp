@@ -28,7 +28,7 @@ using std::pair, std::ifstream, std::ofstream;
 namespace e2se_e2db
 {
 
-string e2db_console::version()
+string e2db_console::editor_version()
 {
 	return "1.9.0";
 }
@@ -41,7 +41,7 @@ void e2db_console::console_exit()
 
 void e2db_console::console_header()
 {
-	console_version();
+	console_version(true);
 	*pout << pout->endl();
 	*pout << "Enter \"help\" to display usage informations." << pout->endl();
 	*pout << pout->endl();
@@ -52,9 +52,9 @@ void e2db_console::console_error(const string& cmd)
 	*perr << "Error: " << msg("Syntax error near: %s", cmd) << pout->endl();
 }
 
-void e2db_console::console_version()
+void e2db_console::console_version(bool extended)
 {
-	*pout << "e2-sat-editor" << ' ' << version() << pout->endl();
+	*pout << "e2-sat-editor" << ' ' << editor_version() << pout->endl();
 }
 
 void e2db_console::console_resolver(COMMAND command, istream* is)
@@ -298,7 +298,7 @@ void e2db_console::console_resolver(COMMAND command, istream* is)
 		else if (type.empty())
 			console_usage(command);
 		else
-			*perr << "Type Error" << msg("Unknown print type: %s", type) << pout->endl();
+			*perr << "Type Error: " << msg("Unknown print type: %s", type) << pout->endl();
 	}
 	else if (command == COMMAND::fimport)
 	{
@@ -695,9 +695,8 @@ void e2db_console::console_usage(COMMAND hint, int level)
 		console_usage(COMMAND::print, 0);
 		console_usage(COMMAND::inspect, 0);
 		console_usage(COMMAND::preferences, 0);
-
-		*pout << "  ", pout->width(36), *pout << pout->left() << "version", *pout << ' ' << "Display version." << pout->endl();
-		*pout << pout->endl();
+		console_usage(COMMAND::version, 0);
+		console_usage(COMMAND::quit, 0);
 
 		*pout << "  ", pout->width(36), *pout << pout->left() << "help", *pout << ' ' << "Display usage hints." << pout->endl();
 		pout->width(10), *pout << ' ', *pout << "list" << pout->endl();
@@ -710,6 +709,16 @@ void e2db_console::console_usage(COMMAND hint, int level)
 		pout->width(10), *pout << ' ', *pout << "tool" << pout->endl();
 		pout->width(10), *pout << ' ', *pout << "macro" << pout->endl();
 		pout->width(10), *pout << ' ', *pout << "preferences" << pout->endl();
+	}
+	else if (hint == COMMAND::version)
+	{
+		*pout << "  ", pout->width(36), *pout << pout->left() << "version", *pout << ' ' << "Display version." << pout->endl();
+		*pout << pout->endl();
+	}
+	else if (hint == COMMAND::quit)
+	{
+		*pout << "  ", pout->width(36), *pout << pout->left() << "quit", *pout << ' ' << "Exit." << pout->endl();
+		*pout << pout->endl();
 	}
 	else if (hint == COMMAND::add)
 	{
@@ -819,6 +828,7 @@ void e2db_console::console_usage(COMMAND hint, int level)
 		if (level & 1)
 		{
 			*pout << "  ", *pout << "USAGE" << pout->endl() << pout->endl();
+			*pout << "  ", pout->width(7), *pout << pout->left() << "print", *pout << ' ';
 			pout->width(28), *pout << pout->left() << "debug", *pout << ' ' << "Print debug info." << pout->endl();
 			// pout->width(10), *pout << ' ', pout->width(28), *pout << pout->left() << "index", *pout << ' ' << "Print index." << pout->endl();
 			*pout << pout->endl();
@@ -1088,6 +1098,7 @@ void e2db_console::console_usage(COMMAND hint, int level)
 
 		if (level & 1)
 		{
+			*pout << "  ", *pout << "USAGE" << pout->endl() << pout->endl();
 			*pout << "  ", pout->width(7), *pout << pout->left() << "preferences", *pout << ' ';
 			pout->width(24), *pout << pout->left() << "output  [format]", *pout << ' ' << "Output format (tabular, byline, json)" << pout->endl();
 			pout->width(14), *pout << ' ', pout->width(24), *pout << pout->left() << "history  [type]", *pout << ' ' << "History type (file, memory)" << pout->endl();
@@ -2357,88 +2368,6 @@ void e2db_console::console_e2db_convert(ENTRY entry_type, int fopt, int ftype, s
 	}
 }
 
-void e2db_console::entry_list(ENTRY entry_type, string bname, int offset0, int offset1)
-{
-	entry_list(entry_type, offset0, offset1, bname);
-}
-
-void e2db_console::entry_list(ENTRY entry_type, int offset0, int offset1, string bname)
-{
-	if (offset0 != -1 && offset1 != -1) // [start] [limit]
-		entry_list(entry_type, offset1 != 0, offset1, offset0, bname);
-	else if (offset0 != -1) // [limit]
-		entry_list(entry_type, offset0 != 0, offset0, 0, bname);
-	else
-		entry_list(entry_type, true, PAGED_LIMIT, 0, bname);
-}
-
-void e2db_console::entry_list(ENTRY entry_type, bool paged, int limit, int pos, string bname)
-{
-	int offset = limit;
-	int end = 0;
-	int rows = 1;
-
-	//TODO FIX
-	if (__objio.out == OBJIO::byline)
-	{
-		switch (entry_type)
-		{
-			case ENTRY::transponder: rows = 32; break;
-			case ENTRY::service: rows = 24; break;
-			case ENTRY::bouquet: rows = 6; break;
-			case ENTRY::userbouquet: rows = 1; break;
-			case ENTRY::tunersets: rows = 10; break;
-			case ENTRY::tunersets_table: rows = 5; break;
-			case ENTRY::tunersets_transponder: rows = 29; break;
-			case ENTRY::channel_reference: rows = 1; break;
-			default: rows = 1;
-		}
-	}
-	else if (__objio.out == OBJIO::tabular)
-	{
-		rows = 5;
-	}
-	else if (__objio.out == OBJIO::json)
-	{
-		rows = 4;
-	}
-
-	if (paged)
-	{
-		if (limit == 0)
-		{
-			auto screensize = termctl->screensize();
-			offset = screensize.first ? screensize.first / rows : 1;
-		}
-
-		entry_list(entry_type, pos, offset, end, bname);
-
-		while (! end)
-		{
-			if (limit == 0)
-			{
-				auto screensize = termctl->screensize();
-				offset = screensize.first ? screensize.first / rows : 1;
-			}
-
-			int curr = termctl->paged(pos, offset);
-
-			switch (curr)
-			{
-				case 0: return;
-				case 65: pos -= offset; break;
-				default: pos += offset;
-			}
-
-			entry_list(entry_type, pos, offset, end, bname);
-		}
-	}
-	else
-	{
-		entry_list(entry_type, pos, offset, end, bname);
-	}
-}
-
 void e2db_console::console_e2db_tool(string fn, string bname, string prop, int order)
 {
 	e2db::uoopts opts;
@@ -2638,8 +2567,130 @@ void e2db_console::console_e2db_macro(vector<string> pattern)
 	}
 }
 
+void e2db_console::entry_list(ENTRY entry_type, string bname, int offset0, int offset1)
+{
+	entry_list(entry_type, offset0, offset1, bname);
+}
+
+void e2db_console::entry_list(ENTRY entry_type, int offset0, int offset1, string bname)
+{
+	if (offset0 != -1 && offset1 != -1) // [start] [limit]
+		entry_list(entry_type, offset1 != 0, offset1, offset0, bname);
+	else if (offset0 != -1) // [limit]
+		entry_list(entry_type, offset0 != 0, offset0, 0, bname);
+	else
+		entry_list(entry_type, true, PAGED_LIMIT, 0, bname);
+}
+
+void e2db_console::entry_list(ENTRY entry_type, bool paged, int limit, int pos, string bname)
+{
+	int offset = limit;
+	int end = 0;
+	int rows = 1;
+
+	//TODO FIX
+	if (__objio.out == OBJIO::byline)
+	{
+		switch (entry_type)
+		{
+			case ENTRY::transponder: rows = 32; break;
+			case ENTRY::service: rows = 24; break;
+			case ENTRY::bouquet: rows = 6; break;
+			case ENTRY::userbouquet: rows = 1; break;
+			case ENTRY::tunersets: rows = 10; break;
+			case ENTRY::tunersets_table: rows = 5; break;
+			case ENTRY::tunersets_transponder: rows = 29; break;
+			case ENTRY::channel_reference: rows = 1; break;
+			default: rows = 1;
+		}
+	}
+	else if (__objio.out == OBJIO::tabular)
+	{
+		rows = 5;
+	}
+	else if (__objio.out == OBJIO::json)
+	{
+		rows = 4;
+	}
+
+	if (paged)
+	{
+		if (limit == 0)
+		{
+			auto screensize = termctl->screensize();
+			offset = screensize.first ? screensize.first / rows : 1;
+		}
+
+		entry_list_exec(entry_type, pos, offset, end, bname);
+
+		while (! end)
+		{
+			if (limit == 0)
+			{
+				auto screensize = termctl->screensize();
+				offset = screensize.first ? screensize.first / rows : 1;
+			}
+
+			int key = termctl->paged(pos, offset);
+
+			switch (key)
+			{
+				case 0: return;
+				case 65: pos -= offset; break; // termctl::EVENT::PagePrev
+				default: pos += offset; // any key
+			}
+
+			entry_list_exec(entry_type, pos, offset, end, bname);
+		}
+	}
+	else
+	{
+		entry_list_exec(entry_type, pos, offset, end, bname);
+	}
+}
+
+void e2db_console::entry_add(ENTRY entry_type)
+{
+	entry_edit(entry_type, false);
+}
+
+void e2db_console::entry_add(ENTRY entry_type, int ref, string bname)
+{
+	entry_edit(entry_type, false, "", ref, bname);
+}
+
+void e2db_console::entry_edit(ENTRY entry_type, string id)
+{
+	entry_edit(entry_type, true, id);
+}
+
+void e2db_console::entry_edit(ENTRY entry_type, int ref, string bname, string id)
+{
+	entry_edit(entry_type, true, id, ref, bname);
+}
+
+void e2db_console::entry_edit(ENTRY entry_type, bool edit, string id, int ref, string bname)
+{
+	entry_edit_exec(entry_type, edit, id, ref, bname);
+}
+
+void e2db_console::entry_remove(ENTRY entry_type, int ref, string bname, string id)
+{
+	entry_remove(entry_type, id, bname);
+}
+
+void e2db_console::entry_remove(ENTRY entry_type, string id, string bname)
+{
+	entry_remove_exec(entry_type, id, bname);
+}
+
+void e2db_console::entry_parentallock(ENTRY entry_type, string id, bool flag)
+{
+	entry_parentallock_exec(entry_type, id, flag);
+}
+
 //TODO improve
-void e2db_console::entry_list(ENTRY entry_type, int pos, int offset, int& end, string bname)
+void e2db_console::entry_list_exec(ENTRY entry_type, int pos, int offset, int& end, string bname)
 {
 	try
 	{
@@ -3182,28 +3233,8 @@ void e2db_console::entry_list(ENTRY entry_type, int pos, int offset, int& end, s
 	}
 }
 
-void e2db_console::entry_add(ENTRY entry_type)
-{
-	entry_edit(entry_type, false);
-}
-
-void e2db_console::entry_add(ENTRY entry_type, int ref, string bname)
-{
-	entry_edit(entry_type, false, "", ref, bname);
-}
-
-void e2db_console::entry_edit(ENTRY entry_type, string id)
-{
-	entry_edit(entry_type, true, id);
-}
-
-void e2db_console::entry_edit(ENTRY entry_type, int ref, string bname, string id)
-{
-	entry_edit(entry_type, true, id, ref, bname);
-}
-
 //TODO improve
-void e2db_console::entry_edit(ENTRY entry_type, bool edit, string id, int ref, string bname)
+void e2db_console::entry_edit_exec(ENTRY entry_type, bool edit, string id, int ref, string bname)
 {
 	using std::any_cast;
 
@@ -3405,6 +3436,8 @@ void e2db_console::entry_edit(ENTRY entry_type, bool edit, string id, int ref, s
 
 					if (dbih->tuners.count(tvid))
 						tv = dbih->tuners[tvid];
+					else
+						throw 1;
 				}
 				catch (...)
 				{
@@ -3603,7 +3636,6 @@ void e2db_console::entry_edit(ENTRY entry_type, bool edit, string id, int ref, s
 				dbih->add_channel_reference(chref, bname);
 		}
 	}
-
 	catch (const std::invalid_argument& err)
 	{
 		*perr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << pout->endl();
@@ -3626,12 +3658,7 @@ void e2db_console::entry_edit(ENTRY entry_type, bool edit, string id, int ref, s
 	}
 }
 
-void e2db_console::entry_remove(ENTRY entry_type, int ref, string bname, string id)
-{
-	entry_remove(entry_type, id, bname);
-}
-
-void e2db_console::entry_remove(ENTRY entry_type, string id, string bname)
+void e2db_console::entry_remove_exec(ENTRY entry_type, string id, string bname)
 {
 	if (id.empty())
 	{
@@ -3678,7 +3705,7 @@ void e2db_console::entry_remove(ENTRY entry_type, string id, string bname)
 			{
 				tvid = std::stoi(id);
 
-				if (dbih->tuners.count(tvid))
+				if (! dbih->tuners.count(tvid))
 					throw 1;
 			}
 			catch (...)
@@ -3760,7 +3787,7 @@ void e2db_console::entry_remove(ENTRY entry_type, string id, string bname)
 	}
 }
 
-void e2db_console::entry_parentallock(ENTRY entry_type, string id, bool flag)
+void e2db_console::entry_parentallock_exec(ENTRY entry_type, string id, bool flag)
 {
 	if (id.empty())
 	{
@@ -3802,102 +3829,97 @@ void e2db_console::entry_parentallock(ENTRY entry_type, string id, bool flag)
 	}
 }
 
-void e2db_console::print_obj_begin(int depth)
+bool e2db_console::label_field(TYPE type, string &label, string &description)
 {
-	if (__objio.out == OBJIO::tabular)
+	switch (type)
 	{
-		if (depth)
-			*pout << '[' << ' ';
+		case TYPE::dbtype: label = "Format"; description = "exact match: <empty>, 0 = Lamedb, 1 = Zapit"; break;
+		case TYPE::dbparental: label = "Parental lock"; description = "exact match: <empty>, 0 = blacklist, 1 = whitelist, 2 = Enigma 1 format"; break;
+		case TYPE::idx: label = "Index"; description = "Channel list number, in digits"; break;
+		case TYPE::chid: label = "CHID"; description = "Channel ID [ssid]:[tsid]:[dvbns] eg. 4d2:3e8:eeee0000"; break;
+		case TYPE::txid: label = "TXID"; description = "Transponder ID [tsid]:[dvbns] eg. 3e8:eeee0000"; break;
+		case TYPE::refid: label = "REFID"; description = "Reference ID, colon separated values"; break;
+		case TYPE::tnid: label = "TNID"; description = "Tunersets Table ID [yname]:[index] eg. s:0001"; break;
+		case TYPE::trid: label = "TRID"; description = "Tunersets Transponder ID [yname]:[freq]:[index] eg. s:2710:1000"; break;
+		case TYPE::yname: label = "YNAME"; description = "Tuner Name, exact match: s = satellite, t = terrestrial, c = cable, a = atsc"; break;
+		case TYPE::ytype: label = "YTYPE"; description = "Tuner Type, exact match: 0 = satellite, 1 = terrestrial, 2 = cable, 3 = atsc"; break;
+		case TYPE::ssid: label = "SSID"; description = "Service ID, in digits"; break;
+		case TYPE::dvbns: label = "DVBNS"; description = "DVB namespace, in hex"; break;
+		case TYPE::tsid: label = "TSID"; description = "Transport ID, in digits"; break;
+		case TYPE::onid: label = "ONID"; description = "Network ID, in digits"; break;
+		case TYPE::stype: label = "Service Type"; description = "exact match: Data, TV, Radio, HD, H.264, H.265, UHD"; break;
+		case TYPE::snum: label = "snum"; description = "Service Number, in digits"; break;
+		case TYPE::srcid: label = "srcid"; description = "Source ID, in digits"; break;
+		case TYPE::parental: label = "Parental locked"; description = "[Y]es or [N]one"; break;
+		case TYPE::chname: label = "Service Name"; break;
+		case TYPE::sdata_p: label = "Provider Name"; break;
+		case TYPE::sdata_c: label = "Service Cache"; description = "comma separated values in hex or <empty>, eg. c:0101,c:0202"; break;
+		case TYPE::sdata_C: label = "Service CAS"; description = "comma separated values in hex or <empty>, eg. C:0101,C:0202"; break;
+		case TYPE::sdata_f: label = "Service Flags"; description = "comma separated values in hex or <empty>, eg. f:0101,f:0202"; break;
+		case TYPE::mname: label = "Marker Name"; break;
+		case TYPE::mnum: label = "Marker Number"; description = "in digits"; break;
+		case TYPE::chvalue: label = "Channel Name"; break;
+		case TYPE::churl: label = "Channel URL"; break;
+		case TYPE::etype: label = "Favourite Type"; description = "exact match: 1 = broadcast, 2 = file, 3 = 4097, 8139 = youtube, 8193 = eservice"; break;
+		case TYPE::atype: label = "Favourite Flag"; description = "exact match: 64 = marker, 512 = marker hidden, 832 = marker hidden, 320 = marker numbered, 128 = group"; break;
+		case TYPE::freq: label = "Frequency"; description = "in Hertz, 6 digits"; break;
+		case TYPE::sr: label = "Symbol Rate"; description = "in digits"; break;
+		case TYPE::pol: label = "Polarization"; description = "exact match: H = horizontal, V = vertical, L = Left Circular, R = Right Circular"; break;
+		case TYPE::fec: label = "FEC"; description = "exact match: <empty>, Auto, 1/2, 2/3, 3/4, 5/6, 7/8, 8/9, 3/5 4/5, 9/10, 6/7"; break;
+		case TYPE::hpfec: label = "HP FEC"; description = "exact match: <empty>, Auto, 1/2, 2/3, 3/4, 5/6, 7/8, 6/7, 8/9, 3/5, 4/5"; break;
+		case TYPE::lpfec: label = "LP FEC"; description = "exact match: <empty>, Auto, 1/2, 2/3, 3/4, 5/6, 7/8, 6/7, 8/9, 3/5, 4/5"; break;
+		case TYPE::cfec: label = "Inner FEC"; description = "exact match: <empty>, Auto, 1/2, 2/3, 3/4, 5/6, 7/8, 8/9"; break;
+		case TYPE::inv: case TYPE::tinv: case TYPE::cinv: label = "Inversion"; description = "exact match: <empty>, Off, On"; break;
+		case TYPE::sys: case TYPE::tsys: case TYPE::csys: case TYPE::asys: label = "System"; description = "exact match: DVB-S, DVB-T, DVB-C, ATSC, DVB-S2, DVB-T2, DVB-S/S2, DVB-T/T2, DVB-C ANNEX B"; break;
+		case TYPE::mod: label = "Modulation"; description = "exact match: <empty>, Auto, QPSK, 8PSK, QAM16, 16APSK, 32APSK"; break;
+		case TYPE::tmod: label = "Constellation"; description = "exact match: <empty>, Auto, QPSK, QAM16, QAM64, QAM256"; break;
+		case TYPE::cmod: label = "Modulation"; description = "exact match: <empty>, Auto, QAM16, QAM32, QAM64, QAM128, QAM256"; break;
+		case TYPE::amod: label = "Modulation"; description = "exact match: <empty>, Auto, QAM16, QAM32, QAM64, QAM128, QAM256, 8VSB, 16VSB"; break;
+		case TYPE::rol: label = "Roll Offset"; description = "exact match: <empty>, 0.35, 0.25, 0.20"; break;
+		case TYPE::pil: label = "Pilot"; description = "exact match: <empty>, Off, On, Auto"; break;
+		case TYPE::band: label = "Bandwidth"; description = "exact match: <empty>, Auto, 8MHz, 7MHz, 6MHz, 5MHz, 1.712MHz, 10MHz"; break;
+		case TYPE::tmx: label = "Transmission Mode"; description = "exact match: <empty>, Auto, 2k, 8k, 4k, 1k, 16k, 32k"; break;
+		case TYPE::guard: label = "Guard Interval"; description = "exact match: <empty>, Auto, 1/32, 1/16, 1/8, 1/4, 1/128, 19/128, 19/256"; break;
+		case TYPE::hier: label = "Hierarchy"; description = "exact match: <empty>, 0, 1, 2, 4"; break;
+		case TYPE::plpid: label = "plp id"; description = "in digits"; break;
+		case TYPE::isid: label = "is id"; description = "in digits"; break;
+		case TYPE::plscode: label = "plscode"; description = "in digits"; break;
+		case TYPE::plsmode: label = "plsmode"; description = "in digits"; break;
+		case TYPE::t2mi_plpid: label = "t2mi plpid"; description = "in digits"; break;
+		case TYPE::t2mi_pid: label = "t2mi pid"; description = "in digits"; break;
+		case TYPE::mts: label = "mts"; description = "in digits"; break;
+		case TYPE::plsn: label = "plsn | mis id"; description = "in digits"; break;
+		case TYPE::pos: label = "Position"; description = "in degree, eg. 0.0E, 0.0W"; break;
+		case TYPE::diseqc: label = "diseqc"; description = "in digits"; break;
+		case TYPE::uncomtd: label = "uncomtd"; description = "in digits"; break;
+		case TYPE::charset: label = "Charset"; description = "characters encoding: UTF-8, ISO-8859-1"; break;
+		case TYPE::tname: label = "Position Name"; description = "eg. Telstar 0.0E"; break;
+		case TYPE::country: label = "Country"; description = "Country Code, 3 letters ISO-3166, eg. XYZ"; break;
+		case TYPE::feed: label = "Feed"; description = "[Y]es or [N]one"; break;
+		case TYPE::bname: label = "Bouquet Filename [bname]"; description = "eg. userbouquet.dbe01.tv, bouquet.radio"; break;
+		case TYPE::pname: label = "Parent Bouquet [bname]"; description = "eg. bouquets.tv, bouquets.radio"; break;
+		case TYPE::rname: label = "New Bouquet Name [rname]"; description = "eg. userbouquet.dbe01.tv, bouquet.radio"; break;
+		case TYPE::qname: label = "Bouquet Name"; description = "eg. User - bouquet (TV)"; break;
+		case TYPE::nname: label = "Bouquet Nice Name"; description = "eg. TV, Radio"; break;
+		case TYPE::btype: label = "Bouquet Type"; description = "TV, Radio"; break;
+		case TYPE::hidden: label = "Hidden"; description = "[Y]es or [N]one"; break;
+		case TYPE::locked: label = "Locked"; description = "[Y]es or [N]one"; break;
+		case TYPE::fname: label = "Filename"; break;
+		case TYPE::itype: label = "Zapit Data Type"; description = "exact match: 0 = services, 1 = bouquets"; break;
+		case TYPE::flags: label = "Flags"; description = "in digits"; break;
+		case TYPE::chdata: label = "Add optional Service flags?"; description = "[Y]es or [N]one"; break;
+		case TYPE::txdata: label = "Add optional Transponder flags?"; description = "[Y]es or [N]one"; break;
+		case TYPE::ffdata: label = "Add optional Favourite flags?"; description = "[Y]es or [N]one"; break;
+		default: return false;
 	}
-	else if (__objio.out == OBJIO::byline)
-	{
-		if (depth)
-			*pout << '[' << pout->endl();
-	}
-	else if (__objio.out == OBJIO::json)
-	{
-		if (depth == 1)
-			*pout << '[';
-		else
-			*pout << '{';
-	}
+
+	return true;
 }
 
-void e2db_console::print_obj_end(int depth)
+void e2db_console::label_obj_pair(TYPE type, string &name, VALUE &value_type)
 {
-	if (__objio.out == OBJIO::tabular)
-	{
-		if (depth)
-			*pout << ' ' << ']';
-	}
-	else if (__objio.out == OBJIO::byline)
-	{
-		if (depth)
-			*pout << ']' << pout->endl();
-	}
-	else if (__objio.out == OBJIO::json)
-	{
-		if (depth == 1)
-			*pout << ']';
-		else
-			*pout << '}';
-	}
-}
-
-void e2db_console::print_obj_sep(int xpos)
-{
-	if (__objio.out == OBJIO::tabular)
-	{
-		if (xpos == 0)
-			*pout << '\t' << ' ';
-	}
-	else if (__objio.out == OBJIO::byline)
-	{
-		*pout << pout->endl();
-	}
-	else if (__objio.out == OBJIO::json)
-	{
-		if (xpos == 0)
-			*pout << ',' << ' ';
-	}
-}
-
-void e2db_console::print_obj_dlm(int depth, int xpos)
-{
-	if (__objio.out == OBJIO::tabular)
-	{
-		if (depth == 2)
-		{
-			if (xpos == 0)
-				*pout << '\t';
-		}
-		else
-		{
-			*pout << pout->endl() << pout->endl();
-		}
-	}
-	else if (__objio.out == OBJIO::byline)
-	{
-		*pout << pout->endl();
-	}
-	else if (__objio.out == OBJIO::json)
-	{
-		if (xpos == 0)
-			*pout << ',' << ' ';
-		if (depth == 0)
-			*pout << pout->endl() << pout->endl();
-	}
-}
-
-void e2db_console::print_obj_pair(TYPE type, std::any val)
-{
-	using std::any_cast;
-
 	bool hrn = __objio.hrn;
 	bool hrv = __objio.hrv;
-
-	string name;
-	VALUE value_type;
 
 	switch (type)
 	{
@@ -3989,9 +4011,180 @@ void e2db_console::print_obj_pair(TYPE type, std::any val)
 		case TYPE::tndata: name = hrn ? "Transponders" : "transponders"; value_type = VALUE::val_obj; break;
 		default: return;
 	}
+}
 
+bool e2db_console::value_field(TYPE type, string str, bool required, std::any &val)
+{
 	int d = -1;
-	string str;
+
+	switch (type)
+	{
+		case TYPE::idx:
+		case TYPE::ssid:
+		case TYPE::tsid:
+		case TYPE::onid:
+		case TYPE::snum:
+		case TYPE::srcid:
+		case TYPE::freq:
+		case TYPE::sr:
+		case TYPE::plpid:
+		case TYPE::isid:
+		case TYPE::plscode:
+		case TYPE::plsmode:
+		case TYPE::t2mi_plpid:
+		case TYPE::t2mi_pid:
+		case TYPE::mts:
+		case TYPE::plsn:
+		case TYPE::diseqc:
+		case TYPE::uncomtd:
+		case TYPE::etype:
+		case TYPE::atype:
+		case TYPE::mnum:
+		case TYPE::flags:
+			d = std::atoi(str.data());
+			if (! d && required)
+				return false;
+		break;
+		case TYPE::dvbns:
+			d = int (std::stol(str, nullptr, 16));
+			if (d == 0 && required)
+				return false;
+		break;
+		case TYPE::dbtype:
+			d = std::atoi(str.data());
+			if (required && (d < 0 || d > 1))
+				return false;
+		break;
+		case TYPE::dbparental:
+			d = std::atoi(str.data());
+			if (required && (d < 0 || d > 2))
+				return false;
+		break;
+		case TYPE::ytype:
+			d = std::atoi(str.data());
+			if (required && (d < 0 || d > 3))
+				return false;
+		break;
+		case TYPE::chdata:
+		case TYPE::txdata:
+		case TYPE::ffdata:
+		case TYPE::parental:
+		case TYPE::feed:
+		case TYPE::hidden:
+		case TYPE::locked:
+			if (str == "Y" || str == "y")
+				d = 1;
+			else if (str == "N" || str == "n")
+				d = 0;
+			else if (required)
+				return false;
+		break;
+		case TYPE::sdata_p:
+			val = { str };
+		break;
+		case TYPE::yname:
+			if (str.size() == 1)
+				d = dbih->value_transponder_type(str[0]);
+			else if (required)
+				return false;
+		break;
+		case TYPE::sys:
+			// failsafe string uppercase
+			std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return std::toupper(c); });
+			d = dbih->value_transponder_system(str);
+		break;
+		case TYPE::pos:
+			// failsafe string uppercase
+			std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return std::toupper(c); });
+			d = dbih->value_transponder_position(str);
+		break;
+		case TYPE::pol:
+			// failsafe string uppercase
+			std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return std::toupper(c); });
+			d = dbih->value_transponder_polarization(str);
+		break;
+		case TYPE::fec:
+			d = dbih->value_transponder_fec(str, e2db::YTYPE::satellite);
+		break;
+		case TYPE::hpfec:
+		case TYPE::lpfec:
+			d = dbih->value_transponder_fec(str, e2db::YTYPE::terrestrial);
+		break;
+		case TYPE::cfec:
+			d = dbih->value_transponder_fec(str, e2db::YTYPE::atsc);
+		break;
+		case TYPE::mod:
+			d = dbih->value_transponder_modulation(str, e2db::YTYPE::satellite);
+		break;
+		case TYPE::tmod:
+			d = dbih->value_transponder_modulation(str, e2db::YTYPE::terrestrial);
+		break;
+		case TYPE::cmod:
+			d = dbih->value_transponder_modulation(str, e2db::YTYPE::cable);
+		break;
+		case TYPE::amod:
+			d = dbih->value_transponder_modulation(str, e2db::YTYPE::atsc);
+		break;
+		case TYPE::inv:
+			d = dbih->value_transponder_inversion(str, e2db::YTYPE::satellite);
+		break;
+		case TYPE::tinv:
+			d = dbih->value_transponder_inversion(str, e2db::YTYPE::terrestrial);
+		break;
+		case TYPE::cinv:
+			d = dbih->value_transponder_inversion(str, e2db::YTYPE::cable);
+		break;
+		case TYPE::rol:
+			d = dbih->value_transponder_rollof(str);
+		break;
+		case TYPE::pil:
+			d = dbih->value_transponder_pilot(str);
+		break;
+		case TYPE::band:
+			d = dbih->value_transponder_bandwidth(str);
+		break;
+		case TYPE::tmx:
+			d = dbih->value_transponder_tmx_mode(str);
+		break;
+		case TYPE::guard:
+			d = dbih->value_transponder_guard(str);
+		break;
+		case TYPE::hier:
+			d = dbih->value_transponder_hier(str);
+		break;
+		case TYPE::stype:
+			d = dbih->value_service_type(str);
+		break;
+		case TYPE::btype:
+			d = dbih->value_bouquet_type(str);
+		break;
+		case TYPE::country:
+			if (required && (str.size() < 3 || str.size() > 3))
+				return false;
+			// failsafe string uppercase
+			std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return std::toupper(c); });
+			val = str;
+		break;
+		case TYPE::charset:
+			// failsafe string uppercase
+			std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return std::toupper(c); });
+			val = str;
+		break;
+		default:
+			val = str;
+	}
+
+	if (d == -1 && required)
+		return false;
+	else
+		val = d;
+
+	return true;
+}
+
+void e2db_console::value_obj_pair(TYPE type, VALUE value_type, std::any val, int &d, string &str)
+{
+	using std::any_cast;
 
 	switch (type)
 	{
@@ -4265,24 +4458,407 @@ void e2db_console::print_obj_pair(TYPE type, std::any val)
 		default:
 		break;
 	}
+}
 
-	*pout << obj_escape(ESCAPE::name_begin, value_type);
-	*pout << name;
-	*pout << obj_escape(ESCAPE::name_end, value_type);
-	*pout << obj_escape(ESCAPE::divider, value_type);
-	*pout << obj_escape(ESCAPE::value_begin, value_type);
-	if (value_type == VALUE::val_int)
+std::any e2db_console::field(TYPE type, bool required)
+{
+	string label;
+	string description;
+
+	if (! label_field(type, label, description))
+		return -1;
+
+	while (true)
 	{
-		*pout << d;
+		*pout << label;
+		if (! description.empty())
+			*pout << ' ' << '(' << description << ')';
+		if (required)
+			*pout << ' ' << '*';
+		*pout << ':' << ' ';
+
+		termctl->handler(false);
+		string str = termctl->str();
+		termctl->clear();
+
+		// failsafe string trim
+		str.erase(0, str.find_first_not_of(" \n\r\t\v\b\f"));
+		str.erase(str.find_last_not_of(" \n\r\t\v\b\f") + 1);
+
+		this->curr_field = label;
+
+		if (str.empty() && required)
+			continue;
+
+		std::any val;
+
+		if (value_field(type, str, required, val))
+			return val;
+		else
+			continue;
 	}
-	else if (value_type == VALUE::val_obj)
+
+	return -1;
+}
+
+map<int, vector<pair<e2db_console::TYPE, bool>>> e2db_console::input_mask(ENTRY entry_type, bool edit, string id, int ref, string bname)
+{
+	map<int, vector<pair<TYPE, bool>>> mask;
+
+	if (edit && id.empty())
 	{
+		*perr << "Error: " << msg("Wrong parameter identifier.") << pout->endl();
+
+		return mask;
 	}
-	else
+
+	try
 	{
-		*pout << str;
+		if (entry_type == ENTRY::transponder)
+		{
+			e2db::transponder tx;
+
+			if (edit)
+			{
+				if (dbih->db.transponders.count(id))
+					tx = dbih->db.transponders[id];
+				else
+					throw std::runtime_error (msg("Transponder \"%s\" not exists.", id));
+			}
+
+			auto &props = mask[0];
+			props.emplace_back(pair (TYPE::yname, true));
+			props.emplace_back(pair (TYPE::pos, true));
+			props.emplace_back(pair (TYPE::sys, false));
+			props.emplace_back(pair (TYPE::tsid, true));
+			props.emplace_back(pair (TYPE::onid, true));
+			props.emplace_back(pair (TYPE::freq, true));
+
+			{
+				auto &props = mask[1];
+				props.emplace_back(pair (TYPE::pol, true));
+				props.emplace_back(pair (TYPE::sr, false));
+				props.emplace_back(pair (TYPE::fec, false));
+				props.emplace_back(pair (TYPE::mod, false));
+				props.emplace_back(pair (TYPE::inv, false));
+				props.emplace_back(pair (TYPE::rol, false));
+				props.emplace_back(pair (TYPE::pil, false));
+				props.emplace_back(pair (TYPE::flags, false));
+
+				props.emplace_back(pair (TYPE::txdata, false));
+				{
+					auto &props = mask[-1];
+					props.emplace_back(pair (TYPE::isid, false));
+					props.emplace_back(pair (TYPE::plscode, false));
+					props.emplace_back(pair (TYPE::plsmode, false));
+					props.emplace_back(pair (TYPE::t2mi_plpid, false));
+					props.emplace_back(pair (TYPE::t2mi_pid, false));
+				}
+			}
+			{
+				auto &props = mask[2];
+				props.emplace_back(pair (TYPE::tmod, false));
+				props.emplace_back(pair (TYPE::band, false));
+				props.emplace_back(pair (TYPE::tmx, false));
+				props.emplace_back(pair (TYPE::hpfec, false));
+				props.emplace_back(pair (TYPE::lpfec, false));
+				props.emplace_back(pair (TYPE::tinv, false));
+				props.emplace_back(pair (TYPE::guard, false));
+				props.emplace_back(pair (TYPE::hier, false));
+				props.emplace_back(pair (TYPE::flags, false));
+
+				props.emplace_back(pair (TYPE::txdata, false));
+				{
+					auto &props = mask[-2];
+					props.emplace_back(pair (TYPE::plpid, false));
+				}
+			}
+			{
+				auto &props = mask[3];
+				props.emplace_back(pair (TYPE::cmod, false));
+				props.emplace_back(pair (TYPE::sr, false));
+				props.emplace_back(pair (TYPE::cfec, false));
+				props.emplace_back(pair (TYPE::cinv, false));
+				props.emplace_back(pair (TYPE::flags, false));
+			}
+			{
+				auto &props = mask[4];
+				props.emplace_back(pair (TYPE::amod, false));
+				props.emplace_back(pair (TYPE::flags, false));
+			}
+		}
+		else if (entry_type == ENTRY::service)
+		{
+			if (edit)
+			{
+				if (! dbih->db.services.count(id))
+					throw std::runtime_error (msg("Service \"%s\" not exists.", id));
+			}
+
+			auto &props = mask[0];
+			props.emplace_back(pair (TYPE::txid, true));
+
+			{
+				auto &props = mask[1];
+				props.emplace_back(pair (TYPE::stype, true));
+				props.emplace_back(pair (TYPE::ssid, true));
+				props.emplace_back(pair (TYPE::chname, true));
+				props.emplace_back(pair (TYPE::snum, false));
+				props.emplace_back(pair (TYPE::srcid, false));
+
+				props.emplace_back(pair (TYPE::chdata, false));
+			}
+			{
+				auto &props = mask[-1];
+				props.emplace_back(pair (TYPE::sdata_p, false));
+				props.emplace_back(pair (TYPE::sdata_c, false));
+				props.emplace_back(pair (TYPE::sdata_C, false));
+				props.emplace_back(pair (TYPE::sdata_f, false));
+			}
+		}
+		else if (entry_type == ENTRY::bouquet)
+		{
+			e2db::bouquet bs;
+
+			if (edit)
+			{
+				if (! dbih->bouquets.count(id))
+					throw std::runtime_error (msg("Bouquet \"%s\" not exists.", id));
+			}
+
+			auto &props = mask[0];
+			props.emplace_back(pair (TYPE::btype, true));
+			if (edit)
+				props.emplace_back(pair (TYPE::rname, false));
+			else
+				props.emplace_back(pair (TYPE::bname, true));
+			props.emplace_back(pair (TYPE::qname, true));
+			props.emplace_back(pair (TYPE::nname, false));
+		}
+		else if (entry_type == ENTRY::userbouquet)
+		{
+			if (edit)
+			{
+				if (! dbih->userbouquets.count(id))
+					throw std::runtime_error (msg("Userbouquet \"%s\" not exists.", id));
+			}
+
+			auto &props = mask[0];
+			if (edit)
+				props.emplace_back(pair (TYPE::rname, false));
+			else
+				props.emplace_back(pair (TYPE::bname, true));
+			props.emplace_back(pair (TYPE::pname, true));
+			props.emplace_back(pair (TYPE::qname, true));
+		}
+		else if (entry_type == ENTRY::tunersets)
+		{
+			e2db::tunersets tv;
+
+			int tvid = -1;
+
+			if (edit)
+			{
+				try
+				{
+					tvid = std::stoi(id);
+
+					if (! dbih->tuners.count(tvid))
+						throw 1;
+				}
+				catch (...)
+				{
+					throw std::runtime_error (msg("Tuner settings \"%s\" not exists.", id));
+				}
+			}
+
+			auto &props = mask[0];
+			props.emplace_back(pair (TYPE::ytype, true));
+			props.emplace_back(pair (TYPE::charset, false));
+		}
+		else if (entry_type == ENTRY::tunersets_table)
+		{
+			e2db::tunersets tv;
+			e2db::tunersets_table tn;
+
+			if (edit)
+			{
+				bool found = false;
+
+				for (auto & x : dbih->tuners)
+				{
+					tv = x.second;
+
+					if (tv.tables.count(id))
+					{
+						found = true;
+						tn = x.second.tables[id];
+						break;
+					}
+				}
+
+				if (! found)
+					throw std::runtime_error (msg("Tuner settings table \"%s\" not exists.", id));
+			}
+
+			int i = 0;
+			auto &props = mask[0];
+			props.emplace_back(pair (TYPE::ytype, true));
+			props.emplace_back(pair (TYPE::tname, true));
+
+			{
+				i = 1;
+				auto &props = mask[1];
+				props.emplace_back(pair (TYPE::pos, true));
+			}
+			{
+				i = 2;
+				auto &props = mask[2];
+				props.emplace_back(pair (TYPE::country, false));
+			}
+			{
+				i = 3;
+				auto &props = mask[3];
+				props.emplace_back(pair (TYPE::country, false));
+				props.emplace_back(pair (TYPE::feed, false));
+			}
+			{
+				auto &props = mask[i];
+				props.emplace_back(pair (TYPE::flags, false));
+			}
+		}
+		else if (entry_type == ENTRY::tunersets_transponder)
+		{
+			e2db::tunersets tv;
+			e2db::tunersets_table tn;
+
+			if (edit)
+			{
+				bool found = false;
+
+				for (auto & x : dbih->tuners)
+				{
+					tv = x.second;
+
+					for (auto & x : tv.tables)
+					{
+						tn = x.second;
+
+						if (tn.transponders.count(id))
+						{
+							found = true;
+							break;
+							break;
+						}
+					}
+				}
+
+				if (! found)
+					throw std::runtime_error (msg("Tuner settings transponder \"%s\" not exists.", id));
+			}
+
+			auto &props = mask[0];
+			props.emplace_back(pair (TYPE::sys, false));
+			props.emplace_back(pair (TYPE::freq, true));
+
+			if (tn.ytype == e2db::YTYPE::satellite)
+			{
+				auto &props = mask[1];
+				props.emplace_back(pair (TYPE::pol, true));
+				props.emplace_back(pair (TYPE::sr, false));
+				props.emplace_back(pair (TYPE::fec, false));
+				props.emplace_back(pair (TYPE::mod, false));
+				props.emplace_back(pair (TYPE::inv, false));
+				props.emplace_back(pair (TYPE::rol, false));
+				props.emplace_back(pair (TYPE::pil, false));
+
+				props.emplace_back(pair (TYPE::txdata, false));
+				{
+					auto &props = mask[-1];
+					props.emplace_back(pair (TYPE::plsn, false));
+					props.emplace_back(pair (TYPE::plscode, false));
+					props.emplace_back(pair (TYPE::plsmode, false));
+					props.emplace_back(pair (TYPE::isid, false));
+					props.emplace_back(pair (TYPE::mts, false));
+				}
+			}
+			else if (tn.ytype == e2db::YTYPE::terrestrial)
+			{
+				auto &props = mask[1];
+				props.emplace_back(pair (TYPE::tmod, false));
+				props.emplace_back(pair (TYPE::band, false));
+				props.emplace_back(pair (TYPE::tmx, false));
+				props.emplace_back(pair (TYPE::hpfec, false));
+				props.emplace_back(pair (TYPE::lpfec, false));
+				props.emplace_back(pair (TYPE::tinv, false));
+				props.emplace_back(pair (TYPE::guard, false));
+				props.emplace_back(pair (TYPE::hier, false));
+
+				props.emplace_back(pair (TYPE::txdata, false));
+				{
+					auto &props = mask[-1];
+					props.emplace_back(pair (TYPE::plpid, false));
+				}
+			}
+			else if (tn.ytype == e2db::YTYPE::cable)
+			{
+				auto &props = mask[1];
+				props.emplace_back(pair (TYPE::cmod, false));
+				props.emplace_back(pair (TYPE::sr, false));
+				props.emplace_back(pair (TYPE::cfec, false));
+				props.emplace_back(pair (TYPE::cinv, false));
+			}
+			else if (tn.ytype == e2db::YTYPE::atsc)
+			{
+				auto &props = mask[1];
+				props.emplace_back(pair (TYPE::amod, false));
+			}
+		}
+		else if (entry_type == ENTRY::channel_reference)
+		{
+			if (! dbih->userbouquets.count(bname))
+				throw std::runtime_error (msg("Userbouquet \"%s\" not exists.", bname));
+
+			auto &props = mask[0];
+
+			if (ref == 0) // marker
+			{
+				props.emplace_back(pair (TYPE::mname, false));
+				props.emplace_back(pair (TYPE::atype, false));
+
+				props.emplace_back(pair (TYPE::ffdata, false));
+				{
+					auto &props = mask[-1];
+					props.emplace_back(pair (TYPE::mnum, false));
+				}
+			}
+			else if (ref == 2) // stream
+			{
+				props.emplace_back(pair (TYPE::etype, false));
+				props.emplace_back(pair (TYPE::chvalue, false));
+				props.emplace_back(pair (TYPE::churl, false));
+			}
+			else // service
+			{
+				if (! dbih->db.services.count(id))
+					throw std::runtime_error (msg("Service \"%s\" not exists.", id));
+			}
+		}
 	}
-	*pout << obj_escape(ESCAPE::value_end, value_type);
+	catch (const std::invalid_argument& err)
+	{
+		*perr << "Error: " << msg(MSG::except_invalid_argument, err.what()) << pout->endl();
+	}
+	catch (const std::runtime_error& err)
+	{
+		*perr << "Error: " << err.what() << pout->endl();
+	}
+	catch (...)
+	{
+		*perr << "Error: " << msg(MSG::except_uncaught) << pout->endl();
+	}
+
+	return mask;
 }
 
 string e2db_console::obj_escape(ESCAPE esc, VALUE value_type)
@@ -4320,288 +4896,123 @@ string e2db_console::obj_escape(ESCAPE esc, VALUE value_type)
 	return "";
 }
 
-std::any e2db_console::field(TYPE type, bool required)
+void e2db_console::print_obj_begin(int depth)
 {
-	string label, description;
-
-	switch (type)
+	if (__objio.out == OBJIO::tabular)
 	{
-		case TYPE::dbtype: label = "Format"; description = "exact match: <empty>, 0 = Lamedb, 1 = Zapit"; break;
-		case TYPE::dbparental: label = "Parental lock"; description = "exact match: <empty>, 0 = blacklist, 1 = whitelist, 2 = Enigma 1 format"; break;
-		case TYPE::idx: label = "Index"; description = "Channel list number, in digits"; break;
-		case TYPE::chid: label = "CHID"; description = "Channel ID [ssid]:[tsid]:[dvbns] eg. 4d2:3e8:eeee0000"; break;
-		case TYPE::txid: label = "TXID"; description = "Transponder ID [tsid]:[dvbns] eg. 3e8:eeee0000"; break;
-		case TYPE::refid: label = "REFID"; description = "Reference ID, colon separated values"; break;
-		case TYPE::tnid: label = "TNID"; description = "Tunersets Table ID [yname]:[index] eg. s:0001"; break;
-		case TYPE::trid: label = "TRID"; description = "Tunersets Transponder ID [yname]:[freq]:[index] eg. s:2710:1000"; break;
-		case TYPE::yname: label = "YNAME"; description = "Tuner Name, exact match: s = satellite, t = terrestrial, c = cable, a = atsc"; break;
-		case TYPE::ytype: label = "YTYPE"; description = "Tuner Type, exact match: 0 = satellite, 1 = terrestrial, 2 = cable, 3 = atsc"; break;
-		case TYPE::ssid: label = "SSID"; description = "Service ID, in digits"; break;
-		case TYPE::dvbns: label = "DVBNS"; description = "DVB namespace, in hex"; break;
-		case TYPE::tsid: label = "TSID"; description = "Transport ID, in digits"; break;
-		case TYPE::onid: label = "ONID"; description = "Network ID, in digits"; break;
-		case TYPE::stype: label = "Service Type"; description = "exact match: Data, TV, Radio, HD, H.264, H.265, UHD"; break;
-		case TYPE::snum: label = "snum"; description = "Service Number, in digits"; break;
-		case TYPE::srcid: label = "srcid"; description = "Source ID, in digits"; break;
-		case TYPE::parental: label = "Parental locked"; description = "[Y]es or [N]one"; break;
-		case TYPE::chname: label = "Service Name"; break;
-		case TYPE::sdata_p: label = "Provider Name"; break;
-		case TYPE::sdata_c: label = "Service Cache"; description = "comma separated values in hex or <empty>, eg. c:0101,c:0202"; break;
-		case TYPE::sdata_C: label = "Service CAS"; description = "comma separated values in hex or <empty>, eg. C:0101,C:0202"; break;
-		case TYPE::sdata_f: label = "Service Flags"; description = "comma separated values in hex or <empty>, eg. f:0101,f:0202"; break;
-		case TYPE::mname: label = "Marker Name"; break;
-		case TYPE::mnum: label = "Marker Number"; description = "in digits"; break;
-		case TYPE::chvalue: label = "Channel Name"; break;
-		case TYPE::churl: label = "Channel URL"; break;
-		case TYPE::etype: label = "Favourite Type"; description = "exact match: 1 = broadcast, 2 = file, 3 = 4097, 8139 = youtube, 8193 = eservice"; break;
-		case TYPE::atype: label = "Favourite Flag"; description = "exact match: 64 = marker, 512 = marker hidden, 832 = marker hidden, 320 = marker numbered, 128 = group"; break;
-		case TYPE::freq: label = "Frequency"; description = "in Hertz, 6 digits"; break;
-		case TYPE::sr: label = "Symbol Rate"; description = "in digits"; break;
-		case TYPE::pol: label = "Polarization"; description = "exact match: H = horizontal, V = vertical, L = Left Circular, R = Right Circular"; break;
-		case TYPE::fec: label = "FEC"; description = "exact match: <empty>, Auto, 1/2, 2/3, 3/4, 5/6, 7/8, 8/9, 3/5 4/5, 9/10, 6/7"; break;
-		case TYPE::hpfec: label = "HP FEC"; description = "exact match: <empty>, Auto, 1/2, 2/3, 3/4, 5/6, 7/8, 6/7, 8/9, 3/5, 4/5"; break;
-		case TYPE::lpfec: label = "LP FEC"; description = "exact match: <empty>, Auto, 1/2, 2/3, 3/4, 5/6, 7/8, 6/7, 8/9, 3/5, 4/5"; break;
-		case TYPE::cfec: label = "Inner FEC"; description = "exact match: <empty>, Auto, 1/2, 2/3, 3/4, 5/6, 7/8, 8/9"; break;
-		case TYPE::inv: case TYPE::tinv: case TYPE::cinv: label = "Inversion"; description = "exact match: <empty>, Off, On"; break;
-		case TYPE::sys: case TYPE::tsys: case TYPE::csys: case TYPE::asys: label = "System"; description = "exact match: DVB-S, DVB-T, DVB-C, ATSC, DVB-S2, DVB-T2, DVB-S/S2, DVB-T/T2, DVB-C ANNEX B"; break;
-		case TYPE::mod: label = "Modulation"; description = "exact match: <empty>, Auto, QPSK, 8PSK, QAM16, 16APSK, 32APSK"; break;
-		case TYPE::tmod: label = "Constellation"; description = "exact match: <empty>, Auto, QPSK, QAM16, QAM64, QAM256"; break;
-		case TYPE::cmod: label = "Modulation"; description = "exact match: <empty>, Auto, QAM16, QAM32, QAM64, QAM128, QAM256"; break;
-		case TYPE::amod: label = "Modulation"; description = "exact match: <empty>, Auto, QAM16, QAM32, QAM64, QAM128, QAM256, 8VSB, 16VSB"; break;
-		case TYPE::rol: label = "Roll Offset"; description = "exact match: <empty>, 0.35, 0.25, 0.20"; break;
-		case TYPE::pil: label = "Pilot"; description = "exact match: <empty>, Off, On, Auto"; break;
-		case TYPE::band: label = "Bandwidth"; description = "exact match: <empty>, Auto, 8MHz, 7MHz, 6MHz, 5MHz, 1.712MHz, 10MHz"; break;
-		case TYPE::tmx: label = "Transmission Mode"; description = "exact match: <empty>, Auto, 2k, 8k, 4k, 1k, 16k, 32k"; break;
-		case TYPE::guard: label = "Guard Interval"; description = "exact match: <empty>, Auto, 1/32, 1/16, 1/8, 1/4, 1/128, 19/128, 19/256"; break;
-		case TYPE::hier: label = "Hierarchy"; description = "exact match: <empty>, 0, 1, 2, 4"; break;
-		case TYPE::plpid: label = "plp id"; description = "in digits"; break;
-		case TYPE::isid: label = "is id"; description = "in digits"; break;
-		case TYPE::plscode: label = "plscode"; description = "in digits"; break;
-		case TYPE::plsmode: label = "plsmode"; description = "in digits"; break;
-		case TYPE::t2mi_plpid: label = "t2mi plpid"; description = "in digits"; break;
-		case TYPE::t2mi_pid: label = "t2mi pid"; description = "in digits"; break;
-		case TYPE::mts: label = "mts"; description = "in digits"; break;
-		case TYPE::plsn: label = "plsn | mis id"; description = "in digits"; break;
-		case TYPE::pos: label = "Position"; description = "in degree, eg. 0.0E, 0.0W"; break;
-		case TYPE::diseqc: label = "diseqc"; description = "in digits"; break;
-		case TYPE::uncomtd: label = "uncomtd"; description = "in digits"; break;
-		case TYPE::charset: label = "Charset"; description = "characters encoding: UTF-8, ISO-8859-1"; break;
-		case TYPE::tname: label = "Position Name"; description = "eg. Telstar 0.0E"; break;
-		case TYPE::country: label = "Country"; description = "Country Code, 3 letters ISO-3166, eg. XYZ"; break;
-		case TYPE::feed: label = "Feed"; description = "[Y]es or [N]one"; break;
-		case TYPE::bname: label = "Bouquet Filename [bname]"; description = "eg. userbouquet.dbe01.tv, bouquet.radio"; break;
-		case TYPE::pname: label = "Parent Bouquet [bname]"; description = "eg. bouquets.tv, bouquets.radio"; break;
-		case TYPE::rname: label = "New Bouquet Name [rname]"; description = "eg. userbouquet.dbe01.tv, bouquet.radio"; break;
-		case TYPE::qname: label = "Bouquet Name"; description = "eg. User - bouquet (TV)"; break;
-		case TYPE::nname: label = "Bouquet Nice Name"; description = "eg. TV, Radio"; break;
-		case TYPE::btype: label = "Bouquet Type"; description = "TV, Radio"; break;
-		case TYPE::hidden: label = "Hidden"; description = "[Y]es or [N]one"; break;
-		case TYPE::locked: label = "Locked"; description = "[Y]es or [N]one"; break;
-		case TYPE::fname: label = "Filename"; break;
-		case TYPE::itype: label = "Zapit Data Type"; description = "exact match: 0 = services, 1 = bouquets"; break;
-		case TYPE::flags: label = "Flags"; description = "in digits"; break;
-		case TYPE::chdata: label = "Add optional Service flags?"; description = "[Y]es or [N]one"; break;
-		case TYPE::txdata: label = "Add optional Transponder flags?"; description = "[Y]es or [N]one"; break;
-		case TYPE::ffdata: label = "Add optional Favourite flags?"; description = "[Y]es or [N]one"; break;
-		default: return -1;
+		if (depth)
+			*pout << '[' << ' ';
 	}
-
-	while (true)
+	else if (__objio.out == OBJIO::byline)
 	{
-		*pout << label;
-		if (! description.empty())
-			*pout << ' ' << '(' << description << ')';
-		if (required)
-			*pout << ' ' << '*';
-		*pout << ':' << ' ';
+		if (depth)
+			*pout << '[' << pout->endl();
+	}
+	else if (__objio.out == OBJIO::json)
+	{
+		if (depth == 1)
+			*pout << '[';
+		else
+			*pout << '{';
+	}
+}
 
-		termctl->handler();
-		string str = termctl->str();
-		termctl->clear();
+void e2db_console::print_obj_end(int depth)
+{
+	if (__objio.out == OBJIO::tabular)
+	{
+		if (depth)
+			*pout << ' ' << ']';
+	}
+	else if (__objio.out == OBJIO::byline)
+	{
+		if (depth)
+			*pout << ']' << pout->endl();
+	}
+	else if (__objio.out == OBJIO::json)
+	{
+		if (depth == 1)
+			*pout << ']';
+		else
+			*pout << '}';
+	}
+}
 
-		// failsafe string trim
-		str.erase(0, str.find_first_not_of(" \n\r\t\v\b\f"));
-		str.erase(str.find_last_not_of(" \n\r\t\v\b\f") + 1);
+void e2db_console::print_obj_sep(int xpos)
+{
+	if (__objio.out == OBJIO::tabular)
+	{
+		if (xpos == 0)
+			*pout << '\t' << ' ';
+	}
+	else if (__objio.out == OBJIO::byline)
+	{
+		*pout << pout->endl();
+	}
+	else if (__objio.out == OBJIO::json)
+	{
+		if (xpos == 0)
+			*pout << ',' << ' ';
+	}
+}
 
-		this->curr_field = label;
-
-		if (! str.empty())
+void e2db_console::print_obj_dlm(int depth, int xpos)
+{
+	if (__objio.out == OBJIO::tabular)
+	{
+		if (depth == 2)
 		{
-			int d = -1;
-
-			switch (type)
-			{
-				case TYPE::idx:
-				case TYPE::ssid:
-				case TYPE::tsid:
-				case TYPE::onid:
-				case TYPE::snum:
-				case TYPE::srcid:
-				case TYPE::freq:
-				case TYPE::sr:
-				case TYPE::plpid:
-				case TYPE::isid:
-				case TYPE::plscode:
-				case TYPE::plsmode:
-				case TYPE::t2mi_plpid:
-				case TYPE::t2mi_pid:
-				case TYPE::mts:
-				case TYPE::plsn:
-				case TYPE::diseqc:
-				case TYPE::uncomtd:
-				case TYPE::etype:
-				case TYPE::atype:
-				case TYPE::mnum:
-				case TYPE::flags:
-					d = std::atoi(str.data());
-					if (! d && required)
-						continue;
-				break;
-				case TYPE::dvbns:
-					d = int (std::stol(str, nullptr, 16));
-					if (d == 0 && required)
-						continue;
-				break;
-				case TYPE::dbtype:
-					d = std::atoi(str.data());
-					if (required && (d < 0 || d > 1))
-						continue;
-				break;
-				case TYPE::dbparental:
-					d = std::atoi(str.data());
-					if (required && (d < 0 || d > 2))
-						continue;
-				break;
-				case TYPE::ytype:
-					d = std::atoi(str.data());
-					if (required && (d < 0 || d > 3))
-						continue;
-				break;
-				case TYPE::chdata:
-				case TYPE::txdata:
-				case TYPE::ffdata:
-				case TYPE::parental:
-				case TYPE::feed:
-				case TYPE::hidden:
-				case TYPE::locked:
-					if (str == "Y" || str == "y")
-						d = 1;
-					else if (str == "N" || str == "n")
-						d = 0;
-					else if (required)
-						continue;
-				break;
-				case TYPE::sdata_p:
-					return { str };
-				break;
-				case TYPE::yname:
-					if (str.size() == 1)
-						d = dbih->value_transponder_type(str[0]);
-					else if (required)
-						continue;
-				break;
-				case TYPE::sys:
-					// failsafe string uppercase
-					std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return std::toupper(c); });
-					d = dbih->value_transponder_system(str);
-				break;
-				case TYPE::pos:
-					// failsafe string uppercase
-					std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return std::toupper(c); });
-					d = dbih->value_transponder_position(str);
-				break;
-				case TYPE::pol:
-					// failsafe string uppercase
-					std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return std::toupper(c); });
-					d = dbih->value_transponder_polarization(str);
-				break;
-				case TYPE::fec:
-					d = dbih->value_transponder_fec(str, e2db::YTYPE::satellite);
-				break;
-				case TYPE::hpfec:
-				case TYPE::lpfec:
-					d = dbih->value_transponder_fec(str, e2db::YTYPE::terrestrial);
-				break;
-				case TYPE::cfec:
-					d = dbih->value_transponder_fec(str, e2db::YTYPE::atsc);
-				break;
-				case TYPE::mod:
-					d = dbih->value_transponder_modulation(str, e2db::YTYPE::satellite);
-				break;
-				case TYPE::tmod:
-					d = dbih->value_transponder_modulation(str, e2db::YTYPE::terrestrial);
-				break;
-				case TYPE::cmod:
-					d = dbih->value_transponder_modulation(str, e2db::YTYPE::cable);
-				break;
-				case TYPE::amod:
-					d = dbih->value_transponder_modulation(str, e2db::YTYPE::atsc);
-				break;
-				case TYPE::inv:
-					d = dbih->value_transponder_inversion(str, e2db::YTYPE::satellite);
-				break;
-				case TYPE::tinv:
-					d = dbih->value_transponder_inversion(str, e2db::YTYPE::terrestrial);
-				break;
-				case TYPE::cinv:
-					d = dbih->value_transponder_inversion(str, e2db::YTYPE::cable);
-				break;
-				case TYPE::rol:
-					d = dbih->value_transponder_rollof(str);
-				break;
-				case TYPE::pil:
-					d = dbih->value_transponder_pilot(str);
-				break;
-				case TYPE::band:
-					d = dbih->value_transponder_bandwidth(str);
-				break;
-				case TYPE::tmx:
-					d = dbih->value_transponder_tmx_mode(str);
-				break;
-				case TYPE::guard:
-					d = dbih->value_transponder_guard(str);
-				break;
-				case TYPE::hier:
-					d = dbih->value_transponder_hier(str);
-				break;
-				case TYPE::stype:
-					d = dbih->value_service_type(str);
-				break;
-				case TYPE::btype:
-					d = dbih->value_bouquet_type(str);
-				break;
-				case TYPE::country:
-					if (required && (str.size() < 3 || str.size() > 3))
-						continue;
-					// failsafe string uppercase
-					std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return std::toupper(c); });
-					return str;
-				break;
-				case TYPE::charset:
-					// failsafe string uppercase
-					std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return std::toupper(c); });
-					return str;
-				break;
-				default:
-					return str;
-			}
-
-			if (d == -1 && required)
-				continue;
-			else
-				return d;
-		}
-		else if (required)
-		{
-			continue;
+			if (xpos == 0)
+				*pout << '\t';
 		}
 		else
 		{
-			break;
+			*pout << pout->endl() << pout->endl();
 		}
 	}
+	else if (__objio.out == OBJIO::byline)
+	{
+		*pout << pout->endl();
+	}
+	else if (__objio.out == OBJIO::json)
+	{
+		if (xpos == 0)
+			*pout << ',' << ' ';
+		if (depth == 0)
+			*pout << pout->endl() << pout->endl();
+	}
+}
 
-	return -1;
+void e2db_console::print_obj_pair(TYPE type, std::any val)
+{
+	string name;
+	VALUE value_type;
+
+	label_obj_pair(type, name, value_type);
+
+	int d = -1;
+	string str;
+
+	value_obj_pair(type, value_type, val, d, str);
+
+	*pout << obj_escape(ESCAPE::name_begin, value_type);
+	*pout << name;
+	*pout << obj_escape(ESCAPE::name_end, value_type);
+	*pout << obj_escape(ESCAPE::divider, value_type);
+	*pout << obj_escape(ESCAPE::value_begin, value_type);
+	if (value_type == VALUE::val_int)
+	{
+		*pout << d;
+	}
+	//TODO
+	else if (value_type == VALUE::val_obj)
+	{
+	}
+	else
+	{
+		*pout << str;
+	}
+	*pout << obj_escape(ESCAPE::value_end, value_type);
 }
 
 }

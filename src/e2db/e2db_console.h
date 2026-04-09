@@ -12,6 +12,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
 #include <any>
 
 using std::string, std::vector;
@@ -34,8 +35,6 @@ struct streamiface
 		virtual streamiface &operator<<(const char* s) = 0;
 		virtual streamiface &operator<<(const std::string &s) = 0;
 		virtual streamiface &operator<<(const streamiface &) = 0;
-		// virtual streamiface &operator<<(std::ostream&(*p)(std::ostream&)) = 0;
-		// virtual streamiface &operator<<(std::ios_base&(*p)(std::ios_base&)) = 0;
 
 		virtual streamiface &endl() = 0;
 		virtual streamiface &flush() = 0;
@@ -49,7 +48,7 @@ struct termiface
 {
 	public:
 		virtual ~termiface() = default;
-		virtual void handler(bool command = false) = 0;
+		virtual void handler(bool command) = 0;
 		virtual void clear() = 0;
 		virtual std::istream* ptr() = 0;
 		virtual const std::string str() = 0;
@@ -65,7 +64,7 @@ class e2db_console
 {
 	public:
 		virtual ~e2db_console() = default;
-		std::string version();
+		std::string editor_version();
 		int exited();
 
 	protected:
@@ -74,25 +73,27 @@ class e2db_console
 
 		enum COMMAND {
 			usage,
-			fread,
-			fwrite,
-			list,
+			version,
+			quit,
 			add,
 			edit,
 			remove,
+			list,
+			fread,
+			fwrite,
+			fimport,
+			fexport,
 			copy,
 			move,
 			set,
 			unset,
-			fimport,
-			fexport,
 			merge,
-			print,
 			parse,
 			make,
 			convert,
 			tool,
 			macro,
+			print,
 			inspect,
 			preferences
 		};
@@ -173,10 +174,17 @@ class e2db_console
 
 		HISTORY history = HISTORY::memory;
 
-		void console_header();
-		void console_error(const string& cmd);
-		virtual void console_version();
 		virtual void console_exit();
+		virtual void console_header();
+		virtual void console_error(const string& cmd);
+		virtual void console_version(bool extended = false);
+		virtual void console_resolver(COMMAND command, istream* is);
+		virtual void console_usage(COMMAND hint, int level = 3);
+		virtual void console_print(int opt);
+		virtual void console_inspect();
+		virtual void console_preferences(string type, string val);
+		virtual void console_preferences(OBJIO format);
+		virtual void console_preferences(HISTORY type);
 
 		void command_help(istream* is) { console_resolver(COMMAND::usage, is); }
 		void command_read(istream* is) { console_resolver(COMMAND::fread, is); }
@@ -201,15 +209,7 @@ class e2db_console
 		void command_inspect(istream* is) { console_resolver(COMMAND::inspect, is); }
 		void command_preferences(istream* is) { console_resolver(COMMAND::preferences, is); }
 		void command_version() { console_version(); }
-		void command_exit() { console_exit(); }
-
-		void console_resolver(COMMAND command, istream* is);
-		void console_usage(COMMAND hint, int level = 2);
-		void console_print(int opt);
-		void console_inspect();
-		void console_preferences(string type, string val);
-		void console_preferences(OBJIO format);
-		void console_preferences(HISTORY type);
+		void command_quit() { console_exit(); }
 
 		void console_file_read(string path);
 		void console_file_write(string path);
@@ -224,26 +224,35 @@ class e2db_console
 		void console_e2db_macro(string id);
 		void console_e2db_macro(vector<string> pattern);
 
-		void entry_list(ENTRY entry_type, string bname, int offset0, int offset1);
-		void entry_list(ENTRY entry_type, int offset0, int offset1, string bname = "");
-		void entry_list(ENTRY entry_type, bool paged = true, int limit = 0, int pos = 0, string bname = "");
-		void entry_list(ENTRY entry_type, int pos, int offset, int& end, string bname = "");
-		void entry_add(ENTRY entry_type);
-		void entry_add(ENTRY entry_type, int ref, string bname);
-		void entry_edit(ENTRY entry_type, string id);
-		void entry_edit(ENTRY entry_type, int ref, string bname, string id);
-		void entry_edit(ENTRY entry_type, bool edit, string id = "", int ref = 0, string bname = "");
-		void entry_remove(ENTRY entry_type, int ref, string bname, string id);
-		void entry_remove(ENTRY entry_type, string id, string bname = "");
-		void entry_parentallock(ENTRY entry_type, string id, bool flag);
+		virtual void entry_list(ENTRY entry_type, string bname, int offset0, int offset1);
+		virtual void entry_list(ENTRY entry_type, int offset0, int offset1, string bname = "");
+		virtual void entry_list(ENTRY entry_type, bool paged = true, int limit = 0, int pos = 0, string bname = "");
+		virtual void entry_add(ENTRY entry_type);
+		virtual void entry_add(ENTRY entry_type, int ref, string bname);
+		virtual void entry_edit(ENTRY entry_type, string id);
+		virtual void entry_edit(ENTRY entry_type, int ref, string bname, string id);
+		virtual void entry_edit(ENTRY entry_type, bool edit, string id = "", int ref = 0, string bname = "");
+		virtual void entry_remove(ENTRY entry_type, int ref, string bname, string id);
+		virtual void entry_remove(ENTRY entry_type, string id, string bname = "");
+		virtual void entry_parentallock(ENTRY entry_type, string id, bool flag);
+		virtual void entry_list_exec(ENTRY entry_type, int pos, int offset, int& end, string bname = "");
+		virtual void entry_edit_exec(ENTRY entry_type, bool edit, string id = "", int ref = 0, string bname = "");
+		virtual void entry_remove_exec(ENTRY entry_type, string id, string bname = "");
+		virtual void entry_parentallock_exec(ENTRY entry_type, string id, bool flag);
 
+		bool label_field(TYPE type, string &label, string &description);
+		void label_obj_pair(TYPE type, string &name, VALUE &value_type);
+		bool value_field(TYPE type, string str, bool required, std::any &val);
+		void value_obj_pair(TYPE type, VALUE value_type, std::any val, int &d, string &str);
+		virtual std::any field(TYPE type, bool required = false);
+		virtual map<int, vector<pair<TYPE, bool>>> input_mask(ENTRY entry_type, bool edit, string id = "", int ref = 0, string bname = "");
+
+		string obj_escape(ESCAPE esc, VALUE value_type);
 		void print_obj_begin(int depth = 0);
 		void print_obj_end(int depth = 0);
 		void print_obj_sep(int xpos = 0);
 		void print_obj_dlm(int depth = 0, int xpos = 0);
 		void print_obj_pair(TYPE type, std::any val);
-		string obj_escape(ESCAPE esc, VALUE value_type);
-		std::any field(TYPE type, bool required = false);
 
 		using MSG = e2se::logger::MSG;
 		static string msg(string str, string param) { return e2se::logger::msg(str, param); }

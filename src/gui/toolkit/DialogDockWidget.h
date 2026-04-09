@@ -20,7 +20,7 @@ class DialogDockWidget : public QDockWidget
 	Q_OBJECT
 
 	public:
-    	explicit DialogDockWidget(QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags());
+		explicit DialogDockWidget(QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags());
 		void setLayout(QLayout* layout);
 		void setWidgetParent(QWidget* widget);
 		void raiseWindow();

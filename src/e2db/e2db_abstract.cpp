@@ -34,6 +34,11 @@ using std::string, std::pair, std::unordered_set, std::stringstream, std::hex, s
 namespace e2se_e2db
 {
 
+string e2db_abstract::editor_version()
+{
+	return "1.9.0";
+}
+
 string e2db_abstract::editor_string(int html)
 {
 	if (html == 2)
@@ -356,7 +361,7 @@ string e2db_abstract::value_reference_id(channel_reference chref)
 	int anum = chref.anum;
 	int ssid = chref.ref.ssid;
 	int tsid = chref.ref.tsid;
-	int onid =  chref.ref.onid;
+	int onid = chref.ref.onid;
 	int dvbns = chref.ref.dvbns;
 	int x7 = chref.x7;
 	int x8 = chref.x8;
@@ -395,7 +400,7 @@ string e2db_abstract::value_reference_id(channel_reference chref, service ch)
 		anum = chref.anum;
 		ssid = chref.ref.ssid;
 		tsid = chref.ref.tsid;
-		onid =  chref.ref.onid;
+		onid = chref.ref.onid;
 		dvbns = chref.ref.dvbns;
 	}
 	else

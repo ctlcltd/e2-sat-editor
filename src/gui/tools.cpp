@@ -41,7 +41,7 @@
 #include "tab.h"
 #include "gui.h"
 #include "dialConvertM3u.h"
-#include "e2db_console_gui.h"
+#include "console_gui.h"
 
 using namespace e2se;
 
@@ -1218,7 +1218,7 @@ void tools::console()
 
 	tid->addPermanentDockWidget(Qt::BottomDockWidgetArea, dwig);
 
-	e2db_console_gui* dframe = new e2db_console_gui(dwig, this->data);
+	console_gui* dframe = new console_gui(dwig, this->data);
 }
 
 void tools::destroy()

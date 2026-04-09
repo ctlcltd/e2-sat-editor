@@ -19,16 +19,16 @@ namespace e2se_gui
 
 DialogDockWidget::DialogDockWidget(QWidget* parent, Qt::WindowFlags flags) : QDockWidget(parent, flags)
 {
-    connect(this, &DialogDockWidget::dockLocationChanged, this, [=](Qt::DockWidgetArea area) {
-        this->docked = (area != Qt::NoDockWidgetArea);
-    });
+	connect(this, &DialogDockWidget::dockLocationChanged, this, [=](Qt::DockWidgetArea area) {
+		this->docked = (area != Qt::NoDockWidgetArea);
+	});
 }
 
 void DialogDockWidget::setLayout(QLayout* layout)
 {
-    QWidget* wid = new QWidget;
-    wid->setLayout(layout);
-    this->setWidget(wid);
+	QWidget* wid = new QWidget;
+	wid->setLayout(layout);
+	this->setWidget(wid);
 }
 
 void DialogDockWidget::setWidgetParent(QWidget* parent)

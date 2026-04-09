@@ -15,6 +15,7 @@ usage () {
 	fi
 
 	printf "%s\n\n" "bash build-mingw.sh [OPTIONS] [-a i686] [-a x86_64] [-p debug | release]"
+	printf "%s\n"   "-c --cmake         CMake executable."
 	printf "%s\n"   "-a --arch          Cross-compile architecture."
 	printf "%s\n"   "-d --dynamic       Cross-compile dynamic libs."
 	printf "%s\n"   "-c --cleanup       Task: cleanup"
@@ -41,7 +42,15 @@ src () {
 }
 
 init () {
-	if [[ -z $(type -t cmake) ]]; then
+	if [[ -z "CMAKE" ]]; then
+		if [[ -n $(type -t cmake) ]]; then
+			CMAKE="cmake"
+		elif [[ -n $(type -t qt-cmake) ]]; then
+			CMAKE="qt-cmake"
+		fi
+	fi
+
+	if [[ -z $(type -t "$CMAKE") ]]; then
 		echo "CMake not found."
 
 		exit 1;
@@ -231,6 +240,12 @@ fi
 
 for SRG in "$@"; do
 	case "$SRG" in
+		-c*|--cmake*)
+			CMAKE="$2"
+			init
+			shift
+			shift
+			;;
 		-a*|--arch*)
 			ARCH="$2"
 			init

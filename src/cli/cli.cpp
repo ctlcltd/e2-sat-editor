@@ -77,15 +77,15 @@ void cli::options(int argc, char* argv[])
 
 void cli::cmd_shell()
 {
+	this->plog = new e2se::logger("cli", "cmd_shell");
+	this->dbih = new e2db;
+
 	termctl = new e2se_cli::termctl;
 
 	if (history == HISTORY::file)
 		termctl->load_history();
 
 	console_header();
-
-	this->plog = new e2se::logger("cli", "cmd_shell");
-	this->dbih = new e2db;
 
 	while (true)
 	{
@@ -95,7 +95,7 @@ void cli::cmd_shell()
 		termctl->clear();
 
 		if (cmd == "quit" || cmd == "exit" || cmd == "q")
-			return command_exit();
+			return command_quit();
 		else if (cmd == "help" || cmd == "h")
 			command_help(is);
 		else if (cmd == "version" || cmd == "v")
@@ -155,7 +155,7 @@ void cli::cmd_shell()
 
 void cli::cmd_version()
 {
-	*pout << "e2se-cli" << ' ' << version() << pout->endl();
+	*pout << "e2se-cli" << ' ' << editor_version() << pout->endl();
 }
 
 void cli::cmd_error(string opt)
@@ -178,9 +178,11 @@ void cli::cmd_usage()
 	*pout << pout->endl();
 }
 
-void cli::console_version()
+void cli::console_version(bool extended)
 {
-	*pout << version() << pout->endl();
+	*pout << "e2se-cli" << ' ';
+	if (extended) *pout << "version" << ' ';
+	*pout << editor_version() << pout->endl();
 }
 
 void cli::console_exit()

@@ -2233,7 +2233,7 @@ void tab::ftpComboItems()
 {
 	// debug("ftpComboItems");
 
-	if  (ftp_combo->count())
+	if (ftp_combo->count())
 	{
 		ftp_combo->clear();
 
@@ -3248,7 +3248,7 @@ void tab::bubbleMessage(MSG_CODE code, const QRect& rect)
 		case MSG_CODE::ftpStbReloadedBubble: message = QString(tr("STB reload done.", "message")).replace(".", ""); break;
 		default: return;
 	}
-		
+
 	QRect geometry;
 
 	if (rect.isNull())
@@ -3257,7 +3257,7 @@ void tab::bubbleMessage(MSG_CODE code, const QRect& rect)
 		QPoint pos = this->top_toolbar->mapToGlobal(this->top_toolbar->pos());
 		int width = int (message.length()) * 13 + 72;
 		int height = 65;
-		geometry = QRect((w / 2  - width / 2), (pos.y() + height + 22), width, height);
+		geometry = QRect((w / 2 - width / 2), (pos.y() + height + 22), width, height);
 	}
 	else
 	{
@@ -3270,7 +3270,7 @@ void tab::bubbleMessage(MSG_CODE code, const QRect& rect)
 		if (rect.x() == 0)
 		{
 			int w = this->top_toolbar->width();
-			geometry.setX((w / 2  - geometry.width() / 2));
+			geometry.setX((w / 2 - geometry.width() / 2));
 		}
 		if (rect.y() == 0)
 		{

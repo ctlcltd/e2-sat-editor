@@ -591,6 +591,7 @@ struct e2db_abstract : protected e2se::log_factory
 		unordered_map<string, string> changes;
 
 		virtual ~e2db_abstract() = default;
+		static string editor_version();
 		static string editor_string(int html = 0);
 		static string editor_timestamp();
 		static string timestamp();

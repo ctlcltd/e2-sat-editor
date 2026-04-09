@@ -67,7 +67,7 @@ class cli : public e2db_console
 		void cmd_error(string opt);
 		void cmd_usage();
 
-		void console_version();
+		void console_version(bool extended = false);
 		void console_exit();
 };
 

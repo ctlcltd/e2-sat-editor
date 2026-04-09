@@ -318,9 +318,9 @@ void termctl::handler(bool command)
 			prev = next;
 			continue;
 		}
-		else if (c == KEY_MAP::KeyEnter)
+		else if (c == KEY_MAP::KeyReturn)
 		{
-			next = EVENT::StdinReturn;
+			next = EVENT::InputReturn;
 
 			is->seekp(0, std::ios_base::beg);
 
@@ -455,7 +455,7 @@ int termctl::paged(int pos, int offset)
 
 	std::printf("Press key [Up] | [Down] to Move, [q] to Exit");
 
-	int curr = 0;
+	int key = 0;
 
 	int c;
 	while ((c = std::getchar()) != EOF)
@@ -464,28 +464,28 @@ int termctl::paged(int pos, int offset)
 		{
 			while (! std::isalpha(c))
 			{
-				c = curr = std::getchar();
+				c = key = std::getchar();
 			}
 			switch (c)
 			{
 				case KEY_MAP::KeyUp:
-					curr = EVENT::PagePrev;
+					key = EVENT::PagePrev;
 				break;
 				case KEY_MAP::KeyDown:
-					curr = EVENT::PageNext;
+					key = EVENT::PageNext;
 				break;
 				case KEY_MAP::KeyRight:
-					curr = EVENT::PageNext;
+					key = EVENT::PageNext;
 				break;
 				case KEY_MAP::KeyLeft:
-					curr = EVENT::PagePrev;
+					key = EVENT::PagePrev;
 				break;
 				default:
 					tty_bell();
 			}
-			if (curr != 0)
+			if (key != 0)
 			{
-				if (curr == EVENT::PagePrev)
+				if (key == EVENT::PagePrev)
 				{
 					if (pos - offset < 0)
 					{
@@ -498,9 +498,9 @@ int termctl::paged(int pos, int offset)
 				break;
 			}
 		}
-		else if (c == KEY_MAP::KeyEnter)
+		else if (c == KEY_MAP::KeyReturn)
 		{
-			curr = EVENT::PageNext;
+			key = EVENT::PageNext;
 			break;
 		}
 		else if (c == 'q' || c == 'Q' || c == 'x' || c == 'X')
@@ -521,7 +521,7 @@ int termctl::paged(int pos, int offset)
 	tty_setsane();
 #endif
 
-	return curr;
+	return key;
 }
 
 std::pair<int, int> termctl::screensize()

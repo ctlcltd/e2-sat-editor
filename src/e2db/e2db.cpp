@@ -2015,7 +2015,7 @@ map<e2db::ERRID, vector<e2db::errmsg>> e2db::error_checker()
 
 					std::snprintf(dsc, 255, "reference: %s SID: %d TSID: %d ONID: %d DVBNS: %x", chid.c_str(), ch.ssid, ch.tsid, ch.onid, ch.dvbns);
 
-					chkerr[ERRID::chi].emplace_back(errmsg(ERRID::chi, chid, msg("Transponder \"%s\" not exists.", ch.txid),  dsc, i));
+					chkerr[ERRID::chi].emplace_back(errmsg(ERRID::chi, chid, msg("Transponder \"%s\" not exists.", ch.txid), dsc, i));
 				}
 			}
 			else

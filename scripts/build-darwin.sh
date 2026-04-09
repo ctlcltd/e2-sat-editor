@@ -33,12 +33,14 @@ src () {
 
 init () {
 	if [[ -z "$QMAKE" ]]; then
-		if [[ -n $(type -t qmake) ]]; then
+		if [[ -n $(type -t qmake6) ]]; then
+			QMAKE="qmake6"
+		elif [[ -n $(type -t qmake) ]]; then
 			QMAKE="qmake"
 		fi
 	fi
 
-	if [[ -z $(type -t qmake) ]]; then
+	if [[ -z $(type -t "$QMAKE") ]]; then
 		echo "QMake not found."
 
 		exit 1;

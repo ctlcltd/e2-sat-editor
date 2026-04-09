@@ -30,7 +30,7 @@ class termctl : public ::e2se_e2db::termiface
 			KeyRight = 67,
 			KeyLeft = 68,
 			KeyDelete = 127,
-			KeyEnter = 10
+			KeyReturn = 10
 		};
 
 		enum EVENT {
@@ -41,12 +41,12 @@ class termctl : public ::e2se_e2db::termiface
 			CursorForward = KeyRight,
 			CursorBackward = KeyLeft,
 			DeleteChar = KeyDelete,
-			StdinReturn = KeyEnter
+			InputReturn = KeyReturn
 		};
 
 		termctl();
 		~termctl();
-		void handler(bool command = false);
+		void handler(bool command);
 		void clear();
 		std::istream* ptr();
 		const std::string str();
