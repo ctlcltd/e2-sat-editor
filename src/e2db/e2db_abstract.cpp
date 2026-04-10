@@ -865,6 +865,14 @@ string e2db_abstract::value_transponder_dvbns(int dvbns)
 	return cdvbns;
 }
 
+int e2db_abstract::value_transponder_frequency(string str)
+{
+	if (str.size() == 6)
+		return int (std::atoi(str.data()) * 1e3);
+	else
+		return std::atoi(str.data());
+}
+
 int e2db_abstract::value_transponder_frequency(int freq, bool display)
 {
 	return display ? int (freq / 1e3) : freq;
@@ -889,6 +897,14 @@ string e2db_abstract::value_transponder_polarization(int pol)
 	else if (pol < (int (sizeof(SAT_POL) / sizeof(SAT_POL[0]))))
 		return SAT_POL[pol];
 	return "";
+}
+
+int e2db_abstract::value_transponder_sr(string str)
+{
+	if (str.size() == 6)
+		return int (std::atoi(str.data()) * 1e3);
+	else
+		return std::atoi(str.data());
 }
 
 string e2db_abstract::value_transponder_sr(int sr, bool display)
@@ -1542,7 +1558,7 @@ void e2db_abstract::value_markup_attribute(string line, string token, string& ke
 	}
 	else
 	{
-		val = line.substr(line.find(key) + key.length());
+		val = line.substr(line.find(key) + key.size());
 		pos = val.find('"');
 		if (pos != string::npos)
 			val = val.substr(pos + 1);

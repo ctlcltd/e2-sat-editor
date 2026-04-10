@@ -403,7 +403,7 @@ void e2db_parser::parse_e2db_lamedb(istream& ilamedb)
 
 		if (PARSER_FIX_CRLF && check_crlf(ctx, hlamedb)) fix_crlf(hlamedb);
 
-		char vlamedb = (hlamedb.substr(hlamedb.length() - 2, hlamedb.length() - 1))[0];
+		char vlamedb = (hlamedb.substr(hlamedb.size() - 2, hlamedb.size() - 1))[0];
 		ver = isdigit(vlamedb) ? int (vlamedb) - 48 : 0;
 	}
 	catch (...)
@@ -1193,7 +1193,7 @@ void e2db_parser::parse_userbouquet_epl_reference(string str, userbouquet& ub)
 	size_t pos = str.rfind("0:");
 
 	if (pos != string::npos)
-		path = str.substr(pos, str.length());
+		path = str.substr(pos, str.size());
 
 	string filename = std::filesystem::path(path).filename().u8string();
 
@@ -2291,7 +2291,7 @@ bool e2db_parser::parse_xml_head(istream& ixml, string& charset)
 
 void e2db_parser::parse_xml_comment(istream& ixml, string line, comment& s, int ln)
 {
-	if (line.rfind("--") == line.length() - 2)
+	if (line.rfind("--") == line.size() - 2)
 	{
 		s.type = line.rfind('\n') != string::npos;
 		s.ln = ln;
@@ -2304,7 +2304,7 @@ void e2db_parser::parse_xml_comment(istream& ixml, string line, comment& s, int 
 
 		std::streampos pos = ixml.tellg();
 		//TODO TEST
-		pos -= line.length();
+		pos -= line.size();
 		ixml.seekg(pos);
 		string line;
 
@@ -2386,7 +2386,7 @@ void e2db_parser::parse_xml_attribute(string line, string token, string& key, st
 	}
 	else
 	{
-		val = line.substr(line.find(key) + key.length());
+		val = line.substr(line.find(key) + key.size());
 		pos = val.find('"');
 		if (pos == string::npos)
 			pos = val.find('\'');

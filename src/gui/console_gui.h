@@ -63,35 +63,38 @@ class console_gui : protected e2se::log_factory, public ::e2se_e2db::e2db_consol
 	protected:
 
 		struct current {
-			ENTRY entry_type = ENTRY::service;
-			bool edit = false;
+			ENTRY entry_type;
+			bool edit;
 			string id;
 			int ref;
 			string bname;
 			int i = 0;
 			int pos = 0;
 			bool end = false;
-			TYPE type = TYPE::idx;
-			bool required = false;
+			TYPE type;
+			bool required;
 			std::any val;
 			map<int, vector<pair<TYPE, bool>>> mask;
 			map<TYPE, string> values;
 		};
 
 		struct nav {
-			ENTRY entry_type = ENTRY::service;
+			ENTRY entry_type;
 			int limit;
 			int rows;
 			string bname;
 			int pos = 0;
 			int offset = 0;
-			int end;
+			int end = 0;
 		};
 
-		void sync();
-		void output();
 		void init();
+		void attach(QWidget* parent);
+		void detach();
+		void session();
+		void sync();
 		void prompt();
+		void flush();
 
 		void entry_list(ENTRY entry_type, bool paged = true, int limit = 0, int pos = 0, string bname = "") override;
 		void entry_edit(ENTRY entry_type, bool edit, string id = "", int ref = 0, string bname = "") override;

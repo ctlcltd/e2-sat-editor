@@ -194,7 +194,7 @@ string ftpcom::msg(string str, string param)
 {
 	string trstr = tr(str.data()).toStdString();
 	string trparam = tr(param.data()).toStdString();
-	size_t tsize = trstr.length() + trparam.length();
+	size_t tsize = trstr.size() + trparam.size();
 	char tstr[tsize];
 	std::snprintf(tstr, tsize, trstr.c_str(), trparam.c_str());
 

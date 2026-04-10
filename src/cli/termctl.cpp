@@ -85,13 +85,15 @@ termctl::~termctl()
 	delete this->is;
 }
 
-void termctl::handler(bool command)
+void termctl::handler(HANDLE handle)
 {
 #ifdef PLATFORM_UX
 	tty_setraw();
 #endif
 
-	if (command)
+	this->currhr = handle;
+
+	if (handle == HANDLE::Command)
 		std::printf("> ");
 
 	size_t cur, len;
@@ -116,7 +118,7 @@ void termctl::handler(bool command)
 
 					next = EVENT::HistoryBack;
 
-					if (command)
+					if (handle == HANDLE::Prompt)
 					{
 						is->sync();
 						std::stringbuf* is_buf = reinterpret_cast<std::stringbuf*>(is->rdbuf());
@@ -186,7 +188,7 @@ void termctl::handler(bool command)
 
 					next = EVENT::HistoryForward;
 
-					if (command)
+					if (handle == HANDLE::Command)
 					{
 						is->sync();
 						std::stringbuf* is_buf = reinterpret_cast<std::stringbuf*>(is->rdbuf());
@@ -452,6 +454,8 @@ int termctl::paged(int pos, int offset)
 #ifdef PLATFORM_UX
 	tty_setraw();
 #endif
+
+	this->currhr = HANDLE::Listing;
 
 	std::printf("Press key [Up] | [Down] to Move, [q] to Exit");
 

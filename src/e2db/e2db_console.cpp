@@ -198,7 +198,7 @@ void e2db_console::console_resolver(COMMAND command, istream* is)
 		else if (type.empty())
 			console_usage(command);
 		else
-			*perr << "Type Error" << msg("Unknown entry type: %s", type) << pout->endl();
+			*perr << "Type Error: " << msg("Unknown entry type: %s", type) << pout->endl();
 	}
 	else if (command == COMMAND::edit)
 	{
@@ -1246,7 +1246,7 @@ void e2db_console::console_file_read(string path)
 	}
 	catch (const std::ifstream::failure& err)
 	{
-		*perr << "Error" << msg("File \"%s\" is not readable.", path) << pout->endl();
+		*perr << "Error: " << msg("File \"%s\" is not readable.", path) << pout->endl();
 	}
 	catch (const std::runtime_error& err)
 	{
@@ -1279,7 +1279,7 @@ void e2db_console::console_file_write(string path)
 	}
 	catch (const std::ofstream::failure& err)
 	{
-		*perr << "Error" << msg("File \"%s\" is not writable.", path) << pout->endl();
+		*perr << "Error: " << msg("File \"%s\" is not writable.", path) << pout->endl();
 	}
 	catch (const std::runtime_error& err)
 	{
@@ -1395,7 +1395,7 @@ void e2db_console::console_e2db_import(ENTRY entry_type, vector<string> paths, i
 	}
 	catch (const std::ifstream::failure& err)
 	{
-		*perr << "Error" << msg("File Error") << pout->endl();
+		*perr << "Error: " << msg("File Error") << pout->endl();
 	}
 	catch (const std::runtime_error& err)
 	{
@@ -1555,7 +1555,7 @@ void e2db_console::console_e2db_export(ENTRY entry_type, vector<string> paths, i
 	}
 	catch (const std::ofstream::failure& err)
 	{
-		*perr << "Error" << msg("File Error") << pout->endl();
+		*perr << "Error: " << msg("File Error") << pout->endl();
 	}
 	catch (const std::runtime_error& err)
 	{
@@ -1678,7 +1678,7 @@ void e2db_console::console_e2db_merge(ENTRY entry_type, string path, int ver, bo
 	}
 	catch (const std::ifstream::failure& err)
 	{
-		*perr << "Error" << msg("File \"%s\" is not readable.", path) << pout->endl();
+		*perr << "Error: " << msg("File \"%s\" is not readable.", path) << pout->endl();
 	}
 	catch (const std::runtime_error& err)
 	{
@@ -1926,7 +1926,7 @@ void e2db_console::console_e2db_parse(ENTRY entry_type, string path, int ver, bo
 	}
 	catch (const std::ifstream::failure& err)
 	{
-		*perr << "Error" << msg("File \"%s\" is not readable.", path) << pout->endl();
+		*perr << "Error: " << msg("File \"%s\" is not readable.", path) << pout->endl();
 	}
 	catch (const std::runtime_error& err)
 	{
@@ -2354,9 +2354,9 @@ void e2db_console::console_e2db_convert(ENTRY entry_type, int fopt, int ftype, s
 	catch (const std::ios_base::failure& err)
 	{
 		if (fopt == 0)
-			*perr << "Error" << msg("File \"%s\" is not readable.", path) << pout->endl();
+			*perr << "Error: " << msg("File \"%s\" is not readable.", path) << pout->endl();
 		else if (fopt == 1)
-			*perr << "Error" << msg("File \"%s\" is not writable.", path) << pout->endl();
+			*perr << "Error: " << msg("File \"%s\" is not writable.", path) << pout->endl();
 	}
 	catch (const std::runtime_error& err)
 	{
@@ -3862,8 +3862,8 @@ bool e2db_console::label_field(TYPE type, string &label, string &description)
 		case TYPE::churl: label = "Channel URL"; break;
 		case TYPE::etype: label = "Favourite Type"; description = "exact match: 1 = broadcast, 2 = file, 3 = 4097, 8139 = youtube, 8193 = eservice"; break;
 		case TYPE::atype: label = "Favourite Flag"; description = "exact match: 64 = marker, 512 = marker hidden, 832 = marker hidden, 320 = marker numbered, 128 = group"; break;
-		case TYPE::freq: label = "Frequency"; description = "in Hertz, 6 digits"; break;
-		case TYPE::sr: label = "Symbol Rate"; description = "in digits"; break;
+		case TYPE::freq: label = "Frequency"; description = "in Hertz, 6 or 8 digits"; break;
+		case TYPE::sr: label = "Symbol Rate"; description = "in Hertz, 6 or 8 digits"; break;
 		case TYPE::pol: label = "Polarization"; description = "exact match: H = horizontal, V = vertical, L = Left Circular, R = Right Circular"; break;
 		case TYPE::fec: label = "FEC"; description = "exact match: <empty>, Auto, 1/2, 2/3, 3/4, 5/6, 7/8, 8/9, 3/5 4/5, 9/10, 6/7"; break;
 		case TYPE::hpfec: label = "HP FEC"; description = "exact match: <empty>, Auto, 1/2, 2/3, 3/4, 5/6, 7/8, 6/7, 8/9, 3/5, 4/5"; break;
@@ -4025,8 +4025,6 @@ bool e2db_console::value_field(TYPE type, string str, bool required, std::any &v
 		case TYPE::onid:
 		case TYPE::snum:
 		case TYPE::srcid:
-		case TYPE::freq:
-		case TYPE::sr:
 		case TYPE::plpid:
 		case TYPE::isid:
 		case TYPE::plscode:
@@ -4045,8 +4043,18 @@ bool e2db_console::value_field(TYPE type, string str, bool required, std::any &v
 			if (! d && required)
 				return false;
 		break;
+		case TYPE::freq:
+			d = dbih->value_transponder_frequency(str);
+			if (! d && required)
+				return false;
+		break;
+		case TYPE::sr:
+			d = dbih->value_transponder_sr(str);
+			if (! d && required)
+				return false;
+		break;
 		case TYPE::dvbns:
-			d = int (std::stol(str, nullptr, 16));
+			d = dbih->value_transponder_dvbns(str);
 			if (d == 0 && required)
 				return false;
 		break;
@@ -4477,7 +4485,7 @@ std::any e2db_console::field(TYPE type, bool required)
 			*pout << ' ' << '*';
 		*pout << ':' << ' ';
 
-		termctl->handler(false);
+		termctl->handler(termiface::HANDLE::Input);
 		string str = termctl->str();
 		termctl->clear();
 

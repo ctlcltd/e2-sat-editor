@@ -47,8 +47,15 @@ struct streamiface
 struct termiface
 {
 	public:
+
+		enum HANDLE {
+			Command,
+			Listing,
+			Input
+		};
+
 		virtual ~termiface() = default;
-		virtual void handler(bool command) = 0;
+		virtual void handler(HANDLE handle) = 0;
 		virtual void clear() = 0;
 		virtual std::istream* ptr() = 0;
 		virtual const std::string str() = 0;

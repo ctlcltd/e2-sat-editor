@@ -15,7 +15,6 @@
 #include <QGridLayout>
 #include <QPlainTextEdit>
 #include <QTextDocument>
-#include <QTextBlock>
 
 #include "toolkit/DialogDockWidget.h"
 #include "termctl_gui.h"
@@ -37,9 +36,17 @@ console_gui::console_gui(QWidget* parent, dataHandler* data)
 	init();
 }
 
-//TODO
 console_gui::~console_gui()
 {
+	delete this->pout;
+	delete this->perr;
+	delete this->ts_out;
+	delete this->ts_err;
+	delete this->ba_out;
+	delete this->ba_err;
+	delete this->termctl;
+	delete this->cnt;
+	delete this;
 }
 
 void console_gui::layout(QWidget* parent)
@@ -73,59 +80,6 @@ void console_gui::layout(QWidget* parent)
 		frm->setParent(parent);
 }
 
-void console_gui::sync()
-{
-	if (this->termctl != nullptr && this->dbih != nullptr)
-	{
-		if (this->dbih != this->data->dbih)
-			termctl->reset();
-	}
-
-	this->dbih = this->data->dbih;
-}
-
-void console_gui::output()
-{
-	ts_err->seek(0);
-	ts_out->seek(0);
-
-	if (! ts_err->readAll().isEmpty())
-	{
-		ts_err->seek(0);
-
-		QTextCursor cursor = QTextCursor(cnt->document()->lastBlock());
-		QTextCharFormat tf;
-		tf.setForeground(QBrush(Qt::red));
-
-		if (! cnt->document()->lastBlock().text().isEmpty())
-		{
-			cursor.movePosition(QTextCursor::EndOfBlock);
-			cursor.insertBlock();
-		}
-		cursor.setCharFormat(tf);
-		cursor.insertText(ts_err->readAll());
-		cursor.setCharFormat(QTextCharFormat());
-		cnt->setTextCursor(cursor);
-	}
-	{
-		QTextCursor cursor = QTextCursor(cnt->document()->lastBlock());
-
-		if (! cnt->document()->lastBlock().text().isEmpty())
-		{
-			cursor.movePosition(QTextCursor::EndOfBlock);
-			cursor.insertBlock();
-		}
-		cursor.setCharFormat(QTextCharFormat());
-		cursor.insertText(ts_out->readAll());
-		cnt->setTextCursor(cursor);
-	}
-
-	ba_err->clear();
-	ba_out->clear();
-	ts_err->seek(0);
-	ts_out->seek(0);
-}
-
 void console_gui::init()
 {
 	debug("init");
@@ -146,20 +100,85 @@ void console_gui::init()
 		__objio.hrn = false;
 
 	this->plog = this->log;
-
 	this->termctl = new termctl_gui(this->cnt);
 
 	console_header();
-	output();
+	flush();
 
 	prompt();
+}
+
+void console_gui::attach(QWidget* parent)
+{
+	debug("attach");
+
+	this->ba_out = new QByteArray;
+	this->ba_err = new QByteArray;
+	this->ts_out = new QTextStream(this->ba_out);
+	this->ts_err = new QTextStream(this->ba_err);
+
+	pout = new stream(*this->ts_out);
+	perr = new stream(*this->ts_err);
+
+	this->plog = this->log;
+	this->termctl = new termctl_gui(this->cnt);
+
+	cnt->attach(parent);
+
+	prompt();
+}
+
+void console_gui::detach()
+{
+	debug("detach");
+
+	delete this->pout;
+	delete this->perr;
+	delete this->ts_out;
+	delete this->ts_err;
+	delete this->ba_out;
+	delete this->ba_err;
+
+	delete this->termctl;
+
+	this->plog = nullptr;
+	this->pout = nullptr;
+	this->perr = nullptr;
+	this->ts_out = nullptr;
+	this->ts_err = nullptr;
+	this->ba_out = nullptr;
+	this->ba_err = nullptr;
+	this->termctl = nullptr;
+
+	cnt->detach();
+}
+
+void console_gui::session()
+{
+	debug("session");
+
+	termctl->reset();
+	cnt->ruler();
+
+	prompt();
+}
+
+void console_gui::sync()
+{
+	if (this->termctl != nullptr && this->dbih != nullptr)
+	{
+		if (this->dbih != this->data->dbih)
+			this->session();
+	}
+
+	this->dbih = this->data->dbih;
 }
 
 void console_gui::prompt()
 {
 	auto* termctl = reinterpret_cast<termctl_gui*>(this->termctl);
 
-	termctl->handler(true);
+	termctl->handler(termctl_gui::HANDLE::Command);
 
 	termctl->input([=]() {
 		string cmd = termctl->str();
@@ -219,10 +238,31 @@ void console_gui::prompt()
 		else if (! cmd.empty())
 			console_error(cmd);
 
-		output();
+		flush();
 
 		delete is;
 	});
+}
+
+void console_gui::flush()
+{
+	ts_err->seek(0);
+	ts_out->seek(0);
+
+	if (! ts_err->readAll().isEmpty())
+	{
+		ts_err->seek(0);
+		cnt->error(ts_err->readAll());
+	}
+
+	cnt->output(ts_out->readAll());
+
+	ba_err->clear();
+	ba_out->clear();
+	ts_err->seek(0);
+	ts_out->seek(0);
+
+	cnt->ensureCursorVisible();
 }
 
 void console_gui::entry_list(ENTRY entry_type, bool paged, int limit, int pos, string bname)
@@ -274,13 +314,11 @@ void console_gui::entry_list(ENTRY entry_type, bool paged, int limit, int pos, s
 		}
 
 		entry_list_exec(entry_type, pos, offset, end, bname);
-		output();
+		flush();
 
 		auto* termctl = reinterpret_cast<termctl_gui*>(this->termctl);
 
-		termctl->handler(false);
-
-		paged_nav(p);
+		termctl->handler(termctl_gui::HANDLE::Listing);
 
 		termctl->input([=]() mutable {
 			this->paged_nav(p);
@@ -289,7 +327,7 @@ void console_gui::entry_list(ENTRY entry_type, bool paged, int limit, int pos, s
 	else
 	{
 		entry_list_exec(entry_type, pos, offset, end, bname);
-		output();
+		flush();
 	}
 }
 
@@ -297,7 +335,7 @@ void console_gui::entry_edit(ENTRY entry_type, bool edit, string id, int ref, st
 {
 	auto mask = input_mask(entry_type, edit, id, ref, bname);
 
-	output();
+	flush();
 
 	current curr;
 	curr.entry_type = entry_type;
@@ -311,7 +349,7 @@ void console_gui::entry_edit(ENTRY entry_type, bool edit, string id, int ref, st
 
 	auto* termctl = reinterpret_cast<termctl_gui*>(this->termctl);
 
-	termctl->handler(false);
+	termctl->handler(termctl_gui::HANDLE::Input);
 
 	termctl->input([=]() mutable {
 		string str = termctl->str();
@@ -532,12 +570,7 @@ void console_gui::input_next(current &curr)
 		*pout << ' ' << '*';
 	*pout << ':' << ' ';
 
-	output();
-
-	//TODO FIX QTextBlock linefeed
-	QTextCursor cursor = QTextCursor(cnt->document()->lastBlock());
-	cursor.movePosition(QTextCursor::EndOfBlock);
-	cursor.insertBlock();
+	flush();
 }
 
 void console_gui::input_end(current &curr)
@@ -551,7 +584,7 @@ void console_gui::input_end(current &curr)
 
 	this->icurr = nullptr;
 
-	output();
+	flush();
 	prompt();
 }
 
@@ -567,7 +600,7 @@ void console_gui::paged_nav(nav &p)
 	int &offset = p.offset;
 	int &end = p.end;
 
-	if (! end)
+	if (end)
 		return paged_end();
 
 	if (limit == 0)
@@ -580,7 +613,7 @@ void console_gui::paged_nav(nav &p)
 
 	switch (key)
 	{
-		case 0: return;
+		case 0: return paged_end();
 		case Qt::Key_Up: pos -= offset; break; // termctl_gui::EVENT::PagePrev
 		default: pos += offset; // any key
 	}
@@ -588,14 +621,13 @@ void console_gui::paged_nav(nav &p)
 	this->sync();
 
 	entry_list_exec(entry_type, pos, offset, end, bname);
-	output();
+	flush();
 }
 
 void console_gui::paged_end()
 {
 	qDebug() << "paged_end";
 
-	output();
 	prompt();
 }
 

@@ -9,6 +9,8 @@
  * @license GNU GPLv3 License
  */
 
+#include <cmath>
+
 #include "termctl_gui.h"
 
 namespace e2se_gui
@@ -22,36 +24,56 @@ termctl_gui::termctl_gui(ConsoleWidget* widget)
 	this->is = new std::iostream(is_buf);
 }
 
-void termctl_gui::callInputCallback(termctl_gui::EVENT key, const QString val)
+termctl_gui::~termctl_gui()
+{
+	widget->disconnect(widget, &ConsoleWidget::input, nullptr, nullptr);
+
+	this->inputCallback = nullptr;
+
+	delete this->is;
+	delete this;
+}
+
+void termctl_gui::callInputCallback(const int key, const QString val)
 {
 	if (! this->inputCallback)
 		return;
 
-	if (key == termctl_gui::EVENT::InputReturn || key == termctl_gui::EVENT::InputEnter)
+	HANDLE handle = this->currhr;
+
+	if (handle == HANDLE::Listing)
 	{
-		if (this->command)
-			*is << QString(val).removeFirst().toStdString();
-		else
+		this->inputCallback();
+	}
+	else
+	{
+		EVENT e = static_cast<termctl_gui::EVENT>(key);
+
+		if (e == EVENT::InputReturn || key == 0)
+		{
 			*is << val.toStdString();
 
-		this->inputCallback();
+			this->inputCallback();
 
-		if (this->command)
-			widget->prompt();
+			if (handle == HANDLE::Command)
+				widget->prompt();
+		}
 	}
 }
 
-void termctl_gui::handler(bool command)
+void termctl_gui::handler(HANDLE handle)
 {
-	this->command = command;
+	this->currhr = handle;
 
-	if (command)
+	if (handle == HANDLE::Command)
 		widget->prompt();
+	else if (handle == HANDLE::Listing)
+		widget->nav();
 
 	if (! this->connected)
 	{
-		widget->connect(widget, &ConsoleWidget::input, widget, [=](Qt::Key key, const QString str) {
-			this->callInputCallback(static_cast<termctl_gui::EVENT>(key), str);
+		widget->connect(widget, &ConsoleWidget::input, widget, [=](const int key, const QString str) {
+			this->callInputCallback(key, str);
 		});
 		this->connected = true;
 	}
@@ -90,7 +112,62 @@ void termctl_gui::reset()
 
 int termctl_gui::paged(int pos, int offset)
 {
-	widget->nav("Press key [Up] | [Down] to Move, [q] to Exit");
+	widget->nav();
+
+	int key = 0;
+
+	switch (this->currkey)
+	{
+		case Qt::Key_Up:
+			key = EVENT::PagePrev;
+		break;
+		case Qt::Key_Down:
+			key = EVENT::PageNext;
+		break;
+		case Qt::Key_Right:
+			key = EVENT::PageNext;
+		break;
+		case Qt::Key_Left:
+			key = EVENT::PagePrev;
+		break;
+		case Qt::Key_Return:
+		case Qt::Key_Enter:
+			key = EVENT::InputReturn;
+		break;
+		case Qt::Key_Q:
+		case Qt::Key_X:
+			key = 0;
+		default:
+			widget->beep();
+	}
+
+	if (key != 0)
+	{
+		if (key == EVENT::PagePrev)
+		{
+			if (pos - offset < 0)
+				widget->beep();
+		}
+	}
+
+	this->currkey = 0;
+
+	return key;
+}
+
+std::pair<int, int> termctl_gui::screensize()
+{
+	QSize size = widget->size();
+	int rows = 24;
+	int cols = 80;
+
+	if (size.height() != 0 && size.height() != 480)
+		rows = int (std::floor(size.height() / 14.7));
+
+	if (size.width() != 0 && size.width() != 640)
+		cols = int (std::floor(size.width() / 7.2));
+
+	return std::pair (rows, cols);
 }
 
 }

@@ -89,7 +89,7 @@ void cli::cmd_shell()
 
 	while (true)
 	{
-		termctl->handler(true);
+		termctl->handler(termictl::HANDLE::Command);
 		string cmd = termctl->str();
 		std::istream* is = termctl->ptr();
 		termctl->clear();

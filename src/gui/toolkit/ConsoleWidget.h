@@ -21,18 +21,35 @@ class ConsoleWidget : public QPlainTextEdit
 	Q_OBJECT
 
 	public:
-		explicit ConsoleWidget(QWidget* parent = nullptr);
-		void prompt();
-		void prompt(const QString cmd);
-		void nav(const QString text);
+		enum HANDLE {
+			Command,
+			Listing,
+			Input
+		};
 
-		int gtpos = 0;
+		explicit ConsoleWidget(QWidget* parent = nullptr);
+		void attach(QWidget* parent);
+		void detach();
+		void output(const QString text);
+		void error(const QString text);
+		void prompt();
+		void nav();
+		void beep();
+		void ruler();
 
 	signals:
-		void input(Qt::Key key, const QString val);
+		void input(const int key, const QString val);
 
 	protected:
+		void maybeInsertBlock(QTextCursor &cursor);
 		void keyPressEvent(QKeyEvent* event) override;
+		bool canInsertFromMimeData(const QMimeData* source) const override;
+		void insertFromMimeData(const QMimeData* source) override;
+		void showContextMenu(QPoint pos);
+
+	private:
+		HANDLE currhr;
+		int gtpos = 0;
 };
 }
 #endif /* ConsoleWidget_h */

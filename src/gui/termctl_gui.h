@@ -37,20 +37,18 @@ class termctl_gui : public ::e2se_e2db::termiface
 			CursorForward = Qt::Key_Right,
 			CursorBackward = Qt::Key_Left,
 			DeleteChar = Qt::Key_Backspace,
-			InputReturn = Qt::Key_Return,
-			InputEnter = Qt::Key_Enter
+			InputReturn = Qt::Key_Return
 		};
 
 		termctl_gui(ConsoleWidget* widget);
-		virtual ~termctl_gui() = default;
-		void handler(bool command = false);
-
+		~termctl_gui();
+		void handler(HANDLE handle);
 		void clear();
 		std::istream* ptr();
 		const std::string str();
 		void reset();
 		int paged(int pos, int offset);
-		std::pair<int, int> screensize() { return {}; }
+		std::pair<int, int> screensize();
 		void dump_log() {}
 		void load_history() {}
 		void save_history() {}
@@ -61,15 +59,14 @@ class termctl_gui : public ::e2se_e2db::termiface
 		}
 
 	protected:
-		bool eventFilter(QObject* object, QEvent* event);
-		bool eventDrop(QObject* object, QEvent* event);
-		void callInputCallback(EVENT key, const QString str);
+		void callInputCallback(const int key, const QString str);
 
 	private:
 		ConsoleWidget* widget = nullptr;
 		std::iostream* is;
 		std::streampos last;
-		bool command = false;
+		HANDLE currhr;
+		int currkey;
 		std::function<void()> inputCallback;
 		bool connected = false;
 };

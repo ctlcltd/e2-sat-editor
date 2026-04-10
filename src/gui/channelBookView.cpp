@@ -567,7 +567,7 @@ void channelBookView::stacker(int vv)
 		{
 			int stype = std::stoi(w);
 			int atype = dbih->value_service_super_type(stype);
-			QString pad = w.length() == 2 ? "  " : "  ";
+			QString pad = w.size() == 2 ? "  " : "  ";
 			disabled = this->state.sy != -1 && this->state.sy != atype;
 			name = QString::number(stype);
 			name.append(pad);

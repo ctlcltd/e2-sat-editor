@@ -46,7 +46,7 @@ class termctl : public ::e2se_e2db::termiface
 
 		termctl();
 		~termctl();
-		void handler(bool command);
+		void handler(HANDLE handle);
 		void clear();
 		std::istream* ptr();
 		const std::string str();
@@ -74,6 +74,7 @@ class termctl : public ::e2se_e2db::termiface
 		std::iostream* is;
 		std::iostream* history;
 		std::streampos last;
+		HANDLE currhr;
 };
 }
 #endif /* e2se_termctl_h */

@@ -652,7 +652,7 @@ size_t ftpcom::get_content_length_func(void* csi, size_t size, size_t nmemb, voi
 	string data ((const char*) csi, relsize);
 	size_t pos = 0;
 	if ((pos = data.find("Content-Length:")) != string::npos)
-		*((size_t*) pso) = std::stoi(data.substr(pos, data.length() - 1));
+		*((size_t*) pso) = std::stoi(data.substr(pos, data.size() - 1));
 	return relsize;
 }
 
