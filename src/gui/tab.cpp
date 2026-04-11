@@ -534,8 +534,7 @@ void tab::layout()
 
 	widget->addToolBar(Qt::TopToolBarArea, top_toolbar);
 	widget->addToolBar(Qt::BottomToolBarArea, bottom_toolbar);
-	widget->setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::AllowNestedDocks | QMainWindow::GroupedDragging);
-	widget->setDockNestingEnabled(true);
+	widget->setDockOptions(QMainWindow::AnimatedDocks);
 
 	toolBarStyleSheet();
 }
@@ -3392,6 +3391,7 @@ QToolBar* tab::toolBar(int type)
 	QToolBar* toolbar = new QToolBar;
 	toolbar->setMovable(false);
 	toolbar->setFloatable(false);
+	toolbar->setContextMenuPolicy(Qt::PreventContextMenu);
 
 	// 1: top
 	if (type)

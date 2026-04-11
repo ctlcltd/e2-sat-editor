@@ -89,8 +89,8 @@ void cli::cmd_shell()
 
 	while (true)
 	{
-		termctl->handler(termictl::HANDLE::Command);
-		string cmd = termctl->str();
+		termctl->handler(termiface::HANDLE::Command);
+		string cmd = termctl->token();
 		std::istream* is = termctl->ptr();
 		termctl->clear();
 

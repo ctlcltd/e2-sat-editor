@@ -49,7 +49,8 @@ class termctl : public ::e2se_e2db::termiface
 		void handler(HANDLE handle);
 		void clear();
 		std::istream* ptr();
-		const std::string str();
+		const std::string line();
+		const std::string token();
 		void reset();
 		int paged(int pos, int offset);
 		std::pair<int, int> screensize();
@@ -68,7 +69,7 @@ class termctl : public ::e2se_e2db::termiface
 		static void tty_goforward();
 		static void tty_gobackward();
 		static void tty_delchar();
-		static void tty_eraseline(int cols = 0);
+		static void tty_eraseline();
 		static void tty_bell();
 
 		std::iostream* is;

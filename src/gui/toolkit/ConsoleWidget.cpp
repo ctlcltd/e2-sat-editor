@@ -9,7 +9,6 @@
  * @license GNU GPLv3 License
  */
 
-#include <QApplication>
 #include <QMimeData>
 
 #include "../platforms/platform.h"
@@ -28,34 +27,40 @@ ConsoleWidget::ConsoleWidget(QWidget* parent) : QPlainTextEdit(parent)
 	}); // moc
 }
 
-void ConsoleWidget::attach(QWidget* parent)
+void ConsoleWidget::attachWidget(QWidget* parent)
 {
 	this->setParent(parent);
 	this->setUpdatesEnabled(true);
 	this->blockSignals(false);
 
-	this->ruler();
+	this->printSessionRuler();
 }
 
-void ConsoleWidget::detach()
+void ConsoleWidget::detachWidget()
 {
 	this->blockSignals(true);
 	this->setUpdatesEnabled(false);
 	this->setParent(nullptr);
 }
 
-void ConsoleWidget::output(const QString text)
+void ConsoleWidget::printOutput(const QString text)
 {
 	QTextCursor cursor = QTextCursor(this->document()->lastBlock());
-	this->maybeInsertBlock(cursor);
+
+	if (this->imval)
+		cursor.setPosition(this->impos);
+	else
+		this->maybeInsertBlock(cursor);
+
 	cursor.setCharFormat(QTextCharFormat());
 	cursor.insertText(text);
 	this->setTextCursor(cursor);
 
-	this->gtpos = cursor.position();
+	if (! this->imval)
+		this->gtpos = cursor.position();
 }
 
-void ConsoleWidget::error(const QString text)
+void ConsoleWidget::printErrors(const QString text)
 {
 	QTextCursor cursor = QTextCursor(this->document()->lastBlock());
 	QTextCharFormat tf;
@@ -69,19 +74,18 @@ void ConsoleWidget::error(const QString text)
 	this->gtpos = cursor.position();
 }
 
-void ConsoleWidget::prompt()
+void ConsoleWidget::printPromptCursor()
 {
 	QTextCursor cursor = QTextCursor(this->document()->lastBlock());
-	this->maybeInsertBlock(cursor);	
+	this->maybeInsertBlock(cursor);
 	cursor.setCharFormat(QTextCharFormat());
-	cursor.insertText(">");
+	cursor.insertText("> ");
 	this->setTextCursor(cursor);
 
 	this->gtpos = cursor.position();
-	this->currhr = HANDLE::Command;
 }
 
-void ConsoleWidget::nav()
+void ConsoleWidget::printNavigationRuler()
 {
 	QTextCursor cursor = QTextCursor(this->document()->lastBlock());
 	this->maybeInsertBlock(cursor);
@@ -89,19 +93,39 @@ void ConsoleWidget::nav()
 	this->setTextCursor(cursor);
 
 	this->gtpos = cursor.position();
-	this->currhr = HANDLE::Listing;
 }
 
-void ConsoleWidget::beep()
-{
-	QApplication::beep();
-}
-
-void ConsoleWidget::ruler()
+void ConsoleWidget::printSessionRuler()
 {
 	QTextCursor cursor = QTextCursor(this->document()->end());
 	cursor.insertBlock();
 	cursor.insertText("\n");
+}
+
+ConsoleWidget::HANDLE ConsoleWidget::currentHandler() const
+{
+	return this->currhr;
+}
+
+void ConsoleWidget::setCurrentHandler(HANDLE handle)
+{
+	this->currhr = handle;
+}
+
+void ConsoleWidget::setCurrentHandler(int handle)
+{
+	this->currhr = static_cast<HANDLE>(handle);
+}
+
+bool ConsoleWidget::isInputMasked() const
+{
+	return this->imval;
+}
+
+void ConsoleWidget::setInputMasked(bool masked)
+{
+	this->imval = masked;
+	this->impos = this->textCursor().position();
 }
 
 void ConsoleWidget::maybeInsertBlock(QTextCursor &cursor)
@@ -148,12 +172,12 @@ void ConsoleWidget::keyPressEvent(QKeyEvent* event)
 		else if (event->key() == Qt::Key_Left || event->key() == Qt::Key_Right)
 		{
 			if (cursor.position() <= this->gtpos)
-				return this->beep();
+				return QApplication::beep();
 		}
 		else if (event->key() == Qt::Key_Up || event->key() == Qt::Key_Down)
 		{
 			if (cursor.position() <= this->gtpos)
-				return this->beep();
+				return QApplication::beep();
 			else if (this->currhr == HANDLE::Command)
 				emit input(static_cast<Qt::Key>(event->key()), NULL);
 
@@ -166,7 +190,7 @@ void ConsoleWidget::keyPressEvent(QKeyEvent* event)
 				event->key() == Qt::Key_Delete ||
 				event->matches(QKeySequence::Paste)
 			)
-				return this->beep();
+				return QApplication::beep();
 		}
 	}
 

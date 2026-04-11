@@ -17,8 +17,6 @@
 #ifndef termctl_gui_h
 #define termctl_gui_h
 #include <QApplication>
-#include <QPlainTextEdit>
-#include <QTextStream>
 
 #include "toolkit/ConsoleWidget.h"
 #include "../e2db/e2db_console.h"
@@ -45,13 +43,14 @@ class termctl_gui : public ::e2se_e2db::termiface
 		void handler(HANDLE handle);
 		void clear();
 		std::istream* ptr();
-		const std::string str();
+		const std::string line();
+		const std::string token();
 		void reset();
 		int paged(int pos, int offset);
 		std::pair<int, int> screensize();
-		void dump_log() {}
-		void load_history() {}
-		void save_history() {}
+		virtual void dump_log() {}
+		virtual void load_history() {}
+		virtual void save_history() {}
 
 		void input(std::function<void()> func)
 		{
@@ -65,7 +64,7 @@ class termctl_gui : public ::e2se_e2db::termiface
 		ConsoleWidget* widget = nullptr;
 		std::iostream* is;
 		std::streampos last;
-		HANDLE currhr;
+		HANDLE currhr = HANDLE::Testing;
 		int currkey;
 		std::function<void()> inputCallback;
 		bool connected = false;

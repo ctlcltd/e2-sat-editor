@@ -4015,6 +4015,10 @@ void e2db_console::label_obj_pair(TYPE type, string &name, VALUE &value_type)
 
 bool e2db_console::value_field(TYPE type, string str, bool required, std::any &val)
 {
+	if (str.empty() && required)
+		return false;
+
+	VALUE value_type = VALUE::val_int;
 	int d = -1;
 
 	switch (type)
@@ -4080,6 +4084,7 @@ bool e2db_console::value_field(TYPE type, string str, bool required, std::any &v
 		case TYPE::feed:
 		case TYPE::hidden:
 		case TYPE::locked:
+			value_type = VALUE::val_int;
 			if (str == "Y" || str == "y")
 				d = 1;
 			else if (str == "N" || str == "n")
@@ -4088,6 +4093,7 @@ bool e2db_console::value_field(TYPE type, string str, bool required, std::any &v
 				return false;
 		break;
 		case TYPE::sdata_p:
+			value_type = VALUE::val_obj;
 			val = { str };
 		break;
 		case TYPE::yname:
@@ -4167,6 +4173,7 @@ bool e2db_console::value_field(TYPE type, string str, bool required, std::any &v
 			d = dbih->value_bouquet_type(str);
 		break;
 		case TYPE::country:
+			value_type = VALUE::val_string;
 			if (required && (str.size() < 3 || str.size() > 3))
 				return false;
 			// failsafe string uppercase
@@ -4174,18 +4181,27 @@ bool e2db_console::value_field(TYPE type, string str, bool required, std::any &v
 			val = str;
 		break;
 		case TYPE::charset:
+			value_type = VALUE::val_string;
 			// failsafe string uppercase
 			std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return std::toupper(c); });
 			val = str;
 		break;
 		default:
+			value_type = VALUE::val_string;
 			val = str;
 	}
 
-	if (d == -1 && required)
-		return false;
-	else
+	if (value_type == VALUE::val_int)
+	{
 		val = d;
+
+		if (d == -1 && required)
+			return false;
+	}
+	else if (str.empty() && required)
+	{
+		return false;
+	}
 
 	return true;
 }
@@ -4486,7 +4502,7 @@ std::any e2db_console::field(TYPE type, bool required)
 		*pout << ':' << ' ';
 
 		termctl->handler(termiface::HANDLE::Input);
-		string str = termctl->str();
+		string str = termctl->line();
 		termctl->clear();
 
 		// failsafe string trim
@@ -4494,9 +4510,6 @@ std::any e2db_console::field(TYPE type, bool required)
 		str.erase(str.find_last_not_of(" \n\r\t\v\b\f") + 1);
 
 		this->curr_field = label;
-
-		if (str.empty() && required)
-			continue;
 
 		std::any val;
 

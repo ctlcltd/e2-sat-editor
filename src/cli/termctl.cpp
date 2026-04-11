@@ -118,7 +118,7 @@ void termctl::handler(HANDLE handle)
 
 					next = EVENT::HistoryBack;
 
-					if (handle == HANDLE::Prompt)
+					if (handle == HANDLE::Command)
 					{
 						is->sync();
 						std::stringbuf* is_buf = reinterpret_cast<std::stringbuf*>(is->rdbuf());
@@ -173,7 +173,7 @@ void termctl::handler(HANDLE handle)
 							is_buf->str("");
 							is->clear();
 
-							tty_eraseline(len);
+							tty_eraseline();
 
 							std::printf("\r> %s", line.c_str());
 							cur = len = line.size();
@@ -216,7 +216,7 @@ void termctl::handler(HANDLE handle)
 							is_buf->str("");
 							is->clear();
 
-							tty_eraseline(len);
+							tty_eraseline();
 
 							std::printf("\r> %s", line.c_str());
 							cur = len = line.size();
@@ -329,7 +329,7 @@ void termctl::handler(HANDLE handle)
 			is->sync();
 			std::stringbuf* is_buf = reinterpret_cast<std::stringbuf*>(is->rdbuf());
 
-			if (command && ! is_buf->str().empty())
+			if (handle == HANDLE::Command && ! is_buf->str().empty())
 			{
 				history->clear();
 				history->seekp(0, std::ios_base::end);
@@ -435,10 +435,17 @@ std::istream* termctl::ptr()
 	return new std::istream(cp_buf);
 }
 
-const std::string termctl::str()
+const std::string termctl::line()
 {
 	std::string str;
-	*is >> str;
+	std::getline(*is, str);
+	return str;
+}
+
+const std::string termctl::token()
+{
+	std::string str;
+	std::getline(*is, str, ' ');
 	return str;
 }
 
@@ -449,6 +456,7 @@ void termctl::reset()
 #endif
 }
 
+//TODO i18n rtl KEY_MAP::KeyLeft KEY_MAP::KeyRight
 int termctl::paged(int pos, int offset)
 {
 #ifdef PLATFORM_UX
@@ -711,7 +719,6 @@ void termctl::tty_gotoxy(int x, int y)
 	SetConsoleCursorPosition(hStdout, coordPos);
 #else
 	std::printf("\033[%d;%df", y, x);
-	// std::printf("\033[%d;%dH", y, x);
 #endif
 }
 
@@ -738,7 +745,6 @@ void termctl::tty_gobackward()
 	SetConsoleCursorPosition(hStdout, coordPos);
 #else
 	std::printf("\033[1D");
-	// std::putchar('\b');
 #endif
 }
 
@@ -747,12 +753,9 @@ void termctl::tty_delchar()
 	std::printf("\b\033[P");
 }
 
-void termctl::tty_eraseline(int cols)
+void termctl::tty_eraseline()
 {
 	std::printf("\r\b\033[2K");
-	// std::printf("\r  ");
-	// for (int i = 0; i != cols; i++)
-	// 	std::putchar(' ');
 }
 
 void termctl::tty_bell()

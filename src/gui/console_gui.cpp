@@ -123,7 +123,7 @@ void console_gui::attach(QWidget* parent)
 	this->plog = this->log;
 	this->termctl = new termctl_gui(this->cnt);
 
-	cnt->attach(parent);
+	cnt->attachWidget(parent);
 
 	prompt();
 }
@@ -150,7 +150,7 @@ void console_gui::detach()
 	this->ba_err = nullptr;
 	this->termctl = nullptr;
 
-	cnt->detach();
+	cnt->detachWidget();
 }
 
 void console_gui::session()
@@ -158,7 +158,7 @@ void console_gui::session()
 	debug("session");
 
 	termctl->reset();
-	cnt->ruler();
+	cnt->printSessionRuler();
 
 	prompt();
 }
@@ -180,8 +180,10 @@ void console_gui::prompt()
 
 	termctl->handler(termctl_gui::HANDLE::Command);
 
+	cnt->printPromptCursor();
+
 	termctl->input([=]() {
-		string cmd = termctl->str();
+		string cmd = termctl->token();
 		istream* is = termctl->ptr();
 		termctl->clear();
 
@@ -240,6 +242,11 @@ void console_gui::prompt()
 
 		flush();
 
+		if (! cnt->isInputMasked())
+			cnt->printPromptCursor();
+
+		cnt->setInputMasked(false);
+
 		delete is;
 	});
 }
@@ -252,10 +259,10 @@ void console_gui::flush()
 	if (! ts_err->readAll().isEmpty())
 	{
 		ts_err->seek(0);
-		cnt->error(ts_err->readAll());
+		cnt->printErrors(ts_err->readAll());
 	}
 
-	cnt->output(ts_out->readAll());
+	cnt->printOutput(ts_out->readAll());
 
 	ba_err->clear();
 	ba_out->clear();
@@ -313,16 +320,22 @@ void console_gui::entry_list(ENTRY entry_type, bool paged, int limit, int pos, s
 			offset = screensize.first ? screensize.first / rows : 1;
 		}
 
-		entry_list_exec(entry_type, pos, offset, end, bname);
-		flush();
-
 		auto* termctl = reinterpret_cast<termctl_gui*>(this->termctl);
 
 		termctl->handler(termctl_gui::HANDLE::Listing);
 
+		entry_list_exec(entry_type, pos, offset, end, bname);
+		flush();
+
+		qDebug() << "entry_list" << "end:" << p.end;
+
+		cnt->printNavigationRuler();
+
 		termctl->input([=]() mutable {
 			this->paged_nav(p);
 		});
+
+		cnt->setInputMasked(true);
 	}
 	else
 	{
@@ -345,21 +358,21 @@ void console_gui::entry_edit(ENTRY entry_type, bool edit, string id, int ref, st
 	curr.bname = bname;
 	curr.mask = mask;
 
-	input_next(curr);
-
 	auto* termctl = reinterpret_cast<termctl_gui*>(this->termctl);
 
 	termctl->handler(termctl_gui::HANDLE::Input);
 
+	input_next(curr);
+
 	termctl->input([=]() mutable {
-		string str = termctl->str();
+		string str = termctl->line();
 		termctl->clear();
 
-		qDebug() << "str: [" << str << "]";
+		// qDebug() << "str:[" << str << "]";
 
 		if (this->value_field(curr.type, str, curr.required, curr.val))
 		{
-			qDebug() << "emplace type:" << curr.type << " str:[" << str << "]";
+			// qDebug() << "emplace" << "type:" << curr.type << " str:[" << str << "]";
 
 			curr.values.emplace(curr.type, str);
 
@@ -368,11 +381,13 @@ void console_gui::entry_edit(ENTRY entry_type, bool edit, string id, int ref, st
 
 		this->input_next(curr);
 	});
+
+	cnt->setInputMasked(true);
 }
 
 std::any console_gui::field(TYPE type, bool required)
 {
-	qDebug() << "field:" << type;
+	// qDebug() << "field:" << type;
 
 	if (this->icurr == nullptr)
 		return -1;
@@ -417,7 +432,7 @@ void console_gui::input_step(current &curr)
 		{
 			string str = values.at(TYPE::txdata);
 
-			if (str == "Y" || str == "y")
+			if (str != "N" && str != "n")
 			{
 				string str = values.at(TYPE::yname);
 				end = false;
@@ -446,7 +461,7 @@ void console_gui::input_step(current &curr)
 		{
 			string str = values.at(TYPE::chdata);
 
-			if (str == "Y" || str == "y")
+			if (str != "N" && str != "n")
 			{
 				end = false;
 				i = -2;
@@ -479,7 +494,7 @@ void console_gui::input_step(current &curr)
 		{
 			string str = values.at(TYPE::txdata);
 
-			if (str == "Y" || str == "y")
+			if (str != "N" && str != "n")
 			{
 				string str = values.at(TYPE::yname);
 				end = false;
@@ -494,7 +509,7 @@ void console_gui::input_step(current &curr)
 		{
 			string str = values.at(TYPE::ffdata);
 
-			if (str == "Y" || str == "y")
+			if (str != "N" && str != "n")
 			{
 				end = false;
 				i = -1;
@@ -504,10 +519,9 @@ void console_gui::input_step(current &curr)
 	}
 }
 
-//TODO
 void console_gui::input_next(current &curr)
 {
-	qDebug() << "input_next " << "pos:" << curr.pos << "i:" << curr.i;
+	qDebug() << "input_next" << "pos:" << curr.pos << "i:" << curr.i;
 
 	auto &mask = curr.mask;
 	int &i = curr.i;
@@ -526,12 +540,13 @@ void console_gui::input_next(current &curr)
 	if (it + pos != last)
 	{
 		it += pos;
+
+		type = it->first;
+		required = it->second;
 	}
 	else
 	{
 		input_step(curr);
-
-		qDebug() << "step " << "pos:" << curr.pos << "i:" << curr.i;
 
 		if (end)
 		{
@@ -540,28 +555,31 @@ void console_gui::input_next(current &curr)
 		else if (mask.count(i) && mask.at(i).size())
 		{
 			auto props = mask.at(i);
-			it = props.begin();
-			last = props.end();
+			auto it = props.begin();
+			auto last = props.end();
 
-			qDebug() << "size:" << props.size() << "i:" << i << "pos:" << pos;
-			if (curr.values.count(TYPE::yname))
-				qDebug() << "val set:" << curr.values.at(TYPE::yname);
-
+			//TODO FIX last input_end
 			if (it + pos != last)
+			{
 				it += pos;
+
+				type = it->first;
+				required = it->second;
+			}
 			else
+			{
 				return input_end(curr);
+			}
 		}
 	}
-
-	type = it->first;
-	required = it->second;
 
 	string label;
 	string description;
 
 	if (! label_field(type, label, description))
 		return;
+
+	this->curr_field = label;
 
 	*pout << label;
 	if (! description.empty())
@@ -584,13 +602,15 @@ void console_gui::input_end(current &curr)
 
 	this->icurr = nullptr;
 
+	cnt->setInputMasked(false);
 	flush();
 	prompt();
 }
 
+//TODO FIX SEGFAULT &end
 void console_gui::paged_nav(nav &p)
 {
-	qDebug() << "paged_nav " << "pos:" << p.pos << "offset:" << p.offset;
+	qDebug() << "paged_nav-0" << "pos:" << p.pos << "offset:" << p.offset;
 
 	ENTRY entry_type = p.entry_type;
 	int limit = p.limit;
@@ -599,6 +619,8 @@ void console_gui::paged_nav(nav &p)
 	int &pos = p.pos;
 	int &offset = p.offset;
 	int &end = p.end;
+
+	qDebug() << "paged_nav-1" << "end:" << p.end;
 
 	if (end)
 		return paged_end();
@@ -611,6 +633,8 @@ void console_gui::paged_nav(nav &p)
 
 	int key = termctl->paged(pos, offset);
 
+	qDebug() << "paged_nav-2" << "key:" << key;
+
 	switch (key)
 	{
 		case 0: return paged_end();
@@ -622,12 +646,17 @@ void console_gui::paged_nav(nav &p)
 
 	entry_list_exec(entry_type, pos, offset, end, bname);
 	flush();
+
+	qDebug() << "paged_nav-3" << "end:" << p.end;
+
+	cnt->printNavigationRuler();
 }
 
 void console_gui::paged_end()
 {
 	qDebug() << "paged_end";
 
+	cnt->setInputMasked(false);
 	prompt();
 }
 

@@ -96,7 +96,7 @@ void checkUpdate::check()
 	}
 
 	if (! this->autocheck)
-		show();
+		notify();
 }
 
 void checkUpdate::autoCheck()
@@ -153,17 +153,17 @@ void checkUpdate::autoCheck()
 
 		DIAL dialog = this->state.dialog;
 		MEDIUM medium = this->medium;
-		QMetaObject::invokeMethod(this->cwid, [=]() { this->prompt(dialog, medium, version, url); });
+		QMetaObject::invokeMethod(this->cwid, [=]() { this->showMessage(dialog, medium, version, url); });
 	}
 }
 
-void checkUpdate::show()
+void checkUpdate::notify()
 {
-	debug("show");
+	debug("notify");
 
 	if (! this->state.checked)
 	{
-		error("show", "checked", "0");
+		error("notify", "checked", "0");
 
 		return;
 	}
@@ -193,13 +193,13 @@ void checkUpdate::show()
 	// note: this->state broken struct, passed by reference, with QMetaObject::invokeMethod
 	DIAL dialog = this->state.dialog;
 	MEDIUM medium = this->medium;
-	QMetaObject::invokeMethod(this->cwid, [=]() { this->prompt(dialog, medium, version, url); });
+	QMetaObject::invokeMethod(this->cwid, [=]() { this->showMessage(dialog, medium, version, url); });
 }
 
-void checkUpdate::prompt(DIAL dialog, MEDIUM medium, QString version, QUrl url)
+void checkUpdate::showMessage(DIAL dialog, MEDIUM medium, QString version, QUrl url)
 {
 	// note: SEGFAULT with QMetaObject::invokeMethod
-	// debug("prompt");
+	// debug("showMessage");
 
 	QMessageBox::Icon icon = QMessageBox::NoIcon;
 	QString title, message;

@@ -64,8 +64,8 @@ class checkUpdate : protected e2se::log_factory
 		void destroy();
 
 	protected:
-		void show();
-		void prompt(DIAL dialog, MEDIUM medium, QString version, QUrl url);
+		void notify();
+		void showMessage(DIAL dialog, MEDIUM medium, QString version, QUrl url);
 		virtual void fetch();
 
 		string relver = "v1.8.1";

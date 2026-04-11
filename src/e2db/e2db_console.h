@@ -51,14 +51,16 @@ struct termiface
 		enum HANDLE {
 			Command,
 			Listing,
-			Input
+			Input,
+			Testing = 0xf
 		};
 
 		virtual ~termiface() = default;
 		virtual void handler(HANDLE handle) = 0;
 		virtual void clear() = 0;
 		virtual std::istream* ptr() = 0;
-		virtual const std::string str() = 0;
+		virtual const std::string line() = 0;
+		virtual const std::string token() = 0;
 		virtual void reset() = 0;
 		virtual int paged(int pos, int offset) = 0;
 		virtual std::pair<int, int> screensize() = 0;

@@ -11,6 +11,8 @@
 
 #include <cmath>
 
+#include <QApplication>
+
 #include "termctl_gui.h"
 
 namespace e2se_gui
@@ -34,15 +36,16 @@ termctl_gui::~termctl_gui()
 	delete this;
 }
 
+// note: callInputCallback is called asyncronously by QObject widget connected lambda function
 void termctl_gui::callInputCallback(const int key, const QString val)
 {
 	if (! this->inputCallback)
 		return;
 
-	HANDLE handle = this->currhr;
-
-	if (handle == HANDLE::Listing)
+	if (this->currhr == HANDLE::Listing)
 	{
+		this->currkey = key;
+
 		this->inputCallback();
 	}
 	else
@@ -54,9 +57,6 @@ void termctl_gui::callInputCallback(const int key, const QString val)
 			*is << val.toStdString();
 
 			this->inputCallback();
-
-			if (handle == HANDLE::Command)
-				widget->prompt();
 		}
 	}
 }
@@ -64,11 +64,7 @@ void termctl_gui::callInputCallback(const int key, const QString val)
 void termctl_gui::handler(HANDLE handle)
 {
 	this->currhr = handle;
-
-	if (handle == HANDLE::Command)
-		widget->prompt();
-	else if (handle == HANDLE::Listing)
-		widget->nav();
+	widget->setCurrentHandler(this->currhr);
 
 	if (! this->connected)
 	{
@@ -97,10 +93,17 @@ std::istream* termctl_gui::ptr()
 	return new std::istream(cp_buf);
 }
 
-const std::string termctl_gui::str()
+const std::string termctl_gui::line()
 {
 	std::string str;
-	*is >> str;
+	std::getline(*is, str);
+	return str;
+}
+
+const std::string termctl_gui::token()
+{
+	std::string str;
+	std::getline(*is, str, ' ');
 	return str;
 }
 
@@ -112,8 +115,6 @@ void termctl_gui::reset()
 
 int termctl_gui::paged(int pos, int offset)
 {
-	widget->nav();
-
 	int key = 0;
 
 	switch (this->currkey)
@@ -125,20 +126,20 @@ int termctl_gui::paged(int pos, int offset)
 			key = EVENT::PageNext;
 		break;
 		case Qt::Key_Right:
-			key = EVENT::PageNext;
+			key = QApplication::layoutDirection() == Qt::LeftToRight ? EVENT::PageNext : EVENT::PagePrev;
 		break;
 		case Qt::Key_Left:
-			key = EVENT::PagePrev;
+			key = QApplication::layoutDirection() == Qt::LeftToRight ? EVENT::PagePrev : EVENT::PageNext;
 		break;
 		case Qt::Key_Return:
 		case Qt::Key_Enter:
-			key = EVENT::InputReturn;
+			key = EVENT::PageNext;
 		break;
 		case Qt::Key_Q:
 		case Qt::Key_X:
 			key = 0;
 		default:
-			widget->beep();
+			QApplication::beep();
 	}
 
 	if (key != 0)
@@ -146,7 +147,7 @@ int termctl_gui::paged(int pos, int offset)
 		if (key == EVENT::PagePrev)
 		{
 			if (pos - offset < 0)
-				widget->beep();
+				QApplication::beep();
 		}
 	}
 

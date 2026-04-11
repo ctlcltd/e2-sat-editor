@@ -19,6 +19,8 @@ namespace e2se_gui
 
 DialogDockWidget::DialogDockWidget(QWidget* parent, Qt::WindowFlags flags) : QDockWidget(parent, flags)
 {
+	this->setContextMenuPolicy(Qt::PreventContextMenu);
+
 	connect(this, &DialogDockWidget::dockLocationChanged, this, [=](Qt::DockWidgetArea area) {
 		this->docked = (area != Qt::NoDockWidgetArea);
 	});

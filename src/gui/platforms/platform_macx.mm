@@ -228,7 +228,6 @@ QWidget* _platform_macx::_osWidgetBlend(QWidget* widget, FX_MATERIAL material, F
 	return widget;
 }
 
-//TODO improve native macx context menu items
 void _platform_macx::_osMenuPopup(QMenu* menu, QWidget* widget, QPoint pos)
 {
 	QWidget* top = widget->window();
@@ -239,6 +238,9 @@ void _platform_macx::_osMenuPopup(QMenu* menu, QWidget* widget, QPoint pos)
 
 	//workaround: macx >= 13 text elision, eg. "Text item" is "Tex...item"
 	[nsMenu setMinimumWidth:[nsMenu size].width];
+
+	// note: focused widget and native edit items, eg. autofill, services
+	[nsMenu setAllowsContextMenuPlugIns:NO];
 
 	QPoint globalPos = widget->mapTo(top, pos);
 

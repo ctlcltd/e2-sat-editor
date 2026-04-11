@@ -21,6 +21,7 @@ class ConsoleWidget : public QPlainTextEdit
 	Q_OBJECT
 
 	public:
+
 		enum HANDLE {
 			Command,
 			Listing,
@@ -28,14 +29,19 @@ class ConsoleWidget : public QPlainTextEdit
 		};
 
 		explicit ConsoleWidget(QWidget* parent = nullptr);
-		void attach(QWidget* parent);
-		void detach();
-		void output(const QString text);
-		void error(const QString text);
-		void prompt();
-		void nav();
-		void beep();
-		void ruler();
+		void attachWidget(QWidget* parent);
+		void detachWidget();
+		void printOutput(const QString text);
+		void printErrors(const QString text);
+		void printPromptCursor();
+		void printNavigationRuler();
+		void printSessionRuler();
+
+		HANDLE currentHandler() const;
+		void setCurrentHandler(HANDLE handle);
+		void setCurrentHandler(int handle);
+		bool isInputMasked() const;
+		void setInputMasked(bool masked);
 
 	signals:
 		void input(const int key, const QString val);
@@ -50,6 +56,8 @@ class ConsoleWidget : public QPlainTextEdit
 	private:
 		HANDLE currhr;
 		int gtpos = 0;
+		int impos = 0;
+		bool imval = false;
 };
 }
 #endif /* ConsoleWidget_h */
