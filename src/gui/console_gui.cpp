@@ -9,7 +9,7 @@
  * @license GNU GPLv3 License
  */
 
-#include <cstdio>
+#include <clocale>
 #include <iostream>
 
 #include <QGridLayout>
@@ -78,6 +78,8 @@ void console_gui::layout(QWidget* parent)
 		dwid->setLayout(frm);
 	else
 		frm->setParent(parent);
+
+	parent->setProperty("console_widget", true);
 }
 
 void console_gui::init()
@@ -108,6 +110,23 @@ void console_gui::init()
 	prompt();
 }
 
+void console_gui::close()
+{
+	debug("close");
+
+	if (cnt->parent() != nullptr && cnt->parent()->parent() != nullptr)
+	{
+		QWidget* widget = qobject_cast<QWidget*>(cnt->parent()->parent());
+
+		if (widget != nullptr && ! widget->property("console_widget").isNull())
+		{
+			detach();
+
+			widget->close();
+		}
+	}
+}
+
 void console_gui::attach(QWidget* parent)
 {
 	debug("attach");
@@ -121,11 +140,23 @@ void console_gui::attach(QWidget* parent)
 	perr = new stream(*this->ts_err);
 
 	this->plog = this->log;
-	this->termctl = new termctl_gui(this->cnt);
+	//TODO
+	// this->termctl = new termctl_gui(this->cnt);
 
-	cnt->attachWidget(parent);
+	QGridLayout* frm = new QGridLayout;
+	frm->setContentsMargins(0, 0, 0, 0);
+	frm->addWidget(cnt, 0, 0);
 
-	prompt();
+	if (DialogDockWidget* dwid = qobject_cast<DialogDockWidget*>(parent))
+		dwid->setLayout(frm);
+	else
+		frm->setParent(parent);
+
+	cnt->attachWidget();
+
+	parent->setProperty("console_widget", true);
+
+	session();
 }
 
 void console_gui::detach()
@@ -139,7 +170,9 @@ void console_gui::detach()
 	delete this->ba_out;
 	delete this->ba_err;
 
-	delete this->termctl;
+	//TODO QObject is connected
+	termctl->reset();
+	// delete this->termctl;
 
 	this->plog = nullptr;
 	this->pout = nullptr;
@@ -148,7 +181,7 @@ void console_gui::detach()
 	this->ts_err = nullptr;
 	this->ba_out = nullptr;
 	this->ba_err = nullptr;
-	this->termctl = nullptr;
+	// this->termctl = nullptr;
 
 	cnt->detachWidget();
 }
@@ -168,7 +201,7 @@ void console_gui::sync()
 	if (this->termctl != nullptr && this->dbih != nullptr)
 	{
 		if (this->dbih != this->data->dbih)
-			this->session();
+			session();
 	}
 
 	this->dbih = this->data->dbih;
@@ -190,7 +223,7 @@ void console_gui::prompt()
 		this->sync();
 
 		if (cmd == "quit" || cmd == "exit" || cmd == "q")
-			return;
+			return command_quit();
 		else if (cmd == "help" || cmd == "h")
 			command_help(is);
 		else if (cmd == "version" || cmd == "v")
@@ -235,8 +268,8 @@ void console_gui::prompt()
 			command_macro(is);
 		else if (cmd == "inspect")
 			command_inspect(is);
-		// else if (cmd == "preferences")
-		// 	command_preferences(is);
+		else if (cmd == "preferences")
+			command_preferences(is);
 		else if (! cmd.empty())
 			console_error(cmd);
 
@@ -268,8 +301,51 @@ void console_gui::flush()
 	ba_out->clear();
 	ts_err->seek(0);
 	ts_out->seek(0);
+}
 
-	cnt->ensureCursorVisible();
+void console_gui::console_resolver(COMMAND command, istream* is)
+{
+	if (command == COMMAND::preferences)
+	{
+		string src, type, opt1;
+		*is >> std::skipws >> src >> type >> opt1;
+
+		if (type.empty() || type == "output")
+			console_preferences(type, opt1);
+		else
+			*perr << "Type Error: " << msg("Unknown entry type: %s", type) << pout->endl();
+	}
+	else
+	{
+		this->e2db_console::console_resolver(command, is);
+	}
+}
+
+void console_gui::console_usage(COMMAND hint, int level)
+{
+	if (hint == COMMAND::preferences)
+	{
+		*pout << "  ", pout->width(36), *pout << pout->left() << "preferences", *pout << ' ' << "CLI preferences." << pout->endl();
+		*pout << pout->endl();
+
+		if (level & 1)
+		{
+			*pout << "  ", *pout << "USAGE" << pout->endl() << pout->endl();
+			*pout << "  ", pout->width(7), *pout << pout->left() << "preferences", *pout << ' ';
+			pout->width(24), *pout << pout->left() << "output  [format]", *pout << ' ' << "Output format (tabular, byline, json)" << pout->endl();
+			*pout << pout->endl();
+		}
+	}
+	else
+	{
+		this->e2db_console::console_usage(hint, level);
+	}
+}
+
+void console_gui::command_quit()
+{
+	if (cnt->parent() != nullptr)
+		close();
 }
 
 void console_gui::entry_list(ENTRY entry_type, bool paged, int limit, int pos, string bname)
@@ -327,7 +403,7 @@ void console_gui::entry_list(ENTRY entry_type, bool paged, int limit, int pos, s
 		entry_list_exec(entry_type, pos, offset, end, bname);
 		flush();
 
-		qDebug() << "entry_list" << "end:" << p.end;
+		// qDebug() << "entry_list" << "end:" << p.end;
 
 		cnt->printNavigationRuler();
 
@@ -428,7 +504,7 @@ void console_gui::input_step(current &curr)
 			else if (str == "a") i = 4;
 			pos = 0;
 		}
-		else if (values.count(TYPE::txdata))
+		else if (i > 0 && values.count(TYPE::txdata))
 		{
 			string str = values.at(TYPE::txdata);
 
@@ -490,7 +566,7 @@ void console_gui::input_step(current &curr)
 			i = 1;
 			pos = 0;
 		}
-		else if (values.count(TYPE::txdata))
+		else if (i != -1 && values.count(TYPE::txdata))
 		{
 			string str = values.at(TYPE::txdata);
 
@@ -505,7 +581,7 @@ void console_gui::input_step(current &curr)
 	}
 	else if (entry_type == ENTRY::channel_reference)
 	{
-		if (values.count(TYPE::ffdata))
+		if (i != -1 && values.count(TYPE::ffdata))
 		{
 			string str = values.at(TYPE::ffdata);
 
@@ -558,7 +634,6 @@ void console_gui::input_next(current &curr)
 			auto it = props.begin();
 			auto last = props.end();
 
-			//TODO FIX last input_end
 			if (it + pos != last)
 			{
 				it += pos;
@@ -607,10 +682,9 @@ void console_gui::input_end(current &curr)
 	prompt();
 }
 
-//TODO FIX SEGFAULT &end
 void console_gui::paged_nav(nav &p)
 {
-	qDebug() << "paged_nav-0" << "pos:" << p.pos << "offset:" << p.offset;
+	qDebug() << "paged_nav" << "pos:" << p.pos << "offset:" << p.offset;
 
 	ENTRY entry_type = p.entry_type;
 	int limit = p.limit;
@@ -620,7 +694,7 @@ void console_gui::paged_nav(nav &p)
 	int &offset = p.offset;
 	int &end = p.end;
 
-	qDebug() << "paged_nav-1" << "end:" << p.end;
+	// qDebug() << "paged_nav-1" << "end:" << p.end;
 
 	if (end)
 		return paged_end();
@@ -633,13 +707,14 @@ void console_gui::paged_nav(nav &p)
 
 	int key = termctl->paged(pos, offset);
 
-	qDebug() << "paged_nav-2" << "key:" << key;
+	// qDebug() << "paged_nav-2" << "key:" << key;
 
 	switch (key)
 	{
-		case 0: return paged_end();
-		case Qt::Key_Up: pos -= offset; break; // termctl_gui::EVENT::PagePrev
-		default: pos += offset; // any key
+		case termctl_gui::EVENT::InputEnd: return paged_end();
+		case termctl_gui::EVENT::PagePrev: pos -= offset; break;
+		case termctl_gui::EVENT::PageNext: pos += offset; break;
+		default: return; // any key
 	}
 
 	this->sync();
@@ -647,7 +722,7 @@ void console_gui::paged_nav(nav &p)
 	entry_list_exec(entry_type, pos, offset, end, bname);
 	flush();
 
-	qDebug() << "paged_nav-3" << "end:" << p.end;
+	// qDebug() << "paged_nav-3" << "end:" << p.end;
 
 	cnt->printNavigationRuler();
 }

@@ -34,14 +34,14 @@ class termctl : public ::e2se_e2db::termiface
 		};
 
 		enum EVENT {
-			HistoryBack = KeyUp,
-			HistoryForward = KeyDown,
-			PagePrev = KeyUp,
-			PageNext = KeyDown,
+			InputReturn = KeyReturn,
 			CursorForward = KeyRight,
 			CursorBackward = KeyLeft,
 			DeleteChar = KeyDelete,
-			InputReturn = KeyReturn
+			HistoryBack = KeyUp,
+			HistoryForward = KeyDown,
+			PagePrev = KeyUp,
+			PageNext = KeyDown
 		};
 
 		termctl();

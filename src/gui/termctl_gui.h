@@ -28,14 +28,12 @@ class termctl_gui : public ::e2se_e2db::termiface
 	public:
 
 		enum EVENT {
-			HistoryBack = Qt::Key_Down,
-			HistoryForward = Qt::Key_Down,
+			InputReturn = Qt::Key_Return,
+			InputEnd = Qt::Key_Escape,
 			PagePrev = Qt::Key_Up,
 			PageNext = Qt::Key_Down,
-			CursorForward = Qt::Key_Right,
-			CursorBackward = Qt::Key_Left,
-			DeleteChar = Qt::Key_Backspace,
-			InputReturn = Qt::Key_Return
+			HistoryBack = Qt::Key_Down,
+			HistoryForward = Qt::Key_Down
 		};
 
 		termctl_gui(ConsoleWidget* widget);
@@ -64,7 +62,7 @@ class termctl_gui : public ::e2se_e2db::termiface
 		ConsoleWidget* widget = nullptr;
 		std::iostream* is;
 		std::streampos last;
-		HANDLE currhr = HANDLE::Testing;
+		HANDLE currhr;
 		int currkey;
 		std::function<void()> inputCallback;
 		bool connected = false;

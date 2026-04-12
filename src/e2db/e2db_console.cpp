@@ -36,7 +36,6 @@ string e2db_console::editor_version()
 void e2db_console::console_exit()
 {
 	termctl->reset();
-	exit(0);
 }
 
 void e2db_console::console_header()
@@ -2635,9 +2634,9 @@ void e2db_console::entry_list(ENTRY entry_type, bool paged, int limit, int pos, 
 
 			switch (key)
 			{
-				case 0: return;
 				case 65: pos -= offset; break; // termctl::EVENT::PagePrev
-				default: pos += offset; // any key
+				case 66: pos += offset; break; // termctl::EVENT::PageNext
+				default: return; // any key
 			}
 
 			entry_list_exec(entry_type, pos, offset, end, bname);

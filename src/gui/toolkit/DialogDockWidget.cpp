@@ -17,6 +17,7 @@
 namespace e2se_gui
 {
 
+//TODO FIX QDockWidget split
 DialogDockWidget::DialogDockWidget(QWidget* parent, Qt::WindowFlags flags) : QDockWidget(parent, flags)
 {
 	this->setContextMenuPolicy(Qt::PreventContextMenu);

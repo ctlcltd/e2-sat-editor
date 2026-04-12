@@ -29,7 +29,7 @@ class ConsoleWidget : public QPlainTextEdit
 		};
 
 		explicit ConsoleWidget(QWidget* parent = nullptr);
-		void attachWidget(QWidget* parent);
+		void attachWidget();
 		void detachWidget();
 		void printOutput(const QString text);
 		void printErrors(const QString text);
@@ -42,6 +42,7 @@ class ConsoleWidget : public QPlainTextEdit
 		void setCurrentHandler(int handle);
 		bool isInputMasked() const;
 		void setInputMasked(bool masked);
+		void reset();
 
 	signals:
 		void input(const int key, const QString val);
@@ -55,9 +56,11 @@ class ConsoleWidget : public QPlainTextEdit
 
 	private:
 		HANDLE currhr;
-		int gtpos = 0;
+		int tcpos = 0;
 		int impos = 0;
 		bool imval = false;
+		int nbpos = 0;
+		int nblen = 0;
 };
 }
 #endif /* ConsoleWidget_h */

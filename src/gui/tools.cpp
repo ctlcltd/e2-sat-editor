@@ -41,6 +41,8 @@
 #include "tab.h"
 #include "gui.h"
 #include "dialConvertM3u.h"
+
+#include "toolkit/DialogDockWidget.h"
 #include "console_gui.h"
 
 using namespace e2se;
@@ -1211,14 +1213,24 @@ void tools::console()
 {
 	debug("console");
 
-	this->dwig = new DialogDockWidget;
-	dwig->setWindowTitle(tr("Console", "dialog"));
-	dwig->setBaseSize(520, 288);
-	dwig->setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+	if (this->dwid != nullptr)
+		return dwid->raiseWindow();
 
-	tid->addPermanentDockWidget(Qt::BottomDockWidgetArea, dwig);
+	this->dwid = new DialogDockWidget;
+	dwid->setWindowTitle(tr("Console", "dialog"));
+	dwid->setBaseSize(520, 288);
+	dwid->setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
 
-	console_gui* dframe = new console_gui(dwig, this->data);
+	dwid->connect(dwid, &DialogDockWidget::finished, [=]() {
+		this->dwid = nullptr;
+	});
+
+	tid->addPermanentDockWidget(Qt::BottomDockWidgetArea, dwid);
+
+	if (this->dgui == nullptr)
+		this->dgui = new console_gui(this->dwid, this->data);
+	else
+		this->dgui->attach(this->dwid);
 }
 
 void tools::destroy()

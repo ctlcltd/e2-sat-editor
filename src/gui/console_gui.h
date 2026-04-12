@@ -9,8 +9,11 @@
  * @license GNU GPLv3 License
  */
 
+#include <iostream>
 #include <string>
 #include <any>
+
+using std::istream;
 
 #ifndef console_gui_h
 #define console_gui_h
@@ -58,7 +61,9 @@ class console_gui : protected e2se::log_factory, public ::e2se_e2db::e2db_consol
 	public:
 		console_gui(QWidget* parent, dataHandler* data);
 		~console_gui(); // final destructor
-		void layout(QWidget* parent);
+		void close();
+		void attach(QWidget* parent);
+		void detach();
 
 	protected:
 
@@ -89,12 +94,18 @@ class console_gui : protected e2se::log_factory, public ::e2se_e2db::e2db_consol
 		};
 
 		void init();
-		void attach(QWidget* parent);
-		void detach();
+		void layout(QWidget* parent);
 		void session();
 		void sync();
 		void prompt();
 		void flush();
+
+		void console_resolver(COMMAND command, istream* is) override;
+		void console_usage(COMMAND hint, int level = 3) override;
+
+		void command_help(istream* is) { console_resolver(COMMAND::usage, is); }
+		void command_preferences(istream* is) { console_resolver(COMMAND::preferences, is); }
+		void command_quit();
 
 		void entry_list(ENTRY entry_type, bool paged = true, int limit = 0, int pos = 0, string bname = "") override;
 		void entry_edit(ENTRY entry_type, bool edit, string id = "", int ref = 0, string bname = "") override;

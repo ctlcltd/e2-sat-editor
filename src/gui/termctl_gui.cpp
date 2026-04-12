@@ -32,7 +32,9 @@ termctl_gui::~termctl_gui()
 
 	this->inputCallback = nullptr;
 
-	delete this->is;
+	//TODO FIX EXC_BAD_ACCESS SEGFAULT
+	// delete this->is;
+
 	delete this;
 }
 
@@ -137,7 +139,7 @@ int termctl_gui::paged(int pos, int offset)
 		break;
 		case Qt::Key_Q:
 		case Qt::Key_X:
-			key = 0;
+			key = EVENT::InputEnd;
 		default:
 			QApplication::beep();
 	}
@@ -147,7 +149,11 @@ int termctl_gui::paged(int pos, int offset)
 		if (key == EVENT::PagePrev)
 		{
 			if (pos - offset < 0)
+			{
+				key = 0;
+
 				QApplication::beep();
+			}
 		}
 	}
 

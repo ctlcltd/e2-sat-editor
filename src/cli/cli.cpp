@@ -9,10 +9,7 @@
  * @license GNU GPLv3 License
  */
 
-#include <cstdio>
 #include <clocale>
-#include <cstring>
-#include <cctype>
 #include <algorithm>
 #include <iomanip>
 

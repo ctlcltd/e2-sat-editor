@@ -51,8 +51,7 @@ struct termiface
 		enum HANDLE {
 			Command,
 			Listing,
-			Input,
-			Testing = 0xf
+			Input
 		};
 
 		virtual ~termiface() = default;

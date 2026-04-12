@@ -23,7 +23,6 @@ using std::string, std::vector, std::map;
 #include <QDialog>
 
 #include "../logger/logger.h"
-#include "toolkit/DialogDockWidget.h"
 #include "theme.h"
 #include "dataHandler.h"
 
@@ -31,6 +30,8 @@ namespace e2se_gui
 {
 class gui;
 class tab;
+class DialogDockWidget;
+class console_gui;
 
 class tools : protected e2se::log_factory
 {
@@ -81,8 +82,8 @@ class tools : protected e2se::log_factory
 		dataHandler* data = nullptr;
 		sort_context* sort_ctx = nullptr;
 		map<SORT_ITEM, sort_context*> sort_stg;
-		//TODO rename
-		DialogDockWidget* dwig = nullptr;
+		DialogDockWidget* dwid = nullptr;
+		console_gui* dgui = nullptr;
 };
 }
 #endif /* tools_h */

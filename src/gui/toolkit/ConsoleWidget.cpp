@@ -27,13 +27,10 @@ ConsoleWidget::ConsoleWidget(QWidget* parent) : QPlainTextEdit(parent)
 	}); // moc
 }
 
-void ConsoleWidget::attachWidget(QWidget* parent)
+void ConsoleWidget::attachWidget()
 {
-	this->setParent(parent);
 	this->setUpdatesEnabled(true);
 	this->blockSignals(false);
-
-	this->printSessionRuler();
 }
 
 void ConsoleWidget::detachWidget()
@@ -55,9 +52,10 @@ void ConsoleWidget::printOutput(const QString text)
 	cursor.setCharFormat(QTextCharFormat());
 	cursor.insertText(text);
 	this->setTextCursor(cursor);
+	this->ensureCursorVisible();
 
 	if (! this->imval)
-		this->gtpos = cursor.position();
+		this->tcpos = cursor.position();
 }
 
 void ConsoleWidget::printErrors(const QString text)
@@ -70,8 +68,9 @@ void ConsoleWidget::printErrors(const QString text)
 	cursor.insertText(text);
 	cursor.setCharFormat(QTextCharFormat());
 	this->setTextCursor(cursor);
+	this->ensureCursorVisible();
 
-	this->gtpos = cursor.position();
+	this->tcpos = cursor.position();
 }
 
 void ConsoleWidget::printPromptCursor()
@@ -81,23 +80,43 @@ void ConsoleWidget::printPromptCursor()
 	cursor.setCharFormat(QTextCharFormat());
 	cursor.insertText("> ");
 	this->setTextCursor(cursor);
+	this->ensureCursorVisible();
 
-	this->gtpos = cursor.position();
+	this->tcpos = cursor.position();
 }
 
 void ConsoleWidget::printNavigationRuler()
 {
+	if (this->nblen != 0)
+	{
+		QTextCursor cursor = QTextCursor(this->document());
+		cursor.setPosition(this->nbpos);
+		QTextBlock block = cursor.block();
+
+		if (block.length() == this->nblen)
+		{
+			cursor.setPosition(block.position(), QTextCursor::MoveAnchor);
+			cursor.setPosition((block.position() + block.length()), QTextCursor::KeepAnchor);
+			cursor.removeSelectedText();
+		}
+	}
+
 	QTextCursor cursor = QTextCursor(this->document()->lastBlock());
+	this->nbpos = cursor.position();
 	this->maybeInsertBlock(cursor);
+	cursor.setCharFormat(QTextCharFormat());
 	cursor.insertText("Press key [Up] | [Down] to Move, [q] to Exit");
 	this->setTextCursor(cursor);
+	this->ensureCursorVisible();
 
-	this->gtpos = cursor.position();
+	this->tcpos = cursor.position();
+	this->nblen = cursor.block().length();
 }
 
 void ConsoleWidget::printSessionRuler()
 {
-	QTextCursor cursor = QTextCursor(this->document()->end());
+	QTextCursor cursor = QTextCursor(this->document()->lastBlock());
+	cursor.movePosition(QTextCursor::EndOfBlock);
 	cursor.insertBlock();
 	cursor.insertText("\n");
 }
@@ -110,6 +129,8 @@ ConsoleWidget::HANDLE ConsoleWidget::currentHandler() const
 void ConsoleWidget::setCurrentHandler(HANDLE handle)
 {
 	this->currhr = handle;
+	this->nbpos = 0;
+	this->nblen = 0;
 }
 
 void ConsoleWidget::setCurrentHandler(int handle)
@@ -126,6 +147,16 @@ void ConsoleWidget::setInputMasked(bool masked)
 {
 	this->imval = masked;
 	this->impos = this->textCursor().position();
+}
+
+void ConsoleWidget::reset()
+{
+	this->currhr = HANDLE::Command;
+	this->tcpos = 0;
+	this->impos = 0;
+	this->imval = false;
+	this->nbpos = 0;
+	this->nblen = 0;
 }
 
 void ConsoleWidget::maybeInsertBlock(QTextCursor &cursor)
@@ -145,7 +176,7 @@ void ConsoleWidget::keyPressEvent(QKeyEvent* event)
 	{
 		return QPlainTextEdit::keyPressEvent(event);
 	}
-	else if (cursor.selectionStart() < this->gtpos)
+	else if (cursor.selectionStart() < this->tcpos)
 	{
 		cursor.movePosition(QTextCursor::End);
 		this->setTextCursor(cursor);
@@ -163,7 +194,7 @@ void ConsoleWidget::keyPressEvent(QKeyEvent* event)
 		if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
 		{
 			QTextCursor cursor = QTextCursor(this->document()->lastBlock());
-			cursor.setPosition(this->gtpos, QTextCursor::MoveAnchor);
+			cursor.setPosition(this->tcpos, QTextCursor::MoveAnchor);
 			cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
 
 			emit input(Qt::Key_Return, cursor.selectedText());
@@ -171,19 +202,19 @@ void ConsoleWidget::keyPressEvent(QKeyEvent* event)
 		}
 		else if (event->key() == Qt::Key_Left || event->key() == Qt::Key_Right)
 		{
-			if (cursor.position() <= this->gtpos)
+			if (cursor.position() <= this->tcpos)
 				return QApplication::beep();
 		}
 		else if (event->key() == Qt::Key_Up || event->key() == Qt::Key_Down)
 		{
-			if (cursor.position() <= this->gtpos)
+			if (cursor.position() <= this->tcpos)
 				return QApplication::beep();
 			else if (this->currhr == HANDLE::Command)
 				emit input(static_cast<Qt::Key>(event->key()), NULL);
 
 			return;
 		}
-		else if (cursor.position() <= this->gtpos)
+		else if (cursor.position() <= this->tcpos)
 		{
 			if (
 				event->key() == Qt::Key_Backspace ||
@@ -199,7 +230,7 @@ void ConsoleWidget::keyPressEvent(QKeyEvent* event)
 
 bool ConsoleWidget::canInsertFromMimeData(const QMimeData* source) const
 {
-	if (this->textCursor().position() <= this->gtpos)
+	if (this->textCursor().position() <= this->tcpos)
 		return false;
 
 	return QPlainTextEdit::canInsertFromMimeData(source);
@@ -226,7 +257,7 @@ void ConsoleWidget::showContextMenu(QPoint pos)
 	{
 		QAction* action = new QAction(menu);
 		action->setText(tr("&Paste", "context-menu"));
-		action->setEnabled((this->textCursor().position() <= this->gtpos));
+		action->setEnabled((this->textCursor().position() <= this->tcpos));
 		connect(action, &QAction::triggered, this, &ConsoleWidget::paste); // moc
 		menu->addAction(action);
 	}
