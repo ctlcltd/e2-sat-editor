@@ -7,6 +7,16 @@
 ## 
 ##
 
+ARCH=$(uname -p)
+
+if [[ "$ARCH" == "arm64" ]]; then
+	ARCH="aarch64"
+elif [[ "$ARCH" == "aarch64" ]]; then
+	ARCH="aarch64"
+else
+	ARCH="x86_64"
+fi
+
 # dpkg-reconfigure tzdata
 # apt-get update
 # apt-get upgrade
@@ -30,9 +40,9 @@
 # apt-get install libzstd-dev zlib1g-dev libmtdev-dev
 # apt-get install llvm clang clang-tools libclang-dev
 # df -h
-# wget https://master.qt.io/archive/qt/6.10/6.10.2/single/qt-everywhere-src-6.10.2.tar.xz
-# tar -xf qt-everywhere-src-6.10.2.tar.xz
-# cd qt-everywhere-src-6.10.2
+# wget https://master.qt.io/archive/qt/6.11/6.11.0/single/qt-everywhere-src-6.11.0.tar.xz
+# tar -xf qt-everywhere-src-6.11.0.tar.xz
+# cd qt-everywhere-src-6.11.0
 # cmake -DCMAKE_BUILD_TYPE=None -DCMAKE_INSTALL_PREFIX=/usr/local -DINSTALL_BINDIR=lib/qt6/bin -DINSTALL_PUBLICBINDIR=usr/bin -DINSTALL_LIBEXECDIR=lib/qt6 -DINSTALL_DOCDIR=share/doc/qt6 -DINSTALL_ARCHDATADIR=lib/qt6 -DINSTALL_DATADIR=share/qt6 -DINSTALL_INCLUDEDIR=include/qt6 -DINSTALL_MKSPECSDIR=lib/qt6/mkspecs -DINSTALL_EXAMPLESDIR=share/doc/qt6/examples -G Ninja . -DCMAKE_EXPORT_NO_PACKAGE_REGISTRY=ON -DCMAKE_FIND_USE_PACKAGE_REGISTRY=OFF -DCMAKE_FIND_PACKAGE_NO_PACKAGE_REGISTRY=ON -DCMAKE_SKIP_INSTALL_ALL_DEPENDENCY=ON -DCMAKE_VERBOSE_MAKEFILE=ON -DBUILD_EXAMPLES=OFF -DFEATURE_mimetype_database=OFF -DFEATURE_dbus_linked=ON -DFEATURE_accessibility=ON -DFEATURE_doubleconversion=ON -DFEATURE_glib=ON -DFEATURE_icu=ON -DFEATURE_pcre2=ON -DFEATURE_system_pcre2=ON -DFEATURE_zlib=ON -DFEATURE_ssl=ON -DFEATURE_libproxy=ON -DFEATURE_system_proxies=ON -DFEATURE_cups=ON -DFEATURE_fontconfig=ON -DFEATURE_freetype=ON -DFEATURE_harfbuzz=ON -DFEATURE_xcb=ON -DFEATURE_system_xcb_xinput=ON -DFEATURE_gtk=ON -DFEATURE_directfb=OFF -DFEATURE_sql_odbc=ON -DFEATURE_sql_mysql=ON -DFEATURE_sql_psql=ON -DFEATURE_sql_sqlite=ON -DFEATURE_system_sqlite=ON -DFEATURE_jpeg=ON -DFEATURE_system_jpeg=ON -DFEATURE_png=ON -DFEATURE_system_png=ON -DFEATURE_system_libb2=ON -DFEATURE_rpath=OFF -DFEATURE_relocatable=OFF -DFEATURE_sql_ibase=ON -DFEATURE_sctp=ON
 # cat config.summary | less
 # cmake --build . --parallel -t qtbase -t qtimageformats -t qtsvg -t qttools -t qtwayland
@@ -57,9 +67,9 @@
 
 # apt-get remove curl
 # apt-get install libssl-dev
-# wget https://curl.se/download/curl-8.18.0.tar.xz
-# tar -xf curl-8.18.0.tar.xz
-# cd curl-8.18.0
+# wget https://curl.se/download/curl-8.19.0.tar.xz
+# tar -xf curl-8.19.0.tar.xz
+# cd curl-8.19.0
 # ./configure --prefix=/usr/local --with-openssl --without-libpsl --enable-versioned-symbols
 # make -j 2
 # make install
@@ -68,15 +78,15 @@
 
 
 # apt-get install fuse
-# wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
-# wget https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage
-# wget https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
-# chmod +x linuxdeploy-x86_64.AppImage
-# chmod +x linuxdeploy-plugin-qt-x86_64.AppImage
-# chmod +x appimagetool-x86_64.AppImage
-# mv linuxdeploy-x86_64.AppImage /usr/local/bin/linuxdeploy
-# mv linuxdeploy-plugin-qt-x86_64.AppImage /usr/local/bin/linuxdeploy-plugin-qt
-# mv appimagetool-x86_64.AppImage /usr/local/bin/appimagetool
+# wget "https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-$ARCH.AppImage"
+# wget "https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-$ARCH.AppImage"
+# wget "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-$ARCH.AppImage"
+# chmod +x "linuxdeploy-$ARCH.AppImage"
+# chmod +x "linuxdeploy-plugin-qt-$ARCH.AppImage"
+# chmod +x "appimagetool-$ARCH.AppImage"
+# mv "linuxdeploy-$ARCH.AppImage" /usr/local/bin/linuxdeploy
+# mv "linuxdeploy-plugin-qt-$ARCH.AppImage" /usr/local/bin/linuxdeploy-plugin-qt
+# mv "appimagetool-$ARCH.AppImage" /usr/local/bin/appimagetool
 
 
 # apt-get install build-essential git
@@ -115,16 +125,16 @@ mv AppDir/usr/share/e2-sat-editor/License.txt AppDir/usr/share/doc/e2-sat-editor
 export QMAKE=qmake6
 linuxdeploy --appdir AppDir --plugin qt --output appimage
 
-chmod +x e2_SAT_Editor-x86_64.AppImage
+chmod +x e2_SAT_Editor-$ARCH.AppImage
 
-# ./e2_SAT_Editor-x86_64.AppImage
+# ./e2_SAT_Editor-$ARCH.AppImage
 
 
 # apt-get install nano
 # nano /etc/resolv.conf
 # systemctl restart systemd-resolved
 
-./e2_SAT_Editor-x86_64.AppImage --appimage-extract
+./e2_SAT_Editor-$ARCH.AppImage --appimage-extract
 
 # patch AppRun to AppRun.wrapped
 # patch AppRun bash script
@@ -134,7 +144,7 @@ chmod +x e2_SAT_Editor-x86_64.AppImage
 
 appimagetool squashfs-root --sign --sign-key $MY_SIGN_KEY
 
-mv e2_SAT_Editor-x86_64.AppImage e2-sat-editor-$VERSION-x86_64.AppImage
+mv e2_SAT_Editor-$ARCH.AppImage e2-sat-editor-$VERSION-$ARCH.AppImage
 
-# ./e2-sat-editor-$VERSION-x86_64.AppImage --appimage-signature
+# ./e2-sat-editor-$VERSION-$ARCH.AppImage --appimage-signature
 

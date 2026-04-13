@@ -125,6 +125,12 @@ deploy_script () {
 release () {
 	printf "%s\n\n" "release."
 
+	local infoplist="Info.plist.arm64.in"
+
+	if [[ $(arch) == "i386" ]]; then
+		infoplist="Info.plist.x86_64.in"
+	fi
+
 	src
 	deploy_script
 
@@ -140,7 +146,7 @@ release () {
 	cp /usr/local/share/qt/translations/qtbase_*.qm "$QMDIR"
 	rm -R "$QMDIR"/qt_help_*.qm
 
-	cp "../dist/macos/Info.plist.in" "build/e2 SAT Editor.app/Contents/Info.plist"
+	cp "../dist/macos/${infoplist}" "build/e2 SAT Editor.app/Contents/Info.plist"
 	cp "../dist/macos/PkgInfo.in" "build/e2 SAT Editor.app/Contents/PkgInfo"
 
 	printf "%s\n\n" "run deploy script ..."

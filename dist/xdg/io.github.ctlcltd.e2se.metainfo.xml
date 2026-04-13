@@ -44,6 +44,8 @@
         <ul>
             <li>Bugfix and improvements</li>
             <li>Transponder frequency and symbol-rate precision</li>
+            <li>New: Console for non-graphical edit</li>
+            <li>Dockable Console and Log Inspector</li>
             <li>Updated translations</li>
         </ul>
       </description>

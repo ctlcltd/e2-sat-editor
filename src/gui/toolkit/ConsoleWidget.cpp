@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 1.9.0
+ * @version 2.0.0
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -251,6 +251,7 @@ void ConsoleWidget::showContextMenu(QPoint pos)
 		QAction* action = new QAction(menu);
 		action->setText(tr("&Copy", "context-menu"));
 		action->setEnabled(this->textCursor().hasSelection());
+		//TODO context [this] or menu
 		connect(action, &QAction::triggered, this, &ConsoleWidget::copy); // moc
 		menu->addAction(action);
 	}
@@ -258,6 +259,7 @@ void ConsoleWidget::showContextMenu(QPoint pos)
 		QAction* action = new QAction(menu);
 		action->setText(tr("&Paste", "context-menu"));
 		action->setEnabled((this->textCursor().position() <= this->tcpos));
+		//TODO context [this] or menu
 		connect(action, &QAction::triggered, this, &ConsoleWidget::paste); // moc
 		menu->addAction(action);
 	}

@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 1.9.0
+ * @version 2.0.0
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -69,7 +69,7 @@ void checkUpdate::check()
 	debug("check");
 
 	string current_url = "https://github.com/ctlcltd/e2-sat-editor/releases/tag/";
-	current_url.append(this->relver);
+	current_url.append(this->RELVER);
 
 	this->state.checked = true;
 	this->state.current_url = current_url;
@@ -143,7 +143,7 @@ void checkUpdate::autoCheck()
 	{
 		this->state.dialog = DIAL::dial_haveupdate;
 
-		QString version = this->ver;
+		QString version = this->VER;
 		QUrl url;
 
 		if (! this->state.version.empty())
@@ -182,7 +182,7 @@ void checkUpdate::notify()
 		this->state.dialog = DIAL::dial_fetcherror;
 	}
 
-	QString version = this->ver;
+	QString version = this->VER;
 	QUrl url;
 
 	if (! this->state.version.empty())
@@ -190,7 +190,7 @@ void checkUpdate::notify()
 	if (! this->state.latest_url.empty())
 		url = QUrl (QString::fromStdString(this->state.latest_url));
 
-	// note: this->state broken struct, passed by reference, with QMetaObject::invokeMethod
+	// note: this->state race, asyncronous QMetaObject::invokeMethod
 	DIAL dialog = this->state.dialog;
 	MEDIUM medium = this->medium;
 	QMetaObject::invokeMethod(this->cwid, [=]() { this->showMessage(dialog, medium, version, url); });
@@ -198,7 +198,7 @@ void checkUpdate::notify()
 
 void checkUpdate::showMessage(DIAL dialog, MEDIUM medium, QString version, QUrl url)
 {
-	// note: SEGFAULT with QMetaObject::invokeMethod
+	// note: SEGFAULT on QMetaObject::invokeMethod
 	// debug("showMessage");
 
 	QMessageBox::Icon icon = QMessageBox::NoIcon;
@@ -266,7 +266,7 @@ void checkUpdate::showMessage(DIAL dialog, MEDIUM medium, QString version, QUrl 
 	if (dialog != dial_haveupdate)
 		message = message.replace("<", "&lt;").replace(">", "&gt;");
 
-	// note: rand SEGFAULT with cwid in thread
+	// note: potential SEGFAULT, cwid thread
 	QMessageBox msg = QMessageBox(nullptr);
 
 	msg.setIcon(icon);

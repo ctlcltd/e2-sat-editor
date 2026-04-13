@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 1.9.0
+ * @version 2.0.0
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -30,7 +30,7 @@ namespace e2se_e2db
 
 string e2db_console::editor_version()
 {
-	return "1.9.0";
+	return "2.0.0";
 }
 
 void e2db_console::console_exit()

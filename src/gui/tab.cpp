@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 1.9.0
+ * @version 2.0.0
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -518,13 +518,14 @@ void tab::layout()
 
 	toolBarSeparator(bottom_toolbar);
 	toolBarAction(bottom_toolbar, tr("Inspect", "toolbar"), [=]() { this->toolsErrorChecker(); });
+	toolBarAction(bottom_toolbar, tr("console", "toolbar"), [=]() { this->toolsConsole(); });
 	if (QSettings().value("application/debug", false).toBool() || DEMO)
 	{
+		toolBarSeparator(bottom_toolbar);
 		toolBarAction(bottom_toolbar, "§ Load seeds", [=]() { this->loadSeeds(); });
 		toolBarAction(bottom_toolbar, "§ Reset", [=]() { this->newFile(); this->updateTabName(); });
 	}
 	toolBarSpacer(bottom_toolbar);
-	toolBarAction(bottom_toolbar, tr("console", "toolbar"), [=]() { this->toolsConsole(); });
 	toolBarAction(bottom_toolbar, tr("autofix", "toolbar"), [=]() { this->toolsAutofixMacro(); });
 #ifndef E2SE_DEMO
 	toolBarSeparator(bottom_toolbar);

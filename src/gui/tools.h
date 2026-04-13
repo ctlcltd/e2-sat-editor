@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 1.9.0
+ * @version 2.0.0
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -82,6 +82,8 @@ class tools : protected e2se::log_factory
 		dataHandler* data = nullptr;
 		sort_context* sort_ctx = nullptr;
 		map<SORT_ITEM, sort_context*> sort_stg;
+
+		//TODO rename
 		DialogDockWidget* dwid = nullptr;
 		console_gui* dgui = nullptr;
 };

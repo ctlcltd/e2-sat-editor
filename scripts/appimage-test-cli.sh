@@ -7,6 +7,16 @@
 ## 
 ##
 
+ARCH=$(uname -p)
+
+if [[ "$ARCH" == "arm64" ]]; then
+	ARCH="aarch64"
+elif [[ "$ARCH" == "aarch64" ]]; then
+	ARCH="aarch64"
+else
+	ARCH="x86_64"
+fi
+
 # dpkg-reconfigure tzdata
 # apt update
 # apt upgrade
@@ -20,12 +30,12 @@
 
 
 # apt install fuse
-# wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
-# wget https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
-# chmod +x linuxdeploy-x86_64.AppImage
-# chmod +x appimagetool-x86_64.AppImage
-# mv linuxdeploy-x86_64.AppImage /usr/local/bin/linuxdeploy
-# mv appimagetool-x86_64.AppImage /usr/local/bin/appimagetool
+# wget "https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-$ARCH.AppImage"
+# wget "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-$ARCH.AppImage"
+# chmod +x "linuxdeploy-$ARCH.AppImage"
+# chmod +x "appimagetool-$ARCH.AppImage"
+# mv "linuxdeploy-$ARCH.AppImage" /usr/local/bin/linuxdeploy
+# mv "appimagetool-$ARCH.AppImage" /usr/local/bin/appimagetool
 
 
 # cd
@@ -49,20 +59,20 @@ mv AppDir/usr/share/e2se-cli/License.txt AppDir/usr/share/doc/e2se-cli/copyright
 
 linuxdeploy --appdir AppDir --output appimage
 
-chmod +x e2se-cli-x86_64.AppImage
+chmod +x e2se-cli-$ARCH.AppImage
 
-# ./e2se-cli-x86_64.AppImage
+# ./e2se-cli-$ARCH.AppImage
 
 
 # apt-get install nano
 # nano /etc/resolv.conf
 # systemctl restart systemd-resolved
 
-./e2se-cli-x86_64.AppImage --appimage-extract
+./e2se-cli-$ARCH.AppImage --appimage-extract
 
 appimagetool squashfs-root --sign --sign-key $MY_SIGN_KEY
 
-mv e2se-cli-x86_64.AppImage e2se-cli-$VERSION-x86_64.AppImage
+mv "e2se-cli-$ARCH.AppImage e2se-cli-$VERSION-$ARCH.AppImage
 
-# ./e2se-cli-$VERSION-x86_64.AppImage --appimage-signature
+# ./e2se-cli-$VERSION-$ARCH.AppImage --appimage-signature
 

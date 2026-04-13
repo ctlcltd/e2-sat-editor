@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 1.9.0
+ * @version 2.0.0
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -31,6 +31,9 @@ class about : protected e2se::log_factory
 		void destroy();
 
 	protected:
+
+		const QString VER = "2.0";
+
 		void layout();
 
 		QDialog* dial = nullptr;

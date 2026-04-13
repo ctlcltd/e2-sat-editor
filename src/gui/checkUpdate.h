@@ -4,7 +4,7 @@
  * @link https://github.com/ctlcltd/e2-sat-editor
  * @copyright e2 SAT Editor Team
  * @author Leonardo Laureti
- * @version 1.9.0
+ * @version 2.0.0
  * @license MIT License
  * @license GNU GPLv3 License
  */
@@ -64,12 +64,14 @@ class checkUpdate : protected e2se::log_factory
 		void destroy();
 
 	protected:
+
+		const string RELVER = "v1.8.1";
+		const QString VER = "1.8.1";
+	
 		void notify();
 		void showMessage(DIAL dialog, MEDIUM medium, QString version, QUrl url);
 		virtual void fetch();
 
-		string relver = "v1.8.1";
-		QString ver = "1.8.1";
 		MEDIUM medium = MEDIUM::unknown;
 		bool autocheck = false;
 
