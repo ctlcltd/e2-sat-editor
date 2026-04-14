@@ -68,6 +68,7 @@ void inspector::layout()
 	dial->setBaseSize(450, 520);
 	dial->setMinimumSize(450, 240);
 	dial->setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+	dial->setProperty("logInspector_dockable", 0);
 
 #ifdef Q_OS_WIN
 	theme->win_flavor_fix(dial);
@@ -205,6 +206,8 @@ void inspector::inspectReset()
 	this->inspect_curr = INSPECT_FILTER::AllLog;
 }
 
+//TODO TEST
+// note: dial widget assigned to tab widget tab on close
 void inspector::close()
 {
 	if (this->dial == nullptr)

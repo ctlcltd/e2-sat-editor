@@ -57,6 +57,7 @@
 #include <QResource>
 #endif
 
+#include "toolkit/DialogDockWidget.h"
 #include "tab.h"
 #include "theme.h"
 #include "gui.h"
@@ -109,31 +110,41 @@ tab::~tab()
 	delete this->log;
 }
 
-bool tab::isChild()
+bool tab::isParentTab()
+{
+	return ! this->child;
+}
+
+bool tab::isChildTab()
 {
 	return this->child;
 }
 
-bool tab::hasChildren()
+tab* tab::parentTab()
+{
+	return this->parent;
+}
+
+bool tab::hasChildrenTabs()
 {
 	return ! this->childs.empty();
 }
 
-vector<tab*> tab::children()
+vector<tab*> tab::childrenTabs()
 {
 	return this->childs;
 }
 
-void tab::addChild(tab* child)
+void tab::addChildTab(tab* child)
 {
-	debug("addChild");
+	debug("addChildTab");
 
 	this->childs.emplace_back(child);
 }
 
-void tab::removeChild(tab* child)
+void tab::removeChildTab(tab* child)
 {
-	debug("removeChild");
+	debug("removeChildTab");
 
 	bool found = false;
 	vector<tab*>::iterator pos;
@@ -188,6 +199,24 @@ void tab::tabSwitch()
 	view->updateStatusBar(true);
 
 	view->update();
+
+	auto &dwids = this->child ? parent->dwids : this->dwids;
+
+	if (! dwids.isEmpty())
+	{
+		for (auto & wid : dwids)
+		{
+			if (DialogDockWidget* dwid = qobject_cast<DialogDockWidget*>(wid))
+			{
+				if (! dwid->isDocked() && dwid->isFloating())
+				{
+					dwid->setWidgetParent(this->widget);
+
+					// this->widget->restoreDockWidget(dwid);
+				}
+			}
+		}
+	}
 }
 
 bool tab::hasChanged()
@@ -305,20 +334,47 @@ void tab::removeDockWidget(QDockWidget* widget)
 	this->widget->removeDockWidget(widget);
 }
 
-//TODO
 void tab::addPermanentDockWidget(Qt::DockWidgetArea area, QDockWidget* widget)
 {
 	debug("addPermanentDockWidget");
 
-	this->widget->addDockWidget(area, widget);
+	auto &dwids = this->child ? parent->dwids : this->dwids;
+
+	if (dwids.indexOf(widget) != -1)
+	{
+		if (! widget->isVisible() && ! widget->isFloating())
+		{
+			widget->setParent(this->widget);
+			widget->show();
+
+			this->widget->restoreDockWidget(widget);
+		}
+	}
+	else
+	{
+		this->widget->addDockWidget(area, widget);
+	}
+
+	dwids.append(widget);
 }
 
-//TODO
 void tab::removePermanentDockWidget(QDockWidget* widget)
 {
 	debug("removePermanentDockWidget");
 
+	auto &dwids = this->child ? parent->dwids : this->dwids;
+
 	this->widget->removeDockWidget(widget);
+
+	dwids.removeAll(widget);
+	dwids.squeeze();
+}
+
+bool tab::hasPermamentDockWidgets()
+{
+	auto &dwids = this->child ? parent->dwids : this->dwids;
+
+	return ! dwids.isEmpty();
 }
 
 void tab::viewMain()
@@ -343,7 +399,7 @@ void tab::viewTransponders(tab* parent)
 {
 	debug("viewTransponders");
 
-	parent->addChild(this);
+	parent->addChildTab(this);
 
 	this->parent = parent;
 	this->child = true;
@@ -366,7 +422,7 @@ void tab::viewTunersets(tab* parent, int ytype)
 {
 	debug("viewTunersets");
 
-	parent->addChild(this);
+	parent->addChildTab(this);
 
 	this->parent = parent;
 	this->child = true;
@@ -390,7 +446,7 @@ void tab::viewPicons(tab* parent)
 {
 	debug("viewPicons");
 
-	parent->addChild(this);
+	parent->addChildTab(this);
 
 	this->parent = parent;
 	this->child = true;
@@ -413,7 +469,7 @@ void tab::viewChannelBook(tab* parent)
 {
 	debug("viewChannelBook");
 
-	parent->addChild(this);
+	parent->addChildTab(this);
 
 	this->parent = parent;
 	this->child = true;
@@ -518,7 +574,7 @@ void tab::layout()
 
 	toolBarSeparator(bottom_toolbar);
 	toolBarAction(bottom_toolbar, tr("Inspect", "toolbar"), [=]() { this->toolsErrorChecker(); });
-	toolBarAction(bottom_toolbar, tr("console", "toolbar"), [=]() { this->toolsConsole(); });
+	toolBarAction(bottom_toolbar, tr("Console", "toolbar"), [=]() { this->toolsConsole(); });
 	if (QSettings().value("application/debug", false).toBool() || DEMO)
 	{
 		toolBarSeparator(bottom_toolbar);
@@ -2037,7 +2093,7 @@ void tab::toolsConsole()
 {
 	debug("toolsConsole");
 
-	tools->console();
+	tools->console(this);
 }
 
 void tab::actionCall(int bit)

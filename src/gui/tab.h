@@ -74,11 +74,13 @@ class tab : protected e2se::log_factory
 
 		tab(gui* gid, QWidget* cwid);
 		virtual ~tab();
-		bool isChild();
-		bool hasChildren();
-		vector<tab*> children();
-		void addChild(tab* child);
-		void removeChild(tab* child);
+		bool isParentTab();
+		bool isChildTab();
+		tab* parentTab();
+		bool hasChildrenTabs();
+		vector<tab*> childrenTabs();
+		void addChildTab(tab* child);
+		void removeChildTab(tab* child);
 		int getTabId();
 		void setTabName(string ttname);
 		string getTabName();
@@ -110,6 +112,7 @@ class tab : protected e2se::log_factory
 		void removeDockWidget(QDockWidget* dockwidget);
 		void addPermanentDockWidget(Qt::DockWidgetArea area, QDockWidget* widget);
 		void removePermanentDockWidget(QDockWidget* widget);
+		bool hasPermamentDockWidgets();
 		void viewMain();
 		void viewTransponders(tab* parent);
 		void viewTunersets(tab* parent, int ytype);
@@ -172,6 +175,7 @@ class tab : protected e2se::log_factory
 		dataHandler* data = nullptr;
 		ftpHandler* ftph = nullptr;
 		e2se_gui::tools* tools = nullptr;
+		QList<QDockWidget*> dwids;
 
 	protected:
 		void layout();

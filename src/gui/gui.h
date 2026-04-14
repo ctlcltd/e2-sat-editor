@@ -401,6 +401,7 @@ class gui : protected e2se::log_factory
 		string exportFileDialog(GUI_DPORTS gde, string path, int& bit);
 		string exportFileDialog(GUI_DPORTS gde, string path);
 		void logInspector();
+		bool hasPermamentDockWidgets();
 		bool statusBarIsVisible();
 		bool statusBarIsHidden();
 		void statusBarShow();
@@ -483,6 +484,10 @@ class gui : protected e2se::log_factory
 		// gui menu bit flags
 		bitset<256> gxe;
 
+		QList<QDockWidget*> dwids;
+		QByteArray state;
+		inspector* inspect = nullptr;
+
 	private:
 		QApplication* mroot;
 		QWidget* mwid = nullptr;
@@ -505,9 +510,6 @@ class gui : protected e2se::log_factory
 		unordered_map<int, QAction*> ttmenu;
 		unordered_map<int, tab*> ttabs;
 		int index = 0;
-		QList<QDockWidget*> dwids;
-		QByteArray state;
-		inspector* inspect = nullptr;
 };
 }
 #endif /* gui_h */

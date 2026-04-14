@@ -64,6 +64,7 @@ class console_gui : protected e2se::log_factory, public ::e2se_e2db::e2db_consol
 		void close();
 		void attach(QWidget* parent);
 		void detach();
+		void destroy();
 
 	protected:
 

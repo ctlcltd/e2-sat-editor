@@ -163,8 +163,8 @@ void ConsoleWidget::maybeInsertBlock(QTextCursor &cursor)
 {
 	if (! this->document()->lastBlock().text().isEmpty())
 	{
-	  cursor.movePosition(QTextCursor::EndOfBlock);
-	  cursor.insertBlock();
+		cursor.movePosition(QTextCursor::EndOfBlock);
+		cursor.insertBlock();
 	}
 }
 

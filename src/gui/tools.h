@@ -12,8 +12,9 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <unordered_map>
 
-using std::string, std::vector, std::map;
+using std::string, std::vector, std::map, std::unordered_map;
 
 #ifndef tools_h
 #define tools_h
@@ -30,8 +31,8 @@ namespace e2se_gui
 {
 class gui;
 class tab;
-class DialogDockWidget;
 class console_gui;
+class DialogDockWidget;
 
 class tools : protected e2se::log_factory
 {
@@ -60,7 +61,7 @@ class tools : protected e2se::log_factory
 		void exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts);
 		void importFileM3U(e2db::FCONVS fci, e2db::fcopts opts);
 		void exportFileM3U(e2db::FCONVS fco, e2db::fcopts opts);
-		void console();
+		void console(tab* ttab);
 		void destroy();
 
 	protected:
@@ -82,10 +83,7 @@ class tools : protected e2se::log_factory
 		dataHandler* data = nullptr;
 		sort_context* sort_ctx = nullptr;
 		map<SORT_ITEM, sort_context*> sort_stg;
-
-		//TODO rename
-		DialogDockWidget* dwid = nullptr;
-		console_gui* dgui = nullptr;
+		unordered_map<int, console_gui*> ths;
 };
 }
 #endif /* tools_h */

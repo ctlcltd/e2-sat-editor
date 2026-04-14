@@ -67,6 +67,14 @@ tools::~tools()
 
 	delete this->theme;
 	delete this->log;
+
+	//TODO TEST
+	for (auto & x : this->ths)
+	{
+		console_gui* thptr = x.second;
+		thptr->destroy();
+	}
+	this->ths.clear();
 }
 
 void tools::errorChecker()
@@ -1208,29 +1216,57 @@ vector<QPair<QString, QString>> tools::sortComboBoxProps(SORT_ITEM model)
 	return {};
 }
 
-//TODO
-void tools::console()
+//TODO TEST
+void tools::console(tab* ttab)
 {
 	debug("console");
 
-	if (this->dwid != nullptr)
-		return dwid->raiseWindow();
+	if (ttab == nullptr)
+		return;
 
-	this->dwid = new DialogDockWidget;
+	int ttid = ttab->getTabId();
+	auto &dwids = ttab->isChildTab() ? ttab->parentTab()->dwids : ttab->dwids;
+
+	for (auto & wid : dwids)
+	{
+		if (! wid->property("console_dockable").isNull())
+		{
+			if (wid->property("console_dockable").toInt() == ttid)
+			{
+				if (DialogDockWidget* dwid = qobject_cast<DialogDockWidget*>(wid))
+					return dwid->raiseWindow();
+			}
+		}
+	}
+
+	DialogDockWidget* dwid = new DialogDockWidget;
 	dwid->setWindowTitle(tr("Console", "dialog"));
 	dwid->setBaseSize(520, 288);
 	dwid->setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+	dwid->setProperty("console_dockable", ttid);
 
 	dwid->connect(dwid, &DialogDockWidget::finished, [=]() {
-		this->dwid = nullptr;
+		if (ttab != nullptr)
+			ttab->removePermanentDockWidget(dwid);
 	});
 
-	tid->addPermanentDockWidget(Qt::BottomDockWidgetArea, dwid);
+	if (ths.count(ttid))
+	{
+		console_gui* thptr = ths.at(ttid);
 
-	if (this->dgui == nullptr)
-		this->dgui = new console_gui(this->dwid, this->data);
+		if (thptr != nullptr)
+			thptr->attach(dwid);
+		else
+			ths[ttid] = new console_gui(dwid, this->data);
+	}
 	else
-		this->dgui->attach(this->dwid);
+	{
+		console_gui* thptr = new console_gui(dwid, this->data);
+
+		ths.emplace(ttid, thptr);
+	}
+
+	ttab->addPermanentDockWidget(Qt::BottomDockWidgetArea, dwid);
 }
 
 void tools::destroy()

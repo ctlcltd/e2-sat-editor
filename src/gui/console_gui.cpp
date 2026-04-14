@@ -36,17 +36,21 @@ console_gui::console_gui(QWidget* parent, dataHandler* data)
 	init();
 }
 
+//TODO TEST
+// note: ctn widget deleted 0x0 by parent widget tab view widget
 console_gui::~console_gui()
 {
+	debug("~console_gui");
+
 	delete this->pout;
 	delete this->perr;
 	delete this->ts_out;
 	delete this->ts_err;
 	delete this->ba_out;
 	delete this->ba_err;
-	delete this->termctl;
-	delete this->cnt;
-	delete this;
+
+	//TODO FIX SEGFAULT
+	// delete this->termctl;
 }
 
 void console_gui::layout(QWidget* parent)
@@ -110,6 +114,7 @@ void console_gui::init()
 	prompt();
 }
 
+//TODO refact QWidget::parentWidget()
 void console_gui::close()
 {
 	debug("close");
@@ -342,6 +347,7 @@ void console_gui::console_usage(COMMAND hint, int level)
 	}
 }
 
+//TODO refact QWidget::parentWidget()
 void console_gui::command_quit()
 {
 	if (cnt->parent() != nullptr)
@@ -733,6 +739,13 @@ void console_gui::paged_end()
 
 	cnt->setInputMasked(false);
 	prompt();
+}
+
+void console_gui::destroy()
+{
+	debug("destroy");
+
+	delete this;
 }
 
 }

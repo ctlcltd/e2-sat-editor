@@ -994,15 +994,26 @@ int gui::openTab(TAB_VIEW ttv, int arg, bool rievoke)
 
 		return -1;
 	}
-	else if (current->isChild())
+	else if (current->isChildTab())
 	{
-		for (auto & x : ttabs)
+		parent = current->parentTab();
+
+		if (parent == nullptr)
+		{
+			int ttid = current->getTabId();
+
+			error("openTab", tr("Error", "error").toStdString(), tr("Missing parent tab for tab reference \"%1\".", "error").arg(ttid).toStdString());
+
+			return -1;
+		}
+
+		/*for (auto & x : ttabs)
 		{
 			tab* tab = x.second;
 
-			if (tab != nullptr && tab->hasChildren())
+			if (tab != nullptr && tab->hasChildrenTabs())
 			{
-				for (auto & child : tab->children())
+				for (auto & child : tab->childrenTabs())
 				{
 					if (child == current)
 					{
@@ -1011,12 +1022,12 @@ int gui::openTab(TAB_VIEW ttv, int arg, bool rievoke)
 					}
 				}
 			}
-		}
+		}*/
 	}
 
-	if (rievoke && parent->hasChildren())
+	if (rievoke && parent->hasChildrenTabs())
 	{
-		for (auto & child : parent->children())
+		for (auto & child : parent->childrenTabs())
 		{
 			if (child->getTabView() == ttv && child->getTabArgument() == arg)
 			{
@@ -1110,7 +1121,7 @@ bool gui::closeTab(int index)
 
 	debug("closeTab", "ttid", ttid);
 
-	if (! ttab->isChild() && ttab->hasChanged())
+	if (! ttab->isChildTab() && ttab->hasChanged())
 	{
 		twid->setCurrentIndex(index);
 
@@ -1123,15 +1134,22 @@ bool gui::closeTab(int index)
 			return false;
 	}
 
-	if (! dwids.empty())
+	if (! dwids.isEmpty())
 	{
-		if (QMainWindow* wid = qobject_cast<QMainWindow*>(ttab->widget))
-			this->state = wid->saveState();
+		if (QMainWindow* rwid = qobject_cast<QMainWindow*>(ttab->widget))
+			this->state = rwid->saveState();
 
-		for (auto & item : dwids)
+		for (auto & wid : dwids)
 		{
-			if (DialogDockWidget* dwid = qobject_cast<DialogDockWidget*>(item))
+			if (DialogDockWidget* dwid = qobject_cast<DialogDockWidget*>(wid))
+			{
 				dwid->setWidgetParent(twid);
+			}
+			else
+			{
+				wid->setParent(twid);
+				wid->show();
+			}
 		}
 	}
 
@@ -1142,32 +1160,37 @@ bool gui::closeTab(int index)
 
 	if (ttab != nullptr)
 	{
-		if (ttab->isChild())
+		if (ttab->isChildTab())
 		{
-			for (auto & x : ttabs)
+			tab* parent = ttab->parentTab();
+
+			if (parent != nullptr)
+				parent->removeChildTab(ttab);
+
+			/*for (auto & x : ttabs)
 			{
 				tab* tab = x.second;
 
-				if (tab != nullptr && tab->hasChildren())
+				if (tab != nullptr && tab->hasChildrenTabs())
 				{
-					for (auto & child : tab->children())
+					for (auto & child : tab->childrenTabs())
 					{
 						if (child == ttab)
 						{
-							tab->removeChild(ttab);
+							tab->removeChildTab(ttab);
 							break;
 						}
 					}
 				}
-			}
+			}*/
 		}
-		if (ttab->hasChildren())
+		if (ttab->hasChildrenTabs())
 		{
-			for (auto & child : ttab->children())
+			for (auto & child : ttab->childrenTabs())
 			{
 				int index = twid->indexOf(child->widget);
 
-				ttab->removeChild(child);
+				ttab->removeChildTab(child);
 
 				closeTab(index);
 			}
@@ -1192,7 +1215,7 @@ void gui::closeAllTabs()
 	{
 		tab* tab = x.second;
 
-		if (tab != nullptr && ! tab->isChild())
+		if (tab != nullptr && ! tab->isChildTab())
 			i_wids.emplace_back(tab->widget);
 	}
 
@@ -1276,13 +1299,22 @@ void gui::changeTabName(int ttid, string path)
 
 	QString ttname = tr("Untitled", "tab");
 
-	if (ttab->isChild())
+	if (ttab->isChildTab())
 	{
-		for (auto & tab : ttabs)
+		tab* parent = ttab->parentTab();
+
+		if (parent != nullptr)
 		{
-			if (tab.second != nullptr && tab.second->hasChildren())
+			int ttid = parent->getTabId();
+			count = twid->indexOf(parent->widget);
+			changeTabName(ttid, path);
+		}
+
+		/*for (auto & tab : ttabs)
+		{
+			if (tab.second != nullptr && tab.second->hasChildrenTabs())
 			{
-				for (auto & child : tab.second->children())
+				for (auto & child : tab.second->childrenTabs())
 				{
 					if (child == ttab)
 					{
@@ -1293,7 +1325,7 @@ void gui::changeTabName(int ttid, string path)
 					}
 				}
 			}
-		}
+		}*/
 	}
 	if (path.empty())
 	{
@@ -1737,29 +1769,25 @@ void gui::addPermanentDockWidget(Qt::DockWidgetArea area, QDockWidget* widget)
 
 	tab* ttab = getCurrentTabHandler();
 
-	if (ttab != nullptr)
+	if (ttab == nullptr)
+		return;
+
+	if (dwids.indexOf(widget) != -1)
 	{
-		if (dwids.indexOf(widget) != -1)
+		if (! widget->isVisible() && ! widget->isFloating())
 		{
-			if (! widget->isVisible() && ! widget->isFloating())
-			{
-				widget->setParent(ttab->widget);
-				widget->show();
+			widget->setParent(ttab->widget);
+			widget->show();
 
-				if (QMainWindow* wid = qobject_cast<QMainWindow*>(ttab->widget))
-				{
-					wid->restoreState(this->state);
-					wid->restoreDockWidget(widget);
-				}
-			}
+			ttab->widget->restoreState(this->state);
+			ttab->widget->restoreDockWidget(widget);
 		}
-		else
-		{
-			ttab->addPermanentDockWidget(area, widget);
+	}
+	else
+	{
+		ttab->addDockWidget(area, widget);
 
-			if (QMainWindow* wid = qobject_cast<QMainWindow*>(ttab->widget))
-				this->state = wid->saveState();
-		}
+		this->state = ttab->widget->saveState();
 	}
 
 	dwids.append(widget);
@@ -1770,19 +1798,26 @@ void gui::removePermanentDockWidget(QDockWidget* widget)
 	debug("removePermanentDockWidget");
 
 	tab* ttab = getCurrentTabHandler();
-	if (ttab != nullptr)
-		ttab->removePermanentDockWidget(widget);
 
-	if (QMainWindow* wid = qobject_cast<QMainWindow*>(ttab->widget))
-		this->state = wid->saveState();
+	if (ttab == nullptr)
+		return;
+
+	ttab->removeDockWidget(widget);
+
+	this->state = ttab->widget->saveState();
 
 	dwids.removeAll(widget);
 	dwids.squeeze();
 }
 
+bool gui::hasPermamentDockWidgets()
+{
+	return ! dwids.isEmpty();
+}
+
 void gui::docksChanged()
 {
-	if (dwids.empty())
+	if (dwids.isEmpty())
 		return;
 
 	QWidget* previous = nullptr;
@@ -1798,22 +1833,28 @@ void gui::docksChanged()
 	if (previous != nullptr)
 	{
 		qDebug() << "saving state";
-		if (QMainWindow* wid = qobject_cast<QMainWindow*>(previous))
-			state = wid->saveState();
+
+		if (QMainWindow* rwid = qobject_cast<QMainWindow*>(previous))
+			state = rwid->saveState();
 	}
 
-	for (auto & item : dwids)
+	if (QMainWindow* rwid = qobject_cast<QMainWindow*>(current))
 	{
-		if (DialogDockWidget* dwid = qobject_cast<DialogDockWidget*>(item))
-		{
-			dwid->setWidgetParent(current);
+		rwid->restoreState(state);
 
-			if (QMainWindow* wid = qobject_cast<QMainWindow*>(current))
+		for (auto & wid : dwids)
+		{
+			if (DialogDockWidget* dwid = qobject_cast<DialogDockWidget*>(wid))
 			{
-				wid->restoreState(state);
+				dwid->setWidgetParent(rwid);
 
 				if (! dwid->isFloating())
-					wid->restoreDockWidget(dwid);
+					rwid->restoreDockWidget(dwid);
+			}
+			else
+			{
+				wid->setParent(rwid);
+				wid->show();
 			}
 		}
 	}
