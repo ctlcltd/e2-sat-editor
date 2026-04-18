@@ -530,6 +530,19 @@ Vent noen minutter og prøv igjen.</translation>
     </message>
 </context>
 <context>
+    <name>e2se_gui::ConsoleWidget</name>
+    <message>
+        <source>&amp;Copy</source>
+        <comment>context-menu</comment>
+        <translation>&amp;Kopier</translation>
+    </message>
+    <message>
+        <source>&amp;Paste</source>
+        <comment>context-menu</comment>
+        <translation>&amp;Lim inn</translation>
+    </message>
+</context>
+<context>
     <name>editBouquet</name>
     <message>
         <source>Edit Bouquet</source>
@@ -591,11 +604,6 @@ Vent noen minutter og prøv igjen.</translation>
         <source>Edit Favourite</source>
         <comment>dialog</comment>
         <translation>Rediger Favoritt</translation>
-    </message>
-    <message>
-        <source>New Favourite</source>
-        <comment>dialog</comment>
-        <translation type="vanished">Ny Favoritt</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -1548,7 +1556,7 @@ Vent noen minutter og prøv igjen.</translation>
         <source>Preferences…</source>
         <comment>menu</comment>
         <extracomment>Platform: Preferences item in macOS Application Menu | Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>About</source>
@@ -1611,12 +1619,12 @@ Vent noen minutter og prøv igjen.</translation>
     <message>
         <source>Open picon file</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Åpne picon filen</translation>
     </message>
     <message>
         <source>Execute batch command</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Utfør batch-kommandoen</translation>
     </message>
     <message>
         <source>&amp;Find</source>
@@ -1660,6 +1668,11 @@ Vent noen minutter og prøv igjen.</translation>
         <source>&amp;Tools</source>
         <comment>menu</comment>
         <translation>Verktøy</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>menu</comment>
+        <translation>Konsoll</translation>
     </message>
     <message>
         <source>Edit Transponders</source>
@@ -2054,30 +2067,6 @@ Vent noen minutter og prøv igjen.</translation>
         <translation>Tilkoblingsprofil Fil</translation>
     </message>
     <message>
-        <source>File Explorer</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name File Explorer on Windows</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Finder</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name Finder on macOS</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File Manager</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reveal in %1</source>
-        <comment>menu</comment>
-        <extracomment>Platform: %1 is platform specific product name</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>File Error</source>
         <comment>error</comment>
         <translation>Fil Feil</translation>
@@ -2101,6 +2090,24 @@ Vent noen minutter og prøv igjen.</translation>
         <source>M3U File</source>
         <comment>file-dialog</comment>
         <translation>M3U-fil</translation>
+    </message>
+    <message>
+        <source>Reveal in File Explorer</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name File Explorer on Windows</extracomment>
+        <translation>Vis i Filutforsker</translation>
+    </message>
+    <message>
+        <source>Reveal in Finder</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name Finder on macOS</extracomment>
+        <translation>Vis i Finder</translation>
+    </message>
+    <message>
+        <source>Reveal in File Manager</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
+        <translation>Vis i Filbehandler</translation>
     </message>
     <message>
         <source>Checking for updates…</source>
@@ -2349,6 +2356,23 @@ Vent noen minutter og prøv igjen.</translation>
     </message>
 </context>
 <context>
+    <name>inspector</name>
+    <message>
+        <source>Log Inspector</source>
+        <comment>dialog</comment>
+        <translation>Logg Inspekt</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <comment>ui</comment>
+        <translation>Filter</translation>
+    </message>
+    <message>
+        <source>All Log</source>
+        <translation>Alle logg</translation>
+    </message>
+</context>
+<context>
     <name>mainView</name>
     <message>
         <source>Services</source>
@@ -2506,7 +2530,7 @@ Vent noen minutter og prøv igjen.</translation>
     <message>
         <source>Flags</source>
         <comment>reference-panel</comment>
-        <translation type="unfinished">Flags</translation>
+        <translation>Flags</translation>
     </message>
     <message>
         <source>Tuner</source>
@@ -2516,7 +2540,7 @@ Vent noen minutter og prøv igjen.</translation>
     <message>
         <source>PIDs</source>
         <comment>reference-panel</comment>
-        <translation type="unfinished">PID</translation>
+        <translation>PID</translation>
     </message>
     <message>
         <source>Error</source>
@@ -2639,11 +2663,6 @@ Vent noen minutter og prøv igjen.</translation>
         <source>Not a valid data format.</source>
         <comment>error</comment>
         <translation>Ikke et gyldig data format.</translation>
-    </message>
-    <message>
-        <source>Channel reference mismatch.</source>
-        <comment>error</comment>
-        <translation type="vanished">Kanal referansen samsvarer ikke.</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
@@ -2770,7 +2789,7 @@ Vent noen minutter og prøv igjen.</translation>
     <message>
         <source>Reload</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Last inn på nytt</translation>
     </message>
     <message>
         <source>Find…</source>
@@ -2830,7 +2849,7 @@ Vent noen minutter og prøv igjen.</translation>
     </message>
     <message>
         <source>Allow external batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Tillat ekstern batch-kommando</translation>
     </message>
     <message>
         <source>Filename format</source>
@@ -2862,52 +2881,47 @@ Vent noen minutter og prøv igjen.</translation>
     <message>
         <source>Operation not allowed.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Operasjon ikke tillatt.</translation>
     </message>
     <message>
         <source>An error occured during operation.
 Reason: %1</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Det oppsto en feil under operasjonen.
+Årsak: %1</translation>
     </message>
     <message>
         <source>Process Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Prosess Feil</translation>
     </message>
     <message>
         <source>Batch processed file: %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Batch behandlet fil: %1</translation>
     </message>
     <message>
         <source>Command Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kommando Feil</translation>
     </message>
     <message>
-        <source>File Explorer</source>
+        <source>Reveal in File Explorer</source>
         <comment>menu</comment>
         <extracomment>Platform: product name File Explorer on Windows</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Vis i Filutforsker</translation>
     </message>
     <message>
-        <source>Finder</source>
+        <source>Reveal in Finder</source>
         <comment>menu</comment>
         <extracomment>Platform: product name Finder on macOS</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Vis i Finder</translation>
     </message>
     <message>
-        <source>File Manager</source>
+        <source>Reveal in File Manager</source>
         <comment>menu</comment>
         <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reveal in %1</source>
-        <comment>menu</comment>
-        <extracomment>Platform: %1 is platform specific product name</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Vis i Filbehandler</translation>
     </message>
     <message>
         <source>Delete images</source>
@@ -2927,12 +2941,12 @@ Reason: %1</source>
     <message>
         <source>Open picon</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Åpne picon</translation>
     </message>
     <message>
         <source>Execute batch command</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Utfør batch-kommandoen</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -3302,7 +3316,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Allow external batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Tillat ekstern batch-kommando</translation>
     </message>
     <message>
         <source>Filename format</source>
@@ -3318,19 +3332,19 @@ Reason: %1</source>
     </message>
     <message>
         <source>External batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Ekstern batch-kommando</translation>
     </message>
     <message>
         <source>eg. %1</source>
-        <translation type="unfinished"></translation>
+        <translation>eks. %1</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished"></translation>
+        <translation>Kommando</translation>
     </message>
     <message>
         <source>Reload picons after batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Last inn picons på nytt etter batch-kommandoen</translation>
     </message>
     <message>
         <source>Preferences</source>
@@ -3889,11 +3903,6 @@ Reason: %1</source>
         <translation>blob</translation>
     </message>
     <message>
-        <source>Error</source>
-        <comment>error</comment>
-        <translation type="vanished">Feil</translation>
-    </message>
-    <message>
         <source>Donate</source>
         <comment>toolbar</comment>
         <translation>Donere</translation>
@@ -3947,6 +3956,11 @@ Reason: %1</source>
         <source>Tools</source>
         <comment>toolbar</comment>
         <translation>Verktøy</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>toolbar</comment>
+        <translation>Konsoll</translation>
     </message>
     <message>
         <source>autofix</source>
@@ -4219,6 +4233,11 @@ Reason: %1</source>
         <translation>Eksport indeks</translation>
     </message>
     <message>
+        <source>Console</source>
+        <comment>menu</comment>
+        <translation>Konsoll</translation>
+    </message>
+    <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>Logg Inspekt</translation>
@@ -4254,20 +4273,6 @@ Reason: %1</source>
 </context>
 <context>
     <name>tools</name>
-    <message>
-        <source>Log Inspector</source>
-        <comment>dialog</comment>
-        <translation>Logg Inspekt</translation>
-    </message>
-    <message>
-        <source>Filter</source>
-        <comment>ui</comment>
-        <translation>Filter</translation>
-    </message>
-    <message>
-        <source>All Log</source>
-        <translation>Alle logg</translation>
-    </message>
     <message>
         <source>Importing from %1 …</source>
         <comment>message</comment>
@@ -4471,7 +4476,7 @@ Reason: %1</source>
     <message>
         <source>Sort</source>
         <comment>menu</comment>
-        <translation type="unfinished">Sortere</translation>
+        <translation>Sortere</translation>
     </message>
     <message>
         <source>Sort transponders</source>
@@ -4512,7 +4517,7 @@ Reason: %1</source>
     <message>
         <source>Cancel</source>
         <comment>dialog</comment>
-        <translation type="unfinished">Avbryt</translation>
+        <translation>Avbryt</translation>
     </message>
     <message>
         <source>Apply Sort</source>
@@ -4538,6 +4543,11 @@ Reason: %1</source>
     <message>
         <source>Parental Lock</source>
         <translation>Foreldrelås</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>dialog</comment>
+        <translation>Konsoll</translation>
     </message>
     <message>
         <source>Index</source>
@@ -4747,7 +4757,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished">Indeks</translation>
+        <translation>Indeks</translation>
     </message>
     <message>
         <source>New Transponder</source>
@@ -4849,7 +4859,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished">Indeks</translation>
+        <translation>Indeks</translation>
     </message>
     <message>
         <source>Freq/Pol/SR</source>

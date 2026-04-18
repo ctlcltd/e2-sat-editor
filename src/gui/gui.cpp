@@ -1136,8 +1136,7 @@ bool gui::closeTab(int index)
 
 	if (! dwids.isEmpty())
 	{
-		if (QMainWindow* rwid = qobject_cast<QMainWindow*>(ttab->widget))
-			this->state = rwid->saveState();
+		this->state = ttab->widget->saveState();
 
 		for (auto & wid : dwids)
 		{
@@ -2019,17 +2018,14 @@ QString gui::revealFileManagerString()
 {
 #if defined(Q_OS_WIN)
 	//: Platform: product name File Explorer on Windows
-	QString fileManager = tr("File Explorer", "menu");
+	return tr("Reveal in File Explorer", "menu");
 #elif defined(Q_OS_MAC)
 	//: Platform: product name Finder on macOS
-	QString fileManager = tr("Finder", "menu");
+	return tr("Reveal in Finder", "menu");
 #else
 	//: Platform: product name File Manager generic: Linux, Unix, WASM
-	QString fileManager = tr("File Manager", "menu");
+	return tr("Reveal in File Manager", "menu");
 #endif
-
-	//: Platform: %1 is platform specific product name
-	return tr("Reveal in %1", "menu").arg(fileManager);
 }
 
 void gui::fileOpen()

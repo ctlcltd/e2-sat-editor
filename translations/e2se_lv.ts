@@ -529,6 +529,19 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
     </message>
 </context>
 <context>
+    <name>e2se_gui::ConsoleWidget</name>
+    <message>
+        <source>&amp;Copy</source>
+        <comment>context-menu</comment>
+        <translation>&amp;Kopēt</translation>
+    </message>
+    <message>
+        <source>&amp;Paste</source>
+        <comment>context-menu</comment>
+        <translation>&amp;Ielīmēt</translation>
+    </message>
+</context>
+<context>
     <name>editBouquet</name>
     <message>
         <source>Edit Bouquet</source>
@@ -590,11 +603,6 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <source>Edit Favourite</source>
         <comment>dialog</comment>
         <translation>Rediģēt Favorīt</translation>
-    </message>
-    <message>
-        <source>New Favourite</source>
-        <comment>dialog</comment>
-        <translation type="vanished">Jauns Favorīt</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -1547,7 +1555,7 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <source>Preferences…</source>
         <comment>menu</comment>
         <extracomment>Platform: Preferences item in macOS Application Menu | Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>About</source>
@@ -1610,12 +1618,12 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
     <message>
         <source>Open picon file</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Atvērt picon failu</translation>
     </message>
     <message>
         <source>Execute batch command</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Izpildīt komandu batch</translation>
     </message>
     <message>
         <source>&amp;Find</source>
@@ -1659,6 +1667,11 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <source>&amp;Tools</source>
         <comment>menu</comment>
         <translation>Rīki</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>menu</comment>
+        <translation>Konsole</translation>
     </message>
     <message>
         <source>Edit Transponders</source>
@@ -2053,30 +2066,6 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <translation>Savienojuma profila fails</translation>
     </message>
     <message>
-        <source>File Explorer</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name File Explorer on Windows</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Finder</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name Finder on macOS</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File Manager</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reveal in %1</source>
-        <comment>menu</comment>
-        <extracomment>Platform: %1 is platform specific product name</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>File Error</source>
         <comment>error</comment>
         <translation>Faila Kļūda</translation>
@@ -2100,6 +2089,24 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <source>M3U File</source>
         <comment>file-dialog</comment>
         <translation>M3U fails</translation>
+    </message>
+    <message>
+        <source>Reveal in File Explorer</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name File Explorer on Windows</extracomment>
+        <translation>Atklāt Failu pārlūks</translation>
+    </message>
+    <message>
+        <source>Reveal in Finder</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name Finder on macOS</extracomment>
+        <translation>Atklāt Finder</translation>
+    </message>
+    <message>
+        <source>Reveal in File Manager</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
+        <translation>Atklāt Failu Pārvaldniekā</translation>
     </message>
     <message>
         <source>Checking for updates…</source>
@@ -2348,6 +2355,23 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
     </message>
 </context>
 <context>
+    <name>inspector</name>
+    <message>
+        <source>Log Inspector</source>
+        <comment>dialog</comment>
+        <translation>Log Inspekt</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <comment>ui</comment>
+        <translation>Filtrs</translation>
+    </message>
+    <message>
+        <source>All Log</source>
+        <translation>Žurnāls</translation>
+    </message>
+</context>
+<context>
     <name>mainView</name>
     <message>
         <source>Services</source>
@@ -2505,7 +2529,7 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
     <message>
         <source>Flags</source>
         <comment>reference-panel</comment>
-        <translation type="unfinished">Flags</translation>
+        <translation>Flags</translation>
     </message>
     <message>
         <source>Tuner</source>
@@ -2515,7 +2539,7 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
     <message>
         <source>PIDs</source>
         <comment>reference-panel</comment>
-        <translation type="unfinished">PID</translation>
+        <translation>PID</translation>
     </message>
     <message>
         <source>Error</source>
@@ -2638,11 +2662,6 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
         <source>Not a valid data format.</source>
         <comment>error</comment>
         <translation>Nav derīgs datu formāts.</translation>
-    </message>
-    <message>
-        <source>Channel reference mismatch.</source>
-        <comment>error</comment>
-        <translation type="vanished">Kanāla atsauces neatbilstība.</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
@@ -2769,7 +2788,7 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
     <message>
         <source>Reload</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Pārlādēt</translation>
     </message>
     <message>
         <source>Find…</source>
@@ -2829,7 +2848,7 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
     </message>
     <message>
         <source>Allow external batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Atļaut ārējo batch komandu</translation>
     </message>
     <message>
         <source>Filename format</source>
@@ -2861,52 +2880,47 @@ Lūdzu, uzgaidiet dažas minūtes un mēģiniet vēlreiz.</translation>
     <message>
         <source>Operation not allowed.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Darbība nav atļauta.</translation>
     </message>
     <message>
         <source>An error occured during operation.
 Reason: %1</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Darbības laikā radās kļūda.
+Iemesls: %1</translation>
     </message>
     <message>
         <source>Process Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Procesa Kļūda</translation>
     </message>
     <message>
         <source>Batch processed file: %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Batch apstrādāts fails: %1</translation>
     </message>
     <message>
         <source>Command Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Komandas Kļūda</translation>
     </message>
     <message>
-        <source>File Explorer</source>
+        <source>Reveal in File Explorer</source>
         <comment>menu</comment>
         <extracomment>Platform: product name File Explorer on Windows</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Atklāt Failu pārlūks</translation>
     </message>
     <message>
-        <source>Finder</source>
+        <source>Reveal in Finder</source>
         <comment>menu</comment>
         <extracomment>Platform: product name Finder on macOS</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Atklāt Finder</translation>
     </message>
     <message>
-        <source>File Manager</source>
+        <source>Reveal in File Manager</source>
         <comment>menu</comment>
         <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reveal in %1</source>
-        <comment>menu</comment>
-        <extracomment>Platform: %1 is platform specific product name</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Atklāt Failu Pārvaldniekā</translation>
     </message>
     <message>
         <source>Delete images</source>
@@ -2926,12 +2940,12 @@ Reason: %1</source>
     <message>
         <source>Open picon</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Atvērt picon</translation>
     </message>
     <message>
         <source>Execute batch command</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Izpildīt komandu batch</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -3301,7 +3315,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Allow external batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Atļaut ārējo batch komandu</translation>
     </message>
     <message>
         <source>Filename format</source>
@@ -3317,19 +3331,19 @@ Reason: %1</source>
     </message>
     <message>
         <source>External batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Ārēja batch komanda</translation>
     </message>
     <message>
         <source>eg. %1</source>
-        <translation type="unfinished"></translation>
+        <translation>piem. %1</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished"></translation>
+        <translation>Komanda</translation>
     </message>
     <message>
         <source>Reload picons after batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Pēc batch komandas pārlādēšanas picons</translation>
     </message>
     <message>
         <source>Preferences</source>
@@ -3891,11 +3905,6 @@ Reason: %1</source>
         <translation>blob</translation>
     </message>
     <message>
-        <source>Error</source>
-        <comment>error</comment>
-        <translation type="vanished">Kļūda</translation>
-    </message>
-    <message>
         <source>Donate</source>
         <comment>toolbar</comment>
         <translation>Ziedot</translation>
@@ -3949,6 +3958,11 @@ Reason: %1</source>
         <source>Tools</source>
         <comment>toolbar</comment>
         <translation>Rīki</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>toolbar</comment>
+        <translation>Konsole</translation>
     </message>
     <message>
         <source>autofix</source>
@@ -4221,6 +4235,11 @@ Reason: %1</source>
         <translation>Eksporta indekss</translation>
     </message>
     <message>
+        <source>Console</source>
+        <comment>menu</comment>
+        <translation>Konsole</translation>
+    </message>
+    <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>Log Inspekt</translation>
@@ -4256,20 +4275,6 @@ Reason: %1</source>
 </context>
 <context>
     <name>tools</name>
-    <message>
-        <source>Log Inspector</source>
-        <comment>dialog</comment>
-        <translation>Log Inspekt</translation>
-    </message>
-    <message>
-        <source>Filter</source>
-        <comment>ui</comment>
-        <translation>Filtrs</translation>
-    </message>
-    <message>
-        <source>All Log</source>
-        <translation>Žurnāls</translation>
-    </message>
     <message>
         <source>Importing from %1 …</source>
         <comment>message</comment>
@@ -4473,7 +4478,7 @@ Reason: %1</source>
     <message>
         <source>Sort</source>
         <comment>menu</comment>
-        <translation type="unfinished">Kārtot</translation>
+        <translation>Kārtot</translation>
     </message>
     <message>
         <source>Sort transponders</source>
@@ -4514,7 +4519,7 @@ Reason: %1</source>
     <message>
         <source>Cancel</source>
         <comment>dialog</comment>
-        <translation type="unfinished">Atcelt</translation>
+        <translation>Atcelt</translation>
     </message>
     <message>
         <source>Apply Sort</source>
@@ -4540,6 +4545,11 @@ Reason: %1</source>
     <message>
         <source>Parental Lock</source>
         <translation>Vecāku bloķēšana</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>dialog</comment>
+        <translation>Konsole</translation>
     </message>
     <message>
         <source>Index</source>
@@ -4749,7 +4759,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished">Rādītājs</translation>
+        <translation>Rādītājs</translation>
     </message>
     <message>
         <source>New Transponder</source>
@@ -4851,7 +4861,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished">Rādītājs</translation>
+        <translation>Rādītājs</translation>
     </message>
     <message>
         <source>Freq/Pol/SR</source>

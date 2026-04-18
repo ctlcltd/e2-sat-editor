@@ -531,6 +531,19 @@ Please wait few minutes and try again.</source>
     </message>
 </context>
 <context>
+    <name>e2se_gui::ConsoleWidget</name>
+    <message>
+        <source>&amp;Copy</source>
+        <comment>context-menu</comment>
+        <translation>コピー(&amp;C)</translation>
+    </message>
+    <message>
+        <source>&amp;Paste</source>
+        <comment>context-menu</comment>
+        <translation>貼り付け(&amp;P)</translation>
+    </message>
+</context>
+<context>
     <name>editBouquet</name>
     <message>
         <source>Edit Bouquet</source>
@@ -592,11 +605,6 @@ Please wait few minutes and try again.</source>
         <source>Edit Favourite</source>
         <comment>dialog</comment>
         <translation>お気に入りの編集</translation>
-    </message>
-    <message>
-        <source>New Favourite</source>
-        <comment>dialog</comment>
-        <translation type="vanished">新しいお気に入り</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -1549,7 +1557,7 @@ Please wait few minutes and try again.</source>
         <source>Preferences…</source>
         <comment>menu</comment>
         <extracomment>Platform: Preferences item in macOS Application Menu | Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>About</source>
@@ -1612,12 +1620,12 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Open picon file</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>picon ファイルを開く</translation>
     </message>
     <message>
         <source>Execute batch command</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>バッチコマンドを実行する</translation>
     </message>
     <message>
         <source>&amp;Find</source>
@@ -1661,6 +1669,11 @@ Please wait few minutes and try again.</source>
         <source>&amp;Tools</source>
         <comment>menu</comment>
         <translation>ツール</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>menu</comment>
+        <translation>コンソールを開く</translation>
     </message>
     <message>
         <source>Edit Transponders</source>
@@ -2055,30 +2068,6 @@ Please wait few minutes and try again.</source>
         <translation>接続プロファイルファイル</translation>
     </message>
     <message>
-        <source>File Explorer</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name File Explorer on Windows</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Finder</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name Finder on macOS</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File Manager</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reveal in %1</source>
-        <comment>menu</comment>
-        <extracomment>Platform: %1 is platform specific product name</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>File Error</source>
         <comment>error</comment>
         <translation>File エラー</translation>
@@ -2102,6 +2091,24 @@ Please wait few minutes and try again.</source>
         <source>M3U File</source>
         <comment>file-dialog</comment>
         <translation>M3U ファイル</translation>
+    </message>
+    <message>
+        <source>Reveal in File Explorer</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name File Explorer on Windows</extracomment>
+        <translation>でのエクスプローラー で表示</translation>
+    </message>
+    <message>
+        <source>Reveal in Finder</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name Finder on macOS</extracomment>
+        <translation>Finder で表示</translation>
+    </message>
+    <message>
+        <source>Reveal in File Manager</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
+        <translation>ファイルマネージャー で表示</translation>
     </message>
     <message>
         <source>Checking for updates…</source>
@@ -2350,6 +2357,23 @@ Please wait few minutes and try again.</source>
     </message>
 </context>
 <context>
+    <name>inspector</name>
+    <message>
+        <source>Log Inspector</source>
+        <comment>dialog</comment>
+        <translation>ログを検査する</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <comment>ui</comment>
+        <translation>フィルター</translation>
+    </message>
+    <message>
+        <source>All Log</source>
+        <translation>すべてのログ</translation>
+    </message>
+</context>
+<context>
     <name>mainView</name>
     <message>
         <source>Services</source>
@@ -2507,7 +2531,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Flags</source>
         <comment>reference-panel</comment>
-        <translation type="unfinished">ビットフラグ</translation>
+        <translation>ビットフラグ</translation>
     </message>
     <message>
         <source>Tuner</source>
@@ -2517,7 +2541,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>PIDs</source>
         <comment>reference-panel</comment>
-        <translation type="unfinished">PID</translation>
+        <translation>PID</translation>
     </message>
     <message>
         <source>Error</source>
@@ -2640,11 +2664,6 @@ Please wait few minutes and try again.</source>
         <source>Not a valid data format.</source>
         <comment>error</comment>
         <translation>有効なデータ形式ではありません。</translation>
-    </message>
-    <message>
-        <source>Channel reference mismatch.</source>
-        <comment>error</comment>
-        <translation type="vanished">チャンネルリファレンスの不一致。</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
@@ -2771,7 +2790,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Reload</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>リロード</translation>
     </message>
     <message>
         <source>Find…</source>
@@ -2831,7 +2850,7 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>Allow external batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>外部バッチコマンドを許可する</translation>
     </message>
     <message>
         <source>Filename format</source>
@@ -2863,52 +2882,47 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Operation not allowed.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>操作は許可されていません。</translation>
     </message>
     <message>
         <source>An error occured during operation.
 Reason: %1</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>操作中にエラーが発生しました。
+理由: %1</translation>
     </message>
     <message>
         <source>Process Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>プロセスエラー</translation>
     </message>
     <message>
         <source>Batch processed file: %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>バッチ 処理済みファイル: %1</translation>
     </message>
     <message>
         <source>Command Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>コマンドエラー</translation>
     </message>
     <message>
-        <source>File Explorer</source>
+        <source>Reveal in File Explorer</source>
         <comment>menu</comment>
         <extracomment>Platform: product name File Explorer on Windows</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>でのエクスプローラー で表示</translation>
     </message>
     <message>
-        <source>Finder</source>
+        <source>Reveal in Finder</source>
         <comment>menu</comment>
         <extracomment>Platform: product name Finder on macOS</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Finder で表示</translation>
     </message>
     <message>
-        <source>File Manager</source>
+        <source>Reveal in File Manager</source>
         <comment>menu</comment>
         <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reveal in %1</source>
-        <comment>menu</comment>
-        <extracomment>Platform: %1 is platform specific product name</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>ファイルマネージャー で表示</translation>
     </message>
     <message>
         <source>Delete images</source>
@@ -2928,12 +2942,12 @@ Reason: %1</source>
     <message>
         <source>Open picon</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>picon ファイルを開く</translation>
     </message>
     <message>
         <source>Execute batch command</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>バッチコマンドを実行する</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -3303,7 +3317,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Allow external batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>外部バッチコマンドを許可する</translation>
     </message>
     <message>
         <source>Filename format</source>
@@ -3319,19 +3333,19 @@ Reason: %1</source>
     </message>
     <message>
         <source>External batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>外部バッチコマンド</translation>
     </message>
     <message>
         <source>eg. %1</source>
-        <translation type="unfinished"></translation>
+        <translation>例: %1</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished"></translation>
+        <translation>指示</translation>
     </message>
     <message>
         <source>Reload picons after batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>バッチコマンド実行後に picons を再読み込みしてください。</translation>
     </message>
     <message>
         <source>Preferences</source>
@@ -3887,11 +3901,6 @@ Reason: %1</source>
         <translation>BLOB</translation>
     </message>
     <message>
-        <source>Error</source>
-        <comment>error</comment>
-        <translation type="vanished">エラー</translation>
-    </message>
-    <message>
         <source>Donate</source>
         <comment>toolbar</comment>
         <translation>寄付</translation>
@@ -3945,6 +3954,11 @@ Reason: %1</source>
         <source>Tools</source>
         <comment>toolbar</comment>
         <translation>ツール</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>toolbar</comment>
+        <translation>コンソールを開く</translation>
     </message>
     <message>
         <source>autofix</source>
@@ -4217,6 +4231,11 @@ Reason: %1</source>
         <translation>輸出指数</translation>
     </message>
     <message>
+        <source>Console</source>
+        <comment>menu</comment>
+        <translation>コンソールを開く</translation>
+    </message>
+    <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>ログを検査する</translation>
@@ -4252,20 +4271,6 @@ Reason: %1</source>
 </context>
 <context>
     <name>tools</name>
-    <message>
-        <source>Log Inspector</source>
-        <comment>dialog</comment>
-        <translation>ログを検査する</translation>
-    </message>
-    <message>
-        <source>Filter</source>
-        <comment>ui</comment>
-        <translation>フィルター</translation>
-    </message>
-    <message>
-        <source>All Log</source>
-        <translation>すべてのログ</translation>
-    </message>
     <message>
         <source>Importing from %1 …</source>
         <comment>message</comment>
@@ -4469,7 +4474,7 @@ Reason: %1</source>
     <message>
         <source>Sort</source>
         <comment>menu</comment>
-        <translation type="unfinished">選別</translation>
+        <translation>選別</translation>
     </message>
     <message>
         <source>Sort transponders</source>
@@ -4510,7 +4515,7 @@ Reason: %1</source>
     <message>
         <source>Cancel</source>
         <comment>dialog</comment>
-        <translation type="unfinished">キャンセル(C)</translation>
+        <translation>キャンセル(C)</translation>
     </message>
     <message>
         <source>Apply Sort</source>
@@ -4536,6 +4541,11 @@ Reason: %1</source>
     <message>
         <source>Parental Lock</source>
         <translation>ペアレンタルロック</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>dialog</comment>
+        <translation>コンソールを開く</translation>
     </message>
     <message>
         <source>Index</source>
@@ -4745,7 +4755,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished">索引</translation>
+        <translation>索引</translation>
     </message>
     <message>
         <source>New Transponder</source>
@@ -4847,7 +4857,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished">索引</translation>
+        <translation>索引</translation>
     </message>
     <message>
         <source>Freq/Pol/SR</source>

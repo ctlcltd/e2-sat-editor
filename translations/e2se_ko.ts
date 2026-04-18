@@ -528,6 +528,19 @@ Please wait few minutes and try again.</source>
     </message>
 </context>
 <context>
+    <name>e2se_gui::ConsoleWidget</name>
+    <message>
+        <source>&amp;Copy</source>
+        <comment>context-menu</comment>
+        <translation>복사(&amp;C)</translation>
+    </message>
+    <message>
+        <source>&amp;Paste</source>
+        <comment>context-menu</comment>
+        <translation>붙여넣기(&amp;P)</translation>
+    </message>
+</context>
+<context>
     <name>editBouquet</name>
     <message>
         <source>Edit Bouquet</source>
@@ -589,11 +602,6 @@ Please wait few minutes and try again.</source>
         <source>Edit Favourite</source>
         <comment>dialog</comment>
         <translation>즐겨찾기 편집</translation>
-    </message>
-    <message>
-        <source>New Favourite</source>
-        <comment>dialog</comment>
-        <translation type="vanished">새로운 즐겨찾기</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -1546,7 +1554,7 @@ Please wait few minutes and try again.</source>
         <source>Preferences…</source>
         <comment>menu</comment>
         <extracomment>Platform: Preferences item in macOS Application Menu | Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>About</source>
@@ -1609,12 +1617,12 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Open picon file</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>picon 파일을 엽니다.</translation>
     </message>
     <message>
         <source>Execute batch command</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>배치 명령 실행</translation>
     </message>
     <message>
         <source>&amp;Find</source>
@@ -1658,6 +1666,11 @@ Please wait few minutes and try again.</source>
         <source>&amp;Tools</source>
         <comment>menu</comment>
         <translation>도구</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>menu</comment>
+        <translation>콘솔 열기</translation>
     </message>
     <message>
         <source>Edit Transponders</source>
@@ -2052,30 +2065,6 @@ Please wait few minutes and try again.</source>
         <translation>연결 프로필 파일</translation>
     </message>
     <message>
-        <source>File Explorer</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name File Explorer on Windows</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Finder</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name Finder on macOS</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File Manager</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reveal in %1</source>
-        <comment>menu</comment>
-        <extracomment>Platform: %1 is platform specific product name</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>File Error</source>
         <comment>error</comment>
         <translation>File 오류</translation>
@@ -2099,6 +2088,24 @@ Please wait few minutes and try again.</source>
         <source>M3U File</source>
         <comment>file-dialog</comment>
         <translation>M3U 파일</translation>
+    </message>
+    <message>
+        <source>Reveal in File Explorer</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name File Explorer on Windows</extracomment>
+        <translation>파일 탐색기 에서 보기</translation>
+    </message>
+    <message>
+        <source>Reveal in Finder</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name Finder on macOS</extracomment>
+        <translation>Finder 에서 보기</translation>
+    </message>
+    <message>
+        <source>Reveal in File Manager</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
+        <translation>파일 관리자 에서 보기</translation>
     </message>
     <message>
         <source>Checking for updates…</source>
@@ -2347,6 +2354,23 @@ Please wait few minutes and try again.</source>
     </message>
 </context>
 <context>
+    <name>inspector</name>
+    <message>
+        <source>Log Inspector</source>
+        <comment>dialog</comment>
+        <translation>로그 검사</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <comment>ui</comment>
+        <translation>필터</translation>
+    </message>
+    <message>
+        <source>All Log</source>
+        <translation>모든 로그</translation>
+    </message>
+</context>
+<context>
     <name>mainView</name>
     <message>
         <source>Services</source>
@@ -2504,7 +2528,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Flags</source>
         <comment>reference-panel</comment>
-        <translation type="unfinished">비트 플래그</translation>
+        <translation>비트 플래그</translation>
     </message>
     <message>
         <source>Tuner</source>
@@ -2514,7 +2538,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>PIDs</source>
         <comment>reference-panel</comment>
-        <translation type="unfinished">PID</translation>
+        <translation>PID</translation>
     </message>
     <message>
         <source>Error</source>
@@ -2637,11 +2661,6 @@ Please wait few minutes and try again.</source>
         <source>Not a valid data format.</source>
         <comment>error</comment>
         <translation>유효한 데이터 형식이 아닙니다.</translation>
-    </message>
-    <message>
-        <source>Channel reference mismatch.</source>
-        <comment>error</comment>
-        <translation type="vanished">채널 참조 불일치.</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
@@ -2768,7 +2787,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Reload</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>재장전</translation>
     </message>
     <message>
         <source>Find…</source>
@@ -2828,7 +2847,7 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>Allow external batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>외부 배치 명령 허용</translation>
     </message>
     <message>
         <source>Filename format</source>
@@ -2860,52 +2879,47 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Operation not allowed.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>작업이 허용되지 않습니다.</translation>
     </message>
     <message>
         <source>An error occured during operation.
 Reason: %1</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>작업 중 오류가 발생했습니다.
+이유: %1</translation>
     </message>
     <message>
         <source>Process Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>프로세스 오류</translation>
     </message>
     <message>
         <source>Batch processed file: %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>일괄 처리 처리된 파일: %1</translation>
     </message>
     <message>
         <source>Command Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>명령 오류</translation>
     </message>
     <message>
-        <source>File Explorer</source>
+        <source>Reveal in File Explorer</source>
         <comment>menu</comment>
         <extracomment>Platform: product name File Explorer on Windows</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>파일 탐색기 에서 보기</translation>
     </message>
     <message>
-        <source>Finder</source>
+        <source>Reveal in Finder</source>
         <comment>menu</comment>
         <extracomment>Platform: product name Finder on macOS</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Finder 에서 보기</translation>
     </message>
     <message>
-        <source>File Manager</source>
+        <source>Reveal in File Manager</source>
         <comment>menu</comment>
         <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reveal in %1</source>
-        <comment>menu</comment>
-        <extracomment>Platform: %1 is platform specific product name</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>파일 관리자 에서 보기</translation>
     </message>
     <message>
         <source>Delete images</source>
@@ -2925,12 +2939,12 @@ Reason: %1</source>
     <message>
         <source>Open picon</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>picon 파일을 엽니다.</translation>
     </message>
     <message>
         <source>Execute batch command</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>배치 명령 실행</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -3300,7 +3314,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Allow external batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>외부 배치 명령 허용</translation>
     </message>
     <message>
         <source>Filename format</source>
@@ -3316,19 +3330,19 @@ Reason: %1</source>
     </message>
     <message>
         <source>External batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>외부 배치 명령</translation>
     </message>
     <message>
         <source>eg. %1</source>
-        <translation type="unfinished"></translation>
+        <translation>예: %1</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished"></translation>
+        <translation>명령</translation>
     </message>
     <message>
         <source>Reload picons after batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>일괄 명령 실행 후 picons를 다시 로드합니다.</translation>
     </message>
     <message>
         <source>Preferences</source>
@@ -3884,11 +3898,6 @@ Reason: %1</source>
         <translation>블롭</translation>
     </message>
     <message>
-        <source>Error</source>
-        <comment>error</comment>
-        <translation type="vanished">오류</translation>
-    </message>
-    <message>
         <source>Donate</source>
         <comment>toolbar</comment>
         <translation>기부</translation>
@@ -3942,6 +3951,11 @@ Reason: %1</source>
         <source>Tools</source>
         <comment>toolbar</comment>
         <translation>도구</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>toolbar</comment>
+        <translation>콘솔 열기</translation>
     </message>
     <message>
         <source>autofix</source>
@@ -4214,6 +4228,11 @@ Reason: %1</source>
         <translation>수출 지수</translation>
     </message>
     <message>
+        <source>Console</source>
+        <comment>menu</comment>
+        <translation>콘솔 열기</translation>
+    </message>
+    <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>로그 검사</translation>
@@ -4249,20 +4268,6 @@ Reason: %1</source>
 </context>
 <context>
     <name>tools</name>
-    <message>
-        <source>Log Inspector</source>
-        <comment>dialog</comment>
-        <translation>로그 검사</translation>
-    </message>
-    <message>
-        <source>Filter</source>
-        <comment>ui</comment>
-        <translation>필터</translation>
-    </message>
-    <message>
-        <source>All Log</source>
-        <translation>모든 로그</translation>
-    </message>
     <message>
         <source>Importing from %1 …</source>
         <comment>message</comment>
@@ -4466,7 +4471,7 @@ Reason: %1</source>
     <message>
         <source>Sort</source>
         <comment>menu</comment>
-        <translation type="unfinished">종류</translation>
+        <translation>종류</translation>
     </message>
     <message>
         <source>Sort transponders</source>
@@ -4507,7 +4512,7 @@ Reason: %1</source>
     <message>
         <source>Cancel</source>
         <comment>dialog</comment>
-        <translation type="unfinished">취소(C)</translation>
+        <translation>취소(C)</translation>
     </message>
     <message>
         <source>Apply Sort</source>
@@ -4533,6 +4538,11 @@ Reason: %1</source>
     <message>
         <source>Parental Lock</source>
         <translation>보호자 잠금</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>dialog</comment>
+        <translation>콘솔 열기</translation>
     </message>
     <message>
         <source>Index</source>
@@ -4742,7 +4752,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished">색인</translation>
+        <translation>색인</translation>
     </message>
     <message>
         <source>New Transponder</source>
@@ -4844,7 +4854,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished">색인</translation>
+        <translation>색인</translation>
     </message>
     <message>
         <source>Freq/Pol/SR</source>

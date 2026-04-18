@@ -114,19 +114,17 @@ void console_gui::init()
 	prompt();
 }
 
-//TODO refact QWidget::parentWidget()
 void console_gui::close()
 {
 	debug("close");
 
-	if (cnt->parent() != nullptr && cnt->parent()->parent() != nullptr)
+	if (cnt->parentWidget() != nullptr && cnt->parentWidget()->parentWidget() != nullptr)
 	{
-		QWidget* widget = qobject_cast<QWidget*>(cnt->parent()->parent());
+		QWidget* widget = cnt->parentWidget()->parentWidget();
 
 		if (widget != nullptr && ! widget->property("console_widget").isNull())
 		{
 			detach();
-
 			widget->close();
 		}
 	}
@@ -145,7 +143,7 @@ void console_gui::attach(QWidget* parent)
 	perr = new stream(*this->ts_err);
 
 	this->plog = this->log;
-	//TODO
+	//TODO QObject is connected, std::stringbuf SEGFAULT
 	// this->termctl = new termctl_gui(this->cnt);
 
 	QGridLayout* frm = new QGridLayout;
@@ -159,7 +157,7 @@ void console_gui::attach(QWidget* parent)
 
 	cnt->attachWidget();
 
-	parent->setProperty("console_widget", true);
+	parent->setProperty("console_widget", 1);
 
 	session();
 }
@@ -175,7 +173,7 @@ void console_gui::detach()
 	delete this->ba_out;
 	delete this->ba_err;
 
-	//TODO QObject is connected
+	//TODO QObject is connected, std::stringbuf SEGFAULT
 	termctl->reset();
 	// delete this->termctl;
 
@@ -347,10 +345,9 @@ void console_gui::console_usage(COMMAND hint, int level)
 	}
 }
 
-//TODO refact QWidget::parentWidget()
 void console_gui::command_quit()
 {
-	if (cnt->parent() != nullptr)
+	if (cnt->parentWidget() != nullptr)
 		close();
 }
 

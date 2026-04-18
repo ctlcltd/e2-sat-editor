@@ -530,6 +530,19 @@ Počkajte niekoľko minút a skúste to znova.</translation>
     </message>
 </context>
 <context>
+    <name>e2se_gui::ConsoleWidget</name>
+    <message>
+        <source>&amp;Copy</source>
+        <comment>context-menu</comment>
+        <translation>&amp;Kopírovať</translation>
+    </message>
+    <message>
+        <source>&amp;Paste</source>
+        <comment>context-menu</comment>
+        <translation>&amp;Vložiť</translation>
+    </message>
+</context>
+<context>
     <name>editBouquet</name>
     <message>
         <source>Edit Bouquet</source>
@@ -591,11 +604,6 @@ Počkajte niekoľko minút a skúste to znova.</translation>
         <source>Edit Favourite</source>
         <comment>dialog</comment>
         <translation>Upraviť Obľúbené</translation>
-    </message>
-    <message>
-        <source>New Favourite</source>
-        <comment>dialog</comment>
-        <translation type="vanished">Nový Obľúbený</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -1548,7 +1556,7 @@ Počkajte niekoľko minút a skúste to znova.</translation>
         <source>Preferences…</source>
         <comment>menu</comment>
         <extracomment>Platform: Preferences item in macOS Application Menu | Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>About</source>
@@ -1611,12 +1619,12 @@ Počkajte niekoľko minút a skúste to znova.</translation>
     <message>
         <source>Open picon file</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Otvoriť súbor picon</translation>
     </message>
     <message>
         <source>Execute batch command</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Vykonajte príkaz batch</translation>
     </message>
     <message>
         <source>&amp;Find</source>
@@ -1660,6 +1668,11 @@ Počkajte niekoľko minút a skúste to znova.</translation>
         <source>&amp;Tools</source>
         <comment>menu</comment>
         <translation>Nástroje</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>menu</comment>
+        <translation>Konzola</translation>
     </message>
     <message>
         <source>Edit Transponders</source>
@@ -2054,30 +2067,6 @@ Počkajte niekoľko minút a skúste to znova.</translation>
         <translation>Súbor profilu pripojenia</translation>
     </message>
     <message>
-        <source>File Explorer</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name File Explorer on Windows</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Finder</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name Finder on macOS</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File Manager</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reveal in %1</source>
-        <comment>menu</comment>
-        <extracomment>Platform: %1 is platform specific product name</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>File Error</source>
         <comment>error</comment>
         <translation>Chyba Súboru</translation>
@@ -2101,6 +2090,24 @@ Počkajte niekoľko minút a skúste to znova.</translation>
         <source>M3U File</source>
         <comment>file-dialog</comment>
         <translation>Súbor M3U</translation>
+    </message>
+    <message>
+        <source>Reveal in File Explorer</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name File Explorer on Windows</extracomment>
+        <translation>Zobraziť v Prieskumník</translation>
+    </message>
+    <message>
+        <source>Reveal in Finder</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name Finder on macOS</extracomment>
+        <translation>Zobraziť vo Finderi</translation>
+    </message>
+    <message>
+        <source>Reveal in File Manager</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
+        <translation>Zobraziť v Správcovi Súborov</translation>
     </message>
     <message>
         <source>Checking for updates…</source>
@@ -2349,6 +2356,23 @@ Počkajte niekoľko minút a skúste to znova.</translation>
     </message>
 </context>
 <context>
+    <name>inspector</name>
+    <message>
+        <source>Log Inspector</source>
+        <comment>dialog</comment>
+        <translation>Kontrola Log</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <comment>ui</comment>
+        <translation>Filtrovať</translation>
+    </message>
+    <message>
+        <source>All Log</source>
+        <translation>All Log</translation>
+    </message>
+</context>
+<context>
     <name>mainView</name>
     <message>
         <source>Services</source>
@@ -2506,7 +2530,7 @@ Počkajte niekoľko minút a skúste to znova.</translation>
     <message>
         <source>Flags</source>
         <comment>reference-panel</comment>
-        <translation type="unfinished">Vlajky</translation>
+        <translation>Vlajky</translation>
     </message>
     <message>
         <source>Tuner</source>
@@ -2516,7 +2540,7 @@ Počkajte niekoľko minút a skúste to znova.</translation>
     <message>
         <source>PIDs</source>
         <comment>reference-panel</comment>
-        <translation type="unfinished">PID</translation>
+        <translation>PID</translation>
     </message>
     <message>
         <source>Error</source>
@@ -2639,11 +2663,6 @@ Počkajte niekoľko minút a skúste to znova.</translation>
         <source>Not a valid data format.</source>
         <comment>error</comment>
         <translation>Neplatný formát údajov.</translation>
-    </message>
-    <message>
-        <source>Channel reference mismatch.</source>
-        <comment>error</comment>
-        <translation type="vanished">Nezhoda referencií kanála.</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
@@ -2770,7 +2789,7 @@ Počkajte niekoľko minút a skúste to znova.</translation>
     <message>
         <source>Reload</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Obnoviť</translation>
     </message>
     <message>
         <source>Find…</source>
@@ -2830,7 +2849,7 @@ Počkajte niekoľko minút a skúste to znova.</translation>
     </message>
     <message>
         <source>Allow external batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Povoliť externý príkaz batch</translation>
     </message>
     <message>
         <source>Filename format</source>
@@ -2862,52 +2881,47 @@ Počkajte niekoľko minút a skúste to znova.</translation>
     <message>
         <source>Operation not allowed.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Operácia nie je povolená.</translation>
     </message>
     <message>
         <source>An error occured during operation.
 Reason: %1</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Počas operácie sa vyskytla chyba.
+Dôvod: %1</translation>
     </message>
     <message>
         <source>Process Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chyba Procesu</translation>
     </message>
     <message>
         <source>Batch processed file: %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Batch spracovaný súbor: %1</translation>
     </message>
     <message>
         <source>Command Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chyba Príkazu</translation>
     </message>
     <message>
-        <source>File Explorer</source>
+        <source>Reveal in File Explorer</source>
         <comment>menu</comment>
         <extracomment>Platform: product name File Explorer on Windows</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Zobraziť v Prieskumník</translation>
     </message>
     <message>
-        <source>Finder</source>
+        <source>Reveal in Finder</source>
         <comment>menu</comment>
         <extracomment>Platform: product name Finder on macOS</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Zobraziť vo Finderi</translation>
     </message>
     <message>
-        <source>File Manager</source>
+        <source>Reveal in File Manager</source>
         <comment>menu</comment>
         <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reveal in %1</source>
-        <comment>menu</comment>
-        <extracomment>Platform: %1 is platform specific product name</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Zobraziť v Správcovi Súborov</translation>
     </message>
     <message>
         <source>Delete images</source>
@@ -2927,12 +2941,12 @@ Reason: %1</source>
     <message>
         <source>Open picon</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Otvoriť piconu</translation>
     </message>
     <message>
         <source>Execute batch command</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Vykonajte príkaz batch</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -3302,7 +3316,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Allow external batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Povoliť externý príkaz batch</translation>
     </message>
     <message>
         <source>Filename format</source>
@@ -3318,19 +3332,19 @@ Reason: %1</source>
     </message>
     <message>
         <source>External batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Externý príkaz batch</translation>
     </message>
     <message>
         <source>eg. %1</source>
-        <translation type="unfinished"></translation>
+        <translation>napr. %1</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished"></translation>
+        <translation>Príkaz</translation>
     </message>
     <message>
         <source>Reload picons after batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Obnoviť picony po príkaze batch</translation>
     </message>
     <message>
         <source>Preferences</source>
@@ -3892,11 +3906,6 @@ Reason: %1</source>
         <translation>blob</translation>
     </message>
     <message>
-        <source>Error</source>
-        <comment>error</comment>
-        <translation type="vanished">Chyba</translation>
-    </message>
-    <message>
         <source>Donate</source>
         <comment>toolbar</comment>
         <translation>Darovať</translation>
@@ -3950,6 +3959,11 @@ Reason: %1</source>
         <source>Tools</source>
         <comment>toolbar</comment>
         <translation>Nástroje</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>toolbar</comment>
+        <translation>Konzola</translation>
     </message>
     <message>
         <source>autofix</source>
@@ -4222,6 +4236,11 @@ Reason: %1</source>
         <translation>Exportovať index</translation>
     </message>
     <message>
+        <source>Console</source>
+        <comment>menu</comment>
+        <translation>Konzola</translation>
+    </message>
+    <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>Kontrola Log</translation>
@@ -4257,20 +4276,6 @@ Reason: %1</source>
 </context>
 <context>
     <name>tools</name>
-    <message>
-        <source>Log Inspector</source>
-        <comment>dialog</comment>
-        <translation>Kontrola Log</translation>
-    </message>
-    <message>
-        <source>Filter</source>
-        <comment>ui</comment>
-        <translation>Filtrovať</translation>
-    </message>
-    <message>
-        <source>All Log</source>
-        <translation>All Log</translation>
-    </message>
     <message>
         <source>Importing from %1 …</source>
         <comment>message</comment>
@@ -4474,7 +4479,7 @@ Reason: %1</source>
     <message>
         <source>Sort</source>
         <comment>menu</comment>
-        <translation type="unfinished">Zoradiť</translation>
+        <translation>Zoradiť</translation>
     </message>
     <message>
         <source>Sort transponders</source>
@@ -4515,7 +4520,7 @@ Reason: %1</source>
     <message>
         <source>Cancel</source>
         <comment>dialog</comment>
-        <translation type="unfinished">Zrušiť</translation>
+        <translation>Zrušiť</translation>
     </message>
     <message>
         <source>Apply Sort</source>
@@ -4541,6 +4546,11 @@ Reason: %1</source>
     <message>
         <source>Parental Lock</source>
         <translation>Rodičovský zámok</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>dialog</comment>
+        <translation>Konzola</translation>
     </message>
     <message>
         <source>Index</source>
@@ -4750,7 +4760,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished">Index</translation>
+        <translation>Index</translation>
     </message>
     <message>
         <source>New Transponder</source>
@@ -4852,7 +4862,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished">Index</translation>
+        <translation>Index</translation>
     </message>
     <message>
         <source>Freq/Pol/SR</source>

@@ -209,11 +209,7 @@ void tab::tabSwitch()
 			if (DialogDockWidget* dwid = qobject_cast<DialogDockWidget*>(wid))
 			{
 				if (! dwid->isDocked() && dwid->isFloating())
-				{
 					dwid->setWidgetParent(this->widget);
-
-					// this->widget->restoreDockWidget(dwid);
-				}
 			}
 		}
 	}

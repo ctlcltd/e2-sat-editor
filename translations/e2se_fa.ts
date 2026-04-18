@@ -530,6 +530,19 @@ Please wait few minutes and try again.</source>
     </message>
 </context>
 <context>
+    <name>e2se_gui::ConsoleWidget</name>
+    <message>
+        <source>&amp;Copy</source>
+        <comment>context-menu</comment>
+        <translation>&amp;کپی</translation>
+    </message>
+    <message>
+        <source>&amp;Paste</source>
+        <comment>context-menu</comment>
+        <translation>&amp;چسباندن</translation>
+    </message>
+</context>
+<context>
     <name>editBouquet</name>
     <message>
         <source>Edit Bouquet</source>
@@ -591,11 +604,6 @@ Please wait few minutes and try again.</source>
         <source>Edit Favourite</source>
         <comment>dialog</comment>
         <translation>ویرایش مورد علاقه</translation>
-    </message>
-    <message>
-        <source>New Favourite</source>
-        <comment>dialog</comment>
-        <translation type="vanished">مورد علاقه جدید</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -1548,7 +1556,7 @@ Please wait few minutes and try again.</source>
         <source>Preferences…</source>
         <comment>menu</comment>
         <extracomment>Platform: Preferences item in macOS Application Menu | Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>About</source>
@@ -1611,12 +1619,12 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Open picon file</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>باز کردن فایل picon</translation>
     </message>
     <message>
         <source>Execute batch command</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>اجرای دستور دسته‌ای</translation>
     </message>
     <message>
         <source>&amp;Find</source>
@@ -1660,6 +1668,11 @@ Please wait few minutes and try again.</source>
         <source>&amp;Tools</source>
         <comment>menu</comment>
         <translation>ابزار</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>menu</comment>
+        <translation>کنسول را باز کنید</translation>
     </message>
     <message>
         <source>Edit Transponders</source>
@@ -2054,30 +2067,6 @@ Please wait few minutes and try again.</source>
         <translation>فایل پروفایل اتصال</translation>
     </message>
     <message>
-        <source>File Explorer</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name File Explorer on Windows</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Finder</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name Finder on macOS</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File Manager</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reveal in %1</source>
-        <comment>menu</comment>
-        <extracomment>Platform: %1 is platform specific product name</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>File Error</source>
         <comment>error</comment>
         <translation>خطای File</translation>
@@ -2101,6 +2090,24 @@ Please wait few minutes and try again.</source>
         <source>M3U File</source>
         <comment>file-dialog</comment>
         <translation>فایل M3U</translation>
+    </message>
+    <message>
+        <source>Reveal in File Explorer</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name File Explorer on Windows</extracomment>
+        <translation>آشکار شدن در File Explorer</translation>
+    </message>
+    <message>
+        <source>Reveal in Finder</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name Finder on macOS</extracomment>
+        <translation>آشکار شدن در Finder</translation>
+    </message>
+    <message>
+        <source>Reveal in File Manager</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
+        <translation>آشکار شدن در فایل منیجر</translation>
     </message>
     <message>
         <source>Checking for updates…</source>
@@ -2349,6 +2356,23 @@ Please wait few minutes and try again.</source>
     </message>
 </context>
 <context>
+    <name>inspector</name>
+    <message>
+        <source>Log Inspector</source>
+        <comment>dialog</comment>
+        <translation>بازرس ورود به سیستم</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <comment>ui</comment>
+        <translation>فیلتر کنید</translation>
+    </message>
+    <message>
+        <source>All Log</source>
+        <translation>همه ورود</translation>
+    </message>
+</context>
+<context>
     <name>mainView</name>
     <message>
         <source>Services</source>
@@ -2506,7 +2530,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Flags</source>
         <comment>reference-panel</comment>
-        <translation type="unfinished">پرچم های بیت</translation>
+        <translation>پرچم های بیت</translation>
     </message>
     <message>
         <source>Tuner</source>
@@ -2516,7 +2540,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>PIDs</source>
         <comment>reference-panel</comment>
-        <translation type="unfinished">PID</translation>
+        <translation>PID</translation>
     </message>
     <message>
         <source>Error</source>
@@ -2639,11 +2663,6 @@ Please wait few minutes and try again.</source>
         <source>Not a valid data format.</source>
         <comment>error</comment>
         <translation>یک قالب داده معتبر نیست.</translation>
-    </message>
-    <message>
-        <source>Channel reference mismatch.</source>
-        <comment>error</comment>
-        <translation type="vanished">عدم تطابق مرجع کانال.</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
@@ -2770,7 +2789,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Reload</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>بارگیری مجدد</translation>
     </message>
     <message>
         <source>Find…</source>
@@ -2830,7 +2849,7 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>Allow external batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>اجازه دادن به دستور دسته‌ای خارجی</translation>
     </message>
     <message>
         <source>Filename format</source>
@@ -2862,52 +2881,47 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Operation not allowed.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>عملیات مجاز نیست.</translation>
     </message>
     <message>
         <source>An error occured during operation.
 Reason: %1</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>خطایی در حین عملیات رخ داد.
+دلیل: %1</translation>
     </message>
     <message>
         <source>Process Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>خطای فرآیند</translation>
     </message>
     <message>
         <source>Batch processed file: %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>فایل پردازش‌شده دسته‌ای: %1</translation>
     </message>
     <message>
         <source>Command Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>خطای فرمان</translation>
     </message>
     <message>
-        <source>File Explorer</source>
+        <source>Reveal in File Explorer</source>
         <comment>menu</comment>
         <extracomment>Platform: product name File Explorer on Windows</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>آشکار شدن در File Explorer</translation>
     </message>
     <message>
-        <source>Finder</source>
+        <source>Reveal in Finder</source>
         <comment>menu</comment>
         <extracomment>Platform: product name Finder on macOS</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>آشکار شدن در Finder</translation>
     </message>
     <message>
-        <source>File Manager</source>
+        <source>Reveal in File Manager</source>
         <comment>menu</comment>
         <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reveal in %1</source>
-        <comment>menu</comment>
-        <extracomment>Platform: %1 is platform specific product name</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>آشکار شدن در فایل منیجر</translation>
     </message>
     <message>
         <source>Delete images</source>
@@ -2927,12 +2941,12 @@ Reason: %1</source>
     <message>
         <source>Open picon</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>باز کردن فایل picon</translation>
     </message>
     <message>
         <source>Execute batch command</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>اجرای دستور دسته‌ای</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -3302,7 +3316,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Allow external batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>اجازه دادن به دستور دسته‌ای خارجی</translation>
     </message>
     <message>
         <source>Filename format</source>
@@ -3318,19 +3332,19 @@ Reason: %1</source>
     </message>
     <message>
         <source>External batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>دستور دسته‌ای خارجی</translation>
     </message>
     <message>
         <source>eg. %1</source>
-        <translation type="unfinished"></translation>
+        <translation>مثلاً %1</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished"></translation>
+        <translation>فرمان</translation>
     </message>
     <message>
         <source>Reload picons after batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>بارگذاری مجدد picons پس از دستور دسته‌ای</translation>
     </message>
     <message>
         <source>Preferences</source>
@@ -3886,11 +3900,6 @@ Reason: %1</source>
         <translation>blob</translation>
     </message>
     <message>
-        <source>Error</source>
-        <comment>error</comment>
-        <translation type="vanished">خطا</translation>
-    </message>
-    <message>
         <source>Donate</source>
         <comment>toolbar</comment>
         <translation>اهداء</translation>
@@ -3944,6 +3953,11 @@ Reason: %1</source>
         <source>Tools</source>
         <comment>toolbar</comment>
         <translation>ابزار</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>toolbar</comment>
+        <translation>کنسول را باز کنید</translation>
     </message>
     <message>
         <source>autofix</source>
@@ -4216,6 +4230,11 @@ Reason: %1</source>
         <translation>شاخص صادرات</translation>
     </message>
     <message>
+        <source>Console</source>
+        <comment>menu</comment>
+        <translation>کنسول را باز کنید</translation>
+    </message>
+    <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>بازرس ورود به سیستم</translation>
@@ -4251,20 +4270,6 @@ Reason: %1</source>
 </context>
 <context>
     <name>tools</name>
-    <message>
-        <source>Log Inspector</source>
-        <comment>dialog</comment>
-        <translation>بازرس ورود به سیستم</translation>
-    </message>
-    <message>
-        <source>Filter</source>
-        <comment>ui</comment>
-        <translation>فیلتر کنید</translation>
-    </message>
-    <message>
-        <source>All Log</source>
-        <translation>همه ورود</translation>
-    </message>
     <message>
         <source>Importing from %1 …</source>
         <comment>message</comment>
@@ -4468,7 +4473,7 @@ Reason: %1</source>
     <message>
         <source>Sort</source>
         <comment>menu</comment>
-        <translation type="unfinished">مرتب کردن</translation>
+        <translation>مرتب کردن</translation>
     </message>
     <message>
         <source>Sort transponders</source>
@@ -4509,7 +4514,7 @@ Reason: %1</source>
     <message>
         <source>Cancel</source>
         <comment>dialog</comment>
-        <translation type="unfinished">انصراف</translation>
+        <translation>انصراف</translation>
     </message>
     <message>
         <source>Apply Sort</source>
@@ -4535,6 +4540,11 @@ Reason: %1</source>
     <message>
         <source>Parental Lock</source>
         <translation>قفل والدین</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>dialog</comment>
+        <translation>کنسول را باز کنید</translation>
     </message>
     <message>
         <source>Index</source>
@@ -4744,7 +4754,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished">فهرست مطالب</translation>
+        <translation>فهرست مطالب</translation>
     </message>
     <message>
         <source>New Transponder</source>
@@ -4846,7 +4856,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished">فهرست مطالب</translation>
+        <translation>فهرست مطالب</translation>
     </message>
     <message>
         <source>Freq/Pol/SR</source>

@@ -530,6 +530,19 @@ Please wait few minutes and try again.</source>
     </message>
 </context>
 <context>
+    <name>e2se_gui::ConsoleWidget</name>
+    <message>
+        <source>&amp;Copy</source>
+        <comment>context-menu</comment>
+        <translation>ا&amp;نسخ</translation>
+    </message>
+    <message>
+        <source>&amp;Paste</source>
+        <comment>context-menu</comment>
+        <translation>أل&amp;صق</translation>
+    </message>
+</context>
+<context>
     <name>editBouquet</name>
     <message>
         <source>Edit Bouquet</source>
@@ -591,11 +604,6 @@ Please wait few minutes and try again.</source>
         <source>Edit Favourite</source>
         <comment>dialog</comment>
         <translation>تحرير المفضلة</translation>
-    </message>
-    <message>
-        <source>New Favourite</source>
-        <comment>dialog</comment>
-        <translation type="vanished">المفضلة الجديدة</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -1548,7 +1556,7 @@ Please wait few minutes and try again.</source>
         <source>Preferences…</source>
         <comment>menu</comment>
         <extracomment>Platform: Preferences item in macOS Application Menu | Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>About</source>
@@ -1611,12 +1619,12 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Open picon file</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>افتح ملف picon</translation>
     </message>
     <message>
         <source>Execute batch command</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>تنفيذ أمر الدفعة</translation>
     </message>
     <message>
         <source>&amp;Find</source>
@@ -1660,6 +1668,11 @@ Please wait few minutes and try again.</source>
         <source>&amp;Tools</source>
         <comment>menu</comment>
         <translation>الأدوات</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>menu</comment>
+        <translation>افتح وحدة التحكم</translation>
     </message>
     <message>
         <source>Edit Transponders</source>
@@ -2054,30 +2067,6 @@ Please wait few minutes and try again.</source>
         <translation>ملف تعريف الاتصال</translation>
     </message>
     <message>
-        <source>File Explorer</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name File Explorer on Windows</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Finder</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name Finder on macOS</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File Manager</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reveal in %1</source>
-        <comment>menu</comment>
-        <extracomment>Platform: %1 is platform specific product name</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>File Error</source>
         <comment>error</comment>
         <translation>خطأ File</translation>
@@ -2101,6 +2090,24 @@ Please wait few minutes and try again.</source>
         <source>M3U File</source>
         <comment>file-dialog</comment>
         <translation>ملف M3U</translation>
+    </message>
+    <message>
+        <source>Reveal in File Explorer</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name File Explorer on Windows</extracomment>
+        <translation>إظهار في مستكشف الملفات</translation>
+    </message>
+    <message>
+        <source>Reveal in Finder</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name Finder on macOS</extracomment>
+        <translation>إظهار في فايندر</translation>
+    </message>
+    <message>
+        <source>Reveal in File Manager</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
+        <translation>إظهار في مدير الملفات</translation>
     </message>
     <message>
         <source>Checking for updates…</source>
@@ -2349,6 +2356,23 @@ Please wait few minutes and try again.</source>
     </message>
 </context>
 <context>
+    <name>inspector</name>
+    <message>
+        <source>Log Inspector</source>
+        <comment>dialog</comment>
+        <translation>فحص السجل</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <comment>ui</comment>
+        <translation>منقي</translation>
+    </message>
+    <message>
+        <source>All Log</source>
+        <translation>كل السجل</translation>
+    </message>
+</context>
+<context>
     <name>mainView</name>
     <message>
         <source>Services</source>
@@ -2506,7 +2530,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Flags</source>
         <comment>reference-panel</comment>
-        <translation type="unfinished">أعلام البت</translation>
+        <translation>أعلام البت</translation>
     </message>
     <message>
         <source>Tuner</source>
@@ -2516,7 +2540,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>PIDs</source>
         <comment>reference-panel</comment>
-        <translation type="unfinished">PID</translation>
+        <translation>PID</translation>
     </message>
     <message>
         <source>Error</source>
@@ -2639,11 +2663,6 @@ Please wait few minutes and try again.</source>
         <source>Not a valid data format.</source>
         <comment>error</comment>
         <translation>تنسيق بيانات غير صالح.</translation>
-    </message>
-    <message>
-        <source>Channel reference mismatch.</source>
-        <comment>error</comment>
-        <translation type="vanished">عدم تطابق مرجع القناة.</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
@@ -2770,7 +2789,7 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Reload</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>أعد تحميل الصفحة</translation>
     </message>
     <message>
         <source>Find…</source>
@@ -2830,7 +2849,7 @@ Please wait few minutes and try again.</source>
     </message>
     <message>
         <source>Allow external batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>السماح بتنفيذ أوامر الدفعات الخارجية</translation>
     </message>
     <message>
         <source>Filename format</source>
@@ -2862,52 +2881,47 @@ Please wait few minutes and try again.</source>
     <message>
         <source>Operation not allowed.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>العملية غير مسموحة.</translation>
     </message>
     <message>
         <source>An error occured during operation.
 Reason: %1</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>حدث خطأ أثناء العملية.
+السبب: %1</translation>
     </message>
     <message>
         <source>Process Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>خطأ في العملية</translation>
     </message>
     <message>
         <source>Batch processed file: %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>معالجة الدفعة الملف المعالج: %1</translation>
     </message>
     <message>
         <source>Command Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>خطأ في الأمر</translation>
     </message>
     <message>
-        <source>File Explorer</source>
+        <source>Reveal in File Explorer</source>
         <comment>menu</comment>
         <extracomment>Platform: product name File Explorer on Windows</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>إظهار في مستكشف الملفات</translation>
     </message>
     <message>
-        <source>Finder</source>
+        <source>Reveal in Finder</source>
         <comment>menu</comment>
         <extracomment>Platform: product name Finder on macOS</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>إظهار في فايندر</translation>
     </message>
     <message>
-        <source>File Manager</source>
+        <source>Reveal in File Manager</source>
         <comment>menu</comment>
         <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reveal in %1</source>
-        <comment>menu</comment>
-        <extracomment>Platform: %1 is platform specific product name</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>إظهار في مدير الملفات</translation>
     </message>
     <message>
         <source>Delete images</source>
@@ -2927,12 +2941,12 @@ Reason: %1</source>
     <message>
         <source>Open picon</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>افتح ملف picon</translation>
     </message>
     <message>
         <source>Execute batch command</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>تنفيذ أمر الدفعة</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -3302,7 +3316,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Allow external batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>السماح بتنفيذ أوامر الدفعات الخارجية</translation>
     </message>
     <message>
         <source>Filename format</source>
@@ -3318,19 +3332,19 @@ Reason: %1</source>
     </message>
     <message>
         <source>External batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>أمر دفعي خارجي</translation>
     </message>
     <message>
         <source>eg. %1</source>
-        <translation type="unfinished"></translation>
+        <translation>مثال. %1</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished"></translation>
+        <translation>يأمر</translation>
     </message>
     <message>
         <source>Reload picons after batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>أعد تحميل ملفات picons بعد تنفيذ أمر الدُفعة.</translation>
     </message>
     <message>
         <source>Preferences</source>
@@ -3901,11 +3915,6 @@ Reason: %1</source>
         <translation>blob</translation>
     </message>
     <message>
-        <source>Error</source>
-        <comment>error</comment>
-        <translation type="vanished">خطأ</translation>
-    </message>
-    <message>
         <source>Donate</source>
         <comment>toolbar</comment>
         <translation>هبة</translation>
@@ -3959,6 +3968,11 @@ Reason: %1</source>
         <source>Tools</source>
         <comment>toolbar</comment>
         <translation>الأدوات</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>toolbar</comment>
+        <translation>افتح وحدة التحكم</translation>
     </message>
     <message>
         <source>autofix</source>
@@ -4231,6 +4245,11 @@ Reason: %1</source>
         <translation>فهرس التصدير</translation>
     </message>
     <message>
+        <source>Console</source>
+        <comment>menu</comment>
+        <translation>افتح وحدة التحكم</translation>
+    </message>
+    <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>فحص السجل</translation>
@@ -4266,20 +4285,6 @@ Reason: %1</source>
 </context>
 <context>
     <name>tools</name>
-    <message>
-        <source>Log Inspector</source>
-        <comment>dialog</comment>
-        <translation>فحص السجل</translation>
-    </message>
-    <message>
-        <source>Filter</source>
-        <comment>ui</comment>
-        <translation>منقي</translation>
-    </message>
-    <message>
-        <source>All Log</source>
-        <translation>كل السجل</translation>
-    </message>
     <message>
         <source>Importing from %1 …</source>
         <comment>message</comment>
@@ -4483,7 +4488,7 @@ Reason: %1</source>
     <message>
         <source>Sort</source>
         <comment>menu</comment>
-        <translation type="unfinished">نوع</translation>
+        <translation>نوع</translation>
     </message>
     <message>
         <source>Sort transponders</source>
@@ -4524,7 +4529,7 @@ Reason: %1</source>
     <message>
         <source>Cancel</source>
         <comment>dialog</comment>
-        <translation type="unfinished">ألغِ</translation>
+        <translation>ألغِ</translation>
     </message>
     <message>
         <source>Apply Sort</source>
@@ -4550,6 +4555,11 @@ Reason: %1</source>
     <message>
         <source>Parental Lock</source>
         <translation>قفل الوالدين</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>dialog</comment>
+        <translation>افتح وحدة التحكم</translation>
     </message>
     <message>
         <source>Index</source>
@@ -4759,7 +4769,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished">فِهرِس</translation>
+        <translation>فِهرِس</translation>
     </message>
     <message>
         <source>New Transponder</source>
@@ -4861,7 +4871,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished">فِهرِس</translation>
+        <translation>فِهرِس</translation>
     </message>
     <message>
         <source>Freq/Pol/SR</source>

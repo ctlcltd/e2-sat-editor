@@ -532,6 +532,19 @@ Veuillez patienter quelques minutes et réessayer.</translation>
     </message>
 </context>
 <context>
+    <name>e2se_gui::ConsoleWidget</name>
+    <message>
+        <source>&amp;Copy</source>
+        <comment>context-menu</comment>
+        <translation>Cop&amp;ier</translation>
+    </message>
+    <message>
+        <source>&amp;Paste</source>
+        <comment>context-menu</comment>
+        <translation>Co&amp;ller</translation>
+    </message>
+</context>
+<context>
     <name>editBouquet</name>
     <message>
         <source>Edit Bouquet</source>
@@ -593,11 +606,6 @@ Veuillez patienter quelques minutes et réessayer.</translation>
         <source>Edit Favourite</source>
         <comment>dialog</comment>
         <translation>Modifier Favori</translation>
-    </message>
-    <message>
-        <source>New Favourite</source>
-        <comment>dialog</comment>
-        <translation type="vanished">Nouveau Favori</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -1550,7 +1558,7 @@ Veuillez patienter quelques minutes et réessayer.</translation>
         <source>Preferences…</source>
         <comment>menu</comment>
         <extracomment>Platform: Preferences item in macOS Application Menu | Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>About</source>
@@ -1613,12 +1621,12 @@ Veuillez patienter quelques minutes et réessayer.</translation>
     <message>
         <source>Open picon file</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir fichier picon</translation>
     </message>
     <message>
         <source>Execute batch command</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Exécuter commande batch</translation>
     </message>
     <message>
         <source>&amp;Find</source>
@@ -1662,6 +1670,11 @@ Veuillez patienter quelques minutes et réessayer.</translation>
         <source>&amp;Tools</source>
         <comment>menu</comment>
         <translation>Outils</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>menu</comment>
+        <translation>Console</translation>
     </message>
     <message>
         <source>Edit Transponders</source>
@@ -2056,30 +2069,6 @@ Veuillez patienter quelques minutes et réessayer.</translation>
         <translation>Fichier Profil connexion</translation>
     </message>
     <message>
-        <source>File Explorer</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name File Explorer on Windows</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Finder</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name Finder on macOS</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File Manager</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reveal in %1</source>
-        <comment>menu</comment>
-        <extracomment>Platform: %1 is platform specific product name</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>File Error</source>
         <comment>error</comment>
         <translation>Erreur Fichier</translation>
@@ -2103,6 +2092,24 @@ Veuillez patienter quelques minutes et réessayer.</translation>
         <source>M3U File</source>
         <comment>file-dialog</comment>
         <translation>Fichier M3U</translation>
+    </message>
+    <message>
+        <source>Reveal in File Explorer</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name File Explorer on Windows</extracomment>
+        <translation>Afficher dans Explorateur de fichiers</translation>
+    </message>
+    <message>
+        <source>Reveal in Finder</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name Finder on macOS</extracomment>
+        <translation>Afficher dans le Finder</translation>
+    </message>
+    <message>
+        <source>Reveal in File Manager</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
+        <translation>Afficher dans Gestionnaire Fichiers</translation>
     </message>
     <message>
         <source>Checking for updates…</source>
@@ -2351,6 +2358,23 @@ Veuillez patienter quelques minutes et réessayer.</translation>
     </message>
 </context>
 <context>
+    <name>inspector</name>
+    <message>
+        <source>Log Inspector</source>
+        <comment>dialog</comment>
+        <translation>Inspection Log</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <comment>ui</comment>
+        <translation>Filtre</translation>
+    </message>
+    <message>
+        <source>All Log</source>
+        <translation>Tous les journaux</translation>
+    </message>
+</context>
+<context>
     <name>mainView</name>
     <message>
         <source>Services</source>
@@ -2508,7 +2532,7 @@ Veuillez patienter quelques minutes et réessayer.</translation>
     <message>
         <source>Flags</source>
         <comment>reference-panel</comment>
-        <translation type="unfinished">Flags</translation>
+        <translation>Flags</translation>
     </message>
     <message>
         <source>Tuner</source>
@@ -2518,7 +2542,7 @@ Veuillez patienter quelques minutes et réessayer.</translation>
     <message>
         <source>PIDs</source>
         <comment>reference-panel</comment>
-        <translation type="unfinished">PID</translation>
+        <translation>PID</translation>
     </message>
     <message>
         <source>Error</source>
@@ -2641,11 +2665,6 @@ Veuillez patienter quelques minutes et réessayer.</translation>
         <source>Not a valid data format.</source>
         <comment>error</comment>
         <translation>Pas un format de données valide.</translation>
-    </message>
-    <message>
-        <source>Channel reference mismatch.</source>
-        <comment>error</comment>
-        <translation type="vanished">Incompatibilité de référence de canal.</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
@@ -2772,7 +2791,7 @@ Veuillez patienter quelques minutes et réessayer.</translation>
     <message>
         <source>Reload</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Recharger</translation>
     </message>
     <message>
         <source>Find…</source>
@@ -2832,7 +2851,7 @@ Veuillez patienter quelques minutes et réessayer.</translation>
     </message>
     <message>
         <source>Allow external batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Autoriser la commande externe batch</translation>
     </message>
     <message>
         <source>Filename format</source>
@@ -2864,52 +2883,47 @@ Veuillez patienter quelques minutes et réessayer.</translation>
     <message>
         <source>Operation not allowed.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Opération non autorisée.</translation>
     </message>
     <message>
         <source>An error occured during operation.
 Reason: %1</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Une erreur s&apos;est produite lors de l&apos;opération.
+Raison : %1</translation>
     </message>
     <message>
         <source>Process Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Erreur Traitement</translation>
     </message>
     <message>
         <source>Batch processed file: %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Batch fichier traité: %1</translation>
     </message>
     <message>
         <source>Command Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Erreur Commande</translation>
     </message>
     <message>
-        <source>File Explorer</source>
+        <source>Reveal in File Explorer</source>
         <comment>menu</comment>
         <extracomment>Platform: product name File Explorer on Windows</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Afficher dans Explorateur de fichiers</translation>
     </message>
     <message>
-        <source>Finder</source>
+        <source>Reveal in Finder</source>
         <comment>menu</comment>
         <extracomment>Platform: product name Finder on macOS</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Afficher dans le Finder</translation>
     </message>
     <message>
-        <source>File Manager</source>
+        <source>Reveal in File Manager</source>
         <comment>menu</comment>
         <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reveal in %1</source>
-        <comment>menu</comment>
-        <extracomment>Platform: %1 is platform specific product name</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Afficher dans Gestionnaire Fichiers</translation>
     </message>
     <message>
         <source>Delete images</source>
@@ -2929,12 +2943,12 @@ Reason: %1</source>
     <message>
         <source>Open picon</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir picon</translation>
     </message>
     <message>
         <source>Execute batch command</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Exécuter commande batch</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -3304,7 +3318,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Allow external batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Autoriser la commande externe batch</translation>
     </message>
     <message>
         <source>Filename format</source>
@@ -3320,19 +3334,19 @@ Reason: %1</source>
     </message>
     <message>
         <source>External batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Commande externe batch</translation>
     </message>
     <message>
         <source>eg. %1</source>
-        <translation type="unfinished"></translation>
+        <translation>ex. %1</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished"></translation>
+        <translation>Commande</translation>
     </message>
     <message>
         <source>Reload picons after batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Recharger les picons après la commande batch</translation>
     </message>
     <message>
         <source>Preferences</source>
@@ -3891,11 +3905,6 @@ Reason: %1</source>
         <translation>blob</translation>
     </message>
     <message>
-        <source>Error</source>
-        <comment>error</comment>
-        <translation type="vanished">Erreur</translation>
-    </message>
-    <message>
         <source>Donate</source>
         <comment>toolbar</comment>
         <translation>Donation</translation>
@@ -3949,6 +3958,11 @@ Reason: %1</source>
         <source>Tools</source>
         <comment>toolbar</comment>
         <translation>Outils</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>toolbar</comment>
+        <translation>Console</translation>
     </message>
     <message>
         <source>autofix</source>
@@ -4221,6 +4235,11 @@ Reason: %1</source>
         <translation>Exporter indice</translation>
     </message>
     <message>
+        <source>Console</source>
+        <comment>menu</comment>
+        <translation>Console</translation>
+    </message>
+    <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>Inspection Log</translation>
@@ -4256,20 +4275,6 @@ Reason: %1</source>
 </context>
 <context>
     <name>tools</name>
-    <message>
-        <source>Log Inspector</source>
-        <comment>dialog</comment>
-        <translation>Inspection Log</translation>
-    </message>
-    <message>
-        <source>Filter</source>
-        <comment>ui</comment>
-        <translation>Filtre</translation>
-    </message>
-    <message>
-        <source>All Log</source>
-        <translation>Tous les journaux</translation>
-    </message>
     <message>
         <source>Importing from %1 …</source>
         <comment>message</comment>
@@ -4473,7 +4478,7 @@ Reason: %1</source>
     <message>
         <source>Sort</source>
         <comment>menu</comment>
-        <translation type="unfinished">Trier</translation>
+        <translation>Trier</translation>
     </message>
     <message>
         <source>Sort transponders</source>
@@ -4514,7 +4519,7 @@ Reason: %1</source>
     <message>
         <source>Cancel</source>
         <comment>dialog</comment>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <source>Apply Sort</source>
@@ -4540,6 +4545,11 @@ Reason: %1</source>
     <message>
         <source>Parental Lock</source>
         <translation>Contrôle parental</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>dialog</comment>
+        <translation>Console</translation>
     </message>
     <message>
         <source>Index</source>
@@ -4749,7 +4759,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished">Indice</translation>
+        <translation>Indice</translation>
     </message>
     <message>
         <source>New Transponder</source>
@@ -4851,7 +4861,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished">Indice</translation>
+        <translation>Indice</translation>
     </message>
     <message>
         <source>Freq/Pol/SR</source>

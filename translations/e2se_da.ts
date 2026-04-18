@@ -529,6 +529,19 @@ Vent et par minutter, og prøv igen.</translation>
     </message>
 </context>
 <context>
+    <name>e2se_gui::ConsoleWidget</name>
+    <message>
+        <source>&amp;Copy</source>
+        <comment>context-menu</comment>
+        <translation>&amp;Kopiér</translation>
+    </message>
+    <message>
+        <source>&amp;Paste</source>
+        <comment>context-menu</comment>
+        <translation>&amp;Sæt ind</translation>
+    </message>
+</context>
+<context>
     <name>editBouquet</name>
     <message>
         <source>Edit Bouquet</source>
@@ -590,11 +603,6 @@ Vent et par minutter, og prøv igen.</translation>
         <source>Edit Favourite</source>
         <comment>dialog</comment>
         <translation>Rediger Favorit</translation>
-    </message>
-    <message>
-        <source>New Favourite</source>
-        <comment>dialog</comment>
-        <translation type="vanished">Ny Favorit</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -659,7 +667,7 @@ Vent et par minutter, og prøv igen.</translation>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kanalreference &quot;%1&quot; findes ikke.</translation>
     </message>
     <message>
         <source>Add Favourite</source>
@@ -933,7 +941,7 @@ Vent et par minutter, og prøv igen.</translation>
     <message>
         <source>Channel reference &quot;%1&quot; not exists.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kanalreference &quot;%1&quot; findes ikke.</translation>
     </message>
     <message>
         <source>Current: &quot;%1&quot; (SID: %2 TSID: %3 ONID: %4 DVBNS: %5)</source>
@@ -1547,7 +1555,7 @@ Vent et par minutter, og prøv igen.</translation>
         <source>Preferences…</source>
         <comment>menu</comment>
         <extracomment>Platform: Preferences item in macOS Application Menu | Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>About</source>
@@ -1610,12 +1618,12 @@ Vent et par minutter, og prøv igen.</translation>
     <message>
         <source>Open picon file</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Åbn picon-fil</translation>
     </message>
     <message>
         <source>Execute batch command</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Udfør batch kommandoen</translation>
     </message>
     <message>
         <source>&amp;Find</source>
@@ -1659,6 +1667,11 @@ Vent et par minutter, og prøv igen.</translation>
         <source>&amp;Tools</source>
         <comment>menu</comment>
         <translation>Værktøjer</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>menu</comment>
+        <translation>Konsol</translation>
     </message>
     <message>
         <source>Edit Transponders</source>
@@ -2053,30 +2066,6 @@ Vent et par minutter, og prøv igen.</translation>
         <translation>Forbindelsesprofil Fil</translation>
     </message>
     <message>
-        <source>File Explorer</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name File Explorer on Windows</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Finder</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name Finder on macOS</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File Manager</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reveal in %1</source>
-        <comment>menu</comment>
-        <extracomment>Platform: %1 is platform specific product name</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>File Error</source>
         <comment>error</comment>
         <translation>Fil Fejl</translation>
@@ -2100,6 +2089,24 @@ Vent et par minutter, og prøv igen.</translation>
         <source>M3U File</source>
         <comment>file-dialog</comment>
         <translation>M3U fil</translation>
+    </message>
+    <message>
+        <source>Reveal in File Explorer</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name File Explorer on Windows</extracomment>
+        <translation>Vis i Stifinder</translation>
+    </message>
+    <message>
+        <source>Reveal in Finder</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name Finder on macOS</extracomment>
+        <translation>Vis i Finder</translation>
+    </message>
+    <message>
+        <source>Reveal in File Manager</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
+        <translation>Vis i Filhåndtering</translation>
     </message>
     <message>
         <source>Checking for updates…</source>
@@ -2348,6 +2355,23 @@ Vent et par minutter, og prøv igen.</translation>
     </message>
 </context>
 <context>
+    <name>inspector</name>
+    <message>
+        <source>Log Inspector</source>
+        <comment>dialog</comment>
+        <translation>Log Inspektør</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <comment>ui</comment>
+        <translation>Filter</translation>
+    </message>
+    <message>
+        <source>All Log</source>
+        <translation>Alle Log</translation>
+    </message>
+</context>
+<context>
     <name>mainView</name>
     <message>
         <source>Services</source>
@@ -2505,7 +2529,7 @@ Vent et par minutter, og prøv igen.</translation>
     <message>
         <source>Flags</source>
         <comment>reference-panel</comment>
-        <translation type="unfinished">Flags</translation>
+        <translation>Flags</translation>
     </message>
     <message>
         <source>Tuner</source>
@@ -2515,7 +2539,7 @@ Vent et par minutter, og prøv igen.</translation>
     <message>
         <source>PIDs</source>
         <comment>reference-panel</comment>
-        <translation type="unfinished">PID</translation>
+        <translation>PID</translation>
     </message>
     <message>
         <source>Error</source>
@@ -2638,11 +2662,6 @@ Vent et par minutter, og prøv igen.</translation>
         <source>Not a valid data format.</source>
         <comment>error</comment>
         <translation>Ikke et gyldigt dataformat.</translation>
-    </message>
-    <message>
-        <source>Channel reference mismatch.</source>
-        <comment>error</comment>
-        <translation type="vanished">Kanalreferencen stemmer ikke overens.</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
@@ -2769,7 +2788,7 @@ Vent et par minutter, og prøv igen.</translation>
     <message>
         <source>Reload</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Genindlæs</translation>
     </message>
     <message>
         <source>Find…</source>
@@ -2829,7 +2848,7 @@ Vent et par minutter, og prøv igen.</translation>
     </message>
     <message>
         <source>Allow external batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Tillad ekstern batch kommando</translation>
     </message>
     <message>
         <source>Filename format</source>
@@ -2861,52 +2880,47 @@ Vent et par minutter, og prøv igen.</translation>
     <message>
         <source>Operation not allowed.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Handling ikke tilladt.</translation>
     </message>
     <message>
         <source>An error occured during operation.
 Reason: %1</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Der opstod en fejl under handlingen.
+Årsag: %1</translation>
     </message>
     <message>
         <source>Process Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Proces Fejl</translation>
     </message>
     <message>
         <source>Batch processed file: %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Batch behandlet fil: %1</translation>
     </message>
     <message>
         <source>Command Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kommando Fejl</translation>
     </message>
     <message>
-        <source>File Explorer</source>
+        <source>Reveal in File Explorer</source>
         <comment>menu</comment>
         <extracomment>Platform: product name File Explorer on Windows</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Vis i Stifinder</translation>
     </message>
     <message>
-        <source>Finder</source>
+        <source>Reveal in Finder</source>
         <comment>menu</comment>
         <extracomment>Platform: product name Finder on macOS</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Vis i Finder</translation>
     </message>
     <message>
-        <source>File Manager</source>
+        <source>Reveal in File Manager</source>
         <comment>menu</comment>
         <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reveal in %1</source>
-        <comment>menu</comment>
-        <extracomment>Platform: %1 is platform specific product name</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Vis i Filhåndtering</translation>
     </message>
     <message>
         <source>Delete images</source>
@@ -2926,12 +2940,12 @@ Reason: %1</source>
     <message>
         <source>Open picon</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Åbn picon</translation>
     </message>
     <message>
         <source>Execute batch command</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Udfør batch kommandoen</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -3301,7 +3315,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Allow external batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Tillad ekstern batch kommando</translation>
     </message>
     <message>
         <source>Filename format</source>
@@ -3317,19 +3331,19 @@ Reason: %1</source>
     </message>
     <message>
         <source>External batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Ekstern batch kommando</translation>
     </message>
     <message>
         <source>eg. %1</source>
-        <translation type="unfinished"></translation>
+        <translation>eks. %1</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished"></translation>
+        <translation>Kommando</translation>
     </message>
     <message>
         <source>Reload picons after batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Genindlæs picons efter batch kommandoen</translation>
     </message>
     <message>
         <source>Preferences</source>
@@ -3888,11 +3902,6 @@ Reason: %1</source>
         <translation>blob</translation>
     </message>
     <message>
-        <source>Error</source>
-        <comment>error</comment>
-        <translation type="vanished">Fejl</translation>
-    </message>
-    <message>
         <source>Donate</source>
         <comment>toolbar</comment>
         <translation>Doner</translation>
@@ -3946,6 +3955,11 @@ Reason: %1</source>
         <source>Tools</source>
         <comment>toolbar</comment>
         <translation>Værktøjer</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>toolbar</comment>
+        <translation>Konsol</translation>
     </message>
     <message>
         <source>autofix</source>
@@ -4218,6 +4232,11 @@ Reason: %1</source>
         <translation>Eksport indeks</translation>
     </message>
     <message>
+        <source>Console</source>
+        <comment>menu</comment>
+        <translation>Konsol</translation>
+    </message>
+    <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>Log Inspektør</translation>
@@ -4253,20 +4272,6 @@ Reason: %1</source>
 </context>
 <context>
     <name>tools</name>
-    <message>
-        <source>Log Inspector</source>
-        <comment>dialog</comment>
-        <translation>Log Inspektør</translation>
-    </message>
-    <message>
-        <source>Filter</source>
-        <comment>ui</comment>
-        <translation>Filter</translation>
-    </message>
-    <message>
-        <source>All Log</source>
-        <translation>Alle Log</translation>
-    </message>
     <message>
         <source>Importing from %1 …</source>
         <comment>message</comment>
@@ -4470,7 +4475,7 @@ Reason: %1</source>
     <message>
         <source>Sort</source>
         <comment>menu</comment>
-        <translation type="unfinished">Sortere</translation>
+        <translation>Sortere</translation>
     </message>
     <message>
         <source>Sort transponders</source>
@@ -4511,7 +4516,7 @@ Reason: %1</source>
     <message>
         <source>Cancel</source>
         <comment>dialog</comment>
-        <translation type="unfinished">Annuller</translation>
+        <translation>Annuller</translation>
     </message>
     <message>
         <source>Apply Sort</source>
@@ -4537,6 +4542,11 @@ Reason: %1</source>
     <message>
         <source>Parental Lock</source>
         <translation>Forældrelås</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>dialog</comment>
+        <translation>Konsol</translation>
     </message>
     <message>
         <source>Index</source>
@@ -4746,7 +4756,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished">Indeks</translation>
+        <translation>Indeks</translation>
     </message>
     <message>
         <source>New Transponder</source>
@@ -4848,7 +4858,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished">Indeks</translation>
+        <translation>Indeks</translation>
     </message>
     <message>
         <source>Freq/Pol/SR</source>

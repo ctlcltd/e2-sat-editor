@@ -532,6 +532,19 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
     </message>
 </context>
 <context>
+    <name>e2se_gui::ConsoleWidget</name>
+    <message>
+        <source>&amp;Copy</source>
+        <comment>context-menu</comment>
+        <translation>&amp;Kopiraj</translation>
+    </message>
+    <message>
+        <source>&amp;Paste</source>
+        <comment>context-menu</comment>
+        <translation>&amp;Zalijepi</translation>
+    </message>
+</context>
+<context>
     <name>editBouquet</name>
     <message>
         <source>Edit Bouquet</source>
@@ -593,11 +606,6 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <source>Edit Favourite</source>
         <comment>dialog</comment>
         <translation>Uredi Favorite</translation>
-    </message>
-    <message>
-        <source>New Favourite</source>
-        <comment>dialog</comment>
-        <translation type="vanished">Novi Favorit</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -1550,7 +1558,7 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <source>Preferences…</source>
         <comment>menu</comment>
         <extracomment>Platform: Preferences item in macOS Application Menu | Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>About</source>
@@ -1613,12 +1621,12 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
     <message>
         <source>Open picon file</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Otvorite picon datoteku</translation>
     </message>
     <message>
         <source>Execute batch command</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Izvrši naredbu batch</translation>
     </message>
     <message>
         <source>&amp;Find</source>
@@ -1662,6 +1670,11 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <source>&amp;Tools</source>
         <comment>menu</comment>
         <translation>Alati</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>menu</comment>
+        <translation>Konzola</translation>
     </message>
     <message>
         <source>Edit Transponders</source>
@@ -2056,30 +2069,6 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <translation>Datoteka profila veze</translation>
     </message>
     <message>
-        <source>File Explorer</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name File Explorer on Windows</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Finder</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name Finder on macOS</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File Manager</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reveal in %1</source>
-        <comment>menu</comment>
-        <extracomment>Platform: %1 is platform specific product name</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>File Error</source>
         <comment>error</comment>
         <translation>Greška Datoteke</translation>
@@ -2103,6 +2092,24 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <source>M3U File</source>
         <comment>file-dialog</comment>
         <translation>M3U datoteka</translation>
+    </message>
+    <message>
+        <source>Reveal in File Explorer</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name File Explorer on Windows</extracomment>
+        <translation>Otkrij u Eksplorer za datoteke</translation>
+    </message>
+    <message>
+        <source>Reveal in Finder</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name Finder on macOS</extracomment>
+        <translation>Otkrij u Finderu</translation>
+    </message>
+    <message>
+        <source>Reveal in File Manager</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
+        <translation>Otkrij u Upravitelju Datoteka</translation>
     </message>
     <message>
         <source>Checking for updates…</source>
@@ -2351,6 +2358,23 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
     </message>
 </context>
 <context>
+    <name>inspector</name>
+    <message>
+        <source>Log Inspector</source>
+        <comment>dialog</comment>
+        <translation>Inspekcija Log</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <comment>ui</comment>
+        <translation>Filtar</translation>
+    </message>
+    <message>
+        <source>All Log</source>
+        <translation>Svi zapisnici</translation>
+    </message>
+</context>
+<context>
     <name>mainView</name>
     <message>
         <source>Services</source>
@@ -2508,7 +2532,7 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
     <message>
         <source>Flags</source>
         <comment>reference-panel</comment>
-        <translation type="unfinished">Flags</translation>
+        <translation>Flags</translation>
     </message>
     <message>
         <source>Tuner</source>
@@ -2518,7 +2542,7 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
     <message>
         <source>PIDs</source>
         <comment>reference-panel</comment>
-        <translation type="unfinished">PID</translation>
+        <translation>PID</translation>
     </message>
     <message>
         <source>Error</source>
@@ -2641,11 +2665,6 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
         <source>Not a valid data format.</source>
         <comment>error</comment>
         <translation>Nije važeći format podataka.</translation>
-    </message>
-    <message>
-        <source>Channel reference mismatch.</source>
-        <comment>error</comment>
-        <translation type="vanished">Neusklađenost reference kanala.</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
@@ -2772,7 +2791,7 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
     <message>
         <source>Reload</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ponovno učitavanje</translation>
     </message>
     <message>
         <source>Find…</source>
@@ -2832,7 +2851,7 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
     </message>
     <message>
         <source>Allow external batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Dopusti vanjsku naredbu batch</translation>
     </message>
     <message>
         <source>Filename format</source>
@@ -2864,52 +2883,47 @@ Pričekajte nekoliko minuta i pokušajte ponovno.</translation>
     <message>
         <source>Operation not allowed.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Operacija nije dopuštena.</translation>
     </message>
     <message>
         <source>An error occured during operation.
 Reason: %1</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Došlo je do pogreške tijekom rada.
+Razlog: %1</translation>
     </message>
     <message>
         <source>Process Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Pogreška Procesa</translation>
     </message>
     <message>
         <source>Batch processed file: %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Batch obrađena datoteka: %1</translation>
     </message>
     <message>
         <source>Command Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Pogreška Naredbe</translation>
     </message>
     <message>
-        <source>File Explorer</source>
+        <source>Reveal in File Explorer</source>
         <comment>menu</comment>
         <extracomment>Platform: product name File Explorer on Windows</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Otkrij u Eksplorer za datoteke</translation>
     </message>
     <message>
-        <source>Finder</source>
+        <source>Reveal in Finder</source>
         <comment>menu</comment>
         <extracomment>Platform: product name Finder on macOS</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Otkrij u Finderu</translation>
     </message>
     <message>
-        <source>File Manager</source>
+        <source>Reveal in File Manager</source>
         <comment>menu</comment>
         <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reveal in %1</source>
-        <comment>menu</comment>
-        <extracomment>Platform: %1 is platform specific product name</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Otkrij u Upravitelju Datoteka</translation>
     </message>
     <message>
         <source>Delete images</source>
@@ -2929,12 +2943,12 @@ Reason: %1</source>
     <message>
         <source>Open picon</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Otvori piconu</translation>
     </message>
     <message>
         <source>Execute batch command</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Izvrši naredbu batch</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -3304,7 +3318,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Allow external batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Dopusti vanjsku naredbu batch</translation>
     </message>
     <message>
         <source>Filename format</source>
@@ -3320,19 +3334,19 @@ Reason: %1</source>
     </message>
     <message>
         <source>External batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Vanjska naredba batch</translation>
     </message>
     <message>
         <source>eg. %1</source>
-        <translation type="unfinished"></translation>
+        <translation>npr. %1</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished"></translation>
+        <translation>Naredba</translation>
     </message>
     <message>
         <source>Reload picons after batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Ponovno učitavanje picona nakon batch naredbe</translation>
     </message>
     <message>
         <source>Preferences</source>
@@ -3894,11 +3908,6 @@ Reason: %1</source>
         <translation>blob</translation>
     </message>
     <message>
-        <source>Error</source>
-        <comment>error</comment>
-        <translation type="vanished">Greška</translation>
-    </message>
-    <message>
         <source>Donate</source>
         <comment>toolbar</comment>
         <translation>Donirajte</translation>
@@ -3952,6 +3961,11 @@ Reason: %1</source>
         <source>Tools</source>
         <comment>toolbar</comment>
         <translation>Alati</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>toolbar</comment>
+        <translation>Konzola</translation>
     </message>
     <message>
         <source>autofix</source>
@@ -4224,6 +4238,11 @@ Reason: %1</source>
         <translation>Izvoz indeks</translation>
     </message>
     <message>
+        <source>Console</source>
+        <comment>menu</comment>
+        <translation>Konzola</translation>
+    </message>
+    <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>Inspekcija Log</translation>
@@ -4259,20 +4278,6 @@ Reason: %1</source>
 </context>
 <context>
     <name>tools</name>
-    <message>
-        <source>Log Inspector</source>
-        <comment>dialog</comment>
-        <translation>Inspekcija Log</translation>
-    </message>
-    <message>
-        <source>Filter</source>
-        <comment>ui</comment>
-        <translation>Filtar</translation>
-    </message>
-    <message>
-        <source>All Log</source>
-        <translation>Svi zapisnici</translation>
-    </message>
     <message>
         <source>Importing from %1 …</source>
         <comment>message</comment>
@@ -4476,7 +4481,7 @@ Reason: %1</source>
     <message>
         <source>Sort</source>
         <comment>menu</comment>
-        <translation type="unfinished">Poredaj</translation>
+        <translation>Poredaj</translation>
     </message>
     <message>
         <source>Sort transponders</source>
@@ -4517,7 +4522,7 @@ Reason: %1</source>
     <message>
         <source>Cancel</source>
         <comment>dialog</comment>
-        <translation type="unfinished">Odustani</translation>
+        <translation>Odustani</translation>
     </message>
     <message>
         <source>Apply Sort</source>
@@ -4543,6 +4548,11 @@ Reason: %1</source>
     <message>
         <source>Parental Lock</source>
         <translation>Roditeljska blokada</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>dialog</comment>
+        <translation>Konzola</translation>
     </message>
     <message>
         <source>Index</source>
@@ -4752,7 +4762,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished">Indeks</translation>
+        <translation>Indeks</translation>
     </message>
     <message>
         <source>New Transponder</source>
@@ -4854,7 +4864,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished">Indeks</translation>
+        <translation>Indeks</translation>
     </message>
     <message>
         <source>Freq/Pol/SR</source>

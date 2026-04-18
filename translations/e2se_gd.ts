@@ -531,6 +531,19 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
     </message>
 </context>
 <context>
+    <name>e2se_gui::ConsoleWidget</name>
+    <message>
+        <source>&amp;Copy</source>
+        <comment>context-menu</comment>
+        <translation>Dèan lethbhrea&amp;c</translation>
+    </message>
+    <message>
+        <source>&amp;Paste</source>
+        <comment>context-menu</comment>
+        <translation>Cuir a&amp;nn</translation>
+    </message>
+</context>
+<context>
     <name>editBouquet</name>
     <message>
         <source>Edit Bouquet</source>
@@ -592,11 +605,6 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <source>Edit Favourite</source>
         <comment>dialog</comment>
         <translation>Deasaich as fheàrr leat</translation>
-    </message>
-    <message>
-        <source>New Favourite</source>
-        <comment>dialog</comment>
-        <translation type="vanished">Ùr as fheàrr leat</translation>
     </message>
     <message>
         <source>Reference</source>
@@ -1549,7 +1557,7 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <source>Preferences…</source>
         <comment>menu</comment>
         <extracomment>Platform: Preferences item in macOS Application Menu | Encoding: preserve 3-dots ellipsis symbol</extracomment>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>About</source>
@@ -1612,12 +1620,12 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
     <message>
         <source>Open picon file</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Fosgail faidhle picon</translation>
     </message>
     <message>
         <source>Execute batch command</source>
         <comment>menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cuir an gnìomh an àithne batch</translation>
     </message>
     <message>
         <source>&amp;Find</source>
@@ -1661,6 +1669,11 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <source>&amp;Tools</source>
         <comment>menu</comment>
         <translation>Innealan</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>menu</comment>
+        <translation>Consól</translation>
     </message>
     <message>
         <source>Edit Transponders</source>
@@ -2055,30 +2068,6 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <translation>Faidhle pròifil ceangail</translation>
     </message>
     <message>
-        <source>File Explorer</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name File Explorer on Windows</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Finder</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name Finder on macOS</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File Manager</source>
-        <comment>menu</comment>
-        <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reveal in %1</source>
-        <comment>menu</comment>
-        <extracomment>Platform: %1 is platform specific product name</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>File Error</source>
         <comment>error</comment>
         <translation>Mearachd Fhaidhle</translation>
@@ -2102,6 +2091,24 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <source>M3U File</source>
         <comment>file-dialog</comment>
         <translation>Faidhle M3U</translation>
+    </message>
+    <message>
+        <source>Reveal in File Explorer</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name File Explorer on Windows</extracomment>
+        <translation>Nochd ann am File Explorer</translation>
+    </message>
+    <message>
+        <source>Reveal in Finder</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name Finder on macOS</extracomment>
+        <translation>Nochd ann am Finder</translation>
+    </message>
+    <message>
+        <source>Reveal in File Manager</source>
+        <comment>menu</comment>
+        <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
+        <translation>Nochd ann am Manaidsear Faidhle</translation>
     </message>
     <message>
         <source>Checking for updates…</source>
@@ -2350,6 +2357,23 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
     </message>
 </context>
 <context>
+    <name>inspector</name>
+    <message>
+        <source>Log Inspector</source>
+        <comment>dialog</comment>
+        <translation>Sgrùdadh Log</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <comment>ui</comment>
+        <translation>Criathraich</translation>
+    </message>
+    <message>
+        <source>All Log</source>
+        <translation>Log a h-uile</translation>
+    </message>
+</context>
+<context>
     <name>mainView</name>
     <message>
         <source>Services</source>
@@ -2507,7 +2531,7 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
     <message>
         <source>Flags</source>
         <comment>reference-panel</comment>
-        <translation type="unfinished">Flags</translation>
+        <translation>Flags</translation>
     </message>
     <message>
         <source>Tuner</source>
@@ -2517,7 +2541,7 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
     <message>
         <source>PIDs</source>
         <comment>reference-panel</comment>
-        <translation type="unfinished">PID</translation>
+        <translation>PID</translation>
     </message>
     <message>
         <source>Error</source>
@@ -2640,11 +2664,6 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
         <source>Not a valid data format.</source>
         <comment>error</comment>
         <translation>Chan e cruth dàta dligheach.</translation>
-    </message>
-    <message>
-        <source>Channel reference mismatch.</source>
-        <comment>error</comment>
-        <translation type="vanished">Iomradh air an t-sianal mì-fhreagarrach.</translation>
     </message>
     <message>
         <source>Edit Bouquet</source>
@@ -2771,7 +2790,7 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
     <message>
         <source>Reload</source>
         <comment>toolbar</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ath-luchdaich</translation>
     </message>
     <message>
         <source>Find…</source>
@@ -2831,7 +2850,7 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
     </message>
     <message>
         <source>Allow external batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Leig le àithne batch taobh a-muigh</translation>
     </message>
     <message>
         <source>Filename format</source>
@@ -2863,52 +2882,47 @@ Fuirich beagan mhionaidean is feuch ris a-rithist.</translation>
     <message>
         <source>Operation not allowed.</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chan eil cead obrachaidh ann.</translation>
     </message>
     <message>
         <source>An error occured during operation.
 Reason: %1</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Thachair mearachd rè na h-obrachaidh.
+Adhbhar: %1</translation>
     </message>
     <message>
         <source>Process Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mearachd Pròiseis</translation>
     </message>
     <message>
         <source>Batch processed file: %1</source>
         <comment>message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Batch faidhle air a phròiseasadh: %1</translation>
     </message>
     <message>
         <source>Command Error</source>
         <comment>error</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mearachd Àithne</translation>
     </message>
     <message>
-        <source>File Explorer</source>
+        <source>Reveal in File Explorer</source>
         <comment>menu</comment>
         <extracomment>Platform: product name File Explorer on Windows</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Nochd ann am File Explorer</translation>
     </message>
     <message>
-        <source>Finder</source>
+        <source>Reveal in Finder</source>
         <comment>menu</comment>
         <extracomment>Platform: product name Finder on macOS</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Nochd ann am Finder</translation>
     </message>
     <message>
-        <source>File Manager</source>
+        <source>Reveal in File Manager</source>
         <comment>menu</comment>
         <extracomment>Platform: product name File Manager generic: Linux, Unix, WASM</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reveal in %1</source>
-        <comment>menu</comment>
-        <extracomment>Platform: %1 is platform specific product name</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Nochd ann am Manaidsear Faidhle</translation>
     </message>
     <message>
         <source>Delete images</source>
@@ -2928,12 +2942,12 @@ Reason: %1</source>
     <message>
         <source>Open picon</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Fosgail picon</translation>
     </message>
     <message>
         <source>Execute batch command</source>
         <comment>context-menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cuir an gnìomh an àithne batch</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -3303,7 +3317,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Allow external batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Leig le àithne batch taobh a-muigh</translation>
     </message>
     <message>
         <source>Filename format</source>
@@ -3319,19 +3333,19 @@ Reason: %1</source>
     </message>
     <message>
         <source>External batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Àithne batch taobh a-muigh</translation>
     </message>
     <message>
         <source>eg. %1</source>
-        <translation type="unfinished"></translation>
+        <translation>m.e. %1</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished"></translation>
+        <translation>Àithne</translation>
     </message>
     <message>
         <source>Reload picons after batch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Ath-luchdaich picons an dèidh an àithne batch</translation>
     </message>
     <message>
         <source>Preferences</source>
@@ -3896,11 +3910,6 @@ Reason: %1</source>
         <translation>blob</translation>
     </message>
     <message>
-        <source>Error</source>
-        <comment>error</comment>
-        <translation type="vanished">Mearachd</translation>
-    </message>
-    <message>
         <source>Donate</source>
         <comment>toolbar</comment>
         <translation>Tabhartas</translation>
@@ -3954,6 +3963,11 @@ Reason: %1</source>
         <source>Tools</source>
         <comment>toolbar</comment>
         <translation>Innealan</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>toolbar</comment>
+        <translation>Consól</translation>
     </message>
     <message>
         <source>autofix</source>
@@ -4226,6 +4240,11 @@ Reason: %1</source>
         <translation>Às-mhalairt clàr-innse</translation>
     </message>
     <message>
+        <source>Console</source>
+        <comment>menu</comment>
+        <translation>Consól</translation>
+    </message>
+    <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>Sgrùdadh Log</translation>
@@ -4261,20 +4280,6 @@ Reason: %1</source>
 </context>
 <context>
     <name>tools</name>
-    <message>
-        <source>Log Inspector</source>
-        <comment>dialog</comment>
-        <translation>Sgrùdadh Log</translation>
-    </message>
-    <message>
-        <source>Filter</source>
-        <comment>ui</comment>
-        <translation>Criathraich</translation>
-    </message>
-    <message>
-        <source>All Log</source>
-        <translation>Log a h-uile</translation>
-    </message>
     <message>
         <source>Importing from %1 …</source>
         <comment>message</comment>
@@ -4478,7 +4483,7 @@ Reason: %1</source>
     <message>
         <source>Sort</source>
         <comment>menu</comment>
-        <translation type="unfinished">Deasaich</translation>
+        <translation>Deasaich</translation>
     </message>
     <message>
         <source>Sort transponders</source>
@@ -4519,7 +4524,7 @@ Reason: %1</source>
     <message>
         <source>Cancel</source>
         <comment>dialog</comment>
-        <translation type="unfinished">Sguir dheth</translation>
+        <translation>Sguir dheth</translation>
     </message>
     <message>
         <source>Apply Sort</source>
@@ -4545,6 +4550,11 @@ Reason: %1</source>
     <message>
         <source>Parental Lock</source>
         <translation>Glasadh phàrant</translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <comment>dialog</comment>
+        <translation>Consól</translation>
     </message>
     <message>
         <source>Index</source>
@@ -4754,7 +4764,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished">Clàr-innse</translation>
+        <translation>Clàr-innse</translation>
     </message>
     <message>
         <source>New Transponder</source>
@@ -4856,7 +4866,7 @@ Reason: %1</source>
     </message>
     <message>
         <source>Index</source>
-        <translation type="unfinished">Clàr-innse</translation>
+        <translation>Clàr-innse</translation>
     </message>
     <message>
         <source>Freq/Pol/SR</source>
