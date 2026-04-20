@@ -385,7 +385,10 @@ void tools::applyUtils(int bit, e2db::uoopts& opts, bool contextual)
 	}
 
 	if (this->data->haveErrors())
-		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(this->data->getErrors(), tab::MSG_CODE::utilsNotice); }, Qt::QueuedConnection);
+	{
+		auto errors = this->data->getErrors();
+		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(errors, tab::MSG_CODE::utilsNotice); }, Qt::QueuedConnection);
+	}
 
 	if (! done(exec))
 		return;
@@ -481,7 +484,10 @@ void tools::execMacro(vector<string> pattern)
 	}
 
 	if (this->data->haveErrors())
-		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(this->data->getErrors(), tab::MSG_CODE::utilsNotice); }, Qt::QueuedConnection);
+	{
+		auto errors = this->data->getErrors();
+		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(errors, tab::MSG_CODE::utilsNotice); }, Qt::QueuedConnection);
+	}
 
 	if (! done(exec))
 		return;
@@ -767,7 +773,10 @@ void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 	theme::unsetWaitCursor();
 
 	if (this->data->haveErrors())
-		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(this->data->getErrors(), tab::MSG_CODE::importNotice); }, Qt::QueuedConnection);
+	{
+		auto errors = this->data->getErrors();
+		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(errors, tab::MSG_CODE::importNotice); }, Qt::QueuedConnection);
+	}
 
 	if (! done(read))
 		return;
@@ -845,7 +854,10 @@ void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
 	theme::unsetWaitCursor();
 
 	if (this->data->haveErrors())
-		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(this->data->getErrors(), tab::MSG_CODE::exportNotice); }, Qt::QueuedConnection);
+	{
+		auto errors = this->data->getErrors();
+		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(errors, tab::MSG_CODE::exportNotice); }, Qt::QueuedConnection);
+	}
 
 	if (! done(write))
 		return;
@@ -934,7 +946,10 @@ void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
 	theme::unsetWaitCursor();
 
 	if (this->data->haveErrors())
-		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(this->data->getErrors(), tab::MSG_CODE::exportNotice); }, Qt::QueuedConnection);
+	{
+		auto errors = this->data->getErrors();
+		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(errors, tab::MSG_CODE::exportNotice); }, Qt::QueuedConnection);
+	}
 
 	if (! done(write))
 		return;
@@ -1005,7 +1020,10 @@ void tools::importFileM3U(e2db::FCONVS fci, e2db::fcopts opts)
 	theme::unsetWaitCursor();
 
 	if (this->data->haveErrors())
-		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(this->data->getErrors(), tab::MSG_CODE::importNotice); }, Qt::QueuedConnection);
+	{
+		auto errors = this->data->getErrors();
+		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(errors, tab::MSG_CODE::importNotice); }, Qt::QueuedConnection);
+	}
 
 	if (! done(read))
 		return;
@@ -1131,7 +1149,10 @@ void tools::exportFileM3U(e2db::FCONVS fco, e2db::fcopts opts)
 	theme::unsetWaitCursor();
 
 	if (this->data->haveErrors())
-		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(this->data->getErrors(), tab::MSG_CODE::exportNotice); }, Qt::QueuedConnection);
+	{
+		auto errors = this->data->getErrors();
+		QMetaObject::invokeMethod(this->cwid, [=]() { tid->e2dbError(errors, tab::MSG_CODE::exportNotice); }, Qt::QueuedConnection);
+	}
 
 	if (! done(write))
 		return;

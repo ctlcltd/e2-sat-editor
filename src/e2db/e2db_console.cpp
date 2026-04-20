@@ -4721,29 +4721,28 @@ map<int, vector<pair<e2db_console::TYPE, bool>>> e2db_console::input_mask(ENTRY 
 					throw std::runtime_error (msg("Tuner settings table \"%s\" not exists.", id));
 			}
 
-			int i = 0;
 			auto &props = mask[0];
 			props.emplace_back(pair (TYPE::ytype, true));
 			props.emplace_back(pair (TYPE::tname, true));
 
 			{
-				i = 1;
 				auto &props = mask[1];
 				props.emplace_back(pair (TYPE::pos, true));
+				props.emplace_back(pair (TYPE::flags, false));
 			}
 			{
-				i = 2;
 				auto &props = mask[2];
 				props.emplace_back(pair (TYPE::country, false));
+				props.emplace_back(pair (TYPE::flags, false));
 			}
 			{
-				i = 3;
 				auto &props = mask[3];
 				props.emplace_back(pair (TYPE::country, false));
 				props.emplace_back(pair (TYPE::feed, false));
+				props.emplace_back(pair (TYPE::flags, false));
 			}
 			{
-				auto &props = mask[i];
+				auto &props = mask[4];
 				props.emplace_back(pair (TYPE::flags, false));
 			}
 		}

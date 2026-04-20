@@ -153,6 +153,8 @@ void checkUpdate::autoCheck()
 
 		DIAL dialog = this->state.dialog;
 		MEDIUM medium = this->medium;
+
+		// note: this->state race, asyncronous QMetaObject::invokeMethod
 		QMetaObject::invokeMethod(this->cwid, [=]() { this->showMessage(dialog, medium, version, url); });
 	}
 }
@@ -190,9 +192,10 @@ void checkUpdate::notify()
 	if (! this->state.latest_url.empty())
 		url = QUrl (QString::fromStdString(this->state.latest_url));
 
-	// note: this->state race, asyncronous QMetaObject::invokeMethod
 	DIAL dialog = this->state.dialog;
 	MEDIUM medium = this->medium;
+
+	// note: this->state race, asyncronous QMetaObject::invokeMethod
 	QMetaObject::invokeMethod(this->cwid, [=]() { this->showMessage(dialog, medium, version, url); });
 }
 

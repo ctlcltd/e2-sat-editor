@@ -764,7 +764,8 @@ bool tab::readFile(string path)
 
 		if (this->data->haveErrors())
 		{
-			auto errors = this->data->getErrors(); // note: will be deleted on tab, asyncronized, before the invokeMethod
+			// note: will be deleted on tab, asyncronized, before QMetaObject::invokeMethod
+			auto errors = this->data->getErrors();
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(errors, MSG_CODE::readNotice); }, Qt::QueuedConnection);
 		}
 	}
@@ -776,7 +777,8 @@ bool tab::readFile(string path)
 
 		if (this->data->haveErrors())
 		{
-			auto errors = this->data->getErrors(); // note: will be deleted on tab, asyncronized, before the invokeMethod
+			// note: will be deleted on tab, asyncronized, before QMetaObject::invokeMethod
+			auto errors = this->data->getErrors();
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(errors, MSG_CODE::readNotice); }, Qt::QueuedConnection);
 		}
 		else
@@ -897,9 +899,14 @@ void tab::saveFile(bool saveas)
 		error("saveFile", tr("File Error", "error").toStdString(), tr("Error writing file \"%1\".", "error").arg(path.data()).toStdString());
 
 		if (this->data->haveErrors())
-			QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(this->data->getErrors(), MSG_CODE::writeNotice); }, Qt::QueuedConnection);
+		{
+			auto errors = this->data->getErrors();
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(errors, MSG_CODE::writeNotice); }, Qt::QueuedConnection);
+		}
 		else
+		{
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(tr("File Error", "error"), tr("Error writing files.", "error")); }, Qt::QueuedConnection);
+		}
 	}
 }
 
@@ -961,7 +968,10 @@ void tab::importFile()
 	theme::unsetWaitCursor();
 
 	if (this->data->haveErrors())
-		QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(this->data->getErrors(), MSG_CODE::importNotice); }, Qt::QueuedConnection);
+	{
+		auto errors = this->data->getErrors();
+		QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(errors, MSG_CODE::importNotice); }, Qt::QueuedConnection);
+	}
 
 	view->reset();
 	view->load();
@@ -1201,7 +1211,10 @@ void tab::exportFile()
 	theme::unsetWaitCursor();
 
 	if (this->data->haveErrors())
-		QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(this->data->getErrors(), MSG_CODE::exportNotice); }, Qt::QueuedConnection);
+	{
+		auto errors = this->data->getErrors();
+		QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(errors, MSG_CODE::exportNotice); }, Qt::QueuedConnection);
+	}
 
 	if (statusBarIsVisible())
 	{
@@ -2348,7 +2361,8 @@ void tab::ftpConnect()
 		}
 		catch (std::runtime_error& err)
 		{
-			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(err.what()); }, Qt::QueuedConnection);
+			auto error = err.what();
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(error); }, Qt::QueuedConnection);
 
 			return;
 		}
@@ -2386,7 +2400,8 @@ void tab::ftpDisconnect()
 		}
 		catch (std::runtime_error& err)
 		{
-			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(err.what()); }, Qt::QueuedConnection);
+			auto error = err.what();
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(error); }, Qt::QueuedConnection);
 
 			return;
 		}
@@ -2423,7 +2438,8 @@ void tab::ftpUpload()
 			}
 			catch (std::runtime_error& err)
 			{
-				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(err.what()); }, Qt::QueuedConnection);
+				auto error = err.what();
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(error); }, Qt::QueuedConnection);
 
 				return;
 			}
@@ -2580,14 +2596,14 @@ void tab::ftpUpload()
 
 			if (! this->ftp_errors.empty())
 			{
-				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(this->ftp_errors, MSG_CODE::ftpNotice); }, Qt::QueuedConnection);
+				auto errors = this->ftp_errors;
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(errors, MSG_CODE::ftpNotice); }, Qt::QueuedConnection);
 			}
 
 			if (this->ftp_files.empty())
 				return;
 
 			int files_count = int (this->ftp_files.size());
-
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbUploadNotify(files_count); }, Qt::QueuedConnection);
 
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpReloadStb(); }, Qt::QueuedConnection);
@@ -2618,7 +2634,8 @@ void tab::ftpDownload()
 			}
 			catch (std::runtime_error& err)
 			{
-				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(err.what()); }, Qt::QueuedConnection);
+				auto error = err.what();
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(error); }, Qt::QueuedConnection);
 
 				return;
 			}
@@ -2657,7 +2674,8 @@ void tab::ftpDownload()
 			}
 			catch (std::runtime_error& err)
 			{
-				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(err.what()); }, Qt::QueuedConnection);
+				auto error = err.what();
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(error); }, Qt::QueuedConnection);
 
 				return;
 			}
@@ -2703,7 +2721,8 @@ void tab::ftpDownload()
 
 			if (! this->ftp_errors.empty())
 			{
-				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(this->ftp_errors, MSG_CODE::ftpNotice); }, Qt::QueuedConnection);
+				auto errors = this->ftp_errors;
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(errors, MSG_CODE::ftpNotice); }, Qt::QueuedConnection);
 			}
 
 			if (this->ftp_files.empty())
@@ -2749,7 +2768,10 @@ void tab::ftpDownload()
 			}
 
 			if (this->data->haveErrors())
-				QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(this->data->getErrors(), MSG_CODE::parseNotice); }, Qt::QueuedConnection);
+			{
+				auto errors = this->data->getErrors();
+				QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(errors, MSG_CODE::parseNotice); }, Qt::QueuedConnection);
+			}
 
 			QMetaObject::invokeMethod(this->cwid, [=]() {
 				this->view->reset();
@@ -2817,7 +2839,10 @@ void tab::ftpReloadStb()
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbReloadSuccessNotify(); }, Qt::QueuedConnection);
 
 		if (! this->stb_reload || ! this->ftp_errors.empty())
-			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbReloadErrorNotify(this->ftp_errors); }, Qt::QueuedConnection);
+		{
+			auto errors = this->ftp_errors;
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbReloadErrorNotify(errors); }, Qt::QueuedConnection);
+		}
 	});
 	thread->start();
 	thread->quit();

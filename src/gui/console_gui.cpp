@@ -543,7 +543,7 @@ void console_gui::input_step(current &curr)
 			if (str != "N" && str != "n")
 			{
 				end = false;
-				i = -2;
+				i = -1;
 				pos = 0;
 			}
 		}
@@ -557,6 +557,7 @@ void console_gui::input_step(current &curr)
 			if (str == "s") i = 1;
 			else if (str == "t") i = 2;
 			else if (str == "c") i = 3;
+			else if (str == "a") i = 4;
 			else end = true;
 			pos = 0;
 		}
