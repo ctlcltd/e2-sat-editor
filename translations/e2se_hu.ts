@@ -3926,7 +3926,7 @@ Ok: %1</translation>
         <translation>FTP Figyelmeztetés</translation>
     </message>
     <message>
-        <source>Successfull transfer.</source>
+        <source>Successful transfer.</source>
         <comment>message</comment>
         <translation>Sikeres átvitel.</translation>
     </message>

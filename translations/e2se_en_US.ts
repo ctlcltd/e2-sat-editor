@@ -3928,7 +3928,7 @@ Reason: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Successfull transfer.</source>
+        <source>Successful transfer.</source>
         <comment>message</comment>
         <translation type="unfinished"></translation>
     </message>

@@ -3930,7 +3930,7 @@ Priežastis: %1</translation>
         <translation>FTP Pranešimas</translation>
     </message>
     <message>
-        <source>Successfull transfer.</source>
+        <source>Successful transfer.</source>
         <comment>message</comment>
         <translation>Sėkmingas perkėlimas.</translation>
     </message>

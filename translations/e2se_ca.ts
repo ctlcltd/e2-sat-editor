@@ -3928,7 +3928,7 @@ Motiu: %1</translation>
         <translation>Avís FTP</translation>
     </message>
     <message>
-        <source>Successfull transfer.</source>
+        <source>Successful transfer.</source>
         <comment>message</comment>
         <translation>Transferència amb èxit.</translation>
     </message>

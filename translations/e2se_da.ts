@@ -3927,7 +3927,7 @@ Reason: %1</source>
         <translation>FTP Meddelelse</translation>
     </message>
     <message>
-        <source>Successfull transfer.</source>
+        <source>Successful transfer.</source>
         <comment>message</comment>
         <translation>Vellykket overførsel.</translation>
     </message>

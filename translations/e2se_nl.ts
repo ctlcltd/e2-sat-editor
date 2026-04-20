@@ -3929,7 +3929,7 @@ Reden: %1</translation>
         <translation>FTP Melding</translation>
     </message>
     <message>
-        <source>Successfull transfer.</source>
+        <source>Successful transfer.</source>
         <comment>message</comment>
         <translation>Succesvolle overdracht.</translation>
     </message>

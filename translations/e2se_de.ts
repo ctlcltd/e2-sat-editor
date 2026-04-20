@@ -3929,7 +3929,7 @@ Grund: %1</translation>
         <translation>FTP Hinweis</translation>
     </message>
     <message>
-        <source>Successfull transfer.</source>
+        <source>Successful transfer.</source>
         <comment>message</comment>
         <translation>Erfolgreiche Übertragung.</translation>
     </message>

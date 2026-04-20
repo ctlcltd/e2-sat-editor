@@ -3272,7 +3272,7 @@ void tab::noticeMessage(vector<pair<string, string>> errors, MSG_CODE code)
 	{
 		title = tr("FTP Notice", "error");
 		message = QString("%1\n\n%2")
-			.arg(tr("Successfull transfer.", "message"))
+			.arg(tr("Successful transfer.", "message"))
 			.arg(tr("Errors occurred during FTP operations.", "error"));
 	}
 	else if (code == MSG_CODE::stbReloadNotice)

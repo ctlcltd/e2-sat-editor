@@ -3925,7 +3925,7 @@ Reason: %1</source>
         <translation>اطلاعیه FTP</translation>
     </message>
     <message>
-        <source>Successfull transfer.</source>
+        <source>Successful transfer.</source>
         <comment>message</comment>
         <translation>با موفقیت منتقل شد.</translation>
     </message>

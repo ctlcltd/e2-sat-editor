@@ -3930,7 +3930,7 @@ Iemesls: %1</translation>
         <translation>FTP Paziņojums</translation>
     </message>
     <message>
-        <source>Successfull transfer.</source>
+        <source>Successful transfer.</source>
         <comment>message</comment>
         <translation>Veiksmīga pārsūtīšana.</translation>
     </message>

@@ -3923,7 +3923,7 @@ Reason: %1</source>
         <translation>FTP 공지</translation>
     </message>
     <message>
-        <source>Successfull transfer.</source>
+        <source>Successful transfer.</source>
         <comment>message</comment>
         <translation>성공적으로 전송되었습니다.</translation>
     </message>

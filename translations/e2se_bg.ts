@@ -3929,7 +3929,7 @@ Reason: %1</source>
         <translation>FTP известие</translation>
     </message>
     <message>
-        <source>Successfull transfer.</source>
+        <source>Successful transfer.</source>
         <comment>message</comment>
         <translation>Успешно прехвърляне.</translation>
     </message>

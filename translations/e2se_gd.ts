@@ -3935,7 +3935,7 @@ Adhbhar: %1</translation>
         <translation>Sanas FTP</translation>
     </message>
     <message>
-        <source>Successfull transfer.</source>
+        <source>Successful transfer.</source>
         <comment>message</comment>
         <translation>Gluasad soirbheachail.</translation>
     </message>

@@ -3926,7 +3926,7 @@ Reason: %1</source>
         <translation>FTP 通知</translation>
     </message>
     <message>
-        <source>Successfull transfer.</source>
+        <source>Successful transfer.</source>
         <comment>message</comment>
         <translation>正常に転送されました。</translation>
     </message>

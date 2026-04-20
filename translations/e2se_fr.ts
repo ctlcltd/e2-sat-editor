@@ -3930,7 +3930,7 @@ Raison : %1</translation>
         <translation>Avis FTP</translation>
     </message>
     <message>
-        <source>Successfull transfer.</source>
+        <source>Successful transfer.</source>
         <comment>message</comment>
         <translation>Transfert réussi.</translation>
     </message>

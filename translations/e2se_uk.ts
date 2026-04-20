@@ -3933,7 +3933,7 @@ Reason: %1</source>
         <translation>Повідомлення про FTP</translation>
     </message>
     <message>
-        <source>Successfull transfer.</source>
+        <source>Successful transfer.</source>
         <comment>message</comment>
         <translation>Успішно передано.</translation>
     </message>

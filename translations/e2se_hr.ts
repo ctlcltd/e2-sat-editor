@@ -3933,7 +3933,7 @@ Razlog: %1</translation>
         <translation>FTP Obavijest</translation>
     </message>
     <message>
-        <source>Successfull transfer.</source>
+        <source>Successful transfer.</source>
         <comment>message</comment>
         <translation>Uspješan transfer.</translation>
     </message>

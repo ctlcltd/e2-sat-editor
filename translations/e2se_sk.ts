@@ -3931,7 +3931,7 @@ Dôvod: %1</translation>
         <translation>Oznámenie FTP</translation>
     </message>
     <message>
-        <source>Successfull transfer.</source>
+        <source>Successful transfer.</source>
         <comment>message</comment>
         <translation>Úspešný prenos.</translation>
     </message>

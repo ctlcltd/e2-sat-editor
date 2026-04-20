@@ -3928,7 +3928,7 @@ Syy: %1</translation>
         <translation>FTP Ilmoitus</translation>
     </message>
     <message>
-        <source>Successfull transfer.</source>
+        <source>Successful transfer.</source>
         <comment>message</comment>
         <translation>Onnistunut siirto.</translation>
     </message>

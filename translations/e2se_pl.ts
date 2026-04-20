@@ -3932,7 +3932,7 @@ Powód: %1</translation>
         <translation>Powiadomienie FTP</translation>
     </message>
     <message>
-        <source>Successfull transfer.</source>
+        <source>Successful transfer.</source>
         <comment>message</comment>
         <translation>Pomyślny transfer.</translation>
     </message>

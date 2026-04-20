@@ -3922,7 +3922,7 @@ Reason: %1</source>
         <translation>FTP 通知</translation>
     </message>
     <message>
-        <source>Successfull transfer.</source>
+        <source>Successful transfer.</source>
         <comment>message</comment>
         <translation>已成功转移。</translation>
     </message>

@@ -3927,7 +3927,7 @@ Reason: %1</source>
         <translation>הודעת FTP</translation>
     </message>
     <message>
-        <source>Successfull transfer.</source>
+        <source>Successful transfer.</source>
         <comment>message</comment>
         <translation>הועבר בהצלחה.</translation>
     </message>

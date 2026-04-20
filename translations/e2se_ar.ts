@@ -3940,7 +3940,7 @@ Reason: %1</source>
         <translation>إشعار بروتوكول نقل الملفات</translation>
     </message>
     <message>
-        <source>Successfull transfer.</source>
+        <source>Successful transfer.</source>
         <comment>message</comment>
         <translation>تم النقل بنجاح.</translation>
     </message>

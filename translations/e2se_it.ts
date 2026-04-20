@@ -3928,7 +3928,7 @@ Motivo: %1</translation>
         <translation>Avviso FTP</translation>
     </message>
     <message>
-        <source>Successfull transfer.</source>
+        <source>Successful transfer.</source>
         <comment>message</comment>
         <translation>Trasferimento completato.</translation>
     </message>

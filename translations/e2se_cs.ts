@@ -3930,7 +3930,7 @@ Důvod: %1</translation>
         <translation>Upozornění FTP</translation>
     </message>
     <message>
-        <source>Successfull transfer.</source>
+        <source>Successful transfer.</source>
         <comment>message</comment>
         <translation>Úspěšný přenos.</translation>
     </message>

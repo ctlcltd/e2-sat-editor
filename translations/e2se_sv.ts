@@ -3921,7 +3921,7 @@ Orsak: %1</translation>
         <translation>FTP Meddelande</translation>
     </message>
     <message>
-        <source>Successfull transfer.</source>
+        <source>Successful transfer.</source>
         <comment>message</comment>
         <translation>Lyckad överföring.</translation>
     </message>
