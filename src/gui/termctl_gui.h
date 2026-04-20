@@ -32,8 +32,8 @@ class termctl_gui : public ::e2se_e2db::termiface
 			InputEnd = Qt::Key_Escape,
 			PagePrev = Qt::Key_Up,
 			PageNext = Qt::Key_Down,
-			HistoryBack = Qt::Key_Down,
-			HistoryForward = Qt::Key_Down
+			HistoryPrev = Qt::Key_Up,
+			HistoryNext = Qt::Key_Down
 		};
 
 		termctl_gui(ConsoleWidget* widget);
@@ -56,11 +56,20 @@ class termctl_gui : public ::e2se_e2db::termiface
 		}
 
 	protected:
+
+		struct current {
+			int prev = 0;
+			int next = 0;
+			std::string input;
+		} curr;
+
 		void callInputCallback(const int key, const QString str);
+		void callHistory(const EVENT e, const QString str);
 
 	private:
 		ConsoleWidget* widget = nullptr;
 		std::iostream* is;
+		std::iostream* history;
 		std::streampos last;
 		HANDLE currhr;
 		int currkey;

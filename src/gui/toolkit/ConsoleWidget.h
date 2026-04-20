@@ -33,6 +33,7 @@ class ConsoleWidget : public QPlainTextEdit
 		void detachWidget();
 		void printOutput(const QString text);
 		void printErrors(const QString text);
+		void printHistory(const Qt::Key key, const QString text);
 		void printPromptCursor();
 		void printNavigationRuler();
 		void printSessionRuler();

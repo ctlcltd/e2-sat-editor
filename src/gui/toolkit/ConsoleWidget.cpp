@@ -53,9 +53,6 @@ void ConsoleWidget::printOutput(const QString text)
 	cursor.insertText(text);
 	this->setTextCursor(cursor);
 	this->ensureCursorVisible();
-
-	if (! this->imval)
-		this->tcpos = cursor.position();
 }
 
 void ConsoleWidget::printErrors(const QString text)
@@ -69,8 +66,21 @@ void ConsoleWidget::printErrors(const QString text)
 	cursor.setCharFormat(QTextCharFormat());
 	this->setTextCursor(cursor);
 	this->ensureCursorVisible();
+}
 
-	this->tcpos = cursor.position();
+void ConsoleWidget::printHistory(const Qt::Key key, const QString text)
+{
+	if (this->currhr != HANDLE::Command || (key != Qt::Key_Up && key != Qt::Key_Down))
+		return;
+
+	QTextCursor cursor = QTextCursor(this->document()->lastBlock());
+	cursor.setPosition(this->tcpos, QTextCursor::MoveAnchor);
+	cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
+	cursor.removeSelectedText();
+	cursor.setCharFormat(QTextCharFormat());
+	cursor.insertText(text);
+	this->setTextCursor(cursor);
+	this->ensureCursorVisible();
 }
 
 void ConsoleWidget::printPromptCursor()
@@ -109,7 +119,6 @@ void ConsoleWidget::printNavigationRuler()
 	this->setTextCursor(cursor);
 	this->ensureCursorVisible();
 
-	this->tcpos = cursor.position();
 	this->nblen = cursor.block().length();
 }
 
@@ -207,10 +216,19 @@ void ConsoleWidget::keyPressEvent(QKeyEvent* event)
 		}
 		else if (event->key() == Qt::Key_Up || event->key() == Qt::Key_Down)
 		{
-			if (cursor.position() <= this->tcpos)
+			if (cursor.position() < this->tcpos)
+			{
 				return QApplication::beep();
+			}
 			else if (this->currhr == HANDLE::Command)
-				emit input(static_cast<Qt::Key>(event->key()), NULL);
+			{
+				QTextCursor cursor = QTextCursor(this->document()->lastBlock());
+				cursor.setPosition(this->tcpos, QTextCursor::MoveAnchor);
+				cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
+
+				emit input(static_cast<Qt::Key>(event->key()), cursor.selectedText());
+				return;
+			}
 
 			return;
 		}

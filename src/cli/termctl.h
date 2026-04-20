@@ -38,8 +38,8 @@ class termctl : public ::e2se_e2db::termiface
 			CursorForward = KeyRight,
 			CursorBackward = KeyLeft,
 			DeleteChar = KeyDelete,
-			HistoryBack = KeyUp,
-			HistoryForward = KeyDown,
+			HistoryPrev = KeyUp,
+			HistoryNext = KeyDown,
 			PagePrev = KeyUp,
 			PageNext = KeyDown
 		};

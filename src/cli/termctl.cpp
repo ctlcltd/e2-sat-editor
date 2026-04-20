@@ -116,7 +116,7 @@ void termctl::handler(HANDLE handle)
 			{
 				case KEY_MAP::KeyUp:
 
-					next = EVENT::HistoryBack;
+					next = EVENT::HistoryPrev;
 
 					if (handle == HANDLE::Command)
 					{
@@ -126,7 +126,7 @@ void termctl::handler(HANDLE handle)
 						std::streampos pos = history->tellg();
 
 						// current input
-						if (prev != EVENT::HistoryBack)
+						if (prev != EVENT::HistoryPrev)
 						{
 							input = is_buf->str();
 						}
@@ -170,8 +170,7 @@ void termctl::handler(HANDLE handle)
 
 						if (! line.empty())
 						{
-							is_buf->str("");
-							is->clear();
+							this->clear();
 
 							tty_eraseline();
 
@@ -186,7 +185,7 @@ void termctl::handler(HANDLE handle)
 				break;
 				case KEY_MAP::KeyDown:
 
-					next = EVENT::HistoryForward;
+					next = EVENT::HistoryNext;
 
 					if (handle == HANDLE::Command)
 					{
@@ -213,8 +212,7 @@ void termctl::handler(HANDLE handle)
 
 						if (! line.empty() || pos != EOF)
 						{
-							is_buf->str("");
-							is->clear();
+							this->clear();
 
 							tty_eraseline();
 
