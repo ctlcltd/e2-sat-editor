@@ -48,9 +48,11 @@ void ftpcom::setup()
 
 	settings.beginReadArray("ftpcom");
 	ftpcom::VERBOSE = settings.value("debug", false).toBool();
-	ftpcom::FTP_CONNECT_TIMEOUT = settings.value("ftpConnectTimeout", 10).toInt();
+	ftpcom::CONNECT_TIMEOUT = settings.value("connectTimeout", 10).toInt();
+	ftpcom::FTP_RESPONSE_TIMEOUT = settings.value("ftpResponseTimeout", 10).toInt();
+	ftpcom::FTP_TIMEOUT = settings.value("ftpTimeout", 25).toInt();
 	ftpcom::HTTP_TIMEOUT = settings.value("httpTimeout", 15).toInt();
-	ftpcom::TELNET_TIMEOUT = settings.value("telnetTimeout", 15).toInt();
+	ftpcom::TELNET_TIMEOUT = settings.value("telnetTimeout", 20).toInt();
 	ftpcom::MAX_RESUME_ATTEMPTS = settings.value("maxResumeAttempts", 5).toInt();
 	ftpcom::FILENAME_CHECK = settings.value("filenameCheck", true).toBool();
 	ftpcom::FIX_CRLF = settings.value("fixCrlf", false).toBool();

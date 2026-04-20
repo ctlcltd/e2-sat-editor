@@ -1,14 +1,20 @@
 #!/usr/bin/env python3
 # A virtual WebIf
 
+HOST_ADDR = "127.0.0.1"
+HOST_PORT = 8080
+
+import sys
+from time import sleep
 from http.server import SimpleHTTPRequestHandler
 from socketserver import TCPServer
-from time import sleep
 
-class htsh(SimpleHTTPRequestHandler):
+HOST_RESPONSE_DELAY = int(sys.argv[1]) if len(sys.argv) == 2 else 5
+
+class Webif(SimpleHTTPRequestHandler):
 	def do_GET(self):
 		if self.path.startswith("/web/servicelistreload"):
-			sleep(5)
+			sleep(HOST_RESPONSE_DELAY)
 			self.send_response(200)
 			self.send_header("Content-Type", "text/xml")
 			self.end_headers()
@@ -25,6 +31,6 @@ class htsh(SimpleHTTPRequestHandler):
 File not found.\n\
 </BODY></HTML>\n')
 
-httpd = TCPServer(("127.0.0.1", 8080), htsh)
-print("Virtual WebIf started at port 8080")
+httpd = TCPServer((HOST_ADDR, HOST_PORT), Webif)
+print("Virtual WebIf started at port", HOST_PORT)
 httpd.serve_forever()

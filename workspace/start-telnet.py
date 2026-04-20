@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
 # A virtual Telnet server
 
+HOST_USER = "root"
+HOST_PWRD = "password"
+HOST_ADDR = "127.0.0.1"
+HOST_PORT = 23
+HOST_NAME = "STB"
+HOST_PATH = "/"
+
 import asyncio
 import telnetlib3
 
@@ -28,7 +35,7 @@ async def test_shell(reader, writer):
 	while True:
 		if command:
 			writer.write(CR + LF)
-		writer.write("[root@STB /]# ")
+		writer.write("[" + HOST_USER + "@" + HOST_NAME + " " + HOST_PATH + "]" + "# ")
 		command = None
 		while command is None:
 			inp = await reader.read(1)
@@ -50,7 +57,7 @@ async def login(reader, writer):
 	username = None
 	password = None
 
-	writer.write("STB login: ")
+	writer.write(HOST_NAME + " login: ")
 	username_reader = readline(reader, writer)
 	username_reader.send(None)
 	while username is None:
@@ -60,7 +67,7 @@ async def login(reader, writer):
 		username = username_reader.send(inp)
 	writer.write(CR + LF)
 
-	if username == "root":
+	if username == HOST_USER:
 		writer.write("Password: ")
 		password_reader = readline(reader, writer, True)
 		password_reader.send(None)
@@ -71,7 +78,7 @@ async def login(reader, writer):
 			password = password_reader.send(inp)
 		writer.write(CR + LF)
 
-		if password == "password":
+		if password == HOST_PWRD:
 			return True
 		else:
 			writer.write("Login incorrect" + CR + LF)
@@ -108,8 +115,8 @@ def readline(reader, writer, hide_input=False):
 			inp = yield None
 
 async def main():
-	server = await telnetlib3.create_server(port=23, shell=test_shell)
-	print("Virtual Telnet started at port 23")
+	server = await telnetlib3.create_server(host=HOST_ADDR, port=HOST_PORT, shell=test_shell)
+	print("Virtual Telnet started at port", HOST_PORT)
 	await server.wait_closed()
 
 asyncio.run(main())

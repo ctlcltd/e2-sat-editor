@@ -114,7 +114,8 @@ bool ftpcom::handle()
 	if (actv)
 		curl_easy_setopt(cph, CURLOPT_FTPPORT, "-");
 
-	curl_easy_setopt(cph, CURLOPT_CONNECTTIMEOUT, ftpcom::FTP_CONNECT_TIMEOUT);
+	curl_easy_setopt(cph, CURLOPT_CONNECTTIMEOUT, ftpcom::CONNECT_TIMEOUT);
+	curl_easy_setopt(cph, CURLOPT_TIMEOUT, ftpcom::FTP_RESPONSE_TIMEOUT);
 
 	if (ftpcom::VERBOSE)
 		curl_easy_setopt(cph, CURLOPT_VERBOSE, true);
@@ -235,6 +236,8 @@ vector<string> ftpcom::list_dir_nlst(string basedir)
 	curl_easy_setopt(cph, CURLOPT_FTPLISTONLY, true);
 	curl_easy_setopt(cph, CURLOPT_WRITEFUNCTION, data_write_func);
 	curl_easy_setopt(cph, CURLOPT_WRITEDATA, &data);
+	curl_easy_setopt(cph, CURLOPT_TIMEOUT, ftpcom::FTP_TIMEOUT);
+
 	CURLcode res = perform(cph);
 
 	if (res != CURLcode::CURLE_OK)
@@ -295,6 +298,8 @@ vector<string> ftpcom::list_dir_mlsd(string basedir)
 	curl_easy_setopt(cph, CURLOPT_CUSTOMREQUEST, "MLSD");
 	curl_easy_setopt(cph, CURLOPT_WRITEFUNCTION, data_write_func);
 	curl_easy_setopt(cph, CURLOPT_WRITEDATA, &data);
+	curl_easy_setopt(cph, CURLOPT_TIMEOUT, ftpcom::FTP_TIMEOUT);
+
 	CURLcode res = perform(cph);
 
 	if (res != CURLcode::CURLE_OK)
@@ -433,6 +438,8 @@ void ftpcom::download_data(string basedir, string filename, ftpcom_file& file)
 	curl_url_set(rph, CURLUPART_PATH, remotefile.c_str(), 0);
 	curl_easy_setopt(cph, CURLOPT_WRITEFUNCTION, data_download_func);
 	curl_easy_setopt(cph, CURLOPT_WRITEDATA, &data);
+	curl_easy_setopt(cph, CURLOPT_TIMEOUT, ftpcom::FTP_TIMEOUT);
+
 	res = perform(cph);
 
 	if (res != CURLcode::CURLE_OK)
@@ -507,6 +514,7 @@ void ftpcom::upload_data(string basedir, string filename, ftpcom_file file)
 	curl_easy_setopt(cph, CURLOPT_READFUNCTION, data_upload_func);
 	curl_easy_setopt(cph, CURLOPT_READDATA, &data);
 	curl_easy_setopt(cph, CURLOPT_WRITEFUNCTION, data_discard_func);
+	curl_easy_setopt(cph, CURLOPT_TIMEOUT, ftpcom::FTP_TIMEOUT);
 
 	for (int a = 0; (res != CURLcode::CURLE_OK) && (a < ftpcom::MAX_RESUME_ATTEMPTS); a++)
 	{
@@ -516,9 +524,12 @@ void ftpcom::upload_data(string basedir, string filename, ftpcom_file file)
 		{
 			curl_easy_setopt(cph, CURLOPT_NOBODY, true);
 			curl_easy_setopt(cph, CURLOPT_HEADER, true);
+
 			res = perform(cph);
+
 			if (res != CURLcode::CURLE_OK)
 				continue;
+
 			curl_easy_setopt(cph, CURLOPT_NOBODY, false);
 			curl_easy_setopt(cph, CURLOPT_HEADER, false);
 			data.data += len;
@@ -529,6 +540,7 @@ void ftpcom::upload_data(string basedir, string filename, ftpcom_file file)
 		{
 			curl_easy_setopt(cph, CURLOPT_APPEND, false);
 		}
+
 		res = perform(cph);
 	}
 
@@ -762,7 +774,7 @@ bool ftpcom::cmd_ifreload()
 	curl_easy_setopt(csh, CURLOPT_WRITEFUNCTION, data_write_func);
 	curl_easy_setopt(csh, CURLOPT_WRITEDATA, &data);
 
-	curl_easy_setopt(csh, CURLOPT_CONNECTTIMEOUT, ftpcom::FTP_CONNECT_TIMEOUT);
+	curl_easy_setopt(csh, CURLOPT_CONNECTTIMEOUT, ftpcom::CONNECT_TIMEOUT);
 	curl_easy_setopt(csh, CURLOPT_TIMEOUT, ftpcom::HTTP_TIMEOUT); // 0 = default no timeout
 
 	if (ftpcom::VERBOSE)
@@ -843,7 +855,7 @@ bool ftpcom::cmd_tnreload()
 	curl_easy_setopt(cth, CURLOPT_WRITEFUNCTION, data_discard_func);
 
 	curl_easy_setopt(cth, CURLOPT_FAILONERROR, true);
-	curl_easy_setopt(cth, CURLOPT_CONNECTTIMEOUT, ftpcom::FTP_CONNECT_TIMEOUT);
+	curl_easy_setopt(cth, CURLOPT_CONNECTTIMEOUT, ftpcom::CONNECT_TIMEOUT);
 	curl_easy_setopt(cth, CURLOPT_TIMEOUT, ftpcom::TELNET_TIMEOUT); // 0 = default no timeout
 
 	if (ftpcom::VERBOSE)

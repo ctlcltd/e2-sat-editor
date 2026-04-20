@@ -752,15 +752,17 @@ void gui::initSettings()
 	settings.endArray();
 	settings.setValue("profile/selected", 1);
 
-	settings.beginWriteArray("ftpcom");
+	settings.beginGroup("ftpcom");
 	settings.setValue("debug", false);
-	settings.setValue("ftpConnectTimeout", 10);
+	settings.setValue("connectTimeout", 10);
+	settings.setValue("ftpResponseTimeout", 10);
+	settings.setValue("ftpTimeout", 25);
 	settings.setValue("httpTimeout", 15);
-	settings.setValue("telnetTimeout", 15);
+	settings.setValue("telnetTimeout", 20);
 	settings.setValue("maxResumeAttempts", 5);
 	settings.setValue("filenameCheck", true);
 	settings.setValue("fixCrlf", false);
-	settings.endArray();
+	settings.endGroup();
 }
 
 void gui::updateSettings()
@@ -784,11 +786,27 @@ void gui::updateSettings()
 		if (mroot->applicationVersion().toFloat() > version)
 			settings.setValue("application/version", mroot->applicationVersion());
 
+		if (version < 2.0)
+		{
+			settings.beginGroup("ftpcom");
+			settings.setValue("connectTimeout", settings.value("ftpConnectTimeout", 10).toInt());
+			settings.remove("ftpConnectTimeout");
+			settings.setValue("ftpResponseTimeout", 10);
+			settings.setValue("ftpTimeout", 25);
+			settings.setValue("httpTimeout", settings.value("httpTimeout", 15).toInt());
+			if (settings.value("telnetTimeout").toInt() == 15)
+				settings.setValue("telnetTimeout", 20);
+			else
+				settings.setValue("telnetTimeout", settings.value("telnetTimeout", 20).toInt());
+			settings.endGroup();
+		}
 		if (version < 1.9)
 		{
-			settings.setValue("preference/piconsAllowBatchCommand", false);
-			settings.setValue("preference/piconsBatchCommand", "");
-			settings.setValue("preference/piconsBatchReload", false);
+			settings.beginGroup("preference");
+			settings.setValue("piconsAllowBatchCommand", false);
+			settings.setValue("piconsBatchCommand", "");
+			settings.setValue("piconsBatchReload", false);
+			settings.endGroup();
 		}
 		if (version < 1.7)
 		{
@@ -824,80 +842,57 @@ void gui::updateSettings()
 		}
 		if (version < 1.6)
 		{
-			settings.setValue("engine/parserFixCrlf", true);
-			settings.setValue("engine/makerFixCrlf", true);
-			settings.setValue("engine/toolsInFixCrlf", true);
-			settings.setValue("engine/toolsOutCsvFixCrlf", false);
-			settings.setValue("engine/toolsOutM3uFixCrlf", false);
-			settings.setValue("engine/toolsOutHtmlFixCrlf", true);
-			settings.setValue("engine/fixCrlf", true);
-			settings.setValue("ftpcom/filenameCheck", true);
-			settings.setValue("ftpcom/fixCrlf", false);
-		}
-		if (version < 1.3)
-		{
-			settings.setValue("preference/autoCheckUpdate", false);
-			settings.setValue("engine/userbouquetFilenameSuffix", "dbe");
-			settings.setValue("engine/markerGlobalIndex", false);
-			settings.setValue("engine/favouriteMatchService", true);
-			settings.setValue("engine/mergeSortId", false);
-			settings.setValue("engine/parentalLockInvert", settings.value("preference/parentalLockInvert", false).toBool());
+			settings.setValue("application/piconsBrowsePath", settings.value("application/piconsBrowsePath", "").toString());
+
+			settings.beginGroup("preference");
+			settings.setValue("autoCheckUpdate", settings.value("autoCheckUpdate", false).toBool());
+			settings.setValue("askConfirmation", settings.value("askConfirmation", false).toBool());
+			settings.setValue("osExperiment", settings.value("osExperiment", true).toBool());
+			settings.setValue("treeCurrentAfterDrop", settings.value("treeCurrentAfterDrop", true).toBool());
+			settings.setValue("treeDropCopy", settings.value("treeDropCopy", true).toBool());
+			settings.setValue("treeDropMove", settings.value("treeDropMove", false).toBool());
+			settings.setValue("piconsBackup", settings.value("piconsBackup", true).toBool());
+			settings.setValue("piconsUseRefid", settings.value("piconsUseRefid", false).toBool());
+			settings.setValue("piconsUseChname", settings.value("piconsUseChname", true).toBool());
+			settings.endGroup();
+
+			settings.beginGroup("engine");
+			settings.setValue("dbTypeDefault", 0x1224);
+			settings.setValue("parserPriorLamedb5", false);
+			settings.setValue("parserTunerset", true);
+			settings.setValue("makerTunerset", true);
+			settings.setValue("parserParentalLock", true);
+			settings.setValue("makerParentalLock", true);
+			settings.setValue("userbouquetFilenameSuffix", settings.value("userbouquetFilenameSuffix", "dbe").toString());
+			settings.setValue("markerGlobalIndex", settings.value("markerGlobalIndex", false).toBool());
+			settings.setValue("favouriteMatchService", settings.value("favouriteMatchService", true).toBool());
+			settings.setValue("mergeSortId", settings.value("mergeSortId", false).toBool());
+			settings.setValue("parentalLockInvert", settings.value("parentalLockInvert", false).toBool());
+			settings.setValue("toolsCsvHeader", true);
+			settings.setValue("toolsCsvDelimiter", "\\n");
+			settings.setValue("toolsCsvSeparator", ",");
+			settings.setValue("toolsCsvEscape", "\"");
+			settings.setValue("toolsFieldsDefault", true);
+			settings.setValue("toolsFieldsExtended", false);
+			settings.setValue("parserFixCrlf", settings.value("parserFixCrlf", true).toBool());
+			settings.setValue("makerFixCrlf", settings.value("makerFixCrlf", true).toBool());
+			settings.setValue("toolsInFixCrlf", settings.value("toolsInFixCrlf", true).toBool());
+			settings.setValue("toolsOutCsvFixCrlf",settings.value("toolsOutCsvFixCrlf", false).toBool());
+			settings.setValue("toolsOutM3uFixCrlf", settings.value("toolsOutM3uFixCrlf", false).toBool());
+			settings.setValue("toolsOutHtmlFixCrlf", settings.value("toolsOutHtmlFixCrlf", true).toBool());
+			settings.setValue("fixCrlf", settings.value("fixCrlf", true).toBool());
+			settings.endGroup();
+
+			settings.beginGroup("ftpcom");
+			settings.setValue("debug", settings.value("debug", false).toBool());
+			settings.setValue("httpTimeout", 15);
+			settings.setValue("telnetTimeout", 20);
+			settings.setValue("maxResumeAttempts", 5);
+			settings.setValue("filenameCheck", true);
+			settings.setValue("fixCrlf", settings.value("fixCrlf", false).toBool());
+			settings.endGroup();
+
 			settings.remove("preference/parentalLockInvert");
-
-			if (settings.value("engine/toolsCsvDelimiter").toString().contains(QRegularExpression("[\n|\r|\t| ]")))
-			{
-				QString text = settings.value("engine/toolsCsvDelimiter").toString();
-				text = text.replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t").replace(" ", "\\s");
-				settings.setValue("engine/toolsCsvDelimiter", text);
-			}
-			if (settings.value("engine/toolsCsvSeparator").toString().contains(QRegularExpression("[\n|\r|\t| ]")))
-			{
-				QString text = settings.value("engine/toolsCsvSeparator").toString();
-				text = text.replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t").replace(" ", "\\s");
-				settings.setValue("engine/toolsCsvSeparator", text);
-			}
-			if (settings.value("engine/toolsCsvEscape").toString().contains(QRegularExpression("[\n|\r|\t| ]")))
-			{
-				QString text = settings.value("engine/toolsCsvEscape").toString();
-				text = text.remove(QRegularExpression("[\n|\r|\t| ]"));
-				settings.setValue("engine/toolsCsvEscape", text);
-			}
-
-			if (settings.value("ftpcom/httpTimeout").toInt() == 60)
-			{
-				settings.setValue("ftpcom/httpTimeout", 15);
-			}
-
-			int size = settings.beginReadArray("profile");
-			for (int i = 0; i < size; i++)
-			{
-				settings.setArrayIndex(i);
-				settings.setValue("telnetPort", 23);
-			}
-			settings.endArray();
-		}
-		if (version < 1.0)
-		{
-			settings.setValue("ftpcom/debug", false);
-			settings.setValue("ftpcom/ftpConnectTimeout", 10);
-			settings.setValue("ftpcom/httpTimeout", 60);
-			settings.setValue("ftpcom/maxResumeAttempts", 5);
-		}
-		if (version < 0.8)
-		{
-			int size = settings.beginReadArray("profile");
-			for (int i = 0; i < size; i++)
-			{
-				settings.setArrayIndex(i);
-				QByteArray ba (settings.value("password").toString().toUtf8());
-				settings.setValue("password", ba.toBase64());
-			}
-			settings.endArray();
-
-			settings.setValue("application/piconsBrowsePath", "");
-			settings.setValue("preference/piconsBackup", true);
-			settings.setValue("preference/piconsUseRefid", false);
-			settings.setValue("preference/piconsUseChname", true);
 		}
 	}
 }

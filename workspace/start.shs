@@ -1,6 +1,6 @@
 # To start python venv
 
 source ./.pythonenv/bin/activate
-python3 start-ftp.py {{E2SE_SEEDS_REPO_LOCAL}}
-python3 start-webif.py
+python3 start-ftp.py {{PATH=e2se_seeds/enigma_db}} {{THROTTLE_SPEED=1024}}
+python3 start-webif.py {{RESPONSE_DELAY=5}}
 python3 start-telnet.py

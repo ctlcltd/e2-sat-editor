@@ -2361,7 +2361,7 @@ void tab::ftpConnect()
 		}
 		catch (std::runtime_error& err)
 		{
-			auto error = err.what();
+			const string error = string (err.what());
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(error); }, Qt::QueuedConnection);
 
 			return;
@@ -2400,7 +2400,7 @@ void tab::ftpDisconnect()
 		}
 		catch (std::runtime_error& err)
 		{
-			auto error = err.what();
+			const string error = string (err.what());
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(error); }, Qt::QueuedConnection);
 
 			return;
@@ -2438,7 +2438,7 @@ void tab::ftpUpload()
 			}
 			catch (std::runtime_error& err)
 			{
-				auto error = err.what();
+				const string error = string (err.what());
 				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(error); }, Qt::QueuedConnection);
 
 				return;
@@ -2508,7 +2508,7 @@ void tab::ftpUpload()
 	}
 	catch (std::runtime_error& err)
 	{
-		this->e2dbError(err.what());
+		this->e2dbError(string (err.what()));
 
 		return;
 	}
@@ -2577,7 +2577,7 @@ void tab::ftpUpload()
 				}
 				catch (std::runtime_error& err)
 				{
-					this->ftp_errors.emplace_back(pair (fname, err.what()));
+					this->ftp_errors.emplace_back(pair (fname, string (err.what())));
 
 					this->ftp_files.erase(filename);
 				}
@@ -2634,7 +2634,7 @@ void tab::ftpDownload()
 			}
 			catch (std::runtime_error& err)
 			{
-				auto error = err.what();
+				const string error = string (err.what());
 				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(error); }, Qt::QueuedConnection);
 
 				return;
@@ -2674,7 +2674,7 @@ void tab::ftpDownload()
 			}
 			catch (std::runtime_error& err)
 			{
-				auto error = err.what();
+				const string error = string (err.what());
 				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(error); }, Qt::QueuedConnection);
 
 				return;
@@ -2704,7 +2704,7 @@ void tab::ftpDownload()
 				}
 				catch (std::runtime_error& err)
 				{
-					this->ftp_errors.emplace_back(pair (fname, err.what()));
+					this->ftp_errors.emplace_back(pair (fname, string (err.what())));
 				}
 				catch (...)
 				{
@@ -2811,7 +2811,7 @@ void tab::ftpReloadStb()
 		}
 		catch (std::runtime_error& err)
 		{
-			this->ftp_errors.emplace_back(pair ("Webif", err.what()));
+			this->ftp_errors.emplace_back(pair ("Webif", string (err.what())));
 		}
 		catch (...)
 		{
@@ -2824,7 +2824,7 @@ void tab::ftpReloadStb()
 		}
 		catch (std::runtime_error& err)
 		{
-			this->ftp_errors.emplace_back(pair ("Telnet", err.what()));
+			this->ftp_errors.emplace_back(pair ("Telnet", string (err.what())));
 		}
 		catch (...)
 		{
