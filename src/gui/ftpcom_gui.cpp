@@ -50,7 +50,7 @@ void ftpcom::setup()
 	ftpcom::VERBOSE = settings.value("debug", false).toBool();
 	ftpcom::CONNECT_TIMEOUT = settings.value("connectTimeout", 10).toInt();
 	ftpcom::FTP_RESPONSE_TIMEOUT = settings.value("ftpResponseTimeout", 10).toInt();
-	ftpcom::FTP_TIMEOUT = settings.value("ftpTimeout", 25).toInt();
+	ftpcom::FTP_TIMEOUT = settings.value("ftpTimeout", 0).toInt();
 	ftpcom::HTTP_TIMEOUT = settings.value("httpTimeout", 15).toInt();
 	ftpcom::TELNET_TIMEOUT = settings.value("telnetTimeout", 20).toInt();
 	ftpcom::MAX_RESUME_ATTEMPTS = settings.value("maxResumeAttempts", 5).toInt();

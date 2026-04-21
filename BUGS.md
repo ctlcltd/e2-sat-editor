@@ -8,6 +8,8 @@ Information on contributions, to contribute and send Pull Request, please see [C
 
 **To Fix:**
 
+- [x] ftp reconnect, after FTP upload timeout [ftp] [ftpcom.cpp]
+- [x] ftp error messages, better message on errors [gui] [tab.cpp]
 - [x] tunersets table index, doubled entries after: list item edit, tree drag and drop, tab switch [gui] [tunersetsView.cpp]
 - [x] tunersets transponder, wrong tree list item after add and edit [gui] [tunersetsView.cpp]
 - [x] parser, transponder frequency and symbol-rate precision (#37) [gui] [e2db.cpp]

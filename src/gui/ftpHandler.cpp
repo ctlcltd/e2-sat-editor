@@ -60,6 +60,10 @@ bool ftpHandler::handleConnection()
 		this->ftih = new ftpcom;
 
 	ret = this->ftih->connect();
+
+	if (! ret)
+		ret = this->ftih->reconnect();
+
 	this->connected = ret;
 
 	return ret;

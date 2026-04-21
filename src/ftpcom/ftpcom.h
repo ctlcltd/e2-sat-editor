@@ -33,7 +33,7 @@ class ftpcom : protected e2se::log_factory
 		inline static bool VERBOSE = false;
 		inline static int CONNECT_TIMEOUT = 10;
 		inline static int FTP_RESPONSE_TIMEOUT = 10;
-		inline static int FTP_TIMEOUT = 25;
+		inline static int FTP_TIMEOUT = 0;
 		inline static int HTTP_TIMEOUT = 15;
 		inline static int TELNET_TIMEOUT = 20;
 		inline static int MAX_RESUME_ATTEMPTS = 5;
@@ -72,6 +72,7 @@ class ftpcom : protected e2se::log_factory
 		bool handle();
 		bool connect();
 		bool disconnect();
+		bool reconnect();
 		string get_server_hostname();
 		vector<string> list_dir(string basedir);
 		bool file_valid_check(string path);

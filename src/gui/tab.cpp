@@ -3271,16 +3271,22 @@ void tab::noticeMessage(vector<pair<string, string>> errors, MSG_CODE code)
 	if (code == MSG_CODE::ftpNotice)
 	{
 		title = tr("FTP Notice", "error");
-		message = QString("%1\n\n%2")
-			.arg(tr("Successful transfer.", "message"))
-			.arg(tr("Errors occurred during FTP operations.", "error"));
+		message = "\n\n";
+		if (errlist.size() != 0)
+			message.prepend(tr("FTP Error", "error"));
+		else
+			message.prepend(tr("Successful transfer.", "message"));
+		message.append(tr("Errors occurred during FTP operations.", "error"));
 	}
 	else if (code == MSG_CODE::stbReloadNotice)
 	{
 		title = tr("STB Reload Notice", "error");
-		message = QString("%1\n\n%2")
-			.arg(tr("STB reload done.", "message"))
-			.arg(tr("Errors occurred during STB reload operations.", "error"));
+		message = "\n\n";
+		if (errlist.size() >= 2)
+			message.prepend(tr("STB Reload Error", "error"));
+		else
+			message.prepend(tr("STB reload done.", "message"));
+		message.append(tr("Errors occurred during STB reload operations.", "error"));
 	}
 	else if (code == MSG_CODE::parseNotice || code == MSG_CODE::readNotice || code == MSG_CODE::importNotice)
 	{

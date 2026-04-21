@@ -756,7 +756,7 @@ void gui::initSettings()
 	settings.setValue("debug", false);
 	settings.setValue("connectTimeout", 10);
 	settings.setValue("ftpResponseTimeout", 10);
-	settings.setValue("ftpTimeout", 25);
+	settings.setValue("ftpTimeout", 0);
 	settings.setValue("httpTimeout", 15);
 	settings.setValue("telnetTimeout", 20);
 	settings.setValue("maxResumeAttempts", 5);
@@ -792,7 +792,7 @@ void gui::updateSettings()
 			settings.setValue("connectTimeout", settings.value("ftpConnectTimeout", 10).toInt());
 			settings.remove("ftpConnectTimeout");
 			settings.setValue("ftpResponseTimeout", 10);
-			settings.setValue("ftpTimeout", 25);
+			settings.setValue("ftpTimeout", 0);
 			settings.setValue("httpTimeout", settings.value("httpTimeout", 15).toInt());
 			if (settings.value("telnetTimeout").toInt() == 15)
 				settings.setValue("telnetTimeout", 20);
