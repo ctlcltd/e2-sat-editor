@@ -570,7 +570,6 @@ void tab::layout()
 
 	toolBarSeparator(bottom_toolbar);
 	toolBarAction(bottom_toolbar, tr("Inspect", "toolbar"), [=]() { this->toolsErrorChecker(); });
-	toolBarAction(bottom_toolbar, tr("Console", "toolbar"), [=]() { this->toolsConsole(); });
 	if (QSettings().value("application/debug", false).toBool() || DEMO)
 	{
 		toolBarSeparator(bottom_toolbar);
@@ -579,6 +578,7 @@ void tab::layout()
 	}
 	toolBarSpacer(bottom_toolbar);
 	toolBarAction(bottom_toolbar, tr("autofix", "toolbar"), [=]() { this->toolsAutofixMacro(); });
+	toolBarAction(bottom_toolbar, tr("Console", "toolbar"), [=]() { this->toolsConsole(); });
 #ifndef E2SE_DEMO
 	toolBarSeparator(bottom_toolbar);
 	toolBarAction(bottom_toolbar, tr("Donate", "toolbar"), [=]() { this->linkToWebsite(1); });

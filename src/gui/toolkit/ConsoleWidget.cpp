@@ -9,6 +9,7 @@
  * @license GNU GPLv3 License
  */
 
+#include <QApplication>
 #include <QMimeData>
 
 #include "../platforms/platform.h"
