@@ -557,6 +557,16 @@ void tab::layout()
 	toolBarSeparator(top_toolbar);
 	toolBarAction(top_toolbar, tr("Settings", "toolbar"), theme->dynamicIcon("settings"), [=]() { this->settingsDialog(); });
 	toolBarSpacer(top_toolbar);
+	{
+		QLabel* label = new QLabel;
+		label->setAccessibleName(tr("Connection", "toolbar"));
+		label->setPixmap(QIcon().pixmap(18, 18));
+		label->setMinimumSize(22, 22);
+		QAction* action = top_toolbar->addWidget(label);
+		action->setWhatsThis(tr("Connection", "toolbar"));
+		action->setToolTip(action->whatsThis());
+		this->ftp_indt = action;
+	}
 	toolBarWidget(top_toolbar, tr("Select profile", "toolbar"), ftp_combo, [=]() { ftp_combo->showPopup(); });
 	toolBarAction(top_toolbar, tr("Connect", "toolbar"), [=]() { this->ftpConnect(); });
 	toolBarAction(top_toolbar, tr("Disconnect", "toolbar"), [=]() { this->ftpDisconnect(); });
@@ -2402,7 +2412,9 @@ void tab::ftpConnect()
 
 #ifndef Q_OS_WASM
 
-	this->ftpWaitWorkers();
+	ftpWaitWorkers();
+
+	ftpConnectionIndicator(FTP_STATUS::ftpIdle);
 
 	QThread* thread = QThread::create([=]() {
 		if (QThread::currentThread()->isInterruptionRequested())
@@ -2416,9 +2428,17 @@ void tab::ftpConnect()
 				return;
 
 			if (connected)
+			{
+				QMetaObject::invokeMethod(this->widget, [=]() { this->ftpConnectionIndicator(FTP_STATUS::ftpIdle); }, Qt::QueuedConnection);
+
 				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbConnectSuccessNotify(); }, Qt::QueuedConnection);
+			}
 			else
+			{
+				QMetaObject::invokeMethod(this->widget, [=]() { this->ftpConnectionIndicator(FTP_STATUS::ftpError); }, Qt::QueuedConnection);
+
 				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbConnectErrorNotify(); }, Qt::QueuedConnection);
+			}
 		}
 		catch (std::runtime_error& err)
 		{
@@ -2439,11 +2459,15 @@ void tab::ftpConnect()
 	thread->setParent(this->widget);
 
 	thread->connect(thread, &QThread::started, [=]() {
+		QMetaObject::invokeMethod(this->widget, [=]() { this->ftpConnectionIndicator(FTP_STATUS::ftpSyncronizing); }, Qt::QueuedConnection);
+
 		QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbConnectingNotify(); }, Qt::QueuedConnection);
 	});
 	thread->connect(thread, &QThread::finished, [=]() {
 		if (QThread::currentThread()->isInterruptionRequested())
 			return;
+
+		QMetaObject::invokeMethod(this->widget, [=]() { this->ftpConnectionIndicator(FTP_STATUS::ftpIdle); }, Qt::QueuedConnection);
 
 		this->tptrs.tconnect = nullptr;
 	});
@@ -2462,7 +2486,9 @@ void tab::ftpDisconnect()
 
 #ifndef Q_OS_WASM
 
-	this->ftpWaitWorkers();
+	ftpWaitWorkers();
+
+	ftpConnectionIndicator(FTP_STATUS::ftpIdle);
 
 	QThread* thread = QThread::create([=]() {
 		if (QThread::currentThread()->isInterruptionRequested())
@@ -2476,9 +2502,17 @@ void tab::ftpDisconnect()
 				return;
 
 			if (disconnected)
+			{
+				QMetaObject::invokeMethod(this->widget, [=]() { this->ftpConnectionIndicator(FTP_STATUS::ftpIdle); }, Qt::QueuedConnection);
+
 				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbDisconnectSuccessNotify(); }, Qt::QueuedConnection);
+			}
 			else
+			{
+				QMetaObject::invokeMethod(this->widget, [=]() { this->ftpConnectionIndicator(FTP_STATUS::ftpError); }, Qt::QueuedConnection);
+
 				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbDisconnectErrorNotify(); }, Qt::QueuedConnection);
+			}
 		}
 		catch (std::runtime_error& err)
 		{
@@ -2499,6 +2533,8 @@ void tab::ftpDisconnect()
 	thread->setParent(this->widget);
 
 	thread->connect(thread, &QThread::started, [=]() {
+		QMetaObject::invokeMethod(this->widget, [=]() { this->ftpConnectionIndicator(FTP_STATUS::ftpSyncronizing); }, Qt::QueuedConnection);
+
 		QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbDisconnectingNotify(); }, Qt::QueuedConnection);
 	});
 	thread->connect(thread, &QThread::finished, [=]() {
@@ -2522,7 +2558,9 @@ void tab::ftpUpload()
 
 #ifndef Q_OS_WASM
 
-	this->ftpWaitWorkers();
+	ftpWaitWorkers();
+
+	ftpConnectionIndicator(FTP_STATUS::ftpIdle);
 
 	{
 		theme::setWaitCursor();
@@ -2539,7 +2577,15 @@ void tab::ftpUpload()
 					return;
 
 				if (! connhr)
+				{
+					QMetaObject::invokeMethod(this->widget, [=]() { this->ftpConnectionIndicator(FTP_STATUS::ftpError); }, Qt::QueuedConnection);
+
 					QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbConnectErrorNotify(); }, Qt::QueuedConnection);
+				}
+				else
+				{
+					QMetaObject::invokeMethod(this->widget, [=]() { this->ftpConnectionIndicator(FTP_STATUS::ftpIdle); }, Qt::QueuedConnection);
+				}
 			}
 			catch (std::runtime_error& err)
 			{
@@ -2560,6 +2606,8 @@ void tab::ftpUpload()
 		thread->setParent(this->widget);
 
 		thread->connect(thread, &QThread::started, [=]() {
+			QMetaObject::invokeMethod(this->widget, [=]() { this->ftpConnectionIndicator(FTP_STATUS::ftpSyncronizing); }, Qt::QueuedConnection);
+
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbHandlingNotify(); }, Qt::QueuedConnection);
 		});
 		thread->connect(thread, &QThread::finished, [=]() {
@@ -2729,6 +2777,9 @@ void tab::ftpUpload()
 		this->tptrs.tupload = thread;
 		thread->setParent(this->widget);
 
+		thread->connect(thread, &QThread::started, [=]() {
+			QMetaObject::invokeMethod(this->widget, [=]() { this->ftpConnectionIndicator(FTP_STATUS::ftpSyncronizing); }, Qt::QueuedConnection);
+		});
 		thread->connect(thread, &QThread::finished, [=]() {
 			if (QThread::currentThread()->isInterruptionRequested())
 				return;
@@ -2737,8 +2788,14 @@ void tab::ftpUpload()
 
 			if (! this->ftp_errors.empty())
 			{
+				QMetaObject::invokeMethod(this->widget, [=]() { this->ftpConnectionIndicator(FTP_STATUS::ftpError); }, Qt::QueuedConnection);
+
 				auto errors = this->ftp_errors;
 				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(errors, MSG_CODE::ftpNotice); }, Qt::QueuedConnection);
+			}
+			else
+			{
+				QMetaObject::invokeMethod(this->widget, [=]() { this->ftpConnectionIndicator(FTP_STATUS::ftpIdle); }, Qt::QueuedConnection);
 			}
 
 			if (this->ftp_files.empty())
@@ -2773,7 +2830,9 @@ void tab::ftpDownload()
 
 #ifndef Q_OS_WASM
 
-	this->ftpWaitWorkers();
+	ftpWaitWorkers();
+
+	ftpConnectionIndicator(FTP_STATUS::ftpIdle);
 
 	{
 		theme::setWaitCursor();
@@ -2790,7 +2849,15 @@ void tab::ftpDownload()
 					return;
 
 				if (! connhr)
+				{
+					QMetaObject::invokeMethod(this->widget, [=]() { this->ftpConnectionIndicator(FTP_STATUS::ftpError); }, Qt::QueuedConnection);
+
 					QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbConnectErrorNotify(); }, Qt::QueuedConnection);
+				}
+				else
+				{
+					QMetaObject::invokeMethod(this->widget, [=]() { this->ftpConnectionIndicator(FTP_STATUS::ftpIdle); }, Qt::QueuedConnection);
+				}
 			}
 			catch (std::runtime_error& err)
 			{
@@ -2811,6 +2878,8 @@ void tab::ftpDownload()
 		thread->setParent(this->widget);
 
 		thread->connect(thread, &QThread::started, [=]() {
+			QMetaObject::invokeMethod(this->widget, [=]() { this->ftpConnectionIndicator(FTP_STATUS::ftpSyncronizing); }, Qt::QueuedConnection);
+
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbHandlingNotify(); }, Qt::QueuedConnection);
 		});
 		thread->connect(thread, &QThread::finished, [=]() {
@@ -2905,6 +2974,9 @@ void tab::ftpDownload()
 		this->tptrs.tdownload = thread;
 		thread->setParent(this->widget);
 
+		thread->connect(thread, &QThread::started, [=]() {
+			QMetaObject::invokeMethod(this->widget, [=]() { this->ftpConnectionIndicator(FTP_STATUS::ftpSyncronizing); }, Qt::QueuedConnection);
+		});
 		thread->connect(thread, &QThread::finished, [=]() {
 			if (QThread::currentThread()->isInterruptionRequested())
 				return;
@@ -2913,8 +2985,14 @@ void tab::ftpDownload()
 
 			if (! this->ftp_errors.empty())
 			{
+				QMetaObject::invokeMethod(this->widget, [=]() { this->ftpConnectionIndicator(FTP_STATUS::ftpError); }, Qt::QueuedConnection);
+
 				auto errors = this->ftp_errors;
 				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpcomError(errors, MSG_CODE::ftpNotice); }, Qt::QueuedConnection);
+			}
+			else
+			{
+				QMetaObject::invokeMethod(this->widget, [=]() { this->ftpConnectionIndicator(FTP_STATUS::ftpIdle); }, Qt::QueuedConnection);
 			}
 
 			if (this->ftp_files.empty())
@@ -3014,7 +3092,9 @@ void tab::ftpReloadStb(void* tptr)
 
 	if (tptr == nullptr)
 	{
-		this->ftpWaitWorkers();
+		ftpWaitWorkers();
+
+		ftpConnectionIndicator(FTP_STATUS::ftpIdle);
 	}
 
 	auto* ftih = this->ftph->ftih;
@@ -3070,11 +3150,15 @@ void tab::ftpReloadStb(void* tptr)
 	thread->setParent(this->widget);
 
 	thread->connect(thread, &QThread::started, [=]() {
+		QMetaObject::invokeMethod(this->widget, [=]() { this->ftpConnectionIndicator(FTP_STATUS::ftpSyncronizing); }, Qt::QueuedConnection);
+
 		QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbReloadingNotify(); }, Qt::QueuedConnection);
 	});
 	thread->connect(thread, &QThread::finished, [=]() {
 		if (QThread::currentThread()->isInterruptionRequested())
 			return;
+
+		QMetaObject::invokeMethod(this->widget, [=]() { this->ftpConnectionIndicator(FTP_STATUS::ftpIdle); }, Qt::QueuedConnection);
 
 		if (this->stb_reload)
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbReloadSuccessNotify(); }, Qt::QueuedConnection);
@@ -3090,6 +3174,39 @@ void tab::ftpReloadStb(void* tptr)
 	thread->start();
 	thread->quit();
 #endif
+}
+
+void tab::ftpConnectionIndicator(FTP_STATUS status)
+{
+	QAction* action = this->ftp_indt;
+
+	if (QLabel* label = qobject_cast<QLabel*>(top_toolbar->widgetForAction(action)))
+	{
+		switch (status)
+		{
+			case FTP_STATUS::ftpSyncronizing:
+#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
+				label->setPixmap(QIcon::fromTheme(QIcon::ThemeIcon::SyncSynchronizing).pixmap(18, 18));
+#else
+				label->setPixmap(QIcon::fromTheme("sync-synchronizing").pixmap(18, 18));
+#endif
+				action->setWhatsThis(tr("Connection", "error"));
+			break;
+			case FTP_STATUS::ftpError:
+#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
+				label->setPixmap(QIcon::fromTheme(QIcon::ThemeIcon::SyncError).pixmap(18, 18));
+#else
+				label->setPixmap(QIcon::fromTheme("sync-error").pixmap(18, 18));
+#endif
+				action->setWhatsThis(tr("FTP Error", "error"));
+			break;
+			default:
+				label->setPixmap(QIcon().pixmap(18, 18));
+				action->setWhatsThis(tr("Connection", "toolbar"));
+		}
+
+		action->setToolTip(action->whatsThis());
+	}
 }
 
 void tab::ftpStbConnectingNotify()

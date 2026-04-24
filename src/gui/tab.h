@@ -28,6 +28,7 @@ using std::string, std::pair, std::vector, std::map, std::unordered_map, std::bi
 #include <QDockWidget>
 #include <QToolBar>
 #include <QMenu>
+#include <QAction>
 #include <QWidgetAction>
 #include <QList>
 
@@ -70,6 +71,12 @@ class tab : protected e2se::log_factory
 			ftpConnectedBubble,
 			ftpDisconnectedBubble,
 			ftpStbReloadedBubble
+		};
+
+		enum FTP_STATUS {
+			ftpIdle,
+			ftpSyncronizing,
+			ftpError
 		};
 
 		tab(gui* gid, QWidget* cwid);
@@ -199,6 +206,7 @@ class tab : protected e2se::log_factory
 		void ftpUpload();
 		void ftpDownload();
 		void ftpReloadStb(void* tptr = nullptr);
+		void ftpConnectionIndicator(FTP_STATUS status);
 		void ftpStbConnectingNotify();
 		void ftpStbDisconnectingNotify();
 		void ftpStbHandlingNotify();
@@ -250,6 +258,7 @@ class tab : protected e2se::log_factory
 		vector<pair<string, string>> ftp_errors;
 		int stb_reload = 0;
 		unordered_map<string, e2db::e2db_file> files;
+		QAction* ftp_indt = nullptr;
 
 		// stored gui bit flags
 		bitset<256> gxe;

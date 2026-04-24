@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 - New: Console for non-graphical edit
 - Dockable Console and Log Inspector
 - CLI improvements: tools, macro
+- FTP connection indicator
 - Updated translations
 
 

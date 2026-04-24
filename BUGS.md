@@ -37,6 +37,7 @@ Information on contributions, to contribute and send Pull Request, please see [C
 **To Improve:**
 
 - [x] workers refactoring, actions and QThread concurrency [gui] [ftpcom.cpp] [checkUpdate.cpp] [piconsView.cpp]
+- [x] ftp connection indicator, better visual feedback [gui] [tab.cpp]
 - [x] service and reference flags, show flags in the UI (#33) [gui]
 - [x] ftp connection messages, eg. "Connected", better visual feedback, status bar is not enough (#35) [gui] [tab.cpp]
 - [x] ftp error messages, from "Access denied to remote resource." to file error. [ftp] [fptcom.cpp]
