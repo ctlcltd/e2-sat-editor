@@ -12,15 +12,14 @@
 #include <functional>
 #include <string>
 #include <vector>
-#include <unordered_set>
-#include <unordered_map>
+#include <atomic>
 #include <cstdio>
 
 #include <curl/curl.h>
 
 #include "../logger/logger.h"
 
-using std::string, std::vector, std::unordered_set, std::unordered_map, std::istream;
+using std::string, std::vector, std::istream;
 
 #ifndef ftpcom_h
 #define ftpcom_h
@@ -73,6 +72,7 @@ class ftpcom : protected e2se::log_factory
 		bool connect();
 		bool disconnect();
 		bool reconnect();
+		void abort();
 		string get_server_hostname();
 		vector<string> list_dir(string basedir);
 		bool file_valid_check(string path);
@@ -80,8 +80,6 @@ class ftpcom : protected e2se::log_factory
 		void download_data(string basedir, string filename, ftpcom_file& file);
 		void upload_data(string basedir, string filename, ftpcom_file file);
 		void fetch_paths();
-		unordered_map<string, ftpcom_file> get_files(std::function<void(const string filename)> func);
-		void put_files(unordered_map<string, ftpcom_file> files, std::function<void(const string filename)> func);
 		bool cmd_ifreload();
 		bool cmd_tnreload();
 
@@ -110,11 +108,12 @@ class ftpcom : protected e2se::log_factory
 			string cmd;
 		};
 
-		static CURLcode perform(CURL* ch);
-		static void reset(CURL* ch, CURLU* rh);
-		static void cleanup(CURL* ch);
+		CURLcode perform(CURL* ch);
+		void reset(CURL* ch, CURLU* rh);
+		void cleanup(CURL* ch);
 		vector<string> list_dir_nlst(string basedir);
 		vector<string> list_dir_mlsd(string basedir);
+		static int data_abort_func(void* ptr, curl_off_t, curl_off_t, curl_off_t, curl_off_t);
 		static size_t data_download_func(void* csi, size_t size, size_t nmemb, void* pso);
 		static size_t data_upload_func(char* cso, size_t size, size_t nmemb, void* psi);
 		static size_t data_write_func(void* csi, size_t size, size_t nmemb, void* pso);
@@ -146,6 +145,7 @@ class ftpcom : protected e2se::log_factory
 		CURLU* rph = nullptr;
 		CURLU* rsh = nullptr;
 		CURLU* rth = nullptr;
+		std::atomic<bool> aborting = false;
 };
 }
 #endif /* ftpcom_h */

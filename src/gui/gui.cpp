@@ -2280,13 +2280,18 @@ void gui::checkUpdate()
 	}
 
 #ifdef E2SE_CHECKUPDATE
+#ifndef Q_OS_WASM
 	QThread* thread = QThread::create([=]() {
 		auto* dialog = new e2se_gui::checkUpdate(this->mwid);
 		dialog->check();
 		dialog->destroy();
 	});
+
+	thread->setParent(this->mwid);
+
 	thread->start();
 	thread->quit();
+#endif
 #endif
 }
 
@@ -2301,13 +2306,18 @@ void gui::autoCheckUpdate()
 	timer->callOnTimeout([=]() {
 		debug("autoCheckUpdate", "timer", 1);
 
+#ifndef Q_OS_WASM
 		QThread* thread = QThread::create([=]() {
 			auto* dialog = new e2se_gui::checkUpdate(this->mwid);
 			dialog->autoCheck();
 			dialog->destroy();
 		});
+
+		thread->setParent(this->mwid);
+
 		thread->start();
 		thread->quit();
+#endif
 
 		timer->stop();
 	});

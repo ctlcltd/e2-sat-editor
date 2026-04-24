@@ -98,11 +98,25 @@ tab::~tab()
 {
 	debug("~tab");
 
+	theme::unsetWaitCursor();
+
+#ifndef Q_OS_WASM
+	this->ftpWaitWorkers();
+#endif
+
+	this->resetStatusBar(true);
+
 	if (! this->child)
-	{	delete this->tools;
+	{
+		delete this->tools;
 		delete this->data;
 		delete this->ftph;
+
+		this->tools = nullptr;
+		this->data = nullptr;
+		this->ftph = nullptr;
 	}
+
 	delete this->view;
 
 	delete this->widget;
@@ -2342,6 +2356,42 @@ void tab::ftpComboChanged(int index)
 	QSettings().setValue("profile/selected", profile_sel);
 }
 
+void tab::ftpWaitWorkers()
+{
+#ifndef Q_OS_WASM
+	this->ftph->abortOperations();
+
+	vector<void*> tvect = {
+		tptrs.tconnect,
+		tptrs.tdisconnect,
+		tptrs.tconnhr,
+		tptrs.tupload,
+		tptrs.tdownload,
+		tptrs.treload
+	};
+
+	for (auto t : tvect)
+	{
+		if (t != nullptr)
+		{
+			QThread* thread = reinterpret_cast<QThread*>(t);
+			thread->disconnect(thread, &QThread::finished, nullptr, nullptr);
+			thread->disconnect(thread, &QThread::started, nullptr, nullptr);
+			thread->requestInterruption();
+			thread->wait();
+			delete thread;
+		}
+	}
+
+	tptrs.tconnect = nullptr;
+	tptrs.tdisconnect = nullptr;
+	tptrs.tconnhr = nullptr;
+	tptrs.tupload = nullptr;
+	tptrs.tdownload = nullptr;
+	tptrs.treload = nullptr;
+#endif
+}
+
 void tab::ftpConnect()
 {
 	debug("ftpConnect");
@@ -2351,10 +2401,21 @@ void tab::ftpConnect()
 #endif
 
 #ifndef Q_OS_WASM
+
+	this->ftpWaitWorkers();
+
 	QThread* thread = QThread::create([=]() {
+		if (QThread::currentThread()->isInterruptionRequested())
+			return;
+
 		try
 		{
-			if (this->ftph->openConnection())
+			bool connected = this->ftph->openConnection();
+
+			if (QThread::currentThread()->isInterruptionRequested())
+				return;
+
+			if (connected)
 				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbConnectSuccessNotify(); }, Qt::QueuedConnection);
 			else
 				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbConnectErrorNotify(); }, Qt::QueuedConnection);
@@ -2373,8 +2434,18 @@ void tab::ftpConnect()
 			return;
 		}
 	});
+
+	this->tptrs.tconnect = thread;
+	thread->setParent(this->widget);
+
 	thread->connect(thread, &QThread::started, [=]() {
 		QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbConnectingNotify(); }, Qt::QueuedConnection);
+	});
+	thread->connect(thread, &QThread::finished, [=]() {
+		if (QThread::currentThread()->isInterruptionRequested())
+			return;
+
+		this->tptrs.tconnect = nullptr;
 	});
 	thread->start();
 	thread->quit();
@@ -2390,10 +2461,21 @@ void tab::ftpDisconnect()
 #endif
 
 #ifndef Q_OS_WASM
+
+	this->ftpWaitWorkers();
+
 	QThread* thread = QThread::create([=]() {
+		if (QThread::currentThread()->isInterruptionRequested())
+			return;
+
 		try
 		{
-			if (this->ftph->closeConnection())
+			bool disconnected = this->ftph->closeConnection();
+
+			if (QThread::currentThread()->isInterruptionRequested())
+				return;
+
+			if (disconnected)
 				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbDisconnectSuccessNotify(); }, Qt::QueuedConnection);
 			else
 				QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbDisconnectErrorNotify(); }, Qt::QueuedConnection);
@@ -2412,8 +2494,18 @@ void tab::ftpDisconnect()
 			return;
 		}
 	});
+
+	this->tptrs.tdisconnect = thread;
+	thread->setParent(this->widget);
+
 	thread->connect(thread, &QThread::started, [=]() {
 		QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbDisconnectingNotify(); }, Qt::QueuedConnection);
+	});
+	thread->connect(thread, &QThread::finished, [=]() {
+		if (QThread::currentThread()->isInterruptionRequested())
+			return;
+
+		this->tptrs.tdisconnect = nullptr;
 	});
 	thread->start();
 	thread->quit();
@@ -2429,11 +2521,24 @@ void tab::ftpUpload()
 #endif
 
 #ifndef Q_OS_WASM
+
+	this->ftpWaitWorkers();
+
 	{
+		theme::setWaitCursor();
+
 		QThread* thread = QThread::create([=]() {
+			if (QThread::currentThread()->isInterruptionRequested())
+				return;
+
 			try
 			{
-				if (! this->ftph->handleConnection())
+				bool connhr = this->ftph->handleConnection();
+
+				if (QThread::currentThread()->isInterruptionRequested())
+					return;
+
+				if (! connhr)
 					QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbConnectErrorNotify(); }, Qt::QueuedConnection);
 			}
 			catch (std::runtime_error& err)
@@ -2450,11 +2555,27 @@ void tab::ftpUpload()
 				return;
 			}
 		});
+
+		this->tptrs.tconnhr = thread;
+		thread->setParent(this->widget);
+
 		thread->connect(thread, &QThread::started, [=]() {
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbHandlingNotify(); }, Qt::QueuedConnection);
 		});
+		thread->connect(thread, &QThread::finished, [=]() {
+			if (QThread::currentThread()->isInterruptionRequested())
+				return;
+
+			this->tptrs.tconnhr = nullptr;
+		});
 		thread->start();
 		thread->wait();
+
+		theme::unsetWaitCursor();
+
+		if (thread->isInterruptionRequested())
+			return;
+
 		thread->quit();
 	}
 
@@ -2499,6 +2620,8 @@ void tab::ftpUpload()
 	if (this->data->hasChanged())
 		this->updateIndex();
 
+	theme::setWaitCursor();
+
 	try
 	{
 		this->files = dbih->get_output();
@@ -2510,14 +2633,20 @@ void tab::ftpUpload()
 	{
 		this->e2dbError(string (err.what()));
 
+		theme::unsetWaitCursor();
+
 		return;
 	}
 	catch (...)
 	{
 		this->e2dbError();
 
+		theme::unsetWaitCursor();
+
 		return;
 	}
+
+	theme::unsetWaitCursor();
 
 	for (auto & x : this->files)
 	{
@@ -2531,7 +2660,6 @@ void tab::ftpUpload()
 			basedir = baseb;
 		else if (filename == "satellites.xml" || filename == "terrestrial.xml" || filename == "cables.xml" || filename == "atsc.xml")
 			basedir = baset;
-		//TODO upload services, other data ... (eg. picons)
 		else
 			basedir = bases;
 
@@ -2558,11 +2686,17 @@ void tab::ftpUpload()
 
 	{
 		QThread* thread = QThread::create([=]() {
+			if (QThread::currentThread()->isInterruptionRequested())
+				return;
+
 			if (this->ftp_files.empty())
 				return;
 
 			for (auto & x : this->ftp_files)
 			{
+				if (QThread::currentThread()->isInterruptionRequested())
+					return;
+
 				string fname = x.first;
 
 				std::filesystem::path fpath = std::filesystem::path(fname);
@@ -2591,7 +2725,14 @@ void tab::ftpUpload()
 				}
 			}
 		});
+
+		this->tptrs.tupload = thread;
+		thread->setParent(this->widget);
+
 		thread->connect(thread, &QThread::finished, [=]() {
+			if (QThread::currentThread()->isInterruptionRequested())
+				return;
+
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->resetStatusBar(true); }, Qt::QueuedConnection);
 
 			if (! this->ftp_errors.empty())
@@ -2601,14 +2742,20 @@ void tab::ftpUpload()
 			}
 
 			if (this->ftp_files.empty())
+			{
+				this->tptrs.tupload = nullptr;
+
 				return;
+			}
 
 			int files_count = int (this->ftp_files.size());
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbUploadNotify(files_count); }, Qt::QueuedConnection);
 
-			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpReloadStb(); }, Qt::QueuedConnection);
+			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpReloadStb(thread); }, Qt::QueuedConnection);
 
 			this->ftp_files.clear();
+
+			this->tptrs.tupload = nullptr;
 		});
 		thread->start();
 		thread->quit();
@@ -2625,11 +2772,24 @@ void tab::ftpDownload()
 #endif
 
 #ifndef Q_OS_WASM
+
+	this->ftpWaitWorkers();
+
 	{
+		theme::setWaitCursor();
+
 		QThread* thread = QThread::create([=]() {
+			if (QThread::currentThread()->isInterruptionRequested())
+				return;
+
 			try
 			{
-				if (! this->ftph->handleConnection())
+				bool connhr = this->ftph->handleConnection();
+
+				if (QThread::currentThread()->isInterruptionRequested())
+					return;
+
+				if (! connhr)
 					QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbConnectErrorNotify(); }, Qt::QueuedConnection);
 			}
 			catch (std::runtime_error& err)
@@ -2646,11 +2806,27 @@ void tab::ftpDownload()
 				return;
 			}
 		});
+
+		this->tptrs.tconnhr = thread;
+		thread->setParent(this->widget);
+
 		thread->connect(thread, &QThread::started, [=]() {
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbHandlingNotify(); }, Qt::QueuedConnection);
 		});
+		thread->connect(thread, &QThread::finished, [=]() {
+			if (QThread::currentThread()->isInterruptionRequested())
+				return;
+
+			this->tptrs.tconnhr = nullptr;
+		});
 		thread->start();
 		thread->wait();
+
+		theme::unsetWaitCursor();
+
+		if (thread->isInterruptionRequested())
+			return;
+
 		thread->quit();
 	}
 
@@ -2668,6 +2844,9 @@ void tab::ftpDownload()
 
 	{
 		QThread* thread = QThread::create([=]() {
+			if (QThread::currentThread()->isInterruptionRequested())
+				return;
+
 			try
 			{
 				ftih->fetch_paths();
@@ -2686,8 +2865,14 @@ void tab::ftpDownload()
 				return;
 			}
 
+			if (QThread::currentThread()->isInterruptionRequested())
+				return;
+
 			for (string & fname : ftih->ftdb)
 			{
+				if (QThread::currentThread()->isInterruptionRequested())
+					return;
+
 				std::filesystem::path fpath = std::filesystem::path(fname);
 				string basedir = fpath.parent_path().u8string();
 				string filename = fpath.filename().u8string();
@@ -2716,7 +2901,14 @@ void tab::ftpDownload()
 				}
 			}
 		});
+
+		this->tptrs.tdownload = thread;
+		thread->setParent(this->widget);
+
 		thread->connect(thread, &QThread::finished, [=]() {
+			if (QThread::currentThread()->isInterruptionRequested())
+				return;
+
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->resetStatusBar(true); }, Qt::QueuedConnection);
 
 			if (! this->ftp_errors.empty())
@@ -2727,6 +2919,8 @@ void tab::ftpDownload()
 
 			if (this->ftp_files.empty())
 			{
+				this->tptrs.tdownload = nullptr;
+
 				return;
 			}
 
@@ -2752,7 +2946,16 @@ void tab::ftpDownload()
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbDownloadNotify(files_count); }, Qt::QueuedConnection);
 
 			if (this->files.empty())
+			{
+				this->tptrs.tdownload = nullptr;
+
 				return;
+			}
+
+			if (QThread::currentThread()->isInterruptionRequested())
+				return;
+
+			theme::setWaitCursor();
 
 			try
 			{
@@ -2764,8 +2967,17 @@ void tab::ftpDownload()
 
 				QMetaObject::invokeMethod(this->cwid, [=]() { this->e2dbError(); }, Qt::QueuedConnection);
 
+				this->tptrs.tdownload = nullptr;
+
+				theme::unsetWaitCursor();
+
 				return;
 			}
+
+			theme::unsetWaitCursor();
+
+			if (QThread::currentThread()->isInterruptionRequested())
+				return;
 
 			if (this->data->haveErrors())
 			{
@@ -2781,6 +2993,8 @@ void tab::ftpDownload()
 			}, Qt::QueuedConnection);
 
 			this->files.clear();
+
+			this->tptrs.tdownload = nullptr;
 		});
 		thread->start();
 		thread->quit();
@@ -2788,7 +3002,7 @@ void tab::ftpDownload()
 #endif
 }
 
-void tab::ftpReloadStb()
+void tab::ftpReloadStb(void* tptr)
 {
 	debug("ftpReloadStb");
 
@@ -2798,15 +3012,28 @@ void tab::ftpReloadStb()
 
 #ifndef Q_OS_WASM
 
+	if (tptr == nullptr)
+	{
+		this->ftpWaitWorkers();
+	}
+
 	auto* ftih = this->ftph->ftih;
 
 	this->ftp_errors.clear();
 	this->stb_reload = 0;
 
 	QThread* thread = QThread::create([=]() {
+		if (QThread::currentThread()->isInterruptionRequested())
+			return;
+
 		try
 		{
-			if (ftih->cmd_ifreload())
+			bool reloaded = ftih->cmd_ifreload();
+
+			if (QThread::currentThread()->isInterruptionRequested())
+				return;
+
+			if (reloaded)
 				this->stb_reload++;
 		}
 		catch (std::runtime_error& err)
@@ -2817,9 +3044,17 @@ void tab::ftpReloadStb()
 		{
 		}
 
+		if (QThread::currentThread()->isInterruptionRequested())
+			return;
+
 		try
 		{
-			if (ftih->cmd_tnreload())
+			bool reloaded = ftih->cmd_tnreload();
+
+			if (QThread::currentThread()->isInterruptionRequested())
+				return;
+
+			if (reloaded)
 				this->stb_reload++;
 		}
 		catch (std::runtime_error& err)
@@ -2830,11 +3065,17 @@ void tab::ftpReloadStb()
 		{
 		}
 	});
+
+	this->tptrs.treload = thread;
+	thread->setParent(this->widget);
+
 	thread->connect(thread, &QThread::started, [=]() {
 		QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbReloadingNotify(); }, Qt::QueuedConnection);
 	});
 	thread->connect(thread, &QThread::finished, [=]() {
-		//TODO FIX status message not readable glitch [Linux]
+		if (QThread::currentThread()->isInterruptionRequested())
+			return;
+
 		if (this->stb_reload)
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbReloadSuccessNotify(); }, Qt::QueuedConnection);
 
@@ -2843,6 +3084,8 @@ void tab::ftpReloadStb()
 			auto errors = this->ftp_errors;
 			QMetaObject::invokeMethod(this->cwid, [=]() { this->ftpStbReloadErrorNotify(errors); }, Qt::QueuedConnection);
 		}
+
+		this->tptrs.treload = nullptr;
 	});
 	thread->start();
 	thread->quit();

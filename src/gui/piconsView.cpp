@@ -73,6 +73,18 @@ piconsView::~piconsView()
 {
 	debug("~piconsView");
 
+#ifndef Q_OS_WASM
+	if (this->tpptr != nullptr)
+	{
+		QThread* thread = reinterpret_cast<QThread*>(this->tpptr);
+		thread->disconnect(thread, &QThread::finished, nullptr, nullptr);
+		thread->disconnect(thread, &QThread::started, nullptr, nullptr);
+		thread->requestInterruption();
+		thread->wait();
+		delete thread;
+	}
+#endif
+
 	delete this->widget;
 	delete this->theme;
 	delete this->log;
@@ -932,8 +944,14 @@ void piconsView::executeBatchCommand()
 	if (allow && ! command.isEmpty())
 	{
 		QThread* thread = QThread::create([=]() {
+			if (QThread::currentThread()->isInterruptionRequested())
+				return;
+
 			for (auto & filepath : files)
 			{
+				if (QThread::currentThread()->isInterruptionRequested())
+					return;
+
 				QString program = QString(command);
 				QStringList arguments;
 				QFileInfo fi = QFileInfo(filepath);
@@ -950,8 +968,8 @@ void piconsView::executeBatchCommand()
 				arguments.removeAt(0);
 #endif
 
-				// note: not parented, QObject, will be killed on QThread end
-				QProcess* process = new QProcess;
+				//TODO TEST QThread::currentThread() parenting and QProcess execution
+				QProcess* process = new QProcess(QThread::currentThread());
 #if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
 				process->startCommand(program);
 #else
@@ -1016,9 +1034,18 @@ void piconsView::executeBatchCommand()
 				process->waitForFinished();
 			}
 		});
+
+		this->tpptr = thread;
+		thread->setParent(this->widget);
+
 		thread->connect(thread, &QThread::finished, [=]() {
+			if (QThread::currentThread()->isInterruptionRequested())
+				return;
+
 			if (reload)
 				QMetaObject::invokeMethod(this->cwid, [=]() { this->visualReloadList(); }, Qt::QueuedConnection);
+
+			this->tpptr = nullptr;
 		});
 		thread->start();
 		thread->quit();

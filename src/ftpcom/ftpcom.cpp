@@ -14,6 +14,7 @@
 #include <clocale>
 #include <algorithm>
 #include <string>
+#include <unordered_set>
 #include <filesystem>
 #include <sstream>
 
@@ -30,7 +31,7 @@
 
 #include "ftpcom.h"
 
-using std::string, std::stringstream, std::min, std::endl, std::to_string;
+using std::string, std::unordered_set, std::stringstream, std::min, std::endl, std::to_string;
 
 namespace e2se_ftpcom
 {
@@ -91,6 +92,8 @@ void ftpcom::setParameters(ftp_params params)
 
 bool ftpcom::handle()
 {
+	this->aborting = false;
+
 	if (! cph)
 		this->cph = curl_easy_init();
 
@@ -125,6 +128,10 @@ bool ftpcom::handle()
 
 CURLcode ftpcom::perform(CURL* ch)
 {
+	curl_easy_setopt(ch, CURLOPT_XFERINFOFUNCTION, data_abort_func);
+	curl_easy_setopt(ch, CURLOPT_XFERINFODATA, &this->aborting);
+	curl_easy_setopt(ch, CURLOPT_NOPROGRESS, 0);
+
 	return curl_easy_perform(ch);
 }
 
@@ -179,6 +186,13 @@ bool ftpcom::reconnect()
 	curl_easy_setopt(cph, CURLOPT_WRITEFUNCTION, data_discard_func);
 	CURLcode res = perform(cph);
 	return (res == CURLcode::CURLE_OK);
+}
+
+void ftpcom::abort()
+{
+	debug("abort");
+
+	this->aborting = true;
 }
 
 string ftpcom::get_server_hostname()
@@ -272,6 +286,13 @@ vector<string> ftpcom::list_dir_nlst(string basedir)
 
 	while (std::getline(data, line))
 	{
+		if (this->aborting && this->aborting.load())
+		{
+			debug("list_dir_nlst", "aborting", 1);
+
+			break;
+		}
+
 #ifdef PLATFORM_WIN
 		fix_crlf(line);
 #endif
@@ -334,6 +355,13 @@ vector<string> ftpcom::list_dir_mlsd(string basedir)
 
 	while (std::getline(data, line))
 	{
+		if (this->aborting && this->aborting.load())
+		{
+			debug("list_dir_mlsd", "aborting", 1);
+
+			break;
+		}
+
 #ifdef PLATFORM_WIN
 		fix_crlf(line);
 #endif
@@ -536,6 +564,13 @@ void ftpcom::upload_data(string basedir, string filename, ftpcom_file file)
 
 	for (int a = 0; (res != CURLcode::CURLE_OK) && (a < ftpcom::MAX_RESUME_ATTEMPTS); a++)
 	{
+		if (this->aborting && this->aborting.load())
+		{
+			debug("upload_data", "aborting", 1);
+
+			break;
+		}
+
 		debug("upload_data", "attempt", (a + 1));
 
 		if (a)
@@ -588,6 +623,16 @@ void ftpcom::fetch_paths()
 		list = list_dir(w);
 		ftdb.insert(ftdb.end(), list.begin(), list.end());
 	}
+}
+
+int ftpcom::data_abort_func(void* ptr, curl_off_t, curl_off_t, curl_off_t, curl_off_t)
+{
+	std::atomic<bool>* aborting = reinterpret_cast<std::atomic<bool>*>(ptr);
+
+	if (aborting && aborting->load())
+		return 1;
+
+	return 0;
 }
 
 size_t ftpcom::data_download_func(void* csi, size_t size, size_t nmemb, void* pso)
@@ -690,58 +735,6 @@ void ftpcom::fix_crlf(string& line)
 {
 	if (line.size() != 0 && line[line.size() - 1] == '\r')
 		line = line.substr(0, line.size() - 1);
-}
-
-unordered_map<string, ftpcom::ftpcom_file> ftpcom::get_files(std::function<void(const string filename)> func)
-{
-	debug("get_files");
-
-	fetch_paths();
-
-	unordered_map<string, ftpcom_file> files;
-
-	if (ftdb.empty())
-		return files;
-
-	for (string & w : ftdb)
-	{
-		std::filesystem::path fpath = std::filesystem::path(w);
-		string basedir = fpath.parent_path().u8string();
-		string filename = fpath.filename().u8string();
-
-		if (func)
-			func(filename);
-
-		ftpcom_file file;
-
-		download_data(basedir, filename, file);
-
-		files[filename] = file;
-	}
-
-	return files;
-}
-
-void ftpcom::put_files(unordered_map<string, ftpcom_file> files, std::function<void(const string filename)> func)
-{
-	debug("put_files");
-
-	fetch_paths();
-
-	if (files.empty())
-		return;
-
-	for (auto & x : files)
-	{
-		std::filesystem::path fpath = std::filesystem::path(x.first);
-		string basedir = fpath.parent_path().u8string();
-		string filename = fpath.filename().u8string();
-
-		if (func)
-			func(filename);
-
-		upload_data(basedir, filename, x.second);
-	}
 }
 
 //TODO TEST rand SEGFAULT with a strange routine (connect > disconnect > upload > disconnect > upload)

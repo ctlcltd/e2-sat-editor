@@ -106,6 +106,7 @@ class piconsView : public viewAbstract
 		ListIconDragDropEventHandler* list_evth;
 		ListIconDragDropEventFilter* list_evte;
 		QWidget* list_browse;
+		void* tpptr = nullptr;
 
 		__state state;
 		__action action;

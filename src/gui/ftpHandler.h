@@ -28,6 +28,7 @@ class ftpHandler : protected e2se::log_factory
 	public:
 		ftpHandler();
 		virtual ~ftpHandler();
+		void abortOperations();
 		bool openConnection();
 		bool closeConnection();
 		bool handleConnection();

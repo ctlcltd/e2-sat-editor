@@ -32,6 +32,12 @@ ftpHandler::~ftpHandler()
 	delete this->log;
 }
 
+void ftpHandler::abortOperations()
+{
+	if (this->ftih != nullptr)
+		this->ftih->abort();
+}
+
 bool ftpHandler::openConnection()
 {
 	return handleConnection();

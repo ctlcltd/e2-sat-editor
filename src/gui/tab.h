@@ -178,15 +178,27 @@ class tab : protected e2se::log_factory
 		QList<QDockWidget*> dwids;
 
 	protected:
+
+#ifndef Q_OS_WASM
+		struct __tptrs {
+			void* tconnect = nullptr;
+			void* tdisconnect = nullptr;
+			void* tconnhr = nullptr;
+			void* tupload = nullptr;
+			void* tdownload = nullptr;
+			void* treload = nullptr;
+		} tptrs;
+#endif
+
 		void layout();
 		void ftpComboItems();
 		void ftpComboChanged(int index);
+		void ftpWaitWorkers();
 		void ftpConnect();
 		void ftpDisconnect();
 		void ftpUpload();
 		void ftpDownload();
-		void ftpReloadStb();
-		void ftpReloadStb(int mode);
+		void ftpReloadStb(void* tptr = nullptr);
 		void ftpStbConnectingNotify();
 		void ftpStbDisconnectingNotify();
 		void ftpStbHandlingNotify();

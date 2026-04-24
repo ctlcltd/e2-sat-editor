@@ -8,6 +8,7 @@ Information on contributions, to contribute and send Pull Request, please see [C
 
 **To Fix:**
 
+- [ ] check update, dialog message displayed without rich-text feature [gui] [checkUpdate.cpp]
 - [x] ftp reconnect, after FTP upload timeout [ftp] [ftpcom.cpp]
 - [x] ftp error messages, better message on errors [gui] [tab.cpp]
 - [x] tunersets table index, doubled entries after: list item edit, tree drag and drop, tab switch [gui] [tunersetsView.cpp]
@@ -26,8 +27,8 @@ Information on contributions, to contribute and send Pull Request, please see [C
 - [x] edit transponders, sort ordering is not stored [transpondersView.cpp] [tunersetsView.cpp]
 - [x] tools popover defects, native `QMenu` `QComboBox` [macos] [gui] [tools.cpp]
 - [x] find match cache, is cached after channel deletetion [gui] [viewAbstract.cpp]
-- [x] check update, when disconnected, there is no connection error dialog [checkUpdate.cpp]
-- [x] check update, when disconnected, version string `%1` replacement error [checkUpdate.cpp]
+- [x] check update, when disconnected, there is no connection error dialog [gui] [checkUpdate.cpp]
+- [x] check update, when disconnected, version string `%1` replacement error [gui] [checkUpdate.cpp]
 - [x] html markup errors `<tr>` `<thead>` [printable.cpp] [e2db_converter.cpp]
 - [x] telnet reload, when connected is always True also when not reloading [ftp] [ftpcom.cpp]
 - [x] cli history, PgUp history back [linux] [cli] [e2db_termctl.cpp]
@@ -35,6 +36,7 @@ Information on contributions, to contribute and send Pull Request, please see [C
 
 **To Improve:**
 
+- [x] workers refactoring, actions and QThread concurrency [gui] [ftpcom.cpp] [checkUpdate.cpp] [piconsView.cpp]
 - [x] service and reference flags, show flags in the UI (#33) [gui]
 - [x] ftp connection messages, eg. "Connected", better visual feedback, status bar is not enough (#35) [gui] [tab.cpp]
 - [x] ftp error messages, from "Access denied to remote resource." to file error. [ftp] [fptcom.cpp]
@@ -42,6 +44,7 @@ Information on contributions, to contribute and send Pull Request, please see [C
 - [x] cli history, load and save [cli] [e2db_termctl.cpp]
 - [ ] service flags and compatibility, `dvbfrontend` [gui] [e2db.cpp]
 - [ ] reference flags and compatibility, `dvbfrontend` [gui] [e2db.cpp]
+- [ ] channel book dialog, service type issue, ex. open from TV, move to Radio [gui] [channelBookView.cpp] [dialChannelBook.cpp]
 - [ ] neutrino feparams and versions, unknown compatibility [gui] [e2db.cpp]
 - [ ] counters accuracy for items, Total, TV, Radio, Data [gui] [tab.cpp]
 - [ ] transponder orbital position column, wrong sorting order A-Z [gui] [viewAbstract.cpp]
@@ -61,6 +64,7 @@ Information on contributions, to contribute and send Pull Request, please see [C
 - [ ] reload option, webif and|or telnet [gui] [tab.cpp] [settings.cpp] [ftpcom.cpp]
 - [ ] reload option, deactivate reload, manually [gui] [tab.cpp] [settings.cpp] [ftpcom.cpp]
 - [ ] service and reference flags, better visual feedback (#33) [gui]
+- [ ] edit service from Channel Book [gui] [channelBookView.cpp]
 - [ ] FTPS, HTTPS support [networking] [gui] [settings.cpp] [fptcom.cpp]
 - [ ] find toolbar, look and feel [windows] [linux] [gui]
 - [ ] items move and copy, from and to, drag and drop is not enough [gui] [cli]
@@ -91,7 +95,6 @@ Information on contributions, to contribute and send Pull Request, please see [C
 - [ ] singular userbouquet import, in original sorting order, `parse_e2db_bouquets` [e2db.cpp]
 - [ ] neutrino terrestrial, wrong syntax, eg. `name="NaN"` `name="0.0E"` [e2db.cpp]
 - [ ] `onid == 0x0001` is `valid = (tsid > 0x0001)`, `valid = true` is False on STB [e2db.cpp]
-- [ ] edit service from Channel Book [gui] [channelBookView.cpp]
 - [ ] import from ftp, tools and demo, expending `import_blob` + `parse_e2db` [e2db.cpp]
 - [ ] preferences, settings dialog, on Enter keybind, is not saving settings [gui] [settings.cpp]
 - [ ] runtime exceptions, eg. use of `std::runtime_error` causes segfault on mingw32 [code]
