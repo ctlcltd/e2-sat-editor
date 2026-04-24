@@ -205,6 +205,7 @@ void checkUpdate::showMessage(DIAL dialog, MEDIUM medium, QString version, QUrl 
 	// debug("showMessage");
 
 	QMessageBox::Icon icon = QMessageBox::NoIcon;
+	Qt::TextFormat tf = Qt::AutoText;
 	QString title, message;
 
 	if (dialog == dial_noupdate)
@@ -267,13 +268,16 @@ void checkUpdate::showMessage(DIAL dialog, MEDIUM medium, QString version, QUrl 
 	title = title.toHtmlEscaped();
 
 	if (dialog != dial_haveupdate)
+	{
+		tf = Qt::PlainText;
 		message = message.replace("<", "&lt;").replace(">", "&gt;");
+	}
 
 	// note: potential SEGFAULT, cwid thread
 	QMessageBox msg = QMessageBox(nullptr);
 
 	msg.setIcon(icon);
-	msg.setTextFormat(Qt::PlainText);
+	msg.setTextFormat(tf);
 	msg.setText(title);
 	msg.setInformativeText(message);
 	msg.setStandardButtons(QMessageBox::Ok);

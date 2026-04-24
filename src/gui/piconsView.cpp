@@ -1288,7 +1288,6 @@ void piconsView::listItemDelete(bool cut)
 	msg.setAttribute(Qt::WA_TranslucentBackground);
 #endif
 
-	msg.setTextFormat(Qt::PlainText);
 	msg.setText(title);
 	msg.setInformativeText(text);
 	msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Retry);

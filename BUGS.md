@@ -8,7 +8,7 @@ Information on contributions, to contribute and send Pull Request, please see [C
 
 **To Fix:**
 
-- [ ] check update, dialog message displayed without rich-text feature [gui] [checkUpdate.cpp]
+- [x] dialog message displayed without rich-text feature [gui] [checkUpdate.cpp] [piconsView.cpp]
 - [x] ftp reconnect, after FTP upload timeout [ftp] [ftpcom.cpp]
 - [x] ftp error messages, better message on errors [gui] [tab.cpp]
 - [x] tunersets table index, doubled entries after: list item edit, tree drag and drop, tab switch [gui] [tunersetsView.cpp]
