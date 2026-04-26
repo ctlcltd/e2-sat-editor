@@ -464,7 +464,7 @@ class gui : protected e2se::log_factory
 		void windowChanged();
 		void addPermanentDockWidget(Qt::DockWidgetArea area, QDockWidget* widget);
 		void removePermanentDockWidget(QDockWidget* widget);
-		void docksChanged();
+		void tabPermanentDocksChanged();
 		int getTabId(int index);
 		int getCurrentTabId();
 		tab* getCurrentTabHandler();
@@ -509,7 +509,7 @@ class gui : protected e2se::log_factory
 		unordered_map<int, QAction*> gmenu;
 		unordered_map<int, QAction*> ttmenu;
 		unordered_map<int, tab*> ttabs;
-		int index = 0;
+		int last = 0;
 };
 }
 #endif /* gui_h */

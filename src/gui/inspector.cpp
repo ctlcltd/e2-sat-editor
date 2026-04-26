@@ -66,7 +66,7 @@ void inspector::layout()
 	dial->setObjectName("logInspector");
 	dial->setWindowTitle(tr("Log Inspector", "dialog"));
 	dial->setBaseSize(450, 520);
-	dial->setMinimumSize(450, 240);
+	// dial->setMinimumSize(240, 240);
 	dial->setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
 	dial->setProperty("logInspector_dockable", 0);
 

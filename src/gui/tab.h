@@ -253,12 +253,12 @@ class tab : protected e2se::log_factory
 		QWidget* popup_wid = nullptr;
 		QPoint popup_pos;
 		vector<pair<int, QWidget*>> bubblemsg;
+		QAction* ftp_indt = nullptr;
 
 		unordered_map<string, e2se_ftpcom::ftpcom::ftpcom_file> ftp_files;
 		vector<pair<string, string>> ftp_errors;
 		int stb_reload = 0;
 		unordered_map<string, e2db::e2db_file> files;
-		QAction* ftp_indt = nullptr;
 
 		// stored gui bit flags
 		bitset<256> gxe;

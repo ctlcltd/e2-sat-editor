@@ -436,7 +436,8 @@ void mainView::layout()
 	lwrap->addWidget(lcrn, 0, 0, Qt::AlignTop | Qt::AlignTrailing);
 
 	afrm->setMinimumWidth(250);
-	lfrm->setMinimumWidth(510);
+	lfrm->setMinimumWidth(260);
+	lfrm->setBaseSize(510, 0);
 
 	bbox->addItem(lwrap, 0, 0);
 	bfrm->setLayout(bbox);

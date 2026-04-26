@@ -11,19 +11,19 @@
 
 #include <QWindow>
 #include <QDebug>
+#include <QTimer>
 
 #include "DialogDockWidget.h"
 
 namespace e2se_gui
 {
 
-//TODO FIX QDockWidget split
 DialogDockWidget::DialogDockWidget(QWidget* parent, Qt::WindowFlags flags) : QDockWidget(parent, flags)
 {
 	this->setContextMenuPolicy(Qt::PreventContextMenu);
 
-	connect(this, &DialogDockWidget::dockLocationChanged, this, [=](Qt::DockWidgetArea area) {
-		this->docked = (area != Qt::NoDockWidgetArea);
+	connect(this, &DialogDockWidget::topLevelChanged, this, [=](bool topLevel) {
+		this->docked = ! topLevel;
 	});
 }
 
@@ -34,34 +34,10 @@ void DialogDockWidget::setLayout(QLayout* layout)
 	this->setWidget(wid);
 }
 
-void DialogDockWidget::setWidgetParent(QWidget* parent)
-{
-	if (! this->docked && this->isFloating())
-	{
-		qDebug() << this->objectName() << " floating setWidgetParent";
-
-		this->blockSignals(true);
-		QRect geometry = this->geometry();
-		this->setParent(parent);
-		this->setFloating(true);
-		this->setGeometry(geometry);
-		this->show();
-		this->blockSignals(false);
-	}
-	else
-	{
-		qDebug() << this->objectName() << " not floating setWidgetParent";
-		this->setParent(parent);
-		this->show();
-	}
-}
-
 void DialogDockWidget::raiseWindow()
 {
 	if (! this->docked && this->isFloating())
 	{
-		qDebug() << this->objectName() << " floating raise";
-		qDebug() << this->objectName() << " " << this->dockLocation();
 		this->windowHandle()->requestActivate();
 		this->raise();
 	}
@@ -69,7 +45,6 @@ void DialogDockWidget::raiseWindow()
 
 bool DialogDockWidget::isDocked()
 {
-	qDebug() << this->objectName() << " isDocked: " << this->docked;
 	return this->docked;
 }
 

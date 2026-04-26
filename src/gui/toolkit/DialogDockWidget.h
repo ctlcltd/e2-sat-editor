@@ -22,7 +22,6 @@ class DialogDockWidget : public QDockWidget
 	public:
 		explicit DialogDockWidget(QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags());
 		void setLayout(QLayout* layout);
-		void setWidgetParent(QWidget* widget);
 		void raiseWindow();
 		bool isDocked();
 
