@@ -1076,6 +1076,7 @@ void e2db_parser::parse_e2db_parentallock_list(PARENTALLOCK ltype, istream& ipar
 		// %4x:%4x:%8x
 		std::snprintf(chid, 25, "%x:%x:%x", ref.ssid, ref.tsid, ref.dvbns);
 
+		//TODO TEST
 		if (ref.ssid == 0 && ref.tsid == 0 && ref.dvbns == 0)
 		{
 			size_t pos = line.find(" BOUQUET ");
@@ -1085,6 +1086,7 @@ void e2db_parser::parse_e2db_parentallock_list(PARENTALLOCK ltype, istream& ipar
 				string qs = line.substr(pos);
 				size_t len = qs.size() > 10 && qs.size() <= 301 ? qs.size() - 10 : 1;
 
+				// note: Variable-Length-Arrays C99 pedantic
 				char fname[(len + 1)];
 
 				string format = " BOUQUET %" + to_string(len) + "s ";
@@ -1136,6 +1138,7 @@ void e2db_parser::parse_userbouquet_reference(string str, userbouquet& ub)
 		string qs = str.substr(pos);
 		size_t len = qs.size() > 10 && qs.size() <= 301 ? qs.size() - 10 : 1;
 
+		// note: Variable-Length-Arrays C99 pedantic
 		char fname[(len + 1)];
 		char order[22];
 

@@ -904,6 +904,7 @@ string e2db::msg(string str, string param)
 {
 	string trstr = tr(str.data()).toStdString();
 	size_t tsize = trstr.size() + param.size();
+	// note: Variable-Length-Arrays C99 pedantic
 	char tstr[tsize];
 	std::snprintf(tstr, tsize, trstr.c_str(), param.c_str());
 

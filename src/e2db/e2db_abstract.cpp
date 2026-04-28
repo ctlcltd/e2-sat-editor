@@ -849,7 +849,7 @@ int e2db_abstract::value_transponder_dvbns(YTYPE ytype, int tsid, int onid, int 
 	if (! valid)
 		freqns = freq << 16 >> 16;
 
-	return posns ?: freqns;
+	return posns ? posns : freqns;
 }
 
 /*int e2db_abstract::value_transponder_dvbns(int pos, int onid)

@@ -430,11 +430,11 @@ void console_gui::entry_edit(ENTRY entry_type, bool edit, string id, int ref, st
 		string str = termctl->line();
 		termctl->clear();
 
-		qDebug() << "str:[" << str << "]";
+		// qDebug() << "str:[" << str << "]";
 
 		if (this->value_field(curr.type, str, curr.required, curr.val))
 		{
-			qDebug() << "emplace" << "type:" << curr.type << " str:[" << str << "]";
+			// qDebug() << "emplace" << "type:" << curr.type << " str:[" << str << "]";
 
 			curr.values.emplace(curr.type, str);
 

@@ -132,6 +132,7 @@ size_t logger::size()
 string logger::msg(string str, string param)
 {
 	size_t csize = str.size() + param.size();
+	// note: Variable-Length-Arrays C99 pedantic
 	char cstr[csize];
 	std::snprintf(cstr, csize, str.c_str(), param.c_str());
 

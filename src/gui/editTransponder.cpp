@@ -1045,8 +1045,8 @@ void editTransponder::store()
 			else if (key == "s_t2mi_pid")
 				tx.t2mi_pid = val;
 
-			tx.mispls = tx.mispls ?: tx.isid != -1 || tx.plscode != -1 || tx.plsmode != -1;
-			tx.t2mi = tx.t2mi ?: tx.t2mi_plpid != -1 || tx.t2mi_pid != -1;
+			tx.mispls = tx.mispls || (tx.isid != -1 || tx.plscode != -1 || tx.plsmode != -1);
+			tx.t2mi = tx.t2mi || (tx.t2mi_plpid != -1 || tx.t2mi_pid != -1);
 		}
 		else if (this->state.yx == e2db::YTYPE::terrestrial)
 		{

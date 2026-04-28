@@ -3285,8 +3285,8 @@ void e2db_console::entry_edit_exec(ENTRY entry_type, bool edit, string id, int r
 					tx.t2mi_plpid = any_cast<int>(field(TYPE::t2mi_plpid));
 					tx.t2mi_pid = any_cast<int>(field(TYPE::t2mi_pid));
 
-					tx.mispls = tx.mispls ?: tx.isid != -1 || tx.plscode != -1 || tx.plsmode != -1;
-					tx.t2mi = tx.t2mi ?: tx.t2mi_plpid != -1 || tx.t2mi_pid != -1;
+					tx.mispls = tx.mispls || (tx.isid != -1 || tx.plscode != -1 || tx.plsmode != -1);
+					tx.t2mi = tx.t2mi || (tx.t2mi_plpid != -1 || tx.t2mi_pid != -1);
 				}
 			}
 			else if (tx.ytype == e2db::YTYPE::terrestrial)
