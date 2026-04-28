@@ -9,7 +9,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 find_package(QT NAMES Qt6 REQUIRED COMPONENTS Core)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets PrintSupport)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 set(SOURCES
 	logger/logger.cpp
@@ -59,7 +59,6 @@ set(SOURCES
 	gui/l10n.h
 	gui/mainView.cpp
 	gui/piconsView.cpp
-	gui/printable.cpp
 	gui/settings.cpp
 	gui/tab.cpp
 	gui/theme.cpp
@@ -82,6 +81,5 @@ target_link_options(e2-sat-editor PUBLIC -sASYNCIFY -Os)
 target_link_libraries(e2-sat-editor PUBLIC
 	Qt::Core
 	Qt::Widgets
-	Qt::PrintSupport
 )
 

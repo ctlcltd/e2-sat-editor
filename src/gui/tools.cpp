@@ -1268,9 +1268,21 @@ void tools::console(tab* ttab)
 
 	dwid->connect(dwid, &DialogDockWidget::finished, [=]() {
 		if (ttab != nullptr)
+		{
 			ttab->removePermanentDockWidget(dwid);
 
-		dwid->deleteLater();
+			int ttid = ttab->getTabId();
+
+			if (this->ths.count(ttid))
+			{
+				console_gui* thptr = this->ths.at(ttid);
+
+				if (thptr != nullptr)
+					thptr->detach();
+			}
+
+			dwid->deleteLater();
+		}
 	});
 
 	if (ths.count(ttid))

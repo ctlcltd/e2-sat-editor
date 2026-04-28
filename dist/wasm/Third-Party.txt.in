@@ -37,7 +37,6 @@ The list of libraries in brief:
 qt-core
 qt-gui
 qt-widgets
-qt-printsupport
 qt-imageformats
 qt-svg
 qfusionstyle

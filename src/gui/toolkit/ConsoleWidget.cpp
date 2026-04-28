@@ -73,6 +73,9 @@ void ConsoleWidget::printOutput(const QString text)
 	cursor.insertText(text);
 	this->setTextCursor(cursor);
 	this->ensureCursorVisible();
+
+	if (! this->imval)
+		this->tcpos = cursor.position();
 }
 
 void ConsoleWidget::printErrors(const QString text)
@@ -86,6 +89,8 @@ void ConsoleWidget::printErrors(const QString text)
 	cursor.setCharFormat(QTextCharFormat());
 	this->setTextCursor(cursor);
 	this->ensureCursorVisible();
+
+	this->tcpos = cursor.position();
 }
 
 void ConsoleWidget::printHistory(const Qt::Key key, const QString text)
@@ -94,7 +99,7 @@ void ConsoleWidget::printHistory(const Qt::Key key, const QString text)
 		return;
 
 	QTextCursor cursor = QTextCursor(this->document()->lastBlock());
-	cursor.setPosition(this->tcpos, QTextCursor::MoveAnchor);
+	cursor.setPosition(this->tspos, QTextCursor::MoveAnchor);
 	cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
 	cursor.removeSelectedText();
 	cursor.setCharFormat(QTextCharFormat());
@@ -112,7 +117,7 @@ void ConsoleWidget::printPromptCursor()
 	this->setTextCursor(cursor);
 	this->ensureCursorVisible();
 
-	this->tcpos = cursor.position();
+	this->tspos = this->tcpos = cursor.position();
 }
 
 void ConsoleWidget::printNavigationRuler()
@@ -139,6 +144,7 @@ void ConsoleWidget::printNavigationRuler()
 	this->setTextCursor(cursor);
 	this->ensureCursorVisible();
 
+	this->tcpos = cursor.position();
 	this->nblen = cursor.block().length();
 }
 
@@ -182,6 +188,7 @@ void ConsoleWidget::reset()
 {
 	this->currhr = HANDLE::Command;
 	this->tcpos = 0;
+	this->tspos = 0;
 	this->impos = 0;
 	this->imval = false;
 	this->nbpos = 0;

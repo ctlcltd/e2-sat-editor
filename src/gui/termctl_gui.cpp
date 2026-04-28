@@ -76,15 +76,15 @@ void termctl_gui::callInputCallback(const int key, const QString val)
 	{
 		EVENT e = static_cast<termctl_gui::EVENT>(key);
 
+		if (this->currhr == HANDLE::Command && key != 0)
+			this->callHistory(e, val);
+
 		if (e == EVENT::InputReturn || key == 0)
 		{
 			*is << val.toStdString();
 
 			this->inputCallback();
 		}
-
-		if (this->currhr == HANDLE::Command && key != 0)
-			this->callHistory(e, val);
 	}
 }
 

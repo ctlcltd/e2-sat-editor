@@ -58,6 +58,7 @@ class ConsoleWidget : public QPlainTextEdit
 	private:
 		HANDLE currhr;
 		int tcpos = 0;
+		int tspos = 0;
 		int impos = 0;
 		bool imval = false;
 		int nbpos = 0;

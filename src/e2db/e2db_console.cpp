@@ -3263,6 +3263,7 @@ void e2db_console::entry_edit_exec(ENTRY entry_type, bool edit, string id, int r
 			tx.sys = any_cast<int>(field(TYPE::sys));
 			tx.tsid = any_cast<int>(field(TYPE::tsid, true));
 			tx.onid = any_cast<int>(field(TYPE::onid, true));
+			tx.dvbns = any_cast<int>(field(TYPE::dvbns, false));
 			tx.freq = any_cast<int>(field(TYPE::freq, true));
 
 			if (tx.ytype == e2db::YTYPE::satellite)
@@ -3319,7 +3320,8 @@ void e2db_console::entry_edit_exec(ENTRY entry_type, bool edit, string id, int r
 				tx.flags = any_cast<int>(field(TYPE::flags));
 			}
 
-			tx.dvbns = dbih->value_transponder_dvbns(tx);
+			if (tx.dvbns == 0)
+				tx.dvbns = dbih->value_transponder_dvbns(tx);
 
 			if (edit)
 				dbih->edit_transponder(id, tx);
@@ -3843,7 +3845,7 @@ bool e2db_console::label_field(TYPE type, string &label, string &description)
 		case TYPE::yname: label = "YNAME"; description = "Tuner Name, exact match: s = satellite, t = terrestrial, c = cable, a = atsc"; break;
 		case TYPE::ytype: label = "YTYPE"; description = "Tuner Type, exact match: 0 = satellite, 1 = terrestrial, 2 = cable, 3 = atsc"; break;
 		case TYPE::ssid: label = "SSID"; description = "Service ID, in digits"; break;
-		case TYPE::dvbns: label = "DVBNS"; description = "DVB namespace, in hex"; break;
+		case TYPE::dvbns: label = "DVBNS"; description = "DVB namespace, in hex or <empty>"; break;
 		case TYPE::tsid: label = "TSID"; description = "Transport ID, in digits"; break;
 		case TYPE::onid: label = "ONID"; description = "Network ID, in digits"; break;
 		case TYPE::stype: label = "Service Type"; description = "exact match: Data, TV, Radio, HD, H.264, H.265, UHD"; break;
@@ -4521,6 +4523,7 @@ std::any e2db_console::field(TYPE type, bool required)
 	return -1;
 }
 
+//TODO improve
 map<int, vector<pair<e2db_console::TYPE, bool>>> e2db_console::input_mask(ENTRY entry_type, bool edit, string id, int ref, string bname)
 {
 	map<int, vector<pair<TYPE, bool>>> mask;
@@ -4552,6 +4555,7 @@ map<int, vector<pair<e2db_console::TYPE, bool>>> e2db_console::input_mask(ENTRY 
 			props.emplace_back(pair (TYPE::sys, false));
 			props.emplace_back(pair (TYPE::tsid, true));
 			props.emplace_back(pair (TYPE::onid, true));
+			props.emplace_back(pair (TYPE::dvbns, false));
 			props.emplace_back(pair (TYPE::freq, true));
 
 			{

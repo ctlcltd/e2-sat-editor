@@ -70,7 +70,9 @@
 #include "editBouquet.h"
 #include "editService.h"
 #include "editMarker.h"
+#ifndef Q_OS_WASM
 #include "printable.h"
+#endif
 
 using std::pair, std::stringstream, std::to_string, std::sort;
 
@@ -1267,6 +1269,7 @@ void tab::printFile(bool all)
 	return this->demoMessage();
 #endif
 
+#ifndef Q_OS_WASM
 	gui::TAB_VIEW current = getTabView();
 	printable* printer = new printable(this->cwid, this->data);
 
@@ -1350,6 +1353,7 @@ void tab::printFile(bool all)
 
 	if (statusBarIsVisible())
 		statusBarMessage(tr("Printing …", "message"));
+#endif
 }
 
 void tab::infoFile()
