@@ -10,8 +10,6 @@
  */
 
 #include <QWindow>
-#include <QDebug>
-#include <QTimer>
 
 #include "DialogDockWidget.h"
 

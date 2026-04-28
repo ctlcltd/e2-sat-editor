@@ -89,11 +89,10 @@ class tab : protected e2se::log_factory
 		void addChildTab(tab* child);
 		void removeChildTab(tab* child);
 		int getTabId();
-		void setTabName(string ttname);
-		string getTabName();
+		void setTabName(QString ttname);
+		QString getTabName();
 		gui::TAB_VIEW getTabView();
 		int getTabArgument();
-		string getFilename();
 		void load();
 		void reset();
 		void reload();
@@ -271,7 +270,7 @@ class tab : protected e2se::log_factory
 		vector<tab*> childs;
 		unordered_map<int, QAction*> tbars;
 		int ttid = -1;
-		string ttname;
+		QString ttname;
 };
 }
 #endif /* tab_h */

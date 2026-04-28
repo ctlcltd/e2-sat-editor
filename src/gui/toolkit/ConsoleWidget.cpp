@@ -11,6 +11,8 @@
 
 #include <QApplication>
 #include <QMimeData>
+#include <QPlainTextEdit>
+#include <QTextDocument>
 
 #include "../platforms/platform.h"
 
@@ -26,6 +28,23 @@ ConsoleWidget::ConsoleWidget(QWidget* parent) : QPlainTextEdit(parent)
 	connect(this, &ConsoleWidget::customContextMenuRequested, this, [=](QPoint pos) {
 		this->showContextMenu(pos);
 	}); // moc
+
+	this->setCursorWidth(7);
+	this->setLineWrapMode(QPlainTextEdit::NoWrap);
+	this->setWordWrapMode(QTextOption::NoWrap);
+	this->setAcceptDrops(false);
+	this->setUndoRedoEnabled(false);
+	this->setBackgroundVisible(false);
+	this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+	this->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+	
+	QFont font = QFont ();
+	// reflects qtbase/src/gui/text/qtexthtmlparser.cpp for <pre>
+	font.setFamily(QFontDatabase::systemFont(QFontDatabase::FixedFont).families().constFirst());
+	font.setPixelSize(12);
+	this->document()->setDefaultFont(font);
+
+	// this->setTabStopDistance();
 }
 
 void ConsoleWidget::attachWidget()

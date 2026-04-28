@@ -74,11 +74,7 @@ void inspector::layout()
 	theme->win_flavor_fix(dial);
 #endif
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-	dial->connect(dial, &DialogDockWidget::finished, [=]() { QTimer::singleShot(0, [=]() { this->close(); }); });
-#else
 	dial->connect(dial, &DialogDockWidget::finished, [=]() { this->close(); });
-#endif
 
 	QGridLayout* dfrm = new QGridLayout;
 
@@ -206,8 +202,6 @@ void inspector::inspectReset()
 	this->inspect_curr = INSPECT_FILTER::AllLog;
 }
 
-//TODO TEST
-// note: dial widget assigned to tab widget tab on close
 void inspector::close()
 {
 	if (this->dial == nullptr)

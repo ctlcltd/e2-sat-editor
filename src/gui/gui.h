@@ -509,6 +509,7 @@ class gui : protected e2se::log_factory
 		unordered_map<int, QAction*> gmenu;
 		unordered_map<int, QAction*> ttmenu;
 		unordered_map<int, tab*> ttabs;
+		int count = 0;
 		int last = 0;
 };
 }

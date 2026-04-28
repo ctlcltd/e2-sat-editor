@@ -182,12 +182,12 @@ int tab::getTabId()
 	return this->ttid;
 }
 
-string tab::getTabName()
+QString tab::getTabName()
 {
 	return this->ttname;
 }
 
-void tab::setTabName(string ttname)
+void tab::setTabName(QString ttname)
 {
 	this->ttname = ttname;
 }

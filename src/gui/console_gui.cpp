@@ -13,8 +13,6 @@
 #include <iostream>
 
 #include <QGridLayout>
-#include <QPlainTextEdit>
-#include <QTextDocument>
 
 #include "toolkit/DialogDockWidget.h"
 #include "termctl_gui.h"
@@ -59,21 +57,6 @@ void console_gui::layout(QWidget* parent)
 
 	QGridLayout* frm = new QGridLayout;
 	this->cnt = new ConsoleWidget;
-
-	cnt->setCursorWidth(7);
-	cnt->setLineWrapMode(QPlainTextEdit::NoWrap);
-	cnt->setWordWrapMode(QTextOption::NoWrap);
-	cnt->setAcceptDrops(false);
-	cnt->setUndoRedoEnabled(false);
-	cnt->setBackgroundVisible(false);
-	cnt->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-	cnt->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-
-	// reflects qtbase/src/gui/text/qtexthtmlparser.cpp for <pre>
-	QFont font = QFont (QFontDatabase::systemFont(QFontDatabase::FixedFont).families().constFirst(), 12);
-
-	cnt->document()->setDefaultFont(font);
-	// cnt->setTabStopDistance();
 
 	frm->setContentsMargins(0, 0, 0, 0);
 	frm->addWidget(cnt, 0, 0);

@@ -918,7 +918,7 @@ int gui::newTab(string path, bool launch)
 	bool read = ! path.empty();
 	QString ttname = tr("Untitled", "tab");
 	int index = twid->addTab(ttab->widget, ttname);
-	int count = index;
+	int count = this->count++;
 
 	QAction* action = new QAction(ttname);
 	action->connect(action, &QAction::triggered, [=]() { this->twid->setCurrentWidget(ttab->widget); });
@@ -949,7 +949,8 @@ int gui::newTab(string path, bool launch)
 
 			if (launch)
 			{
-				ttname.append(QString::fromStdString(count ? " " + to_string(count) : ""));
+				if (count)
+					ttname.append(QString::number(count).prepend(" "));
 			}
 			else
 			{
@@ -965,12 +966,13 @@ int gui::newTab(string path, bool launch)
 	}
 	else
 	{
-		ttname.append(QString::fromStdString(count ? " " + to_string(count) : ""));
+		if (count)
+			ttname.append(QString::number(count).prepend(" "));
 	}
 	twid->setTabText(index, ttname);
 	twid->setTabToolTip(index, ttname);
 	action->setText(ttname);
-	ttab->setTabName(ttname.toStdString());
+	ttab->setTabName(ttname);
 
 	twid->setCurrentIndex(index);
 	mwind->addAction(action);
@@ -1030,7 +1032,7 @@ int gui::openTab(TAB_VIEW ttv, int arg, bool rievoke)
 	int curr = twid->tabBar()->currentIndex();
 
 	QIcon tticon;
-	QString ttname = QString::fromStdString(parent->getTabName());
+	QString ttname = parent->getTabName();
 
 	switch (ttv)
 	{
@@ -1076,7 +1078,7 @@ int gui::openTab(TAB_VIEW ttv, int arg, bool rievoke)
 	ttabs.emplace(ttid, ttab);
 
 	twid->setTabToolTip(index, ttname);
-	ttab->setTabName(ttname.toStdString());
+	ttab->setTabName(ttname);
 	twid->setCurrentIndex(index);
 
 	return index;
@@ -1264,8 +1266,8 @@ void gui::changeTabName(int ttid, string path)
 
 	tab* ttab = ttabs[ttid];
 	int index = twid->indexOf(ttab->widget);
-	int count = index;
 	int ttv = ttab->getTabView();
+	int count = this->count;
 
 	QString ttname = tr("Untitled", "tab");
 
@@ -1276,13 +1278,13 @@ void gui::changeTabName(int ttid, string path)
 		if (parent != nullptr)
 		{
 			int ttid = parent->getTabId();
-			count = twid->indexOf(parent->widget);
 			changeTabName(ttid, path);
 		}
 	}
 	if (path.empty())
 	{
-		ttname.append(QString::fromStdString(count ? " " + to_string(count) : ""));
+		if (count)
+			ttname.append(QString::number(count).prepend(" "));
 	}
 	else
 	{
@@ -1310,7 +1312,7 @@ void gui::changeTabName(int ttid, string path)
 	twid->setTabText(index, ttname);
 	twid->setTabToolTip(index, ttname);
 	ttmenu[ttid]->setText(ttname);
-	ttab->setTabName(ttname.toStdString());
+	ttab->setTabName(ttname);
 }
 
 void gui::tabViewChanged(TAB_VIEW ttv)
@@ -2336,6 +2338,7 @@ void gui::launcher()
 	setFlags(GUI_CXE::init);
 
 	this->last = 0;
+	this->count = 0;
 
 	string path = this->ifpath;
 
