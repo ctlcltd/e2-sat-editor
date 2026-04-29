@@ -461,6 +461,8 @@ class gui : protected e2se::log_factory
 		void tabViewChanged(TAB_VIEW ttv);
 		void tabViewChanged(TAB_VIEW ttv, int arg);
 		void tabAction(TAB_ATS action);
+		int tabCount();
+		int tabCount(int index, bool increment);
 		void windowChanged();
 		void addPermanentDockWidget(Qt::DockWidgetArea area, QDockWidget* widget);
 		void removePermanentDockWidget(QDockWidget* widget);

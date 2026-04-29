@@ -8,6 +8,7 @@ Information on contributions, to contribute and send Pull Request, please see [C
 
 **To Fix:**
 
+- [x] channel book dialog, filter service type toggler [gui] [dialChannelBook.cpp] [channelBookView.cpp]
 - [x] dialog message displayed without rich-text feature [gui] [checkUpdate.cpp] [piconsView.cpp]
 - [x] ftp reconnect, after FTP upload timeout [ftp] [ftpcom.cpp]
 - [x] ftp error messages, better message on errors [gui] [tab.cpp]
@@ -45,7 +46,6 @@ Information on contributions, to contribute and send Pull Request, please see [C
 - [x] cli history, load and save [cli] [e2db_termctl.cpp]
 - [ ] service flags and compatibility, `dvbfrontend` [gui] [e2db.cpp]
 - [ ] reference flags and compatibility, `dvbfrontend` [gui] [e2db.cpp]
-- [ ] channel book dialog, service type issue, ex. open from TV, move to Radio [gui] [channelBookView.cpp] [dialChannelBook.cpp]
 - [ ] neutrino feparams and versions, unknown compatibility [gui] [e2db.cpp]
 - [ ] counters accuracy for items, Total, TV, Radio, Data [gui] [tab.cpp]
 - [ ] transponder orbital position column, wrong sorting order A-Z [gui] [viewAbstract.cpp]

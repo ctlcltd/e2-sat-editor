@@ -47,7 +47,7 @@ channelBookView::channelBookView(dataHandler* data, int stype)
 	this->theme = new e2se_gui::theme;
 	this->widget = new QWidget;
 
-	this->state.sy = stype;
+	this->state.sy = this->state.y = stype;
 
 	layout();
 }
@@ -659,6 +659,8 @@ void channelBookView::sideRowChanged(int index)
 void channelBookView::filterChanged(bool enabled)
 {
 	debug("filterChanged", "enabled", enabled);
+
+	this->state.sy = enabled ? this->state.y : -1;
 
 	int i, count;
 

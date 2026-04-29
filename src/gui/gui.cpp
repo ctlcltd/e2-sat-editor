@@ -918,7 +918,7 @@ int gui::newTab(string path, bool launch)
 	bool read = ! path.empty();
 	QString ttname = tr("Untitled", "tab");
 	int index = twid->addTab(ttab->widget, ttname);
-	int count = this->count++;
+	int count = tabCount();
 
 	QAction* action = new QAction(ttname);
 	action->connect(action, &QAction::triggered, [=]() { this->twid->setCurrentWidget(ttab->widget); });
@@ -1267,7 +1267,7 @@ void gui::changeTabName(int ttid, string path)
 	tab* ttab = ttabs[ttid];
 	int index = twid->indexOf(ttab->widget);
 	int ttv = ttab->getTabView();
-	int count = this->count;
+	int count = tabCount(index, path.empty());
 
 	QString ttname = tr("Untitled", "tab");
 
@@ -2136,6 +2136,22 @@ void gui::tabAction(TAB_ATS bit)
 	tab* ttab = getCurrentTabHandler();
 	if (ttab != nullptr)
 		ttab->actionCall(bit);
+}
+
+int gui::tabCount()
+{
+	if (twid->count() == 1)
+		this->count = 0;
+
+	return this->count++;
+}
+
+int gui::tabCount(int index, bool increment)
+{
+	if (twid->count() == 1)
+		this->count = 0;
+
+	return increment ? this->count++ : this->count;
 }
 
 void gui::windowMinimize()

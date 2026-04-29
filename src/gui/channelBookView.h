@@ -44,6 +44,7 @@ class channelBookView : public viewAbstract
 			int vx;
 			// filter for stype
 			int sy = -1;
+			int y = -1;
 			// list_tree sort
 			pair<int, Qt::SortOrder> sort;
 			// pending update from tab
