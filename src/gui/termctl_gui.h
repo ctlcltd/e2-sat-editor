@@ -50,6 +50,10 @@ class termctl_gui : public ::e2se_e2db::termiface
 		virtual void load_history() {}
 		virtual void save_history() {}
 
+		void command(std::function<void()> func)
+		{
+			this->commandCallback = func;
+		}
 		void input(std::function<void()> func)
 		{
 			this->inputCallback = func;
@@ -63,7 +67,7 @@ class termctl_gui : public ::e2se_e2db::termiface
 			std::string input;
 		} curr;
 
-		void callInputCallback(const int key, const QString str);
+		void callHandlerCallback(const int key, const QString str);
 		void callHistory(const EVENT e, const QString str);
 
 	private:
@@ -73,6 +77,7 @@ class termctl_gui : public ::e2se_e2db::termiface
 		std::streampos last;
 		HANDLE currhr;
 		int currkey;
+		std::function<void()> commandCallback;
 		std::function<void()> inputCallback;
 		bool connected = false;
 };

@@ -227,6 +227,7 @@ void tab::tabSwitch()
 				if (! dwid->isDocked() && dwid->isFloating())
 				{
 					dwid->setParent(this->widget);
+					dwid->setFloating(true);
 					dwid->show();
 				}
 			}

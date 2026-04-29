@@ -201,7 +201,7 @@ void console_gui::prompt()
 
 	cnt->printPromptCursor();
 
-	termctl->input([=]() {
+	termctl->command([=]() {
 		string cmd = termctl->token();
 		istream* is = termctl->ptr();
 		termctl->clear();

@@ -52,6 +52,7 @@ termctl_gui::~termctl_gui()
 {
 	widget->disconnect(widget, &ConsoleWidget::input, nullptr, nullptr);
 
+	this->commandCallback = nullptr;
 	this->inputCallback = nullptr;
 
 	//TODO FIX EXC_BAD_ACCESS SEGFAULT
@@ -60,10 +61,12 @@ termctl_gui::~termctl_gui()
 	delete this;
 }
 
-// note: callInputCallback is called asyncronously by QObject widget connected lambda function
-void termctl_gui::callInputCallback(const int key, const QString val)
+// note: callHandlerCallback is called asyncronously by QObject widget connected lambda function
+void termctl_gui::callHandlerCallback(const int key, const QString val)
 {
-	if (! this->inputCallback)
+	if (this->currhr == HANDLE::Command && ! this->commandCallback)
+		return;
+	else if (this->currhr != HANDLE::Command && ! this->inputCallback)
 		return;
 
 	if (this->currhr == HANDLE::Listing)
@@ -83,7 +86,10 @@ void termctl_gui::callInputCallback(const int key, const QString val)
 		{
 			*is << val.toStdString();
 
-			this->inputCallback();
+			if (this->currhr == HANDLE::Command)
+				this->commandCallback();
+			else
+				this->inputCallback();
 		}
 	}
 }
@@ -96,7 +102,7 @@ void termctl_gui::handler(HANDLE handle)
 	if (! this->connected)
 	{
 		widget->connect(widget, &ConsoleWidget::input, widget, [=](const int key, const QString str) {
-			this->callInputCallback(key, str);
+			this->callHandlerCallback(key, str);
 		});
 		this->connected = true;
 	}
