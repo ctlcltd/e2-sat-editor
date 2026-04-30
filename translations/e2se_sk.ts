@@ -3641,6 +3641,11 @@ Dôvod: %1</translation>
         <translation>Chyba pri otváraní súborov.</translation>
     </message>
     <message>
+        <source>Synchronizing ...</source>
+        <comment>toolbar</comment>
+        <translation>Synchronizácia ...</translation>
+    </message>
+    <message>
         <source>The file has been modified</source>
         <comment>message</comment>
         <translation>Súbor bol upravený</translation>
@@ -3971,6 +3976,11 @@ Dôvod: %1</translation>
         <translation>autofix</translation>
     </message>
     <message>
+        <source>Connection</source>
+        <comment>toolbar</comment>
+        <translation>Pripojenie</translation>
+    </message>
+    <message>
         <source>Clean</source>
         <comment>menu</comment>
         <translation>Upratovanie</translation>
@@ -4244,6 +4254,11 @@ Dôvod: %1</translation>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>Kontrola Log</translation>
+    </message>
+    <message>
+        <source>FTP Error</source>
+        <comment>toolbar</comment>
+        <translation>Chyba FTP</translation>
     </message>
     <message>
         <source>Utils Error</source>

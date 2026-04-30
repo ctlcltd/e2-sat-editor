@@ -3636,6 +3636,11 @@ Reason: %1</source>
         <translation>打開文件時出錯。</translation>
     </message>
     <message>
+        <source>Synchronizing ...</source>
+        <comment>toolbar</comment>
+        <translation>同步 …</translation>
+    </message>
+    <message>
         <source>The file has been modified</source>
         <comment>message</comment>
         <translation>文件已被修改</translation>
@@ -3962,6 +3967,11 @@ Reason: %1</source>
         <translation>自動修復</translation>
     </message>
     <message>
+        <source>Connection</source>
+        <comment>toolbar</comment>
+        <translation>聯繫</translation>
+    </message>
+    <message>
         <source>Clean</source>
         <comment>menu</comment>
         <translation>乾淨的</translation>
@@ -4235,6 +4245,11 @@ Reason: %1</source>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>檢查日誌</translation>
+    </message>
+    <message>
+        <source>FTP Error</source>
+        <comment>toolbar</comment>
+        <translation>錯誤 FTP</translation>
     </message>
     <message>
         <source>Utils Error</source>

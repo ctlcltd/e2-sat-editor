@@ -3642,6 +3642,11 @@ Razlog: %1</translation>
         <translation>Napaka pri odpiranju datotek.</translation>
     </message>
     <message>
+        <source>Synchronizing ...</source>
+        <comment>toolbar</comment>
+        <translation>Sinhronizacija ...</translation>
+    </message>
+    <message>
         <source>The file has been modified</source>
         <comment>message</comment>
         <translation>Datoteka je bila spremenjena</translation>
@@ -3974,6 +3979,11 @@ Razlog: %1</translation>
         <translation>autofix</translation>
     </message>
     <message>
+        <source>Connection</source>
+        <comment>toolbar</comment>
+        <translation>Povezava</translation>
+    </message>
+    <message>
         <source>Clean</source>
         <comment>menu</comment>
         <translation>Čiščenje</translation>
@@ -4247,6 +4257,11 @@ Razlog: %1</translation>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>Inšpekcija Log</translation>
+    </message>
+    <message>
+        <source>FTP Error</source>
+        <comment>toolbar</comment>
+        <translation>Napaka FTP</translation>
     </message>
     <message>
         <source>Utils Error</source>

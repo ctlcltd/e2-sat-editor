@@ -3650,6 +3650,11 @@ Motivo: %1</translation>
         <translation>Errore di scrittura su file &quot;%1&quot;.</translation>
     </message>
     <message>
+        <source>Synchronizing ...</source>
+        <comment>toolbar</comment>
+        <translation>Sincronia ...</translation>
+    </message>
+    <message>
         <source>The file has been modified</source>
         <comment>message</comment>
         <translation>Il file è stato modificato</translation>
@@ -3968,6 +3973,11 @@ Motivo: %1</translation>
         <translation>autofix</translation>
     </message>
     <message>
+        <source>Connection</source>
+        <comment>toolbar</comment>
+        <translation>Connessione</translation>
+    </message>
+    <message>
         <source>Clean</source>
         <comment>menu</comment>
         <translation>Pulizia</translation>
@@ -4241,6 +4251,11 @@ Motivo: %1</translation>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>Ispeziona Log</translation>
+    </message>
+    <message>
+        <source>FTP Error</source>
+        <comment>toolbar</comment>
+        <translation>Errore FTP</translation>
     </message>
     <message>
         <source>Utils Error</source>

@@ -3640,6 +3640,11 @@ Motiu: %1</translation>
         <translation>S&apos;ha produït un error en obrir els fitxers.</translation>
     </message>
     <message>
+        <source>Synchronizing ...</source>
+        <comment>toolbar</comment>
+        <translation>Sincronitzant ...</translation>
+    </message>
+    <message>
         <source>The file has been modified</source>
         <comment>message</comment>
         <translation>El fitxer ha estat modificat</translation>
@@ -3968,6 +3973,11 @@ Motiu: %1</translation>
         <translation>autofix</translation>
     </message>
     <message>
+        <source>Connection</source>
+        <comment>toolbar</comment>
+        <translation>Connexió</translation>
+    </message>
+    <message>
         <source>Clean</source>
         <comment>menu</comment>
         <translation>Neteja</translation>
@@ -4241,6 +4251,11 @@ Motiu: %1</translation>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>Inspecció Log</translation>
+    </message>
+    <message>
+        <source>FTP Error</source>
+        <comment>toolbar</comment>
+        <translation>Error FTP</translation>
     </message>
     <message>
         <source>Utils Error</source>

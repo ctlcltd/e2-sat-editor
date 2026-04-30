@@ -3637,6 +3637,11 @@ Reason: %1</source>
         <translation>파일을 여는 중 오류가 발생했습니다.</translation>
     </message>
     <message>
+        <source>Synchronizing ...</source>
+        <comment>toolbar</comment>
+        <translation>동기화 ...</translation>
+    </message>
+    <message>
         <source>The file has been modified</source>
         <comment>message</comment>
         <translation>파일이 수정되었습니다</translation>
@@ -3963,6 +3968,11 @@ Reason: %1</source>
         <translation>자동 수정</translation>
     </message>
     <message>
+        <source>Connection</source>
+        <comment>toolbar</comment>
+        <translation>연결</translation>
+    </message>
+    <message>
         <source>Clean</source>
         <comment>menu</comment>
         <translation>깨끗한</translation>
@@ -4236,6 +4246,11 @@ Reason: %1</source>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>로그 검사</translation>
+    </message>
+    <message>
+        <source>FTP Error</source>
+        <comment>toolbar</comment>
+        <translation>FTP 오류</translation>
     </message>
     <message>
         <source>Utils Error</source>

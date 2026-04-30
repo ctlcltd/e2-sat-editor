@@ -3640,6 +3640,11 @@ Důvod: %1</translation>
         <translation>Při otevírání souborů došlo k chybě.</translation>
     </message>
     <message>
+        <source>Synchronizing ...</source>
+        <comment>toolbar</comment>
+        <translation>Synchronizace ...</translation>
+    </message>
+    <message>
         <source>The file has been modified</source>
         <comment>message</comment>
         <translation>Soubor byl změněn</translation>
@@ -3970,6 +3975,11 @@ Důvod: %1</translation>
         <translation>autofix</translation>
     </message>
     <message>
+        <source>Connection</source>
+        <comment>toolbar</comment>
+        <translation>Spojení</translation>
+    </message>
+    <message>
         <source>Clean</source>
         <comment>menu</comment>
         <translation>Čištění</translation>
@@ -4243,6 +4253,11 @@ Důvod: %1</translation>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>Inspekce Log</translation>
+    </message>
+    <message>
+        <source>FTP Error</source>
+        <comment>toolbar</comment>
+        <translation>Chyba FTP</translation>
     </message>
     <message>
         <source>Utils Error</source>

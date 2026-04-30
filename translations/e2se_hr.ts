@@ -3643,6 +3643,11 @@ Razlog: %1</translation>
         <translation>Pogreška pri otvaranju datoteka.</translation>
     </message>
     <message>
+        <source>Synchronizing ...</source>
+        <comment>toolbar</comment>
+        <translation>Sinkronizacija ...</translation>
+    </message>
+    <message>
         <source>The file has been modified</source>
         <comment>message</comment>
         <translation>Datoteka je izmijenjena</translation>
@@ -3973,6 +3978,11 @@ Razlog: %1</translation>
         <translation>autofix</translation>
     </message>
     <message>
+        <source>Connection</source>
+        <comment>toolbar</comment>
+        <translation>Veza</translation>
+    </message>
+    <message>
         <source>Clean</source>
         <comment>menu</comment>
         <translation>Čišćenje</translation>
@@ -4246,6 +4256,11 @@ Razlog: %1</translation>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>Inspekcija Log</translation>
+    </message>
+    <message>
+        <source>FTP Error</source>
+        <comment>toolbar</comment>
+        <translation>FTP Greška</translation>
     </message>
     <message>
         <source>Utils Error</source>

@@ -3641,6 +3641,11 @@ Reason: %1</source>
         <translation>Грешка при отваряне на файлове.</translation>
     </message>
     <message>
+        <source>Synchronizing ...</source>
+        <comment>toolbar</comment>
+        <translation>Синхронизация ...</translation>
+    </message>
+    <message>
         <source>The file has been modified</source>
         <comment>message</comment>
         <translation>Файлът е променен</translation>
@@ -3969,6 +3974,11 @@ Reason: %1</source>
         <translation>автофиксирани</translation>
     </message>
     <message>
+        <source>Connection</source>
+        <comment>toolbar</comment>
+        <translation>Връзка</translation>
+    </message>
+    <message>
         <source>Clean</source>
         <comment>menu</comment>
         <translation>Чисто</translation>
@@ -4242,6 +4252,11 @@ Reason: %1</source>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>Проверка дневника</translation>
+    </message>
+    <message>
+        <source>FTP Error</source>
+        <comment>toolbar</comment>
+        <translation>FTP грешка</translation>
     </message>
     <message>
         <source>Utils Error</source>

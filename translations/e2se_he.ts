@@ -3639,6 +3639,11 @@ Reason: %1</source>
         <translation>שגיאה בפתיחת קבצים.</translation>
     </message>
     <message>
+        <source>Synchronizing ...</source>
+        <comment>toolbar</comment>
+        <translation>סנכרון ...</translation>
+    </message>
+    <message>
         <source>The file has been modified</source>
         <comment>message</comment>
         <translation>הקובץ השתנה</translation>
@@ -3967,6 +3972,11 @@ Reason: %1</source>
         <translation>תיקון אוטומטי</translation>
     </message>
     <message>
+        <source>Connection</source>
+        <comment>toolbar</comment>
+        <translation>חיבור</translation>
+    </message>
+    <message>
         <source>Clean</source>
         <comment>menu</comment>
         <translation>לְנַקוֹת</translation>
@@ -4240,6 +4250,11 @@ Reason: %1</source>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>בדוק יומן</translation>
+    </message>
+    <message>
+        <source>FTP Error</source>
+        <comment>toolbar</comment>
+        <translation>שגיאת FTP</translation>
     </message>
     <message>
         <source>Utils Error</source>

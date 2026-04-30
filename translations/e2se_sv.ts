@@ -3633,6 +3633,11 @@ Orsak: %1</translation>
         <translation>Det gick inte att öppna filer.</translation>
     </message>
     <message>
+        <source>Synchronizing ...</source>
+        <comment>toolbar</comment>
+        <translation>Synkronisering ...</translation>
+    </message>
+    <message>
         <source>The file has been modified</source>
         <comment>message</comment>
         <translation>Filen har ändrats</translation>
@@ -3961,6 +3966,11 @@ Orsak: %1</translation>
         <translation>autofix</translation>
     </message>
     <message>
+        <source>Connection</source>
+        <comment>toolbar</comment>
+        <translation>Förbindelse</translation>
+    </message>
+    <message>
         <source>Clean</source>
         <comment>menu</comment>
         <translation>Rengöring</translation>
@@ -4234,6 +4244,11 @@ Orsak: %1</translation>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>Log Inspektör</translation>
+    </message>
+    <message>
+        <source>FTP Error</source>
+        <comment>toolbar</comment>
+        <translation>FTP Fel</translation>
     </message>
     <message>
         <source>Utils Error</source>

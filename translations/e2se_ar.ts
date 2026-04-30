@@ -3644,6 +3644,11 @@ Reason: %1</source>
         <translation>خطأ في فتح الملفات.</translation>
     </message>
     <message>
+        <source>Synchronizing ...</source>
+        <comment>toolbar</comment>
+        <translation>التزامن ...</translation>
+    </message>
+    <message>
         <source>The file has been modified</source>
         <comment>message</comment>
         <translation>تم تعديل الملف</translation>
@@ -3980,6 +3985,11 @@ Reason: %1</source>
         <translation>إصلاح تلقائي</translation>
     </message>
     <message>
+        <source>Connection</source>
+        <comment>toolbar</comment>
+        <translation>اتصال</translation>
+    </message>
+    <message>
         <source>Clean</source>
         <comment>menu</comment>
         <translation>ينظف</translation>
@@ -4253,6 +4263,11 @@ Reason: %1</source>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>فحص السجل</translation>
+    </message>
+    <message>
+        <source>FTP Error</source>
+        <comment>toolbar</comment>
+        <translation>خطأ FTP</translation>
     </message>
     <message>
         <source>Utils Error</source>

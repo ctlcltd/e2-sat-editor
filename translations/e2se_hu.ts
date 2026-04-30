@@ -3640,6 +3640,11 @@ Ok: %1</translation>
         <translation>Hiba a fájlok megnyitásakor.</translation>
     </message>
     <message>
+        <source>Synchronizing ...</source>
+        <comment>toolbar</comment>
+        <translation>Szinkronizálás ...</translation>
+    </message>
+    <message>
         <source>The file has been modified</source>
         <comment>message</comment>
         <translation>A fájl módosult</translation>
@@ -3966,6 +3971,11 @@ Ok: %1</translation>
         <translation>autofix</translation>
     </message>
     <message>
+        <source>Connection</source>
+        <comment>toolbar</comment>
+        <translation>Kapcsolat</translation>
+    </message>
+    <message>
         <source>Clean</source>
         <comment>menu</comment>
         <translation>Tisztítás</translation>
@@ -4239,6 +4249,11 @@ Ok: %1</translation>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>Log Ellenőr</translation>
+    </message>
+    <message>
+        <source>FTP Error</source>
+        <comment>toolbar</comment>
+        <translation>FTP Hiba</translation>
     </message>
     <message>
         <source>Utils Error</source>

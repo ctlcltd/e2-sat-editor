@@ -3642,6 +3642,11 @@ Powód: %1</translation>
         <translation>Błąd podczas otwierania plików.</translation>
     </message>
     <message>
+        <source>Synchronizing ...</source>
+        <comment>toolbar</comment>
+        <translation>Synchronizacja ...</translation>
+    </message>
+    <message>
         <source>The file has been modified</source>
         <comment>message</comment>
         <translation>Plik został zmodyfikowany</translation>
@@ -3972,6 +3977,11 @@ Powód: %1</translation>
         <translation>autopoprawka</translation>
     </message>
     <message>
+        <source>Connection</source>
+        <comment>toolbar</comment>
+        <translation>Połączenie</translation>
+    </message>
+    <message>
         <source>Clean</source>
         <comment>menu</comment>
         <translation>Czyszczenie</translation>
@@ -4245,6 +4255,11 @@ Powód: %1</translation>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>Kontrola Logów</translation>
+    </message>
+    <message>
+        <source>FTP Error</source>
+        <comment>toolbar</comment>
+        <translation>Błąd FTP</translation>
     </message>
     <message>
         <source>Utils Error</source>

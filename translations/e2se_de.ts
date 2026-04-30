@@ -3641,6 +3641,11 @@ Grund: %1</translation>
         <translation>Fehler beim Öffnen der Dateien.</translation>
     </message>
     <message>
+        <source>Synchronizing ...</source>
+        <comment>toolbar</comment>
+        <translation>Synchronisation ...</translation>
+    </message>
+    <message>
         <source>The file has been modified</source>
         <comment>message</comment>
         <translation>Die Datei wurde geändert</translation>
@@ -3969,6 +3974,11 @@ Grund: %1</translation>
         <translation>autofix</translation>
     </message>
     <message>
+        <source>Connection</source>
+        <comment>toolbar</comment>
+        <translation>Verbindung</translation>
+    </message>
+    <message>
         <source>Clean</source>
         <comment>menu</comment>
         <translation>Reinigung</translation>
@@ -4242,6 +4252,11 @@ Grund: %1</translation>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>Log Inspector</translation>
+    </message>
+    <message>
+        <source>FTP Error</source>
+        <comment>toolbar</comment>
+        <translation>FTP-Fehler</translation>
     </message>
     <message>
         <source>Utils Error</source>

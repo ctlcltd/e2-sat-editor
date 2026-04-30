@@ -3639,6 +3639,11 @@ Reason: %1</source>
         <translation>Fejl ved åbning af filer.</translation>
     </message>
     <message>
+        <source>Synchronizing ...</source>
+        <comment>toolbar</comment>
+        <translation>Synkronisering ...</translation>
+    </message>
+    <message>
         <source>The file has been modified</source>
         <comment>message</comment>
         <translation>Filen er blevet ændret</translation>
@@ -3967,6 +3972,11 @@ Reason: %1</source>
         <translation>autofix</translation>
     </message>
     <message>
+        <source>Connection</source>
+        <comment>toolbar</comment>
+        <translation>Forbindelse</translation>
+    </message>
+    <message>
         <source>Clean</source>
         <comment>menu</comment>
         <translation>Rensning</translation>
@@ -4240,6 +4250,11 @@ Reason: %1</source>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>Log Inspektør</translation>
+    </message>
+    <message>
+        <source>FTP Error</source>
+        <comment>toolbar</comment>
+        <translation>FTP Fejl</translation>
     </message>
     <message>
         <source>Utils Error</source>

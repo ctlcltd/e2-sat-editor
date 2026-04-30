@@ -3641,6 +3641,11 @@ Reden: %1</translation>
         <translation>Fout bij openen van bestanden.</translation>
     </message>
     <message>
+        <source>Synchronizing ...</source>
+        <comment>toolbar</comment>
+        <translation>Synchronisatie ...</translation>
+    </message>
+    <message>
         <source>The file has been modified</source>
         <comment>message</comment>
         <translation>Het bestand is aangepast</translation>
@@ -3969,6 +3974,11 @@ Reden: %1</translation>
         <translation>autofix</translation>
     </message>
     <message>
+        <source>Connection</source>
+        <comment>toolbar</comment>
+        <translation>Verbinding</translation>
+    </message>
+    <message>
         <source>Clean</source>
         <comment>menu</comment>
         <translation>Schoonmaak</translation>
@@ -4242,6 +4252,11 @@ Reden: %1</translation>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>Log Inspector</translation>
+    </message>
+    <message>
+        <source>FTP Error</source>
+        <comment>toolbar</comment>
+        <translation>FTP Fout</translation>
     </message>
     <message>
         <source>Utils Error</source>

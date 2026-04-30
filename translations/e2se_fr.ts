@@ -3642,6 +3642,11 @@ Raison : %1</translation>
         <translation>Erreur lors de l&apos;ouverture des fichiers.</translation>
     </message>
     <message>
+        <source>Synchronizing ...</source>
+        <comment>toolbar</comment>
+        <translation>Synchronie ...</translation>
+    </message>
+    <message>
         <source>The file has been modified</source>
         <comment>message</comment>
         <translation>Le fichier a été modifié</translation>
@@ -3970,6 +3975,11 @@ Raison : %1</translation>
         <translation>autofix</translation>
     </message>
     <message>
+        <source>Connection</source>
+        <comment>toolbar</comment>
+        <translation>Connexion</translation>
+    </message>
+    <message>
         <source>Clean</source>
         <comment>menu</comment>
         <translation>Nettoyage</translation>
@@ -4243,6 +4253,11 @@ Raison : %1</translation>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>Inspection Log</translation>
+    </message>
+    <message>
+        <source>FTP Error</source>
+        <comment>toolbar</comment>
+        <translation>Erreur FTP</translation>
     </message>
     <message>
         <source>Utils Error</source>

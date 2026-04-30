@@ -3640,6 +3640,11 @@ Motivo: %1</translation>
         <translation>Erro ao abrir arquivos.</translation>
     </message>
     <message>
+        <source>Synchronizing ...</source>
+        <comment>toolbar</comment>
+        <translation>Sincronia ...</translation>
+    </message>
+    <message>
         <source>The file has been modified</source>
         <comment>message</comment>
         <translation>O arquivo foi modificado</translation>
@@ -3968,6 +3973,11 @@ Motivo: %1</translation>
         <translation>autofix</translation>
     </message>
     <message>
+        <source>Connection</source>
+        <comment>toolbar</comment>
+        <translation>Conexão</translation>
+    </message>
+    <message>
         <source>Clean</source>
         <comment>menu</comment>
         <translation>Limpeza</translation>
@@ -4241,6 +4251,11 @@ Motivo: %1</translation>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>Inspeção Log</translation>
+    </message>
+    <message>
+        <source>FTP Error</source>
+        <comment>toolbar</comment>
+        <translation>Erro FTP</translation>
     </message>
     <message>
         <source>Utils Error</source>

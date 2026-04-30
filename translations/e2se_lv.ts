@@ -3640,6 +3640,11 @@ Iemesls: %1</translation>
         <translation>Kļūda atverot failus.</translation>
     </message>
     <message>
+        <source>Synchronizing ...</source>
+        <comment>toolbar</comment>
+        <translation>Sinhronizācija ...</translation>
+    </message>
+    <message>
         <source>The file has been modified</source>
         <comment>message</comment>
         <translation>Fails ir modificēts</translation>
@@ -3970,6 +3975,11 @@ Iemesls: %1</translation>
         <translation>autofix</translation>
     </message>
     <message>
+        <source>Connection</source>
+        <comment>toolbar</comment>
+        <translation>Savienojums</translation>
+    </message>
+    <message>
         <source>Clean</source>
         <comment>menu</comment>
         <translation>Tīrīšana</translation>
@@ -4243,6 +4253,11 @@ Iemesls: %1</translation>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>Log Inspekt</translation>
+    </message>
+    <message>
+        <source>FTP Error</source>
+        <comment>toolbar</comment>
+        <translation>FTP Kļūda</translation>
     </message>
     <message>
         <source>Utils Error</source>

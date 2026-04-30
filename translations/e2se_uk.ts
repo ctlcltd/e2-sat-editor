@@ -3643,6 +3643,11 @@ Reason: %1</source>
         <translation>Помилка відкриття файлів.</translation>
     </message>
     <message>
+        <source>Synchronizing ...</source>
+        <comment>toolbar</comment>
+        <translation>Синхронізація ...</translation>
+    </message>
+    <message>
         <source>The file has been modified</source>
         <comment>message</comment>
         <translation>Файл було змінено</translation>
@@ -3973,6 +3978,11 @@ Reason: %1</source>
         <translation>автофікс</translation>
     </message>
     <message>
+        <source>Connection</source>
+        <comment>toolbar</comment>
+        <translation>Підключення</translation>
+    </message>
+    <message>
         <source>Clean</source>
         <comment>menu</comment>
         <translation>Чистий</translation>
@@ -4246,6 +4256,11 @@ Reason: %1</source>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>Перевірити журнал</translation>
+    </message>
+    <message>
+        <source>FTP Error</source>
+        <comment>toolbar</comment>
+        <translation>Помилка FTP</translation>
     </message>
     <message>
         <source>Utils Error</source>

@@ -3635,6 +3635,11 @@ Reason: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Synchronizing ...</source>
+        <comment>toolbar</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>The destination contains files that will be overwritten.</source>
         <comment>message</comment>
         <translation type="unfinished"></translation>
@@ -3958,6 +3963,11 @@ Reason: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Connection</source>
+        <comment>toolbar</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Clean</source>
         <comment>menu</comment>
         <translation type="unfinished"></translation>
@@ -4230,6 +4240,11 @@ Reason: %1</source>
     <message>
         <source>Log Inspector</source>
         <comment>menu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FTP Error</source>
+        <comment>toolbar</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>

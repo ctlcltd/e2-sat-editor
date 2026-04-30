@@ -3194,11 +3194,11 @@ void tab::ftpConnectionIndicator(FTP_STATUS status)
 		{
 			case FTP_STATUS::ftpSyncronizing:
 				label->setPixmap(theme::icon("sync-synchronizing", theme::icon_highlight).pixmap(18, 18));
-				action->setWhatsThis(tr("Connection", "error"));
+				action->setWhatsThis(tr("Synchronizing ...", "toolbar"));
 			break;
 			case FTP_STATUS::ftpError:
 				label->setPixmap(theme::icon("sync-error", theme::icon_highlight).pixmap(18, 18));
-				action->setWhatsThis(tr("FTP Error", "error"));
+				action->setWhatsThis(tr("FTP Error", "toolbar"));
 			break;
 			default:
 				label->setPixmap(QIcon().pixmap(18, 18));

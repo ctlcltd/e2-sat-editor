@@ -3640,6 +3640,11 @@ Reason: %1</source>
         <translation>ファイルを開くときにエラーが発生しました。</translation>
     </message>
     <message>
+        <source>Synchronizing ...</source>
+        <comment>toolbar</comment>
+        <translation>同期 ...</translation>
+    </message>
+    <message>
         <source>The file has been modified</source>
         <comment>message</comment>
         <translation>ファイルが変更されました</translation>
@@ -3966,6 +3971,11 @@ Reason: %1</source>
         <translation>自動修正</translation>
     </message>
     <message>
+        <source>Connection</source>
+        <comment>toolbar</comment>
+        <translation>繋がり</translation>
+    </message>
+    <message>
         <source>Clean</source>
         <comment>menu</comment>
         <translation>クリーン</translation>
@@ -4239,6 +4249,11 @@ Reason: %1</source>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>ログを検査する</translation>
+    </message>
+    <message>
+        <source>FTP Error</source>
+        <comment>toolbar</comment>
+        <translation>FTPエラー</translation>
     </message>
     <message>
         <source>Utils Error</source>

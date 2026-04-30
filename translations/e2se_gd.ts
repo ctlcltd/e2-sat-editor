@@ -3643,6 +3643,11 @@ Adhbhar: %1</translation>
         <translation>Thachair mearachd le fosgladh fhaidhlichean.</translation>
     </message>
     <message>
+        <source>Synchronizing ...</source>
+        <comment>toolbar</comment>
+        <translation>Sioncronachadh ...</translation>
+    </message>
+    <message>
         <source>The file has been modified</source>
         <comment>message</comment>
         <translation>Chaidh am faidhle atharrachadh</translation>
@@ -3975,6 +3980,11 @@ Adhbhar: %1</translation>
         <translation>fèin-fix</translation>
     </message>
     <message>
+        <source>Connection</source>
+        <comment>toolbar</comment>
+        <translation>Ceangal</translation>
+    </message>
+    <message>
         <source>Clean</source>
         <comment>menu</comment>
         <translation>Glanadh</translation>
@@ -4248,6 +4258,11 @@ Adhbhar: %1</translation>
         <source>Log Inspector</source>
         <comment>menu</comment>
         <translation>Sgrùdadh Log</translation>
+    </message>
+    <message>
+        <source>FTP Error</source>
+        <comment>toolbar</comment>
+        <translation>Mearachd FTP</translation>
     </message>
     <message>
         <source>Utils Error</source>
