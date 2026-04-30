@@ -3193,19 +3193,11 @@ void tab::ftpConnectionIndicator(FTP_STATUS status)
 		switch (status)
 		{
 			case FTP_STATUS::ftpSyncronizing:
-#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
-				label->setPixmap(QIcon::fromTheme(QIcon::ThemeIcon::SyncSynchronizing).pixmap(18, 18));
-#else
-				label->setPixmap(QIcon::fromTheme("sync-synchronizing").pixmap(18, 18));
-#endif
+				label->setPixmap(theme::icon("sync-synchronizing", theme::icon_highlight).pixmap(18, 18));
 				action->setWhatsThis(tr("Connection", "error"));
 			break;
 			case FTP_STATUS::ftpError:
-#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
-				label->setPixmap(QIcon::fromTheme(QIcon::ThemeIcon::SyncError).pixmap(18, 18));
-#else
-				label->setPixmap(QIcon::fromTheme("sync-error").pixmap(18, 18));
-#endif
+				label->setPixmap(theme::icon("sync-error", theme::icon_highlight).pixmap(18, 18));
 				action->setWhatsThis(tr("FTP Error", "error"));
 			break;
 			default:

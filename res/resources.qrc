@@ -29,6 +29,8 @@
 	<file>icons/services-sets-menu.png</file>
 	<file>icons/settings.png</file>
 	<file>icons/show.png</file>
+	<file>icons/sync-error.png</file>
+	<file>icons/sync-synchronizing.png</file>
 	<file>icons/transponders-view.png</file>
 	<file>icons/tunersets-view.png</file>
 </qresource>
