@@ -12,7 +12,7 @@ All notable changes to this project will be documented in this file.
 - Bugfix and improvements
 - Transponder frequency and symbol-rate precision
 - Channel list format and conversion, better visual feedback
-- New: Console for non-graphical edit
+- New: prompt-like Console for textual edits
 - Dockable Console and Log Inspector
 - CLI improvements: tools, macro
 - FTP connection indicator

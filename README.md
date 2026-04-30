@@ -10,6 +10,8 @@ It has tab navigation with global Cut-Copy-Paste support; Drag and Drop support;
 
 **Utils:** Error Checker, Autofix, remove duplicates, fix and remove parameters and flags, Sort channels and bouquets.
 
+**New:** prompt-like Console (example: `add transponder` `list services` …) for step-by-step edits.
+
 It supports both Enigma2, Lamedb 4 and Lamedb 5 formats (2.4 and 2.5) and Enigma1 (2.3 and 2.2).
 
 And it supports also Neutrino xml (api v1, v2, v3, v4).

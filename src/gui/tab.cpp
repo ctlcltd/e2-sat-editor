@@ -561,7 +561,7 @@ void tab::layout()
 	tbars[gui::FileImport] = toolBarAction(top_toolbar, tr("Import", "toolbar"), theme->dynamicIcon("file-import"), [=]() { this->importFile(); });
 	tbars[gui::FileExport] = toolBarAction(top_toolbar, tr("Export", "toolbar"), theme->dynamicIcon("file-export"), [=]() { this->exportFile(); });
 	toolBarSeparator(top_toolbar);
-	toolBarAction(top_toolbar, tr("Settings", "toolbar"), theme->dynamicIcon("settings"), [=]() { this->settingsDialog(); });
+	tbars[gui::Settings] = toolBarAction(top_toolbar, tr("Settings", "toolbar"), theme->dynamicIcon("settings"), [=]() { this->settingsDialog(); });
 	toolBarSpacer(top_toolbar);
 	{
 		QLabel* label = new QLabel;
@@ -574,11 +574,11 @@ void tab::layout()
 		this->ftp_indt = action;
 	}
 	toolBarWidget(top_toolbar, tr("Select profile", "toolbar"), ftp_combo, [=]() { ftp_combo->showPopup(); });
-	toolBarAction(top_toolbar, tr("Connect", "toolbar"), [=]() { this->ftpConnect(); });
-	toolBarAction(top_toolbar, tr("Disconnect", "toolbar"), [=]() { this->ftpDisconnect(); });
+	tbars[gui::FtpConnect] = toolBarAction(top_toolbar, tr("Connect", "toolbar"), [=]() { this->ftpConnect(); });
+	tbars[gui::FtpDisconnect] = toolBarAction(top_toolbar, tr("Disconnect", "toolbar"), [=]() { this->ftpDisconnect(); });
 	toolBarSeparator(top_toolbar);
-	toolBarAction(top_toolbar, tr("Upload", "toolbar"), [=]() { this->ftpUpload(); });
-	toolBarAction(top_toolbar, tr("Download", "toolbar"), [=]() { this->ftpDownload(); });
+	tbars[gui::FtpUpload] = toolBarAction(top_toolbar, tr("Upload", "toolbar"), [=]() { this->ftpUpload(); });
+	tbars[gui::FtpDownload] = toolBarAction(top_toolbar, tr("Download", "toolbar"), [=]() { this->ftpDownload(); });
 
 	bool DEMO = false;
 #ifdef E2SE_DEMO

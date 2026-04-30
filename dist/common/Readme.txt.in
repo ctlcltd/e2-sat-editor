@@ -11,7 +11,10 @@ built-in Picons editor; tools for sorting and management of channel lists;
 non-destructive editing; dark and light themes.
 
 Utils: Error Checker, Autofix, remove duplicates, fix and remove parameters 
-and flags, Sort channels and bouquets, Console [NEW].
+and flags, Sort channels and bouquets.
+
+New: prompt-like Console (example: add transponder, list services, …) for 
+step-by-step edits.
 
 It supports both Enigma2, Lamedb 4 and Lamedb 5 formats (2.4 and 2.5)
 and Enigma1 (2.3 and 2.2).

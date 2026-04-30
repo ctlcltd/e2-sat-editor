@@ -17,6 +17,7 @@ There are several points To Do and To Evaluate.
 - [ ] tools duplicates, check for duplicate tunersets [tools.cpp] [e2db.cpp]
 - [ ] log inspector text filter, with regular expression, eg. `/e2db/` [gui]
 - [ ] multi-window GUI [gui] [gui.cpp] [tab.cpp]
+- [x] console, similar to a browser inspector [gui] [e2db_console.cpp] [termctl_gui.cpp] [console_gui.cpp]
 - [x] improve management of duplicate channels [gui] [mainView.cpp] [editService.cpp]
 - [x] mirror transponders Lamedb|XML [gui] [e2db.cpp] [tools.cpp]
 - [x] calculate dvbns namespace [gui] [e2db.cpp] [editService.cpp] [tools.cpp]
@@ -50,6 +51,8 @@ See [Automated Build](https://github.com/ctlcltd/e2-sat-editor/discussions/17) d
 
 
 ## Console
+
+✅ Done, in version 2.0.0
 
 Console will look similar to a browser inspector. Scripting will be achivied exposing the `e2db_cli` API with a `gui` counterpart.
 

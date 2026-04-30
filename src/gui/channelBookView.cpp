@@ -787,6 +787,8 @@ void channelBookView::updateFlags()
 
 	tabSetFlag(gui::FileImport, false);
 	tabSetFlag(gui::FileExport, false);
+	tabSetFlag(gui::FtpUpload, false);
+	tabSetFlag(gui::FtpDownload, false);
 	tabUpdateToolBars();
 
 	if (list->topLevelItemCount())
