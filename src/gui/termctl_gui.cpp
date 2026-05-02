@@ -73,7 +73,7 @@ void termctl_gui::callHandlerCallback(const int key, const QString val)
 	{
 		this->currkey = key;
 
-		this->inputCallback();
+		this->inputCallback(1);
 	}
 	else
 	{
@@ -81,6 +81,8 @@ void termctl_gui::callHandlerCallback(const int key, const QString val)
 
 		if (this->currhr == HANDLE::Command && key != 0)
 			this->callHistory(e, val);
+		else if (this->currhr == HANDLE::Input && e == EVENT::InputEnd)
+			this->inputCallback(0);
 
 		if (e == EVENT::InputReturn || key == 0)
 		{
@@ -89,7 +91,7 @@ void termctl_gui::callHandlerCallback(const int key, const QString val)
 			if (this->currhr == HANDLE::Command)
 				this->commandCallback();
 			else
-				this->inputCallback();
+				this->inputCallback(1);
 		}
 	}
 }
@@ -273,6 +275,8 @@ int termctl_gui::paged(int pos, int offset)
 		break;
 		case Qt::Key_Q:
 		case Qt::Key_X:
+		case Qt::Key_Escape:
+		case Qt::Key_End:
 			key = EVENT::InputEnd;
 		default:
 			QApplication::beep();
@@ -309,6 +313,40 @@ std::pair<int, int> termctl_gui::screensize()
 		cols = int (std::floor(size.width() / 7.2));
 
 	return std::pair (rows, cols);
+}
+
+void termctl_gui::load_history()
+{
+	QApplication* app = qApp;
+
+	QString hval = app->property("console_history").toString();
+
+	if (! hval.isEmpty())
+	{
+		history->clear();
+		history->seekg(0);
+
+		std::stringbuf* h_buf = reinterpret_cast<std::stringbuf*>(history->rdbuf());
+		h_buf->str(hval.toStdString());
+
+		history->seekp(0, std::ios::end);
+
+		last = history->tellg();
+	}
+}
+
+void termctl_gui::save_history()
+{
+	QApplication* app = qApp;
+
+	if (history->tellp() != 0)
+	{
+		history->clear();
+		history->seekg(0);
+
+		std::stringbuf* h_buf = reinterpret_cast<std::stringbuf*>(history->rdbuf());
+		app->setProperty("console_history", QString::fromStdString(h_buf->str()));
+	}
 }
 
 }

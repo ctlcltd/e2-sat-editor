@@ -52,6 +52,7 @@ class stream : public streamiface
 		std::ostream &os;
 };
 
+
 class cli : public e2db_console
 {
 	public:

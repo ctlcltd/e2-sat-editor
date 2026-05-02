@@ -94,7 +94,7 @@ void logger::error(string fn, string optk, string optv)
 	os << ' ' << optk << ':';
 	os << ' ' << optv;
 	os << std::endl;
-	if (! this->obj->cli)
+	if (this->obj->cli & 2)
 		std::cerr << os.rdbuf();
 	this->obj->log.append(buf->str());
 	buf->str("");

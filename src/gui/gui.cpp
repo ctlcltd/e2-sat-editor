@@ -1791,7 +1791,7 @@ void gui::tabPermanentDocksChanged()
 
 			if (prev != state)
 				state = rwid->saveState();
-		}	
+		}
 	}
 	if (current != nullptr)
 	{
@@ -1799,7 +1799,7 @@ void gui::tabPermanentDocksChanged()
 		{
 			if (rwid->restoreState(state))
 				this->state = state;
-			
+
 			for (auto & wid : dwids)
 			{
 				rwid->restoreDockWidget(wid);

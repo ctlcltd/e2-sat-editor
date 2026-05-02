@@ -11,6 +11,7 @@
 
 #include <clocale>
 #include <iostream>
+#include <sstream>
 
 #include <QGridLayout>
 
@@ -35,7 +36,7 @@ console_gui::console_gui(QWidget* parent, dataHandler* data)
 }
 
 //TODO TEST
-// note: ctn widget deleted 0x0 by parent widget tab view widget
+// note: cnt widget deleted by parent widget
 console_gui::~console_gui()
 {
 	debug("~console_gui");
@@ -91,6 +92,8 @@ void console_gui::init()
 	this->plog = this->log;
 	this->termctl = new termctl_gui(this->cnt);
 
+	termctl->load_history();
+
 	console_header();
 	flush();
 
@@ -125,7 +128,10 @@ void console_gui::attach(QWidget* parent)
 	pout = new stream(*this->ts_out);
 	perr = new stream(*this->ts_err);
 
+	e2se::logger::OBJECT->cli = 1;
+
 	this->plog = this->log;
+
 	//TODO QObject is connected, std::stringbuf SEGFAULT
 	// this->termctl = new termctl_gui(this->cnt);
 
@@ -156,9 +162,16 @@ void console_gui::detach()
 	delete this->ba_out;
 	delete this->ba_err;
 
-	//TODO QObject is connected, std::stringbuf SEGFAULT
 	termctl->reset();
+
+	termctl->save_history();
+
+	//TODO QObject is connected, std::stringbuf SEGFAULT
 	// delete this->termctl;
+
+	e2se::logger::OBJECT->cli = 0;
+
+	this->logpos = 0;
 
 	this->plog = nullptr;
 	this->pout = nullptr;
@@ -168,6 +181,7 @@ void console_gui::detach()
 	this->ba_out = nullptr;
 	this->ba_err = nullptr;
 	// this->termctl = nullptr;
+	this->eventCallback = nullptr;
 
 	cnt->detachWidget();
 }
@@ -177,6 +191,9 @@ void console_gui::session()
 	debug("session");
 
 	termctl->reset();
+
+	termctl->load_history();
+
 	cnt->printSessionRuler();
 
 	prompt();
@@ -256,6 +273,10 @@ void console_gui::prompt()
 			command_inspect(is);
 		else if (cmd == "preferences")
 			command_preferences(is);
+		else if (cmd == "clear")
+			command_clear(is);
+		else if (cmd == "tab")
+			command_tab(is);
 		else if (! cmd.empty())
 			console_error(cmd);
 
@@ -289,9 +310,29 @@ void console_gui::flush()
 	ts_out->seek(0);
 }
 
+void console_gui::clear()
+{
+	cnt->reset();
+	cnt->clear();
+}
+
 void console_gui::console_resolver(COMMAND command, istream* is)
 {
-	if (command == COMMAND::preferences)
+	if (command == COMMAND::usage)
+	{
+		string src, hint;
+		*is >> std::skipws >> src >> hint;
+
+		if (hint == "clear")
+			return console_usage(COMMAND::clear);
+		else if (hint == "tab")
+			return console_usage(COMMAND::tab);
+
+		is->seekg(0);
+
+		this->e2db_console::console_resolver(command, is);
+	}
+	else if (command == COMMAND::preferences)
 	{
 		string src, type, opt1;
 		*is >> std::skipws >> src >> type >> opt1;
@@ -301,17 +342,91 @@ void console_gui::console_resolver(COMMAND command, istream* is)
 		else
 			*perr << "Type Error: " << msg("Unknown entry type: %s", type) << pout->endl();
 	}
+	else if (command == COMMAND::clear)
+	{
+		string src, opt0;
+		*is >> std::skipws >> src >> opt0;
+
+		if (opt0.empty())
+			clear();
+		else
+			console_usage(command);
+	}
+	else if (command == COMMAND::tab)
+	{
+		string src, token;
+		*is >> std::skipws >> src >> token;
+
+		if (token == "reload")
+			callEventCallback(EVENT::cmd_tab_reload);
+		else if (token == "clear")
+			callEventCallback(EVENT::cmd_tab_clear);
+		else if (token.empty())
+			console_usage(command);
+		else
+			*perr << "Type Error: " << msg("Unknown command token: %s", token) << pout->endl();
+	}
 	else
 	{
+#ifdef E2SE_DEMO
+		switch (command)
+		{
+			case COMMAND::fread:
+			case COMMAND::fwrite:
+			case COMMAND::fimport:
+			case COMMAND::fexport:
+			case COMMAND::merge:
+			case COMMAND::parse:
+			case COMMAND::make:
+			case COMMAND::convert:
+				return demo_message();
+			break;
+			default:
+			break;
+		}
+#endif
+
+		this->logpos = this->plog->size();
 		this->e2db_console::console_resolver(command, is);
+		e2db_log();
+		this->logpos = this->plog->size();
+
+		switch (command)
+		{
+			case COMMAND::fread:
+			case COMMAND::fwrite:
+			case COMMAND::fimport:
+			case COMMAND::fexport:
+			case COMMAND::merge:
+			case COMMAND::parse:
+			case COMMAND::make:
+			case COMMAND::convert:
+			case COMMAND::tool:
+			case COMMAND::macro:
+				{
+					EVENT event = static_cast<EVENT>(command);
+
+					callEventCallback(event);
+				}
+			break;
+			default:
+			break;
+		}
 	}
 }
 
 void console_gui::console_usage(COMMAND hint, int level)
 {
-	if (hint == COMMAND::preferences)
+	if (hint == COMMAND::usage)
 	{
-		*pout << "  ", pout->width(36), *pout << pout->left() << "preferences", *pout << ' ' << "CLI preferences." << pout->endl();
+		this->e2db_console::console_usage(COMMAND::usage, level);
+
+		pout->width(10), *pout << ' ', *pout << "clear" << pout->endl();
+		pout->width(10), *pout << ' ', *pout << "tab" << pout->endl();
+	}
+	else if (hint == COMMAND::preferences)
+	{
+		*pout << "  ", pout->width(36), *pout << pout->left() << "preferences", *pout << ' ' << "Console preferences." << pout->endl();
 		*pout << pout->endl();
 
 		if (level & 1)
@@ -322,10 +437,35 @@ void console_gui::console_usage(COMMAND hint, int level)
 			*pout << pout->endl();
 		}
 	}
+	else if (hint == COMMAND::clear)
+	{
+		*pout << "  ", pout->width(36), *pout << pout->left() << "clear", *pout << ' ' << "Clear the console view." << pout->endl();
+		*pout << pout->endl();
+	}
+	else if (hint == COMMAND::tab)
+	{
+		*pout << "  ", pout->width(36), *pout << pout->left() << "tab", *pout << ' ' << "Send command to current tab [GUI]." << pout->endl();
+		*pout << pout->endl();
+
+		if (level & 1)
+		{
+			*pout << "  ", *pout << "USAGE" << pout->endl() << pout->endl();
+			*pout << "  ", pout->width(7), *pout << pout->left() << "tab", *pout << ' ';
+			pout->width(28), *pout << pout->left() << "reload", *pout << ' ' << "Reload the current tab views." << pout->endl();
+			pout->width(10), *pout << ' ', pout->width(28), *pout << pout->left() << "clear", *pout << ' ' << "Clear the current tab views." << pout->endl();
+			*pout << pout->endl();
+		}
+	}
 	else
 	{
 		this->e2db_console::console_usage(hint, level);
 	}
+}
+
+//TODO FIX e2db::dump replace std::cout with std::ostream 
+void console_gui::console_print(int opt)
+{
+	this->e2db_console::console_print(opt);
 }
 
 void console_gui::command_quit()
@@ -393,7 +533,10 @@ void console_gui::entry_list(ENTRY entry_type, bool paged, int limit, int pos, s
 
 		cnt->printNavigationRuler();
 
-		termctl->input([=]() mutable {
+		termctl->input([=](bool loop) mutable {
+			if (! loop)
+				return this->paged_end();
+
 			this->paged_nav(p);
 		});
 
@@ -426,7 +569,10 @@ void console_gui::entry_edit(ENTRY entry_type, bool edit, string id, int ref, st
 
 	input_next(curr);
 
-	termctl->input([=]() mutable {
+	termctl->input([=](bool loop) mutable {
+		if (! loop)
+			return this->input_end();
+
 		string str = termctl->line();
 		termctl->clear();
 
@@ -655,7 +801,7 @@ void console_gui::input_next(current &curr)
 
 void console_gui::input_end(current &curr)
 {
-	qDebug() << "input_end";
+	qDebug() << "input_end" << "overload:" << 0;
 
 	this->icurr = &curr;
 	this->sync();
@@ -666,6 +812,16 @@ void console_gui::input_end(current &curr)
 
 	cnt->setInputMasked(false);
 	flush();
+	prompt();
+}
+
+void console_gui::input_end()
+{
+	qDebug() << "input_end" << "overload:" << 1;
+
+	this->icurr = nullptr;
+
+	cnt->setInputMasked(false);
 	prompt();
 }
 
@@ -720,6 +876,55 @@ void console_gui::paged_end()
 
 	cnt->setInputMasked(false);
 	prompt();
+}
+
+void console_gui::e2db_log()
+{
+	QString log_info;
+	QString log_error;
+
+	std::stringstream ss (this->plog->str().substr(this->logpos));
+	string line;
+
+	while (std::getline(ss, line))
+	{
+		if (line.find("] e2db") != string::npos && line.find("<Debug>") == string::npos)
+		{
+			if (line.find("<Info>") != string::npos)
+			{
+				size_t pos = line.rfind("  ");
+
+				if (pos != string::npos && pos != line.size())
+					log_info.append(QString::fromStdString(line.substr(pos + 2)).prepend("Info: ")).append("\n");
+				else
+					log_info.append(QString::fromStdString(line)).append("\n");
+			}
+			else
+			{
+				log_error.append(QString::fromStdString(line)).append("\n");
+			}
+		}
+	}
+
+	if (! log_info.isEmpty())
+	{
+		ts_out->seek(0);
+		ba_out->prepend(log_info.toUtf8());
+		ts_out->seek(ba_out->size());
+	}
+	if (! log_error.isEmpty())
+	{
+		ts_err->seek(0);
+		ba_err->prepend(log_error.toUtf8());
+		ts_err->seek(ba_err->size());
+	}
+}
+
+void console_gui::demo_message()
+{
+	*pout << "[ DEMO MODE ]";
+
+	flush();
 }
 
 void console_gui::destroy()

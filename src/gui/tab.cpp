@@ -534,6 +534,14 @@ void tab::reload()
 		child->view->reload();
 }
 
+void tab::clear()
+{
+	debug("clear");
+
+	newFile();
+	updateTabName();
+}
+
 void tab::layout()
 {
 	debug("layout");
@@ -604,7 +612,7 @@ void tab::layout()
 	{
 		toolBarSeparator(bottom_toolbar);
 		toolBarAction(bottom_toolbar, "§ Load seeds", [=]() { this->loadSeeds(); });
-		toolBarAction(bottom_toolbar, "§ Reset", [=]() { this->newFile(); this->updateTabName(); });
+		toolBarAction(bottom_toolbar, "§ Clear", [=]() { this->clear(); });
 	}
 	toolBarSpacer(bottom_toolbar);
 	toolBarAction(bottom_toolbar, tr("autofix", "toolbar"), [=]() { this->toolsAutofixMacro(); });

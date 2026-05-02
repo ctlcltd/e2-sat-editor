@@ -1285,20 +1285,43 @@ void tools::console(tab* ttab)
 		}
 	});
 
+	auto eventCallback = [=](console_gui::EVENT event) {
+		if (ttab != nullptr)
+		{
+			auto* dbih = this->data->dbih;
+
+			dbih->clearStorage();
+
+			if (event == console_gui::EVENT::cmd_tab_clear)
+				tid->clear();
+			else
+				tid->reload();
+		}
+	};
+
 	if (ths.count(ttid))
 	{
 		console_gui* thptr = ths.at(ttid);
 
 		if (thptr != nullptr)
+		{
 			thptr->attach(dwid);
+		}
 		else
-			ths[ttid] = new console_gui(dwid, this->data);
+		{
+			thptr = new console_gui(dwid, this->data);
+			ths[ttid] = thptr;
+		}
+
+		thptr->setEventCallback(eventCallback);
 	}
 	else
 	{
 		console_gui* thptr = new console_gui(dwid, this->data);
 
 		ths.emplace(ttid, thptr);
+
+		thptr->setEventCallback(eventCallback);
 	}
 
 	ttab->addPermanentDockWidget(Qt::BottomDockWidgetArea, dwid);

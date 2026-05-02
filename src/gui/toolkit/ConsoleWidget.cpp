@@ -30,21 +30,19 @@ ConsoleWidget::ConsoleWidget(QWidget* parent) : QPlainTextEdit(parent)
 	}); // moc
 
 	this->setCursorWidth(7);
-	this->setLineWrapMode(QPlainTextEdit::NoWrap);
-	this->setWordWrapMode(QTextOption::NoWrap);
+	this->setLineWrapMode(QPlainTextEdit::WidgetWidth);
+	this->setWordWrapMode(QTextOption::WrapAnywhere);
 	this->setAcceptDrops(false);
 	this->setUndoRedoEnabled(false);
 	this->setBackgroundVisible(false);
 	this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 	this->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-	
+
 	QFont font = QFont ();
 	// reflects qtbase/src/gui/text/qtexthtmlparser.cpp for <pre>
 	font.setFamily(QFontDatabase::systemFont(QFontDatabase::FixedFont).families().constFirst());
 	font.setPixelSize(12);
 	this->document()->setDefaultFont(font);
-
-	// this->setTabStopDistance();
 }
 
 void ConsoleWidget::attachWidget()
@@ -206,6 +204,11 @@ void ConsoleWidget::maybeInsertBlock(QTextCursor &cursor)
 
 void ConsoleWidget::keyPressEvent(QKeyEvent* event)
 {
+#ifndef Q_OS_MAC
+	const Qt::KeyboardModifiers CtrlModifier = Qt::CtrlModifier;
+#else
+	const Qt::KeyboardModifiers CtrlModifier = Qt::MetaModifier;
+#endif
 	QTextCursor cursor = this->textCursor();
 
 	if (event->matches(QKeySequence::Copy))
@@ -216,8 +219,7 @@ void ConsoleWidget::keyPressEvent(QKeyEvent* event)
 	{
 		cursor.movePosition(QTextCursor::End);
 		this->setTextCursor(cursor);
-
-		return;
+		this->ensureCursorVisible();
 	}
 
 	if (this->currhr == HANDLE::Listing)
@@ -227,6 +229,19 @@ void ConsoleWidget::keyPressEvent(QKeyEvent* event)
 	}
 	else
 	{
+		if (this->currhr == HANDLE::Input)
+		{
+			if (
+				event->key() == Qt::Key_Escape ||
+				event->key() == Qt::Key_End ||
+				(event->modifiers() == CtrlModifier && event->key() == Qt::Key_D)
+			)
+			{
+				emit input(Qt::Key_End, NULL);
+				return;
+			}
+		}
+
 		if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
 		{
 			QTextCursor cursor = QTextCursor(this->document()->lastBlock());

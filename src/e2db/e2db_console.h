@@ -44,6 +44,7 @@ struct streamiface
 		virtual int width(int width) = 0;
 };
 
+
 struct termiface
 {
 	public:
@@ -68,6 +69,7 @@ struct termiface
 		virtual void save_history() = 0;
 };
 
+
 class e2db_console
 {
 	public:
@@ -83,27 +85,29 @@ class e2db_console
 			usage,
 			version,
 			quit,
-			add,
-			edit,
-			remove,
-			list,
 			fread,
 			fwrite,
 			fimport,
 			fexport,
+			list,
+			add,
+			edit,
+			remove,
 			copy,
 			move,
 			set,
 			unset,
+			print,
 			merge,
 			parse,
 			make,
 			convert,
 			tool,
 			macro,
-			print,
 			inspect,
-			preferences
+			preferences,
+			clear,  // gui
+			tab     // gui
 		};
 
 		enum ENTRY {
@@ -197,6 +201,8 @@ class e2db_console
 		void command_help(istream* is) { console_resolver(COMMAND::usage, is); }
 		void command_read(istream* is) { console_resolver(COMMAND::fread, is); }
 		void command_write(istream* is) { console_resolver(COMMAND::fwrite, is); }
+		void command_import(istream* is) { console_resolver(COMMAND::fimport, is); }
+		void command_export(istream* is) { console_resolver(COMMAND::fexport, is); }
 		void command_list(istream* is) { console_resolver(COMMAND::list, is); }
 		void command_add(istream* is) { console_resolver(COMMAND::add, is); }
 		void command_edit(istream* is) { console_resolver(COMMAND::edit, is); }
@@ -206,8 +212,6 @@ class e2db_console
 		void command_set(istream* is) { console_resolver(COMMAND::set, is); }
 		void command_unset(istream* is) { console_resolver(COMMAND::unset, is); }
 		void command_print(istream* is) { console_resolver(COMMAND::print, is); }
-		void command_import(istream* is) { console_resolver(COMMAND::fimport, is); }
-		void command_export(istream* is) { console_resolver(COMMAND::fexport, is); }
 		void command_merge(istream* is) { console_resolver(COMMAND::merge, is); }
 		void command_parse(istream* is) { console_resolver(COMMAND::parse, is); }
 		void command_make(istream* is) { console_resolver(COMMAND::make, is); }

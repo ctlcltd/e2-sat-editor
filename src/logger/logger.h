@@ -23,6 +23,7 @@ using std::string, std::vector;
 #define e2se_logger_h
 namespace e2se
 {
+
 class logger
 {
 	public:
@@ -39,7 +40,8 @@ class logger
 			string log;
 			vector<string> trace;
 			bool debug = false;
-			bool cli = false;
+			//TODO refactoring, move to e2db class
+			int cli = 0;
 		};
 
 		inline static data* OBJECT;
@@ -64,6 +66,7 @@ class logger
 		data* obj;
 };
 
+
 struct log_factory
 {
 	protected:
@@ -83,14 +86,14 @@ struct log_factory
 		{
 			this->log->info(fn, optk, optv);
 
-			if (this->log->obj->cli)
+			if (this->log->obj->cli & 2)
 				std::cout << "Info: " << optk << ": " << optv << std::endl;
 		}
 		virtual void error(string fn, string optk, string optv)
 		{
 			this->log->error(fn, optk, optv);
 
-			if (this->log->obj->cli)
+			if (this->log->obj->cli & 1)
 				throw std::runtime_error (optk + ": " + optv);
 		}
 		virtual void exception(string fn, string optk, string optv)
@@ -103,5 +106,6 @@ struct log_factory
 
 		logger* log;
 };
+
 }
 #endif /* e2se_logger_h */

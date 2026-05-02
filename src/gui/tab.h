@@ -96,6 +96,7 @@ class tab : protected e2se::log_factory
 		void load();
 		void reset();
 		void reload();
+		void clear();
 		void propagateChanges();
 		void settingsChanged();
 		void themeChanged();

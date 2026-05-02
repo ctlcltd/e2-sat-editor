@@ -53,18 +53,39 @@ class stream : public ::e2se_e2db::streamiface
 		QTextStream &ts;
 };
 
-//TODO
+
 class console_gui : protected e2se::log_factory, public ::e2se_e2db::e2db_console
 {
 	Q_DECLARE_TR_FUNCTIONS(console_gui)
 
 	public:
+
+		enum EVENT {
+			cmd_fread = COMMAND::fread,
+			cmd_fwrite = COMMAND::fwrite,
+			cmd_fimport = COMMAND::fimport,
+			cmd_fexport = COMMAND::fexport,
+			cmd_merge = COMMAND::merge,
+			cmd_parse = COMMAND::parse,
+			cmd_make = COMMAND::make,
+			cmd_convert = COMMAND::convert,
+			cmd_tool = COMMAND::tool,
+			cmd_macro = COMMAND::macro,
+			cmd_tab_reload,
+			cmd_tab_clear
+		};
+
 		console_gui(QWidget* parent, dataHandler* data);
 		~console_gui(); // final destructor
 		void close();
 		void attach(QWidget* parent);
 		void detach();
 		void destroy();
+
+		void setEventCallback(std::function<void(EVENT event)> func)
+		{
+			this->eventCallback = func;
+		}
 
 	protected:
 
@@ -100,23 +121,37 @@ class console_gui : protected e2se::log_factory, public ::e2se_e2db::e2db_consol
 		void sync();
 		void prompt();
 		void flush();
+		void clear();
 
 		void console_resolver(COMMAND command, istream* is) override;
 		void console_usage(COMMAND hint, int level = 3) override;
+		void console_print(int opt) override;
 
 		void command_help(istream* is) { console_resolver(COMMAND::usage, is); }
 		void command_preferences(istream* is) { console_resolver(COMMAND::preferences, is); }
+		void command_clear(istream* is) { console_resolver(COMMAND::clear, is); }
+		void command_tab(istream* is) { console_resolver(COMMAND::tab, is); }
 		void command_quit();
 
 		void entry_list(ENTRY entry_type, bool paged = true, int limit = 0, int pos = 0, string bname = "") override;
 		void entry_edit(ENTRY entry_type, bool edit, string id = "", int ref = 0, string bname = "") override;
-
 		std::any field(TYPE type, bool required = false) override;
+		
 		void input_step(current &curr);
 		void input_next(current &curr);
 		void input_end(current &curr);
+		void input_end();
 		void paged_nav(nav &p);
 		void paged_end();
+
+		void e2db_log();
+		void demo_message();
+
+		void callEventCallback(EVENT event)
+		{
+			if (this->eventCallback)
+				this->eventCallback(event);
+		}
 
 		ConsoleWidget* cnt = nullptr;
 		dataHandler* data = nullptr;
@@ -127,6 +162,8 @@ class console_gui : protected e2se::log_factory, public ::e2se_e2db::e2db_consol
 		QByteArray* ba_err = nullptr;
 		QTextStream* ts_out = nullptr;
 		QTextStream* ts_err = nullptr;
+		size_t logpos = 0;
+		std::function<void(EVENT event)> eventCallback;
 };
 
 }

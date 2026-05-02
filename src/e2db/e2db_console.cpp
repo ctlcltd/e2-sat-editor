@@ -68,10 +68,18 @@ void e2db_console::console_resolver(COMMAND command, istream* is)
 
 		if (hint.empty())
 			console_usage(COMMAND::usage);
+		else if (hint == "version")
+			console_usage(COMMAND::version);
+		else if (hint == "quit")
+			console_usage(COMMAND::quit);
 		else if (hint == "read")
 			console_usage(COMMAND::fread);
 		else if (hint == "write")
 			console_usage(COMMAND::fwrite);
+		else if (hint == "import")
+			console_usage(COMMAND::fimport);
+		else if (hint == "export")
+			console_usage(COMMAND::fexport);
 		else if (hint == "list")
 			console_usage(COMMAND::list);
 		else if (hint == "add")
@@ -88,14 +96,10 @@ void e2db_console::console_resolver(COMMAND command, istream* is)
 			console_usage(COMMAND::set);
 		else if (hint == "unset")
 			console_usage(COMMAND::unset);
-		else if (hint == "import")
-			console_usage(COMMAND::fimport);
-		else if (hint == "export")
-			console_usage(COMMAND::fexport);
-		else if (hint == "merge")
-			console_usage(COMMAND::merge);
 		else if (hint == "print")
 			console_usage(COMMAND::print);
+		else if (hint == "merge")
+			console_usage(COMMAND::merge);
 		else if (hint == "parse")
 			console_usage(COMMAND::parse);
 		else if (hint == "make")
@@ -1105,7 +1109,6 @@ void e2db_console::console_usage(COMMAND hint, int level)
 		}
 	}
 }
-
 
 void e2db_console::console_print(int opt)
 {

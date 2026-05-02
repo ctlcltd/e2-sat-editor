@@ -29,7 +29,7 @@ class termctl_gui : public ::e2se_e2db::termiface
 
 		enum EVENT {
 			InputReturn = Qt::Key_Return,
-			InputEnd = Qt::Key_Escape,
+			InputEnd = Qt::Key_End,
 			PagePrev = Qt::Key_Up,
 			PageNext = Qt::Key_Down,
 			HistoryPrev = Qt::Key_Up,
@@ -47,14 +47,14 @@ class termctl_gui : public ::e2se_e2db::termiface
 		int paged(int pos, int offset);
 		std::pair<int, int> screensize();
 		virtual void dump_log() {}
-		virtual void load_history() {}
-		virtual void save_history() {}
+		void load_history();
+		void save_history();
 
 		void command(std::function<void()> func)
 		{
 			this->commandCallback = func;
 		}
-		void input(std::function<void()> func)
+		void input(std::function<void(bool loop)> func)
 		{
 			this->inputCallback = func;
 		}
@@ -78,7 +78,7 @@ class termctl_gui : public ::e2se_e2db::termiface
 		HANDLE currhr;
 		int currkey;
 		std::function<void()> commandCallback;
-		std::function<void()> inputCallback;
+		std::function<void(bool loop)> inputCallback;
 		bool connected = false;
 };
 }
