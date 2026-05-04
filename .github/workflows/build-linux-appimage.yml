@@ -21,14 +21,14 @@ jobs:
     - name: Setup Aptitude
       run: |
         sudo apt-get update
+        sudo apt-get install wget
         sudo apt-get install cmake ninja-build
         sudo apt-get install libgl1-mesa-dev libglvnd-dev libxcb-xkb-dev libxkbcommon-x11-dev libvulkan-dev
-        sudo apt-get install curl libcurl4-openssl-dev
         sudo apt-get install libcups2-dev
+        sudo apt-get install curl libcurl4-openssl-dev
 
     - name: Download deploy tools
       run: |
-        sudo apt-get install fuse wget
         wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
         wget https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage
         wget https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
@@ -40,7 +40,7 @@ jobs:
         mv appimagetool-x86_64.AppImage /usr/local/bin/appimagetool
 
     - name: Setup Miniconda
-      uses: conda-incubator/setup-miniconda@v3
+      uses: conda-incubator/setup-miniconda@v4
       with:
         miniforge-version: latest
         auto-update-conda: true
@@ -92,13 +92,36 @@ jobs:
         # run linuxdeploy
         export LD_LIBRARY_PATH=/home/runner/miniconda3/envs/test/lib:/home/runner/miniconda3/lib:/usr/local/lib:/usr/lib
         export QMAKE=qmake6
+        export DISABLE_COPYRIGHT_FILES_DEPLOYMENT=1
+        export EXTRA_QT_MODULES="eglfsdeviceintegration;eglfskmssupport;xcbqpa"
+        export EXTRA_PLATFORM_PLUGINS="libqeglfs.so;libqlinuxfb.so;libqminimal.so;libqminimalegl.so;libqoffscreen.so;libqvkkhrdisplay.so;libqvnc.so;libqwayland.so;libqxcb.so"
         linuxdeploy --appdir AppDir --plugin qt --output appimage
         export LD_LIBRARY_PATH=
         # package
-        mv e2_SAT_Editor-x86_64.AppImage ../artifact
-        # patch AppRun AppRun.wrapped script, see note in scripts/appimage-test.sh
+        mkdir -p ../artifact
+        mv e2_SAT_Editor-x86_64.AppImage ../artifact/
+  
+    - name: Fix artifact
+      working-directory: ${{github.workspace}}/e2-sat-editor/artifact
+      continue-on-error: true
+      run: |
+        wget https://github.com/e2se/apprunqtlinux/archive/refs/heads/main.tar.gz
+        tar -zxf main.tar.gz
+        cd apprunqtlinux-main
+        cmake -B . -DCMAKE_BUILD_TYPE=Release
+        cmake --build . --config Release
+        cd ..
+        ./e2_SAT_Editor-x86_64.AppImage --appimage-extract
+        mv squashfs-root/AppRun squashfs-root/AppRun.wrapped
+        cp apprunqtlinux-main/AppRun squashfs-root/AppRun
+        chmod +x squashfs-root/AppRun
+        mv e2_SAT_Editor-x86_64.AppImage e2_SAT_Editor-x86_64.AppImage.bak
+        appimagetool squashfs-root e2_SAT_Editor-x86_64.AppImage
+        rm -R {apprunqtlinux-main,squashfs-root}
+        rm main.tar.gz
+        rm e2_SAT_Editor-x86_64.AppImage.bak
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         path: ${{github.workspace}}/e2-sat-editor/artifact

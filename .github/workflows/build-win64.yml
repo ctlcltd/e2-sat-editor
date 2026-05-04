@@ -79,7 +79,7 @@ jobs:
         bash ../scripts/deployqtwin.sh "AppDir/Program Files (x86)/e2-sat-editor/bin/e2-sat-editor.exe" \
         --verbose \
         -system UCRT64 \
-        -qt-version 6.10.1 \
+        -qt-version 6.11.0 \
         -modules Core,Gui,Widgets,PrintSupport \
         -libraries libcurl-4.dll,libcrypto-3-x64.dll,libidn2-0.dll,libnghttp2-14.dll,libnghttp3-9.dll,libngtcp2-16.dll,libngtcp2_crypto_ossl-0.dll,libpsl-5.dll,libssh2-1.dll,libssl-3-x64.dll,libunistring-5.dll
         # cleanup
@@ -98,6 +98,6 @@ jobs:
         mv "${{github.workspace}}/user-manual" ../artifact/
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         path: ${{github.workspace}}/e2-sat-editor/artifact

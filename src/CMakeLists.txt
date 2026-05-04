@@ -144,9 +144,9 @@ if(NOT WITHOUT_CLI)
 endif()
 
 if(DOWNLOAD_CURL_CABUNDLE)
-	file(DOWNLOAD https://curl.se/ca/cacert-2025-12-02.pem
+	file(DOWNLOAD https://curl.se/ca/cacert-2026-03-19.pem
 		"curl-cacert.pem"
-		EXPECTED_HASH SHA256=f1407d974c5ed87d544bd931a278232e13925177e239fca370619aba63c757b4
+		EXPECTED_HASH SHA256=b6e66569cc3d438dd5abe514d0df50005d570bfc96c14dca8f768d020cb96171
 	)
 
 	if(APPLE)

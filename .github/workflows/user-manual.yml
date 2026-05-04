@@ -36,7 +36,7 @@ jobs:
         npm run dist:help -- --dest=${{github.workspace}}/e2se-site/out/
 
     - name: Archive user-manual artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: user-manual
         path: ${{github.workspace}}/e2se-site/out

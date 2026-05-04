@@ -22,7 +22,7 @@ jobs:
         path: e2-sat-editor
 
     - name: Setup MacPorts
-      uses: melusina-org/setup-macports@v1.1.5
+      uses: melusina-org/setup-macports@v1.1.6
 
     - continue-on-error: true
       run: |
@@ -105,6 +105,6 @@ jobs:
       run: tar -cvf artifact.tar artifact
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         path: ${{github.workspace}}/e2-sat-editor/artifact.tar

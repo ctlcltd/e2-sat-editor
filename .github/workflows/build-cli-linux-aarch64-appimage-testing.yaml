@@ -18,11 +18,11 @@ jobs:
     - name: Setup Aptitude
       run: |
         sudo apt-get update
+        sudo apt-get install wget
         sudo apt-get install cmake ninja-build
 
     - name: Download deploy tools
       run: |
-        sudo apt-get install fuse wget
         wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-aarch64.AppImage
         wget https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-aarch64.AppImage
         chmod +x linuxdeploy-aarch64.AppImage
@@ -63,6 +63,6 @@ jobs:
         mv e2se-cli-aarch64.AppImage ../../artifact
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         path: ${{github.workspace}}/e2-sat-editor/artifact
