@@ -471,6 +471,16 @@ void editService::paramsLayout()
 	platform::osLineEdit(dtf2ap);
 	dtc2b->addWidget(dtf2ap);
 
+	QHBoxLayout* dtc2d = new QHBoxLayout;
+	dtf2c->addRow(tr("pmt"), dtc2d);
+	QLineEdit* dtf2mt = new QLineEdit;
+	dtf2mt->setProperty("field", "pmtpid");
+	fields.emplace_back(dtf2mt);
+	dtf2mt->setMaximumWidth(48);
+	dtf2mt->setValidator(new QIntValidator(0, 65535));
+	platform::osLineEdit(dtf2mt);
+	dtc2d->addWidget(dtf2mt);
+
 	QHBoxLayout* dtc2c = new QHBoxLayout;
 	dtf2c->addRow(tr("cache max"), dtc2c);
 	QLineEdit* dtf2cx = new QLineEdit;
@@ -480,16 +490,6 @@ void editService::paramsLayout()
 	dtf2cx->setValidator(new QIntValidator(0, 65535));
 	platform::osLineEdit(dtf2cx);
 	dtc2c->addWidget(dtf2cx);
-
-	QHBoxLayout* dtc2d = new QHBoxLayout;
-	dtf2c->addRow(tr("pmt"), dtc2d);
-	QLineEdit* dtf2mt = new QLineEdit;
-	dtf2mt->setProperty("field", "pmt");
-	fields.emplace_back(dtf2mt);
-	dtf2mt->setMaximumWidth(48);
-	dtf2mt->setValidator(new QIntValidator(0, 65535));
-	platform::osLineEdit(dtf2mt);
-	dtc2d->addWidget(dtf2mt);
 
 	dtw21->setLayout(dtf2c);
 	dtt2->addItem(dtw21, tr("PIDs"));
@@ -836,10 +836,10 @@ void editService::store()
 				ch.data[e2db::SDATA::c] = computePIDs(ch, e2db::SDATA_PIDS::atype, val);
 			else if (key == "apid")
 				ch.data[e2db::SDATA::c] = computePIDs(ch, e2db::SDATA_PIDS::apid, val);
+			else if (key == "pmtpid")
+				ch.data[e2db::SDATA::c] = computePIDs(ch, e2db::SDATA_PIDS::pmtpid, val);
 			else if (key == "cmax")
 				ch.data[e2db::SDATA::c] = computePIDs(ch, e2db::SDATA_PIDS::cmax, val);
-			else if (key == "pmt")
-				ch.data[e2db::SDATA::c] = computePIDs(ch, e2db::SDATA_PIDS::pmt, val);
 			else if (key == "raw_C" && this->state.raw_C != val)
 			{
 				vector<string> cdata;
@@ -1070,10 +1070,10 @@ void editService::retrieve()
 			val = getPIDValue(ch, e2db::SDATA_PIDS::atype);
 		else if (key == "apid" && ch.data.count(e2db::SDATA::c))
 			val = getPIDValue(ch, e2db::SDATA_PIDS::apid);
+		else if (key == "pmtpid" && ch.data.count(e2db::SDATA::c))
+			val = getPIDValue(ch, e2db::SDATA_PIDS::pmtpid);
 		else if (key == "cmax" && ch.data.count(e2db::SDATA::c))
 			val = getPIDValue(ch, e2db::SDATA_PIDS::cmax);
-		else if (key == "pmt" && ch.data.count(e2db::SDATA::c))
-			val = getPIDValue(ch, e2db::SDATA_PIDS::pmt);
 		else if (key == "raw_C" && ch.data.count(e2db::SDATA::C))
 		{
 			if (ch.data.count(e2db::SDATA::C) && ! ch.data[e2db::SDATA::C].empty())

@@ -277,12 +277,24 @@ struct e2db_abstract : protected e2se::log_factory
 		// f04 fpid
 		// f08 fname
 		// f40 fnew
+		// f80 fd3d
+		// f100 fplck
+		// f200 fvbi_h
+		// f400 fxpmt
+		// f800 fsubx
+		// f1000 feit_n
 		enum SDATA_FLAGS {
-			fkeep = 1, // dxNoSDT
-			fhide = 2, // dxDontshow
+			fkeep = 1,  // dxNoSDT
+			fhide = 2,  // dxDontshow
 			fpid = 4,  // dxNoDVB
-			fname = 8, // dxHoldName
-			fnew = 64  // dxNewFound
+			fname = 8,  // dxHoldName
+			fnew = 64,  // dxNewFound
+			fd3di = 128,  // dxIsDedicated3D
+			fppri = 256,  // dxIsParentalProtected
+			fvbih_h = 512,  // dxHideVBI
+			fxpmt = 1024,  // dxIsScrambledPMT
+			fsubx = 2048,  // dxCenterDVBSubs
+			feit_n = 4096  // dxNoEIT
 		};
 
 		// service data cache PIDs
@@ -291,15 +303,21 @@ struct e2db_abstract : protected e2se::log_factory
 		// 02 teletext TPID TXTPID
 		// 03 pcr PPID PCRPID
 		// 04 ac3 3PID AC3PID
-		// 05 video type
-		// 06 audio channel
-		// 06 ac3 delay
-		// 07 pcm delay
-		// 08 subtitle
-		// 09 audio type
-		// 10 audio APID
-		// 11 cache max
+		// 05 video type VTYPE
+		// 06 audio channel ACHANNEL
+		// 07 ac3 delay AC3DELAY
+		// 08 pcm delay PCMDELAY
+		// 09 subtitle SUBTITLE
+		// 10 audio type ATYPE
+		// 11 audio APID
+		// 12 AACHEAPID
+		// 13 DDPPID
+		// 14 AACAPID
+		// 15 DATAPID
 		// 16 pmt PMTPID
+		// 17 DRAAPID
+		// 18 AC4PID
+		// 19 cache max CMAX
 		enum SDATA_PIDS {
 			vpid,
 			mpegapid,
@@ -313,8 +331,14 @@ struct e2db_abstract : protected e2se::log_factory
 			subtitle,
 			atype,
 			apid,
-			cmax,
-			pmt = 16
+			aacheapid,
+			ddppid,
+			aacapid,
+			datapid,
+			pmtpid,
+			draapid,
+			ac4pid,
+			cmax
 		};
 
 		struct e2db_file
@@ -630,11 +654,16 @@ struct e2db_abstract : protected e2se::log_factory
 		static string value_channel_provider(service ch);
 		static string value_channel_provider(map<char, vector<string>> data);
 		static string value_channel_pid(service ch, SDATA_PIDS pid);
+		static vector<long> value_channel_pid(service ch);
 		static vector<string> value_channel_pid(service ch, SDATA_PIDS pid, string val);
-		static vector<string> value_channel_caid(string str, string separator = "|");
-		static vector<string> value_channel_cached(string str, string separator = "|");
+		static vector<string> value_channel_caid(string str, string separator);
+		static vector<string> value_channel_caid(string str);
+		static vector<string> value_channel_cached(string str, string separator);
+		static vector<string> value_channel_cached(string str);
+		static long value_channel_flags(service ch);
 		static string value_channel_flags(service ch, SDATA_FLAGS bit);
 		static vector<string> value_channel_flags(service ch, SDATA_FLAGS bit, string val);
+		static vector<string> value_channel_flags(string str);
 		static int value_transponder_type(char ty);
 		static int value_transponder_type(string str);
 		static char value_transponder_type(int yx);
@@ -646,12 +675,12 @@ struct e2db_abstract : protected e2se::log_factory
 		static int value_transponder_dvbns(transponder tx);
 		static int value_transponder_dvbns(YTYPE ytype, int tsid, int onid, int pos, int freq);
 		static string value_transponder_dvbns(int dvbns);
-		static int value_transponder_frequency(string str);
-		static int value_transponder_frequency(int sr, bool display = false);
+		static int value_transponder_frequency(string str, YTYPE ytype);
+		static int value_transponder_frequency(int freq, bool display);
 		static int value_transponder_polarization(string str);
 		static string value_transponder_polarization(int pol);
 		static int value_transponder_sr(string str);
-		static string value_transponder_sr(int sr, bool display = false);
+		static string value_transponder_sr(int sr, bool display);
 		static int value_transponder_position(string str);
 		static string value_transponder_position(transponder tx);
 		static string value_transponder_position(tunersets_table tn);

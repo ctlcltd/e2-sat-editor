@@ -564,6 +564,16 @@ string e2db_abstract::value_channel_provider(map<char, vector<string>> data)
 	return "";
 }
 
+vector<long> e2db_abstract::value_channel_pid(service ch)
+{
+	vector<long> data;
+
+	for (string & w : ch.data[SDATA::c])
+		data.emplace_back(std::strtol(w.data(), NULL, 16));
+
+	return data;
+}
+
 string e2db_abstract::value_channel_pid(service ch, SDATA_PIDS pid)
 {
 	string cpx = (pid > 9 ? "" : "0") + to_string(pid);
@@ -646,6 +656,13 @@ vector<string> e2db_abstract::value_channel_caid(string str, string separator)
 	return caid;
 }
 
+vector<string> e2db_abstract::value_channel_caid(string str)
+{
+	str.erase(std::remove_if(str.begin(), str.end(), [](unsigned char c) { return (c == 'C' || c == ':' || c == ' '); }), str.end());
+
+	return value_channel_cached(str, ",");
+}
+
 vector<string> e2db_abstract::value_channel_cached(string str, string separator)
 {
 	if (str.empty())
@@ -659,6 +676,18 @@ vector<string> e2db_abstract::value_channel_cached(string str, string separator)
 		token = std::strtok(NULL, separator.c_str());
 	}
 	return cached;
+}
+
+vector<string> e2db_abstract::value_channel_cached(string str)
+{
+	str.erase(std::remove_if(str.begin(), str.end(), [](unsigned char c) { return (c == 'c' || c == ':' || c == ' '); }), str.end());
+
+	return value_channel_cached(str, ",");
+}
+
+long e2db_abstract::value_channel_flags(service ch)
+{
+	return std::strtol(ch.data[SDATA::f][0].data(), NULL, 16);
 }
 
 string e2db_abstract::value_channel_flags(service ch, SDATA_FLAGS bit)
@@ -680,8 +709,8 @@ vector<string> e2db_abstract::value_channel_flags(service ch, SDATA_FLAGS bit, s
 	if (val == "1")
 		flags += bit;
 
-	char cflags[3];
-	std::snprintf(cflags, 3, "%02x", int (flags));
+	char cflags[5];
+	std::snprintf(cflags, 5, "%x", int (flags));
 
 	data.clear();
 
@@ -689,6 +718,14 @@ vector<string> e2db_abstract::value_channel_flags(service ch, SDATA_FLAGS bit, s
 		data.emplace_back(cflags);
 
 	return data;
+}
+
+vector<string> e2db_abstract::value_channel_flags(string str)
+{
+	char cflags[5];
+	std::snprintf(cflags, 5, "%x", int (std::atoi(str.data())));
+
+	return {cflags};
 }
 
 int e2db_abstract::value_transponder_type(char ty)
@@ -736,6 +773,7 @@ char e2db_abstract::value_transponder_type(YTYPE ytype)
 	}
 }
 
+//TODO FIX out of range
 string e2db_abstract::value_transponder_combo(transponder tx)
 {
 	string ptxp;
@@ -755,7 +793,7 @@ string e2db_abstract::value_transponder_combo(transponder tx)
 	{
 		int cmod = tx.cmod != -1 ? tx.cmod : 0;
 		int sr = tx.sr != -1 ? tx.sr : 0;
-		ptxp = to_string(int (tx.freq / 1e3)) + '/' + CAB_MOD[cmod] + '/' + to_string(int (sr / 1e3));
+		ptxp = to_string(tx.freq) + '/' + CAB_MOD[cmod] + '/' + to_string(int (sr / 1e3));
 	}
 	else if (tx.ytype == YTYPE::atsc)
 	{
@@ -764,6 +802,7 @@ string e2db_abstract::value_transponder_combo(transponder tx)
 	return ptxp;
 }
 
+//TODO FIX out of range
 string e2db_abstract::value_transponder_combo(tunersets_transponder tntxp, tunersets_table tn)
 {
 	string ptxp;
@@ -783,7 +822,7 @@ string e2db_abstract::value_transponder_combo(tunersets_transponder tntxp, tuner
 	{
 		int cmod = tntxp.cmod != -1 ? tntxp.cmod : 0;
 		int sr = tntxp.sr != -1 ? tntxp.sr : 0;
-		ptxp = to_string(int (tntxp.freq / 1e3)) + '/' + CAB_MOD[cmod] + '/' + to_string(int (sr / 1e3));
+		ptxp = to_string(tntxp.freq) + '/' + CAB_MOD[cmod] + '/' + to_string(int (sr / 1e3));
 	}
 	else if (tn.ytype == YTYPE::atsc)
 	{
@@ -865,12 +904,16 @@ string e2db_abstract::value_transponder_dvbns(int dvbns)
 	return cdvbns;
 }
 
-int e2db_abstract::value_transponder_frequency(string str)
+int e2db_abstract::value_transponder_frequency(string str, YTYPE ytype)
 {
-	if (str.size() == 6)
+	if (ytype == YTYPE::satellite && str.size() < 6)
 		return int (std::atoi(str.data()) * 1e3);
-	else
-		return std::atoi(str.data());
+	else if (ytype == YTYPE::cable && str.size() < 4)
+		return int (std::atoi(str.data()) * 1e3);
+	else if (str.size() < 7)
+		return int (std::atoi(str.data()) * 1e3);
+
+	return std::atoi(str.data());
 }
 
 int e2db_abstract::value_transponder_frequency(int freq, bool display)
@@ -901,7 +944,7 @@ string e2db_abstract::value_transponder_polarization(int pol)
 
 int e2db_abstract::value_transponder_sr(string str)
 {
-	if (str.size() == 6)
+	if (str.size() < 6)
 		return int (std::atoi(str.data()) * 1e3);
 	else
 		return std::atoi(str.data());
@@ -990,6 +1033,7 @@ string e2db_abstract::value_transponder_system(int sys, int yx)
 	return value_transponder_system(sys, ytype);
 }
 
+//TODO FIX out of range
 string e2db_abstract::value_transponder_system(int sys, YTYPE ytype)
 {
 	string psys;

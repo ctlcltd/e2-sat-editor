@@ -1358,7 +1358,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 							}
 							{
 								int cval = 0;
-								string cpx = (SDATA_PIDS::pmt > 9 ? "" : "0") + to_string(SDATA_PIDS::pmt);
+								string cpx = (SDATA_PIDS::pmtpid > 9 ? "" : "0") + to_string(SDATA_PIDS::pmtpid);
 								for (string & w : ch.data[SDATA::c])
 									if (w.substr(0, 2) == cpx)
 										cval = int (std::strtol(w.substr(2).data(), NULL, 16));

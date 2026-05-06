@@ -3267,12 +3267,14 @@ void e2db_console::entry_edit_exec(ENTRY entry_type, bool edit, string id, int r
 			tx.tsid = any_cast<int>(field(TYPE::tsid, true));
 			tx.onid = any_cast<int>(field(TYPE::onid, true));
 			tx.dvbns = any_cast<int>(field(TYPE::dvbns, false));
-			tx.freq = any_cast<int>(field(TYPE::freq, true));
+			int freq = any_cast<int>(field(TYPE::freq, true));
 
 			if (tx.ytype == e2db::YTYPE::satellite)
 			{
+				tx.freq = dbih->value_transponder_frequency(std::to_string(freq), e2db::YTYPE::satellite);
 				tx.pol = any_cast<int>(field(TYPE::pol, true));
-				tx.sr = any_cast<int>(field(TYPE::sr));
+				int sr = any_cast<int>(field(TYPE::sr));
+				tx.sr = dbih->value_transponder_sr(std::to_string(sr));
 				tx.fec = any_cast<int>(field(TYPE::fec));
 				tx.mod = any_cast<int>(field(TYPE::mod));
 				tx.inv = any_cast<int>(field(TYPE::inv));
@@ -3294,6 +3296,7 @@ void e2db_console::entry_edit_exec(ENTRY entry_type, bool edit, string id, int r
 			}
 			else if (tx.ytype == e2db::YTYPE::terrestrial)
 			{
+				tx.freq = dbih->value_transponder_frequency(std::to_string(freq), e2db::YTYPE::terrestrial);
 				tx.tmod = any_cast<int>(field(TYPE::tmod));
 				tx.band = any_cast<int>(field(TYPE::band));
 				tx.tmx = any_cast<int>(field(TYPE::tmx));
@@ -3311,14 +3314,17 @@ void e2db_console::entry_edit_exec(ENTRY entry_type, bool edit, string id, int r
 			}
 			else if (tx.ytype == e2db::YTYPE::cable)
 			{
+				tx.freq = dbih->value_transponder_frequency(std::to_string(freq), e2db::YTYPE::cable);
 				tx.cmod = any_cast<int>(field(TYPE::cmod));
-				tx.sr = any_cast<int>(field(TYPE::sr));
+				int sr = any_cast<int>(field(TYPE::sr));
+				tx.sr = dbih->value_transponder_sr(std::to_string(sr));
 				tx.cfec = any_cast<int>(field(TYPE::cfec));
 				tx.inv = any_cast<int>(field(TYPE::cinv));
 				tx.flags = any_cast<int>(field(TYPE::flags));
 			}
 			else if (tx.ytype == e2db::YTYPE::atsc)
 			{
+				tx.freq = dbih->value_transponder_frequency(std::to_string(freq), e2db::YTYPE::atsc);
 				tx.amod = any_cast<int>(field(TYPE::amod));
 				tx.flags = any_cast<int>(field(TYPE::flags));
 			}
@@ -3859,15 +3865,15 @@ bool e2db_console::label_field(TYPE type, string &label, string &description)
 		case TYPE::sdata_p: label = "Provider Name"; break;
 		case TYPE::sdata_c: label = "Service Cache"; description = "comma separated values in hex or <empty>, eg. c:0101,c:0202"; break;
 		case TYPE::sdata_C: label = "Service CAS"; description = "comma separated values in hex or <empty>, eg. C:0101,C:0202"; break;
-		case TYPE::sdata_f: label = "Service Flags"; description = "comma separated values in hex or <empty>, eg. f:0101,f:0202"; break;
+		case TYPE::sdata_f: label = "Service Flags"; description = "in hex or <empty>, eg. 1"; break;
 		case TYPE::mname: label = "Marker Name"; break;
 		case TYPE::mnum: label = "Marker Number"; description = "in digits"; break;
 		case TYPE::chvalue: label = "Channel Name"; break;
 		case TYPE::churl: label = "Channel URL"; break;
 		case TYPE::etype: label = "Favourite Type"; description = "exact match: 1 = broadcast, 2 = file, 3 = 4097, 8139 = youtube, 8193 = eservice"; break;
 		case TYPE::atype: label = "Favourite Flag"; description = "exact match: 64 = marker, 512 = marker hidden, 832 = marker hidden, 320 = marker numbered, 128 = group"; break;
-		case TYPE::freq: label = "Frequency"; description = "in Hertz, 6 or 8 digits"; break;
-		case TYPE::sr: label = "Symbol Rate"; description = "in Hertz, 6 or 8 digits"; break;
+		case TYPE::freq: label = "Frequency"; description = "in MHz KHz - KHz x100, 3-9 digits"; break;
+		case TYPE::sr: label = "Symbol Rate"; description = "in S/s or kS/s, 5-8 digits"; break;
 		case TYPE::pol: label = "Polarization"; description = "exact match: H = horizontal, V = vertical, L = Left Circular, R = Right Circular"; break;
 		case TYPE::fec: label = "FEC"; description = "exact match: <empty>, Auto, 1/2, 2/3, 3/4, 5/6, 7/8, 8/9, 3/5 4/5, 9/10, 6/7"; break;
 		case TYPE::hpfec: label = "HP FEC"; description = "exact match: <empty>, Auto, 1/2, 2/3, 3/4, 5/6, 7/8, 6/7, 8/9, 3/5, 4/5"; break;
@@ -4033,6 +4039,8 @@ bool e2db_console::value_field(TYPE type, string str, bool required, std::any &v
 		case TYPE::onid:
 		case TYPE::snum:
 		case TYPE::srcid:
+		case TYPE::freq:
+		case TYPE::sr:
 		case TYPE::plpid:
 		case TYPE::isid:
 		case TYPE::plscode:
@@ -4048,16 +4056,6 @@ bool e2db_console::value_field(TYPE type, string str, bool required, std::any &v
 		case TYPE::mnum:
 		case TYPE::flags:
 			d = std::atoi(str.data());
-			if (! d && required)
-				return false;
-		break;
-		case TYPE::freq:
-			d = dbih->value_transponder_frequency(str);
-			if (! d && required)
-				return false;
-		break;
-		case TYPE::sr:
-			d = dbih->value_transponder_sr(str);
 			if (! d && required)
 				return false;
 		break;
@@ -4098,7 +4096,19 @@ bool e2db_console::value_field(TYPE type, string str, bool required, std::any &v
 		break;
 		case TYPE::sdata_p:
 			value_type = VALUE::val_obj;
-			val = { str };
+			val = dbih->value_channel_provider(str);
+		break;
+		case TYPE::sdata_c:
+			value_type = VALUE::val_obj;
+			val = dbih->value_channel_cached(str);
+		break;
+		case TYPE::sdata_C:
+			value_type = VALUE::val_obj;
+			val = dbih->value_channel_caid(str);
+		break;
+		case TYPE::sdata_f:
+			value_type = VALUE::val_obj;
+			val = dbih->value_channel_flags(str);
 		break;
 		case TYPE::yname:
 			if (str.size() == 1)

@@ -241,7 +241,7 @@ void editTransponder::leadSatLayout()
 	dtf0sf->setProperty("field", "s_freq");
 	fields.emplace_back(dtf0sf);
 	dtf0sf->setMinimumWidth(100);
-	dtf0sf->setInputMask("00000.000");
+	dtf0sf->setInputMask("00000.000;0");
 	dtf0sf->setValidator(new QDoubleValidator(0, 99999, 3));
 	dtf0sf->setMaxLength(8);
 	platform::osLineEdit(dtf0sf);
@@ -267,7 +267,7 @@ void editTransponder::leadSatLayout()
 	dtf0ss->setProperty("field", "s_sr");
 	fields.emplace_back(dtf0ss);
 	dtf0ss->setMinimumWidth(100);
-	dtf0ss->setInputMask("00000.000");
+	dtf0ss->setInputMask("00000.000;0");
 	dtf0ss->setValidator(new QDoubleValidator(-1, 99999, 3));
 	dtf0ss->setMaxLength(8);
 	platform::osLineEdit(dtf0ss);
@@ -320,8 +320,8 @@ void editTransponder::leadTerrestrialLayout()
 	dtf0tf->setProperty("field", "t_freq");
 	fields.emplace_back(dtf0tf);
 	dtf0tf->setMinimumWidth(100);
-	dtf0tf->setInputMask("00000.000");
-	dtf0tf->setValidator(new QDoubleValidator(0, 99999, 3));
+	dtf0tf->setInputMask("000000.000;0");
+	dtf0tf->setValidator(new QDoubleValidator(0, 999999, 3));
 	dtf0tf->setMaxLength(8);
 	platform::osLineEdit(dtf0tf);
 	dtf0->addRow(tr("Frequency"), dtf0tf);
@@ -418,8 +418,8 @@ void editTransponder::leadCableLayout()
 	dtf0cf->setProperty("field", "c_freq");
 	fields.emplace_back(dtf0cf);
 	dtf0cf->setMinimumWidth(100);
-	dtf0cf->setInputMask("00000.000");
-	dtf0cf->setValidator(new QDoubleValidator(0, 99999, 3));
+	dtf0cf->setInputMask("000.000;0");
+	dtf0cf->setValidator(new QDoubleValidator(0, 999, 3));
 	dtf0cf->setMaxLength(8);
 	platform::osLineEdit(dtf0cf);
 	dtf0->addRow(tr("Frequency"), dtf0cf);
@@ -444,7 +444,7 @@ void editTransponder::leadCableLayout()
 	dtf0cs->setProperty("field", "c_sr");
 	fields.emplace_back(dtf0cs);
 	dtf0cs->setMinimumWidth(100);
-	dtf0cs->setInputMask("00000.000");
+	dtf0cs->setInputMask("00000.000;0");
 	dtf0cs->setValidator(new QDoubleValidator(-1, 99999, 3));
 	dtf0cs->setMaxLength(8);
 	platform::osLineEdit(dtf0cs);
@@ -482,8 +482,8 @@ void editTransponder::leadAtscLayout()
 	dtf0af->setProperty("field", "a_freq");
 	fields.emplace_back(dtf0af);
 	dtf0af->setMinimumWidth(100);
-	dtf0af->setInputMask("00000.000");
-	dtf0af->setValidator(new QDoubleValidator(0, 99999, 3));
+	dtf0af->setInputMask("000000.000;0");
+	dtf0af->setValidator(new QDoubleValidator(0, 999999, 3));
 	dtf0af->setMaxLength(8);
 	platform::osLineEdit(dtf0af);
 	dtf0->addRow(tr("Frequency"), dtf0af);

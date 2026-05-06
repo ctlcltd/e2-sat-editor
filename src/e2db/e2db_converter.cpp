@@ -1462,7 +1462,7 @@ void e2db_converter::convert_csv_channel_list(vector<vector<string>>& sxv, e2db_
 			}
 			// caid
 			else if (i == 10)
-				ch.data[SDATA::C] = value_channel_caid(val);
+				ch.data[SDATA::C] = value_channel_caid(val, "|");
 			// provider
 			else if (i == 11)
 				ch.data[SDATA::p] = value_channel_provider(val);
@@ -1817,7 +1817,7 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>>& s
 			// caid
 			else if (i == 10)
 			{
-				ch.data[SDATA::C] = value_channel_caid(val);
+				ch.data[SDATA::C] = value_channel_caid(val, "|");
 			}
 			// provider
 			else if (i == 11)
@@ -1912,7 +1912,7 @@ void e2db_converter::convert_csv_channel_list_extended(vector<vector<string>>& s
 				value_transponder_feopts(val, tx);
 			// cached
 			else if (i == 33)
-				ch.data[SDATA::c] = value_channel_cached(val);
+				ch.data[SDATA::c] = value_channel_cached(val, "|");
 			// userbouquet bname
 			else if (i == 34)
 				ub.bname = val;
@@ -3595,9 +3595,9 @@ void e2db_converter::page_body_channel_list(html_page& page, string bname, DOC_V
 				scas.append("</span>");
 			}
 			string pname = value_channel_provider(ch);
-			string freq = to_string(tx.freq);
+			string freq = to_string(value_transponder_frequency(tx.freq, true));
 			string pol = value_transponder_polarization(tx.pol);
-			string sr = value_transponder_sr(tx.sr);
+			string sr = value_transponder_sr(tx.sr, true);
 			string fec = value_transponder_fec(tx.fec, tx.ytype);
 			string pos = value_transponder_position(tx);
 			string sys = value_transponder_system(tx);
@@ -3828,9 +3828,9 @@ void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 			page.body += "<td class=\"trid\">" + to_string(i++) + "</td>";
 			if (ytype == YTYPE::satellite)
 			{
-				string freq = to_string(tntxp.freq);
+				string freq = to_string(value_transponder_frequency(tntxp.freq, true));
 				string pol = value_transponder_polarization(tntxp.pol);
-				string sr = value_transponder_sr(tntxp.sr);
+				string sr = value_transponder_sr(tntxp.sr, true);
 				string sys = value_transponder_system(tntxp.sys, YTYPE::satellite);
 				string fec = value_transponder_fec(tntxp.fec, YTYPE::satellite);
 				string mod = value_transponder_modulation(tntxp.mod, YTYPE::satellite);
@@ -3850,7 +3850,7 @@ void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 			}
 			else if (ytype == YTYPE::terrestrial)
 			{
-				string freq = to_string(tntxp.freq);
+				string freq = to_string(value_transponder_frequency(tntxp.freq, true));
 				string tmod = value_transponder_modulation(tntxp.tmod, YTYPE::terrestrial);
 				string sys = value_transponder_system(tntxp.sys, YTYPE::terrestrial);
 				string band = value_transponder_bandwidth(tntxp.band);
@@ -3874,9 +3874,9 @@ void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 			}
 			else if (ytype == YTYPE::cable)
 			{
-				string freq = to_string(tntxp.freq);
+				string freq = to_string(value_transponder_frequency(tntxp.freq, true));
 				string cmod = value_transponder_modulation(tntxp.cmod, YTYPE::cable);
-				string sr = value_transponder_sr(tntxp.sr);
+				string sr = value_transponder_sr(tntxp.sr, true);
 				string sys = value_transponder_system(tntxp.sys, YTYPE::cable);
 				string cfec = value_transponder_fec(tntxp.cfec, YTYPE::cable);
 				string inv = value_transponder_inversion(tntxp.inv, YTYPE::cable);
@@ -3890,7 +3890,7 @@ void e2db_converter::page_body_tunersets_list(html_page& page, int ytype)
 			}
 			else if (ytype == YTYPE::atsc)
 			{
-				string freq = to_string(tntxp.freq);
+				string freq = to_string(value_transponder_frequency(tntxp.freq, true));
 				string amod = value_transponder_modulation(tntxp.amod, YTYPE::atsc);
 				string sys = value_transponder_system(tntxp.sys, YTYPE::atsc);
 
@@ -4028,7 +4028,7 @@ string e2db_converter::conv_picon_pathname(string str)
 
 	std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return std::tolower(c); });
 
-	str.erase(std::remove_if(str.begin(), str.end(), [](unsigned char c){ return ! ((c >= 97 && c <= 122) || (c >= 48 && c <= 57)); }), str.end());
+	str.erase(std::remove_if(str.begin(), str.end(), [](unsigned char c) { return ! ((c >= 97 && c <= 122) || (c >= 48 && c <= 57)); }), str.end());
 
 	return str;
 }

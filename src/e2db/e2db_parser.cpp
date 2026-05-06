@@ -716,7 +716,7 @@ void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transpo
 			int cmod, cfec;
 			cmod = -1, cfec = -1;
 
-			std::sscanf(str.c_str(), "%8d:%8d:%1d:%1d:%1d:%d:%1d", &freq, &sr, &inv, &cmod, &cfec, &flags, &sys);
+			std::sscanf(str.c_str(), "%6d:%8d:%1d:%1d:%1d:%d:%1d", &freq, &sr, &inv, &cmod, &cfec, &flags, &sys);
 
 			tx.ytype = YTYPE::cable;
 			tx.freq = freq;
@@ -731,7 +731,7 @@ void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transpo
 			int amod;
 			amod = -1;
 
-			std::sscanf(str.c_str(), "%8d:%1d:%1d:%d:%1d", &freq, &inv, &amod, &flags, &sys);
+			std::sscanf(str.c_str(), "%9d:%1d:%1d:%d:%1d", &freq, &inv, &amod, &flags, &sys);
 
 			tx.ytype = YTYPE::atsc;
 			tx.freq = freq;
@@ -1859,7 +1859,7 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 					if (cval != 0)
 					{
 						char pid[7];
-						std::snprintf(pid, 7, "%02d%04x", SDATA_PIDS::pmt, cval);
+						std::snprintf(pid, 7, "%02d%04x", SDATA_PIDS::pmtpid, cval);
 						ch.data[SDATA::c].emplace_back(pid);
 					}
 				}

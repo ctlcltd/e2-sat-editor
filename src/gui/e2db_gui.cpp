@@ -595,8 +595,8 @@ QStringList e2db::entryTransponder(transponder tx, bool extended)
 
 	QString txid = QString::fromStdString(tx.txid);
 	QString combo = QString::fromStdString(value_transponder_combo(tx));
-	QString freq = QString::number(value_transponder_frequency(tx.freq));
-	QString sr = QString::fromStdString(value_transponder_sr(tx.sr));
+	QString freq = QString::number(value_transponder_frequency(tx.freq, true));
+	QString sr = QString::fromStdString(value_transponder_sr(tx.sr, true));
 	QString tsid = QString::number(tx.tsid);
 	QString dvbns = QString::fromStdString(value_transponder_dvbns(tx.dvbns));
 	QString onid = QString::number(tx.onid);
@@ -834,7 +834,7 @@ QStringList e2db::entryTunersetsTransponder(tunersets_transponder tntxp, tunerse
 {
 	QStringList entry;
 	QString trid = QString::fromStdString(tntxp.trid);
-	QString freq = QString::number(tntxp.freq);
+	QString freq = QString::number(value_transponder_frequency(tntxp.freq, true));
 	QString combo = QString::fromStdString(value_transponder_combo(tntxp, tn));
 
 	if (QApplication::layoutDirection() == Qt::RightToLeft)
@@ -845,7 +845,7 @@ QStringList e2db::entryTunersetsTransponder(tunersets_transponder tntxp, tunerse
 	if (tn.ytype == YTYPE::satellite)
 	{
 		QString pol = QString::fromStdString(value_transponder_polarization(tntxp.pol));
-		QString sr = QString::fromStdString(value_transponder_sr(tntxp.sr));
+		QString sr = QString::fromStdString(value_transponder_sr(tntxp.sr, true));
 		QString sys = QString::fromStdString(value_transponder_system(tntxp.sys, YTYPE::satellite));
 		QString fec = QString::fromStdString(value_transponder_fec(tntxp.fec, YTYPE::satellite));
 		QString mod = QString::fromStdString(value_transponder_modulation(tntxp.mod, YTYPE::satellite));
@@ -870,7 +870,7 @@ QStringList e2db::entryTunersetsTransponder(tunersets_transponder tntxp, tunerse
 	else if (tn.ytype == YTYPE::cable)
 	{
 		QString cmod = QString::fromStdString(value_transponder_modulation(tntxp.cmod, YTYPE::cable));
-		QString sr = QString::fromStdString(value_transponder_sr(tntxp.sr));
+		QString sr = QString::fromStdString(value_transponder_sr(tntxp.sr, false));
 		QString sys = QString::fromStdString(value_transponder_system(tntxp.sys, YTYPE::cable));
 		QString cfec = QString::fromStdString(value_transponder_fec(tntxp.cfec, YTYPE::cable));
 		QString inv = QString::fromStdString(value_transponder_inversion(tntxp.inv, YTYPE::cable));
