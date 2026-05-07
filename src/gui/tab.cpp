@@ -216,7 +216,7 @@ void tab::tabSwitch()
 
 	view->update();
 
-	auto &dwids = this->child ? parent->dwids : this->dwids;
+	auto& dwids = this->child ? parent->dwids : this->dwids;
 
 	if (! dwids.isEmpty())
 	{
@@ -354,7 +354,7 @@ void tab::addPermanentDockWidget(Qt::DockWidgetArea area, QDockWidget* widget)
 {
 	debug("addPermanentDockWidget");
 
-	auto &dwids = this->child ? parent->dwids : this->dwids;
+	auto& dwids = this->child ? parent->dwids : this->dwids;
 
 	if (dwids.indexOf(widget) != -1)
 	{
@@ -378,7 +378,7 @@ void tab::removePermanentDockWidget(QDockWidget* widget)
 {
 	debug("removePermanentDockWidget");
 
-	auto &dwids = this->child ? parent->dwids : this->dwids;
+	auto& dwids = this->child ? parent->dwids : this->dwids;
 
 	this->widget->removeDockWidget(widget);
 
@@ -388,7 +388,7 @@ void tab::removePermanentDockWidget(QDockWidget* widget)
 
 bool tab::hasPermamentDockWidgets()
 {
-	auto &dwids = this->child ? parent->dwids : this->dwids;
+	auto& dwids = this->child ? parent->dwids : this->dwids;
 
 	return ! dwids.isEmpty();
 }

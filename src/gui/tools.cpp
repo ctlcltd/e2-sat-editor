@@ -68,7 +68,6 @@ tools::~tools()
 	delete this->theme;
 	delete this->log;
 
-	//TODO TEST
 	for (auto & x : this->ths)
 	{
 		console_gui* thptr = x.second;
@@ -1237,7 +1236,6 @@ vector<QPair<QString, QString>> tools::sortComboBoxProps(SORT_ITEM model)
 	return {};
 }
 
-//TODO TEST
 void tools::console(tab* ttab)
 {
 	debug("console");
@@ -1246,7 +1244,7 @@ void tools::console(tab* ttab)
 		return;
 
 	int ttid = ttab->getTabId();
-	auto &dwids = ttab->isChildTab() ? ttab->parentTab()->dwids : ttab->dwids;
+	auto& dwids = ttab->isChildTab() ? ttab->parentTab()->dwids : ttab->dwids;
 
 	for (auto & wid : dwids)
 	{

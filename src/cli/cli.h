@@ -30,14 +30,14 @@ namespace e2se_cli
 class stream : public streamiface
 {
 	public:
-		stream(std::ostream &p) : os(p) {}
+		stream(std::ostream& p) : os(p) {}
 		virtual ~stream() = default;
 
 		streamiface &operator<<(int i) override { os << i; return *this; }
 		streamiface &operator<<(char c) override { os << c; return *this; }
 		streamiface &operator<<(const char* s) override { os << s; return *this; }
-		streamiface &operator<<(const std::string &s) override { os << s; return *this; }
-		streamiface &operator<<(const streamiface &) override { return *this; }
+		streamiface &operator<<(const std::string& s) override { os << s; return *this; }
+		streamiface &operator<<(const streamiface&) override { return *this; }
 		// streamiface &operator<<(std::ostream&(*p)(std::ostream&)) override { os << p; return *this; }
 		// streamiface &operator<<(std::ios_base&(*p)(std::ios_base&)) override { os << p; return *this; }
 
@@ -49,7 +49,7 @@ class stream : public streamiface
 		int width(int width) override { return os.width(width); }
 
 	private:
-		std::ostream &os;
+		std::ostream& os;
 };
 
 

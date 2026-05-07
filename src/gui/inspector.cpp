@@ -128,7 +128,6 @@ void inspector::layout()
 	timer->start(1000);
 }
 
-//TODO TEST escape html
 QString inspector::inspectContent(string str, int filter)
 {
 	QString text = QString::fromStdString(str);

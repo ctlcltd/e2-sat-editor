@@ -153,9 +153,9 @@ void termctl_gui::callHistory(const EVENT e, const QString val)
 	if (this->currhr != HANDLE::Command)
 		return;
 
-	int &prev = curr.prev;
-	int &next = curr.next;
-	std::string &input = curr.input;
+	int& prev = curr.prev;
+	int& next = curr.next;
+	std::string& input = curr.input;
 
 	next = e;
 

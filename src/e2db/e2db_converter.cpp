@@ -2530,19 +2530,19 @@ void e2db_converter::csv_channel_list(string& csv, string bname, DOC_VIEW view)
 			string pos = value_transponder_position(tx);
 			string tname = get_tuner_name(tx);
 			int freq = tx.freq;
-			string pol = tx.pol != -1 ? SAT_POL[tx.pol] : "";
+			string pol = value_transponder_polarization(tx.pol);
 			int sr = tx.sr;
 			string fec;
 			switch (tx.ytype)
 			{
 				case YTYPE::satellite:
-					fec = SAT_FEC[tx.fec];
+					fec = value_transponder_fec(tx.fec, YTYPE::satellite);
 				break;
 				case YTYPE::terrestrial:
-					fec = TER_FEC[tx.hpfec] + '|' + TER_FEC[tx.lpfec];
+					fec = value_transponder_fec(tx.hpfec, YTYPE::terrestrial) + '|' + value_transponder_fec(tx.lpfec, YTYPE::terrestrial);
 				break;
 				case YTYPE::cable:
-					fec = CAB_FEC[tx.cfec];
+					fec = value_transponder_fec(tx.cfec, YTYPE::cable);
 				break;
 				case YTYPE::atsc:
 					fec = "";
@@ -2768,31 +2768,31 @@ void e2db_converter::csv_channel_list_extended(string& csv, string bname, DOC_VI
 			switch (tx.ytype)
 			{
 				case YTYPE::satellite:
-					pol = SAT_POL[tx.pol];
-					ifec = SAT_FEC[tx.fec];
-					mod = SAT_MOD[tx.mod];
-					rol = SAT_ROL[tx.rol];
-					pil = SAT_PIL[tx.pil];
-					inv = SAT_INV[tx.inv];
+					pol = value_transponder_polarization(tx.pol);
+					ifec = value_transponder_fec(tx.fec, YTYPE::satellite);
+					mod = value_transponder_modulation(tx.mod, YTYPE::satellite);
+					rol = value_transponder_rollof(tx.rol);
+					pil = value_transponder_pilot(tx.pil);
+					inv = value_transponder_inversion(tx.inv, YTYPE::satellite);
 				break;
 				case YTYPE::terrestrial:
-					hpfec = TER_FEC[tx.hpfec];
-					lpfec = TER_FEC[tx.lpfec];
-					mod = TER_MOD[tx.tmod];
-					band = TER_BAND[tx.band];
-					txm = TER_TMXMODE[tx.tmx];
-					guard = TER_GUARD[tx.guard];
-					hier = TER_HIER[tx.hier];
-					inv = TER_INV[tx.inv];
+					hpfec = value_transponder_fec(tx.hpfec, YTYPE::terrestrial);
+					lpfec = value_transponder_fec(tx.lpfec, YTYPE::terrestrial);
+					mod = value_transponder_modulation(tx.tmod, YTYPE::terrestrial);
+					band = value_transponder_bandwidth(tx.band);
+					txm = value_transponder_tmx_mode(tx.tmx);
+					guard = value_transponder_guard(tx.guard);
+					hier = value_transponder_hier(tx.hier);
+					inv = value_transponder_inversion(tx.inv, YTYPE::terrestrial);
 				break;
 				case YTYPE::cable:
-					ifec = CAB_FEC[tx.cfec];
-					mod = CAB_MOD[tx.mod];
-					inv = CAB_INV[tx.inv];
+					ifec = value_transponder_fec(tx.cfec, YTYPE::cable);
+					mod = value_transponder_modulation(tx.mod, YTYPE::cable);
+					inv = value_transponder_inversion(tx.inv, YTYPE::cable);
 				break;
 				case YTYPE::atsc:
-					mod = tx.amod;
-					inv = tx.inv;
+					mod = value_transponder_modulation(tx.amod, YTYPE::atsc);
+					inv = value_transponder_inversion(tx.inv, YTYPE::atsc);
 				break;
 			}
 			int flags = tx.flags;

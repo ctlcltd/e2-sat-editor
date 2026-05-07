@@ -737,7 +737,6 @@ void ftpcom::fix_crlf(string& line)
 		line = line.substr(0, line.size() - 1);
 }
 
-//TODO TEST rand SEGFAULT with a strange routine (connect > disconnect > upload > disconnect > upload)
 bool ftpcom::cmd_ifreload()
 {
 	debug("cmd_ifreload");

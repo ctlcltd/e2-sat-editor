@@ -968,7 +968,6 @@ void piconsView::executeBatchCommand()
 				arguments.removeAt(0);
 #endif
 
-				//TODO TEST QThread::currentThread() parenting and QProcess execution
 				QProcess* process = new QProcess(QThread::currentThread());
 #if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
 				process->startCommand(program);

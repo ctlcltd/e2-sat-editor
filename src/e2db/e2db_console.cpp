@@ -3839,7 +3839,7 @@ void e2db_console::entry_parentallock_exec(ENTRY entry_type, string id, bool fla
 	}
 }
 
-bool e2db_console::label_field(TYPE type, string &label, string &description)
+bool e2db_console::label_field(TYPE type, string& label, string& description)
 {
 	switch (type)
 	{
@@ -3926,7 +3926,7 @@ bool e2db_console::label_field(TYPE type, string &label, string &description)
 	return true;
 }
 
-void e2db_console::label_obj_pair(TYPE type, string &name, VALUE &value_type)
+void e2db_console::label_obj_pair(TYPE type, string& name, VALUE& value_type)
 {
 	bool hrn = __objio.hrn;
 	bool hrv = __objio.hrv;
@@ -4023,7 +4023,7 @@ void e2db_console::label_obj_pair(TYPE type, string &name, VALUE &value_type)
 	}
 }
 
-bool e2db_console::value_field(TYPE type, string str, bool required, std::any &val)
+bool e2db_console::value_field(TYPE type, string str, bool required, std::any& val)
 {
 	if (str.empty() && required)
 		return false;
@@ -4220,7 +4220,7 @@ bool e2db_console::value_field(TYPE type, string str, bool required, std::any &v
 	return true;
 }
 
-void e2db_console::value_obj_pair(TYPE type, VALUE value_type, std::any val, int &d, string &str)
+void e2db_console::value_obj_pair(TYPE type, VALUE value_type, std::any val, int& d, string& str)
 {
 	using std::any_cast;
 
@@ -4562,7 +4562,7 @@ map<int, vector<pair<e2db_console::TYPE, bool>>> e2db_console::input_mask(ENTRY 
 					throw std::runtime_error (msg("Transponder \"%s\" not exists.", id));
 			}
 
-			auto &props = mask[0];
+			auto& props = mask[0];
 			props.emplace_back(pair (TYPE::yname, true));
 			props.emplace_back(pair (TYPE::pos, true));
 			props.emplace_back(pair (TYPE::sys, false));
@@ -4572,7 +4572,7 @@ map<int, vector<pair<e2db_console::TYPE, bool>>> e2db_console::input_mask(ENTRY 
 			props.emplace_back(pair (TYPE::freq, true));
 
 			{
-				auto &props = mask[1];
+				auto& props = mask[1];
 				props.emplace_back(pair (TYPE::pol, true));
 				props.emplace_back(pair (TYPE::sr, false));
 				props.emplace_back(pair (TYPE::fec, false));
@@ -4584,7 +4584,7 @@ map<int, vector<pair<e2db_console::TYPE, bool>>> e2db_console::input_mask(ENTRY 
 
 				props.emplace_back(pair (TYPE::txdata, false));
 				{
-					auto &props = mask[-1];
+					auto& props = mask[-1];
 					props.emplace_back(pair (TYPE::isid, false));
 					props.emplace_back(pair (TYPE::plscode, false));
 					props.emplace_back(pair (TYPE::plsmode, false));
@@ -4593,7 +4593,7 @@ map<int, vector<pair<e2db_console::TYPE, bool>>> e2db_console::input_mask(ENTRY 
 				}
 			}
 			{
-				auto &props = mask[2];
+				auto& props = mask[2];
 				props.emplace_back(pair (TYPE::tmod, false));
 				props.emplace_back(pair (TYPE::band, false));
 				props.emplace_back(pair (TYPE::tmx, false));
@@ -4606,12 +4606,12 @@ map<int, vector<pair<e2db_console::TYPE, bool>>> e2db_console::input_mask(ENTRY 
 
 				props.emplace_back(pair (TYPE::txdata, false));
 				{
-					auto &props = mask[-2];
+					auto& props = mask[-2];
 					props.emplace_back(pair (TYPE::plpid, false));
 				}
 			}
 			{
-				auto &props = mask[3];
+				auto& props = mask[3];
 				props.emplace_back(pair (TYPE::cmod, false));
 				props.emplace_back(pair (TYPE::sr, false));
 				props.emplace_back(pair (TYPE::cfec, false));
@@ -4619,7 +4619,7 @@ map<int, vector<pair<e2db_console::TYPE, bool>>> e2db_console::input_mask(ENTRY 
 				props.emplace_back(pair (TYPE::flags, false));
 			}
 			{
-				auto &props = mask[4];
+				auto& props = mask[4];
 				props.emplace_back(pair (TYPE::amod, false));
 				props.emplace_back(pair (TYPE::flags, false));
 			}
@@ -4632,11 +4632,11 @@ map<int, vector<pair<e2db_console::TYPE, bool>>> e2db_console::input_mask(ENTRY 
 					throw std::runtime_error (msg("Service \"%s\" not exists.", id));
 			}
 
-			auto &props = mask[0];
+			auto& props = mask[0];
 			props.emplace_back(pair (TYPE::txid, true));
 
 			{
-				auto &props = mask[1];
+				auto& props = mask[1];
 				props.emplace_back(pair (TYPE::stype, true));
 				props.emplace_back(pair (TYPE::ssid, true));
 				props.emplace_back(pair (TYPE::chname, true));
@@ -4646,7 +4646,7 @@ map<int, vector<pair<e2db_console::TYPE, bool>>> e2db_console::input_mask(ENTRY 
 				props.emplace_back(pair (TYPE::chdata, false));
 			}
 			{
-				auto &props = mask[-1];
+				auto& props = mask[-1];
 				props.emplace_back(pair (TYPE::sdata_p, false));
 				props.emplace_back(pair (TYPE::sdata_c, false));
 				props.emplace_back(pair (TYPE::sdata_C, false));
@@ -4663,7 +4663,7 @@ map<int, vector<pair<e2db_console::TYPE, bool>>> e2db_console::input_mask(ENTRY 
 					throw std::runtime_error (msg("Bouquet \"%s\" not exists.", id));
 			}
 
-			auto &props = mask[0];
+			auto& props = mask[0];
 			props.emplace_back(pair (TYPE::btype, true));
 			if (edit)
 				props.emplace_back(pair (TYPE::rname, false));
@@ -4680,7 +4680,7 @@ map<int, vector<pair<e2db_console::TYPE, bool>>> e2db_console::input_mask(ENTRY 
 					throw std::runtime_error (msg("Userbouquet \"%s\" not exists.", id));
 			}
 
-			auto &props = mask[0];
+			auto& props = mask[0];
 			if (edit)
 				props.emplace_back(pair (TYPE::rname, false));
 			else
@@ -4709,7 +4709,7 @@ map<int, vector<pair<e2db_console::TYPE, bool>>> e2db_console::input_mask(ENTRY 
 				}
 			}
 
-			auto &props = mask[0];
+			auto& props = mask[0];
 			props.emplace_back(pair (TYPE::ytype, true));
 			props.emplace_back(pair (TYPE::charset, false));
 		}
@@ -4738,28 +4738,28 @@ map<int, vector<pair<e2db_console::TYPE, bool>>> e2db_console::input_mask(ENTRY 
 					throw std::runtime_error (msg("Tuner settings table \"%s\" not exists.", id));
 			}
 
-			auto &props = mask[0];
+			auto& props = mask[0];
 			props.emplace_back(pair (TYPE::ytype, true));
 			props.emplace_back(pair (TYPE::tname, true));
 
 			{
-				auto &props = mask[1];
+				auto& props = mask[1];
 				props.emplace_back(pair (TYPE::pos, true));
 				props.emplace_back(pair (TYPE::flags, false));
 			}
 			{
-				auto &props = mask[2];
+				auto& props = mask[2];
 				props.emplace_back(pair (TYPE::country, false));
 				props.emplace_back(pair (TYPE::flags, false));
 			}
 			{
-				auto &props = mask[3];
+				auto& props = mask[3];
 				props.emplace_back(pair (TYPE::country, false));
 				props.emplace_back(pair (TYPE::feed, false));
 				props.emplace_back(pair (TYPE::flags, false));
 			}
 			{
-				auto &props = mask[4];
+				auto& props = mask[4];
 				props.emplace_back(pair (TYPE::flags, false));
 			}
 		}
@@ -4793,13 +4793,13 @@ map<int, vector<pair<e2db_console::TYPE, bool>>> e2db_console::input_mask(ENTRY 
 					throw std::runtime_error (msg("Tuner settings transponder \"%s\" not exists.", id));
 			}
 
-			auto &props = mask[0];
+			auto& props = mask[0];
 			props.emplace_back(pair (TYPE::sys, false));
 			props.emplace_back(pair (TYPE::freq, true));
 
 			if (tn.ytype == e2db::YTYPE::satellite)
 			{
-				auto &props = mask[1];
+				auto& props = mask[1];
 				props.emplace_back(pair (TYPE::pol, true));
 				props.emplace_back(pair (TYPE::sr, false));
 				props.emplace_back(pair (TYPE::fec, false));
@@ -4810,7 +4810,7 @@ map<int, vector<pair<e2db_console::TYPE, bool>>> e2db_console::input_mask(ENTRY 
 
 				props.emplace_back(pair (TYPE::txdata, false));
 				{
-					auto &props = mask[-1];
+					auto& props = mask[-1];
 					props.emplace_back(pair (TYPE::plsn, false));
 					props.emplace_back(pair (TYPE::plscode, false));
 					props.emplace_back(pair (TYPE::plsmode, false));
@@ -4820,7 +4820,7 @@ map<int, vector<pair<e2db_console::TYPE, bool>>> e2db_console::input_mask(ENTRY 
 			}
 			else if (tn.ytype == e2db::YTYPE::terrestrial)
 			{
-				auto &props = mask[1];
+				auto& props = mask[1];
 				props.emplace_back(pair (TYPE::tmod, false));
 				props.emplace_back(pair (TYPE::band, false));
 				props.emplace_back(pair (TYPE::tmx, false));
@@ -4832,13 +4832,13 @@ map<int, vector<pair<e2db_console::TYPE, bool>>> e2db_console::input_mask(ENTRY 
 
 				props.emplace_back(pair (TYPE::txdata, false));
 				{
-					auto &props = mask[-1];
+					auto& props = mask[-1];
 					props.emplace_back(pair (TYPE::plpid, false));
 				}
 			}
 			else if (tn.ytype == e2db::YTYPE::cable)
 			{
-				auto &props = mask[1];
+				auto& props = mask[1];
 				props.emplace_back(pair (TYPE::cmod, false));
 				props.emplace_back(pair (TYPE::sr, false));
 				props.emplace_back(pair (TYPE::cfec, false));
@@ -4846,7 +4846,7 @@ map<int, vector<pair<e2db_console::TYPE, bool>>> e2db_console::input_mask(ENTRY 
 			}
 			else if (tn.ytype == e2db::YTYPE::atsc)
 			{
-				auto &props = mask[1];
+				auto& props = mask[1];
 				props.emplace_back(pair (TYPE::amod, false));
 			}
 		}
@@ -4855,7 +4855,7 @@ map<int, vector<pair<e2db_console::TYPE, bool>>> e2db_console::input_mask(ENTRY 
 			if (! dbih->userbouquets.count(bname))
 				throw std::runtime_error (msg("Userbouquet \"%s\" not exists.", bname));
 
-			auto &props = mask[0];
+			auto& props = mask[0];
 
 			if (ref == 0) // marker
 			{
@@ -4864,7 +4864,7 @@ map<int, vector<pair<e2db_console::TYPE, bool>>> e2db_console::input_mask(ENTRY 
 
 				props.emplace_back(pair (TYPE::ffdata, false));
 				{
-					auto &props = mask[-1];
+					auto& props = mask[-1];
 					props.emplace_back(pair (TYPE::mnum, false));
 				}
 			}

@@ -1644,7 +1644,6 @@ void settings::currentProfileChanged(QListWidgetItem* current, QListWidgetItem* 
 {
 	debug("currentProfileChanged");
 
-	//TODO TEST
 	if (previous != nullptr)
 	{
 		int idx = previous->data(Qt::UserRole).toInt();

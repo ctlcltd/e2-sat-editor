@@ -272,10 +272,10 @@ struct e2db_abstract : protected e2se::log_factory
 		};
 
 		// service data flags
-		// f01 fkeep
-		// f02 fhide
-		// f04 fpid
-		// f08 fname
+		// f1 fkeep
+		// f2 fhide
+		// f4 fpid
+		// f8 fname
 		// f40 fnew
 		// f80 fd3d
 		// f100 fplck
@@ -654,10 +654,11 @@ struct e2db_abstract : protected e2se::log_factory
 		static string value_channel_provider(service ch);
 		static string value_channel_provider(map<char, vector<string>> data);
 		static string value_channel_pid(service ch, SDATA_PIDS pid);
-		static vector<long> value_channel_pid(service ch);
 		static vector<string> value_channel_pid(service ch, SDATA_PIDS pid, string val);
+		static vector<string> value_channel_caid(service ch);
 		static vector<string> value_channel_caid(string str, string separator);
 		static vector<string> value_channel_caid(string str);
+		static vector<string> value_channel_cached(service ch);
 		static vector<string> value_channel_cached(string str, string separator);
 		static vector<string> value_channel_cached(string str);
 		static long value_channel_flags(service ch);

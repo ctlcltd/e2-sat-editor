@@ -4188,18 +4188,48 @@ void mainView::updateReferencePanel()
 				txp = tns = "< >";
 			}
 
-			if (ch.data.count(e2db::SDATA::c)) {
-				string vpid = dbih->value_channel_pid(ch, e2db::SDATA_PIDS::vpid);
-				string apid = dbih->value_channel_pid(ch, e2db::SDATA_PIDS::mpegapid);
-				string pcrpid = dbih->value_channel_pid(ch, e2db::SDATA_PIDS::pcrpid);
+			if (ch.data.count(e2db::SDATA::c))
+			{
+				vector<string> pids = dbih->value_channel_cached(ch);
 
-				if (! vpid.empty() && ! pcrpid.empty() && ! apid.empty())
+				if (pids.size() != 0)
 				{
-					sdatac.append("VPID: " + (vpid.empty() ? "0" : QString::fromStdString(vpid)));
-					sdatac.append('\t');
-					sdatac.append("APID: " + (apid.empty() ? "0" : QString::fromStdString(apid)));
-					sdatac.append('\t');
-					sdatac.append("PCRPID: " + (pcrpid.empty() ? "0" : QString::fromStdString(pcrpid)));
+					int j = 3;
+					long vpid = 0, apid = 0, pcrpid = 0;
+
+					for (string & w : pids)
+					{
+						if (! j)
+							break;
+
+						if (w.size() > 1)
+						{
+							int d = std::stoi(w.substr(1, 1));
+
+							if (d < 4)
+							{
+								if (d == e2db::SDATA_PIDS::vpid)
+									vpid = std::strtol(w.substr(2).data(), NULL, 16), j--;
+								else if (d == e2db::SDATA_PIDS::mpegapid)
+									apid = std::strtol(w.substr(2).data(), NULL, 16), j--;
+								else if (d == e2db::SDATA_PIDS::pcrpid)
+									pcrpid = std::strtol(w.substr(2).data(), NULL, 16), j--;
+							}
+						}
+					}
+
+					if (j != 3)
+					{
+						sdatac.append("VPID: " + QString::number(vpid));
+						sdatac.append('\t');
+						sdatac.append("APID: " + QString::number(apid));
+						sdatac.append('\t');
+						sdatac.append("PCRPID: " + QString::number(pcrpid));
+					}
+					else
+					{
+						sdatac = "< >";
+					}
 				}
 				else
 				{
@@ -4213,22 +4243,37 @@ void mainView::updateReferencePanel()
 
 			if (ch.data.count(e2db::SDATA::f))
 			{
-				string fkeep = dbih->value_channel_flags(ch, e2db::SDATA_FLAGS::fkeep);
-				string fhide = dbih->value_channel_flags(ch, e2db::SDATA_FLAGS::fhide);
-				string fpid = dbih->value_channel_flags(ch, e2db::SDATA_FLAGS::fpid);
-				string fname = dbih->value_channel_flags(ch, e2db::SDATA_FLAGS::fname);
-				string fnew = dbih->value_channel_flags(ch, e2db::SDATA_FLAGS::fnew);
+				long flags = dbih->value_channel_flags(ch);
 
-				if (! fkeep.empty())
-					sdataf.append("NoSDT").append(' ');
-				if (! fhide.empty())
-					sdataf.append("Dontshow").append(' ');
-				if (! fpid.empty())
-					sdataf.append("NoDVB").append(' ');
-				if (! fname.empty())
-					sdataf.append("HoldName").append(' ');
-				if (! fnew.empty())
-					sdataf.append("NewFound").append(' ');
+				if (flags != 0)
+				{
+					if (flags & e2db::SDATA_FLAGS::fkeep)
+						sdataf.append("NoSDT").append(' ');
+					if (flags & e2db::SDATA_FLAGS::fhide)
+						sdataf.append("Dontshow").append(' ');
+					if (flags & e2db::SDATA_FLAGS::fpid)
+						sdataf.append("NoDVB").append(' ');
+					if (flags & e2db::SDATA_FLAGS::fname)
+						sdataf.append("HoldName").append(' ');
+					if (flags & e2db::SDATA_FLAGS::fnew)
+						sdataf.append("NewFound").append(' ');
+
+					if (flags > 0x4f)
+					{
+						if (flags & e2db::SDATA_FLAGS::fd3di)
+							sdataf.append("IsDedicated3D").append(' ');
+						if (flags & e2db::SDATA_FLAGS::fppri)
+							sdataf.append("IsParentalProtected").append(' ');
+						if (flags & e2db::SDATA_FLAGS::fvbih_h)
+							sdataf.append("HideVBI").append(' ');
+						if (flags & e2db::SDATA_FLAGS::fxpmt)
+							sdataf.append("IsScrambledPMT").append(' ');
+						if (flags & e2db::SDATA_FLAGS::fsubx)
+							sdataf.append("CenterDVBSubs").append(' ');
+						if (flags & e2db::SDATA_FLAGS::feit_n)
+							sdataf.append("NoEIT").append(' ');
+					}
+				}
 
 				if (sdataf.isEmpty())
 					sdataf = "< >";

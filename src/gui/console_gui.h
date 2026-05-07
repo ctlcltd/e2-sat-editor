@@ -33,14 +33,14 @@ namespace e2se_gui
 class stream : public ::e2se_e2db::streamiface
 {
 	public:
-		stream(QTextStream &p) : ts(p) {}
+		stream(QTextStream& p) : ts(p) {}
 		virtual ~stream() = default;
 
 		streamiface &operator<<(int i) override { ts << i; ts.setFieldWidth(0); return *this; }
 		streamiface &operator<<(char c) override { ts << c; ts.setFieldWidth(0); return *this; }
 		streamiface &operator<<(const char* s) override { ts << s; ts.setFieldWidth(0); return *this; }
-		streamiface &operator<<(const std::string &s) override { ts << s.c_str(); ts.setFieldWidth(0); return *this; }
-		streamiface &operator<<(const streamiface &) override { return *this; }
+		streamiface &operator<<(const std::string& s) override { ts << s.c_str(); ts.setFieldWidth(0); return *this; }
+		streamiface &operator<<(const streamiface&) override { return *this; }
 
 		streamiface &endl() override { ts << '\n'; ts.setFieldWidth(0); return *this; }
 		streamiface &flush() override { ts.flush(); return *this; }
@@ -50,7 +50,7 @@ class stream : public ::e2se_e2db::streamiface
 		int width(int width) override { ts.setFieldWidth(width); return ts.fieldWidth(); }
 
 	private:
-		QTextStream &ts;
+		QTextStream& ts;
 };
 
 
@@ -137,11 +137,11 @@ class console_gui : protected e2se::log_factory, public ::e2se_e2db::e2db_consol
 		void entry_edit(ENTRY entry_type, bool edit, string id = "", int ref = 0, string bname = "") override;
 		std::any field(TYPE type, bool required = false) override;
 		
-		void input_step(current &curr);
-		void input_next(current &curr);
-		void input_end(current &curr);
+		void input_step(current& curr);
+		void input_next(current& curr);
+		void input_end(current& curr);
 		void input_end();
-		void paged_nav(nav &p);
+		void paged_nav(nav& p);
 		void paged_end();
 
 		void e2db_log();

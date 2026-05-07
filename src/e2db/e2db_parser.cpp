@@ -2306,7 +2306,6 @@ void e2db_parser::parse_xml_comment(istream& ixml, string line, comment& s, int 
 		s.ln = ln;
 
 		std::streampos pos = ixml.tellg();
-		//TODO TEST
 		pos -= line.size();
 		ixml.seekg(pos);
 		string line;

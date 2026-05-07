@@ -35,7 +35,6 @@ console_gui::console_gui(QWidget* parent, dataHandler* data)
 	init();
 }
 
-//TODO TEST
 // note: cnt widget deleted by parent widget
 console_gui::~console_gui()
 {
@@ -614,13 +613,13 @@ std::any console_gui::field(TYPE type, bool required)
 	return -1;
 }
 
-void console_gui::input_step(current &curr)
+void console_gui::input_step(current& curr)
 {
-	ENTRY &entry_type = curr.entry_type;
-	int &i = curr.i;
-	int &pos = curr.pos;
-	bool &end = curr.end;
-	auto &values = curr.values;
+	ENTRY& entry_type = curr.entry_type;
+	int& i = curr.i;
+	int& pos = curr.pos;
+	bool& end = curr.end;
+	auto& values = curr.values;
 
 	end = true;
 
@@ -728,16 +727,16 @@ void console_gui::input_step(current &curr)
 	}
 }
 
-void console_gui::input_next(current &curr)
+void console_gui::input_next(current& curr)
 {
 	qDebug() << "input_next" << "pos:" << curr.pos << "i:" << curr.i;
 
-	auto &mask = curr.mask;
-	int &i = curr.i;
-	int &pos = curr.pos;
-	bool &end = curr.end;
-	TYPE &type = curr.type;
-	bool &required = curr.required;
+	auto& mask = curr.mask;
+	int& i = curr.i;
+	int& pos = curr.pos;
+	bool& end = curr.end;
+	TYPE& type = curr.type;
+	bool& required = curr.required;
 
 	if (end || (! mask.count(i) && ! mask.at(i).size()))
 		return input_end(curr);
@@ -799,7 +798,7 @@ void console_gui::input_next(current &curr)
 	flush();
 }
 
-void console_gui::input_end(current &curr)
+void console_gui::input_end(current& curr)
 {
 	qDebug() << "input_end" << "overload:" << 0;
 
@@ -825,7 +824,7 @@ void console_gui::input_end()
 	prompt();
 }
 
-void console_gui::paged_nav(nav &p)
+void console_gui::paged_nav(nav& p)
 {
 	qDebug() << "paged_nav" << "pos:" << p.pos << "offset:" << p.offset;
 
@@ -833,9 +832,9 @@ void console_gui::paged_nav(nav &p)
 	int limit = p.limit;
 	int rows = p.rows;
 	string bname = p.bname;
-	int &pos = p.pos;
-	int &offset = p.offset;
-	int &end = p.end;
+	int& pos = p.pos;
+	int& offset = p.offset;
+	int& end = p.end;
 
 	// qDebug() << "paged_nav-1" << "end:" << p.end;
 

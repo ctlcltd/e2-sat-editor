@@ -37,7 +37,6 @@ void viewAbstract::themeChanged()
 	theme->changed();
 }
 
-//TODO TEST QPushButton ui [Windows]
 void viewAbstract::searchLayout()
 {
 	this->tree_search = new QWidget;
@@ -90,7 +89,6 @@ void viewAbstract::searchLayout()
 		searchbackground_hexArgb = searchbackground.name(QColor::HexArgb);
 		searchhighlight_hexArgb = searchhighlight.name(QColor::HexArgb);
 
-		//TODO TEST list_search_highlight color: mid or button-text
 		theme->dynamicStyleSheet(widget, "#tree_search, #list_search { background: " + searchbackground_hexArgb + " } #list_search_highlight { border: 1px solid palette(dark); color: palette(mid); background: " + searchbackground_hexArgb + " } #list_search_highlight:checked { color: palette(bright-text); background: " + searchhighlight_hexArgb + " }", theme::light);
 
 		searchbackground = QPalette().color(QPalette::Mid).darker(227);

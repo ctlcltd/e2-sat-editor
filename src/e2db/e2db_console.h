@@ -33,8 +33,8 @@ struct streamiface
 		virtual streamiface &operator<<(int i) = 0;
 		virtual streamiface &operator<<(char c) = 0;
 		virtual streamiface &operator<<(const char* s) = 0;
-		virtual streamiface &operator<<(const std::string &s) = 0;
-		virtual streamiface &operator<<(const streamiface &) = 0;
+		virtual streamiface &operator<<(const std::string& s) = 0;
+		virtual streamiface &operator<<(const streamiface&) = 0;
 
 		virtual streamiface &endl() = 0;
 		virtual streamiface &flush() = 0;
@@ -252,10 +252,10 @@ class e2db_console
 		virtual void entry_remove_exec(ENTRY entry_type, string id, string bname = "");
 		virtual void entry_parentallock_exec(ENTRY entry_type, string id, bool flag);
 
-		bool label_field(TYPE type, string &label, string &description);
-		void label_obj_pair(TYPE type, string &name, VALUE &value_type);
-		bool value_field(TYPE type, string str, bool required, std::any &val);
-		void value_obj_pair(TYPE type, VALUE value_type, std::any val, int &d, string &str);
+		bool label_field(TYPE type, string& label, string& description);
+		void label_obj_pair(TYPE type, string& name, VALUE& value_type);
+		bool value_field(TYPE type, string str, bool required, std::any& val);
+		void value_obj_pair(TYPE type, VALUE value_type, std::any val, int& d, string& str);
 		virtual std::any field(TYPE type, bool required = false);
 		virtual map<int, vector<pair<TYPE, bool>>> input_mask(ENTRY entry_type, bool edit, string id = "", int ref = 0, string bname = "");
 

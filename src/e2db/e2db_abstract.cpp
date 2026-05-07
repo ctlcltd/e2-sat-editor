@@ -564,16 +564,6 @@ string e2db_abstract::value_channel_provider(map<char, vector<string>> data)
 	return "";
 }
 
-vector<long> e2db_abstract::value_channel_pid(service ch)
-{
-	vector<long> data;
-
-	for (string & w : ch.data[SDATA::c])
-		data.emplace_back(std::strtol(w.data(), NULL, 16));
-
-	return data;
-}
-
 string e2db_abstract::value_channel_pid(service ch, SDATA_PIDS pid)
 {
 	string cpx = (pid > 9 ? "" : "0") + to_string(pid);
@@ -611,6 +601,11 @@ vector<string> e2db_abstract::value_channel_pid(service ch, SDATA_PIDS pid, stri
 		data.emplace_back(cpid);
 	}
 	return data;
+}
+
+vector<string> e2db_abstract::value_channel_caid(service ch)
+{
+	return ch.data[SDATA::C];
 }
 
 vector<string> e2db_abstract::value_channel_caid(string str, string separator)
@@ -663,6 +658,11 @@ vector<string> e2db_abstract::value_channel_caid(string str)
 	return value_channel_cached(str, ",");
 }
 
+vector<string> e2db_abstract::value_channel_cached(service ch)
+{
+	return ch.data[SDATA::c];
+}
+
 vector<string> e2db_abstract::value_channel_cached(string str, string separator)
 {
 	if (str.empty())
@@ -687,7 +687,7 @@ vector<string> e2db_abstract::value_channel_cached(string str)
 
 long e2db_abstract::value_channel_flags(service ch)
 {
-	return std::strtol(ch.data[SDATA::f][0].data(), NULL, 16);
+	return ch.data[SDATA::f].empty() ? 0 : std::strtol(ch.data[SDATA::f][0].data(), NULL, 16);
 }
 
 string e2db_abstract::value_channel_flags(service ch, SDATA_FLAGS bit)
@@ -773,25 +773,24 @@ char e2db_abstract::value_transponder_type(YTYPE ytype)
 	}
 }
 
-//TODO FIX out of range
 string e2db_abstract::value_transponder_combo(transponder tx)
 {
 	string ptxp;
 	if (tx.ytype == YTYPE::satellite)
 	{
-		int pol = tx.pol != -1 ? tx.pol : 0;
+		int pol = tx.pol != -1 && tx.pol < (int (sizeof(SAT_POL) / sizeof(SAT_POL[0]))) ? tx.pol : 0;
 		int sr = tx.sr != -1 ? tx.sr : 0;
 		ptxp = to_string(int (tx.freq / 1e3)) + '/' + SAT_POL[pol] + '/' + to_string(int (sr / 1e3));
 	}
 	else if (tx.ytype == YTYPE::terrestrial)
 	{
-		int tmod = tx.tmod != -1 ? tx.tmod : 3;
-		int band = tx.band != -1 ? tx.band : 3;
+		int tmod = tx.tmod != -1 && tx.tmod < (int (sizeof(TER_MOD) / sizeof(TER_MOD[0]))) ? tx.tmod : 3;
+		int band = tx.band != -1 && tx.band < (int (sizeof(TER_BAND) / sizeof(TER_BAND[0]))) ? tx.band : 3;
 		ptxp = to_string(int (tx.freq / 1e3)) + '/' + TER_MOD[tmod] + '/' + TER_BAND[band];
 	}
 	else if (tx.ytype == YTYPE::cable)
 	{
-		int cmod = tx.cmod != -1 ? tx.cmod : 0;
+		int cmod = tx.cmod != -1 && tx.cmod < (int (sizeof(CAB_MOD) / sizeof(CAB_MOD[0]))) ? tx.cmod : 0;
 		int sr = tx.sr != -1 ? tx.sr : 0;
 		ptxp = to_string(tx.freq) + '/' + CAB_MOD[cmod] + '/' + to_string(int (sr / 1e3));
 	}
@@ -802,25 +801,24 @@ string e2db_abstract::value_transponder_combo(transponder tx)
 	return ptxp;
 }
 
-//TODO FIX out of range
 string e2db_abstract::value_transponder_combo(tunersets_transponder tntxp, tunersets_table tn)
 {
 	string ptxp;
 	if (tn.ytype == YTYPE::satellite)
 	{
-		int pol = tntxp.pol != -1 ? tntxp.pol : 0;
+		int pol = tntxp.pol != -1 && tntxp.pol < (int (sizeof(SAT_POL) / sizeof(SAT_POL[0]))) ? tntxp.pol : 0;
 		int sr = tntxp.sr != -1 ? tntxp.sr : 0;
 		ptxp = to_string(int (tntxp.freq / 1e3)) + '/' + SAT_POL[pol] + '/' + to_string(int (sr / 1e3));
 	}
 	else if (tn.ytype == YTYPE::terrestrial)
 	{
-		int tmod = tntxp.tmod != -1 ? tntxp.tmod : 3;
-		int band = tntxp.band != -1 ? tntxp.band : 3;
+		int tmod = tntxp.tmod != -1 && tntxp.tmod < (int (sizeof(TER_MOD) / sizeof(TER_MOD[0]))) ? tntxp.tmod : 3;
+		int band = tntxp.band != -1 && tntxp.band < (int (sizeof(TER_BAND) / sizeof(TER_BAND[0]))) ? tntxp.band : 3;
 		ptxp = to_string(int (tntxp.freq / 1e3)) + '/' + TER_MOD[tmod] + '/' + TER_BAND[band];
 	}
 	else if (tn.ytype == YTYPE::cable)
 	{
-		int cmod = tntxp.cmod != -1 ? tntxp.cmod : 0;
+		int cmod = tntxp.cmod != -1 && tntxp.cmod < (int (sizeof(CAB_MOD) / sizeof(CAB_MOD[0]))) ? tntxp.cmod : 0;
 		int sr = tntxp.sr != -1 ? tntxp.sr : 0;
 		ptxp = to_string(tntxp.freq) + '/' + CAB_MOD[cmod] + '/' + to_string(int (sr / 1e3));
 	}
@@ -923,14 +921,18 @@ int e2db_abstract::value_transponder_frequency(int freq, bool display)
 
 int e2db_abstract::value_transponder_polarization(string str)
 {
-	switch (str[0])
+	if (str.size() == 1)
 	{
-		case 'H': return 0;
-		case 'V': return 1;
-		case 'L': return 2;
-		case 'R': return 3;
-		default: return -1;
+		switch (str[0])
+		{
+			case 'H': return 0;
+			case 'V': return 1;
+			case 'L': return 2;
+			case 'R': return 3;
+			default: return -1;
+		}
 	}
+	return -1;
 }
 
 string e2db_abstract::value_transponder_polarization(int pol)
@@ -1033,23 +1035,22 @@ string e2db_abstract::value_transponder_system(int sys, int yx)
 	return value_transponder_system(sys, ytype);
 }
 
-//TODO FIX out of range
 string e2db_abstract::value_transponder_system(int sys, YTYPE ytype)
 {
 	string psys;
 	switch (ytype)
 	{
 		case YTYPE::satellite:
-			psys = sys != -1 ? SAT_SYS[sys] : "DVB-S";
+			psys = sys != -1 && sys < (int (sizeof(SAT_SYS) / sizeof(SAT_SYS[0]))) ? SAT_SYS[sys] : "DVB-S";
 		break;
 		case YTYPE::terrestrial:
-			psys = sys != -1 ? TER_SYS[sys] : "DVB-T";
+			psys = sys != -1 && sys < (int (sizeof(TER_SYS) / sizeof(TER_SYS[0]))) ? TER_SYS[sys] : "DVB-T";
 		break;
 		case YTYPE::cable:
 			psys = "DVB-C";
 		break;
 		case YTYPE::atsc:
-			psys = sys != -1 ? ATS_SYS[sys] : "ATSC";
+			psys = sys != -1 && sys < (int (sizeof(ATS_SYS) / sizeof(ATS_SYS[0]))) ? ATS_SYS[sys] : "ATSC";
 		break;
 	}
 	return psys;
