@@ -15,7 +15,7 @@
 #include <map>
 #include <any>
 
-using std::string, std::vector;
+using std::string, std::vector, std::istream;
 
 #ifndef e2db_console_h
 #define e2db_console_h
@@ -64,7 +64,7 @@ struct termiface
 		virtual void reset() = 0;
 		virtual int paged(int pos, int offset) = 0;
 		virtual std::pair<int, int> screensize() = 0;
-		virtual void dump_log() = 0;
+		virtual void dump_history(std::ostream* os = nullptr) = 0;
 		virtual void load_history() = 0;
 		virtual void save_history() = 0;
 };
@@ -97,13 +97,13 @@ class e2db_console
 			move,
 			set,
 			unset,
-			print,
 			merge,
 			parse,
 			make,
 			convert,
 			tool,
 			macro,
+			dump,
 			inspect,
 			preferences,
 			clear,  // gui
@@ -130,6 +130,15 @@ class e2db_console
 			parentallock_blacklist,
 			parentallock_whitelist,
 			parentallock_locked
+		};
+
+		enum OPTION {
+			opt_list,
+			opt_output,
+			opt_history,
+			opt_data,
+			opt_index,
+			opt_log
 		};
 
 		enum TYPE {
@@ -192,9 +201,8 @@ class e2db_console
 		virtual void console_version(bool extended = false);
 		virtual void console_resolver(COMMAND command, istream* is);
 		virtual void console_usage(COMMAND hint, int level = 3);
-		virtual void console_print(int opt);
-		virtual void console_inspect();
-		virtual void console_preferences(string type, string val);
+		virtual void console_dump(OPTION opt);
+		virtual void console_preferences(OPTION opt, string val);
 		virtual void console_preferences(OBJIO format);
 		virtual void console_preferences(HISTORY type);
 
@@ -211,13 +219,13 @@ class e2db_console
 		// void command_move(istream* is) { console_resolver(COMMAND::move, is); }
 		void command_set(istream* is) { console_resolver(COMMAND::set, is); }
 		void command_unset(istream* is) { console_resolver(COMMAND::unset, is); }
-		void command_print(istream* is) { console_resolver(COMMAND::print, is); }
 		void command_merge(istream* is) { console_resolver(COMMAND::merge, is); }
 		void command_parse(istream* is) { console_resolver(COMMAND::parse, is); }
 		void command_make(istream* is) { console_resolver(COMMAND::make, is); }
 		void command_convert(istream* is) { console_resolver(COMMAND::convert, is); }
 		void command_tool(istream* is) { console_resolver(COMMAND::tool, is); }
 		void command_macro(istream* is) { console_resolver(COMMAND::macro, is); }
+		void command_dump(istream* is) { console_resolver(COMMAND::dump, is); }
 		void command_inspect(istream* is) { console_resolver(COMMAND::inspect, is); }
 		void command_preferences(istream* is) { console_resolver(COMMAND::preferences, is); }
 		void command_version() { console_version(); }

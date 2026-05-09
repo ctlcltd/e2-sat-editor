@@ -539,50 +539,22 @@ std::pair<int, int> termctl::screensize()
 	return termctl::tty_screensize();
 }
 
-void termctl::dump_log()
+void termctl::dump_history(ostream* os)
 {
-	try
-	{
-		std::ofstream out (log_file);
-		out.exceptions(std::ofstream::failbit | std::ofstream::badbit);
+	if (os == nullptr)
+		os = new ostream(std::cout.rdbuf());
 
-		{
-			out << "--- begin is      ---" << std::endl;
-			is->clear();
-			is->seekg(0);
-			std::string line;
-			while (std::getline(*is, line, '\0'))
-				out << line << std::endl;
-			out << "--- end   is      ---" << std::endl;
-		}
-		{
-			out << "--- begin history ---" << std::endl;
-			history->clear();
-			history->seekg(0);
-			std::string line;
-			while (std::getline(*history, line))
-				out << line << std::endl;
-			out << "--- end   history ---" << std::endl;
-		}
-		out << std::endl;
+	history->clear();
+	history->seekg(0);
 
-		out.close();
-	}
-	catch (const std::filesystem::filesystem_error& err)
-	{
-		std::cerr << "Filesystem exception: " << err.what() << std::endl;
-		std::cerr << "access log_file: " << log_file << std::endl;
-	}
-	catch (const std::ofstream::failure& err)
-	{
-		std::cerr << "File write exception: " << err.what() << std::endl;
-		std::cerr << "write log_file: " << log_file << std::endl;
-	}
-	catch (...)
-	{
-		std::cerr << "Uncaught exception" << std::endl;
-		std::cerr << "file log_file: " << log_file << std::endl;
-	}
+	*os << "[history]" << '\n' << '\n';
+
+	std::string line;
+	while (std::getline(*history, line))
+		*os << line << '\n';
+
+	*os << std::endl;
+	*os << std::flush;
 }
 
 void termctl::load_history()

@@ -169,6 +169,7 @@ void mainView::layout()
 	}
 #endif
 
+	//TODO FIX scrollbar decorations QTreeWidget { background: transparent; } [Linux]
 	side->setStyleSheet("QTreeWidget { background: transparent; border-style: none } QTreeWidget::item { padding: 9px 0 }");
 	tree->setStyleSheet("QTreeWidget { background: transparent; border-style: none } QTreeWidget::item { margin: 1px 0 0; padding: 8px 0 }");
 	list->setStyleSheet("QTreeWidget { border-style: none } QTreeWidget::item { height: 32px }");

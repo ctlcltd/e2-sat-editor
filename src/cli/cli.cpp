@@ -117,8 +117,6 @@ void cli::cmd_shell()
 			command_set(is);
 		else if (cmd == "unset" || cmd == "u")
 			command_unset(is);
-		else if (cmd == "print" || cmd == "p")
-			command_print(is);
 		else if (cmd == "import")
 			command_import(is);
 		else if (cmd == "export")
@@ -135,14 +133,12 @@ void cli::cmd_shell()
 			command_tool(is);
 		else if (cmd == "macro")
 			command_macro(is);
+		else if (cmd == "dump")
+			command_dump(is);
 		else if (cmd == "inspect")
 			command_inspect(is);
 		else if (cmd == "preferences")
 			command_preferences(is);
-#if E2SE_BUILD == E2SE_TARGET_DEBUG
-		else if (cmd == "dump")
-			termctl->dump_log();
-#endif
 		else if (! cmd.empty())
 			console_error(cmd);
 

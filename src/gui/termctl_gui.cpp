@@ -315,6 +315,24 @@ std::pair<int, int> termctl_gui::screensize()
 	return std::pair (rows, cols);
 }
 
+void termctl_gui::dump_history(ostream* os)
+{
+	if (os == nullptr)
+		return;
+
+	history->clear();
+	history->seekg(0);
+
+	*os << "[history]" << '\n' << '\n';
+
+	std::string line;
+	while (std::getline(*history, line))
+		*os << line << '\n';
+
+	*os << std::endl;
+	*os << std::flush;
+}
+
 void termctl_gui::load_history()
 {
 	QApplication* app = qApp;

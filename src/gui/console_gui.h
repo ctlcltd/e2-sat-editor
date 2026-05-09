@@ -125,7 +125,6 @@ class console_gui : protected e2se::log_factory, public ::e2se_e2db::e2db_consol
 
 		void console_resolver(COMMAND command, istream* is) override;
 		void console_usage(COMMAND hint, int level = 3) override;
-		void console_print(int opt) override;
 
 		void command_help(istream* is) { console_resolver(COMMAND::usage, is); }
 		void command_preferences(istream* is) { console_resolver(COMMAND::preferences, is); }

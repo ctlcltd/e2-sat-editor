@@ -250,8 +250,6 @@ void console_gui::prompt()
 			command_set(is);
 		else if (cmd == "unset" || cmd == "u")
 			command_unset(is);
-		else if (cmd == "print" || cmd == "p")
-			command_print(is);
 		else if (cmd == "import")
 			command_import(is);
 		else if (cmd == "export")
@@ -268,6 +266,8 @@ void console_gui::prompt()
 			command_tool(is);
 		else if (cmd == "macro")
 			command_macro(is);
+		else if (cmd == "dump")
+			command_dump(is);
 		else if (cmd == "inspect")
 			command_inspect(is);
 		else if (cmd == "preferences")
@@ -333,37 +333,39 @@ void console_gui::console_resolver(COMMAND command, istream* is)
 	}
 	else if (command == COMMAND::preferences)
 	{
-		string src, type, opt1;
-		*is >> std::skipws >> src >> type >> opt1;
+		string src, opt, val;
+		*is >> std::skipws >> src >> opt >> val;
 
-		if (type.empty() || type == "output")
-			console_preferences(type, opt1);
+		if (opt.empty())
+			console_preferences(OPTION::opt_list, val);
+		else if (opt == "output")
+			console_preferences(OPTION::opt_output, val);
 		else
-			*perr << "Type Error: " << msg("Unknown entry type: %s", type) << pout->endl();
+			*perr << "Type Error: " << msg("Unknown option: %s", opt) << pout->endl();
 	}
 	else if (command == COMMAND::clear)
 	{
-		string src, opt0;
-		*is >> std::skipws >> src >> opt0;
+		string src, opt;
+		*is >> std::skipws >> src >> opt;
 
-		if (opt0.empty())
+		if (opt.empty())
 			clear();
 		else
 			console_usage(command);
 	}
 	else if (command == COMMAND::tab)
 	{
-		string src, token;
-		*is >> std::skipws >> src >> token;
+		string src, opt;
+		*is >> std::skipws >> src >> opt;
 
-		if (token == "reload")
+		if (opt == "reload")
 			callEventCallback(EVENT::cmd_tab_reload);
-		else if (token == "clear")
+		else if (opt == "clear")
 			callEventCallback(EVENT::cmd_tab_clear);
-		else if (token.empty())
+		else if (opt.empty())
 			console_usage(command);
 		else
-			*perr << "Type Error: " << msg("Unknown command token: %s", token) << pout->endl();
+			*perr << "Type Error: " << msg("Unknown option: %s", opt) << pout->endl();
 	}
 	else
 	{
@@ -461,12 +463,6 @@ void console_gui::console_usage(COMMAND hint, int level)
 	}
 }
 
-//TODO FIX e2db::dump replace std::cout with std::ostream 
-void console_gui::console_print(int opt)
-{
-	this->e2db_console::console_print(opt);
-}
-
 void console_gui::command_quit()
 {
 	if (cnt->parentWidget() != nullptr)
@@ -479,7 +475,7 @@ void console_gui::entry_list(ENTRY entry_type, bool paged, int limit, int pos, s
 	int end = 0;
 	int rows = 1;
 
-	//TODO FIX
+	//TODO FIX number rows
 	if (__objio.out == OBJIO::byline)
 	{
 		switch (entry_type)

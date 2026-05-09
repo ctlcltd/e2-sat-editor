@@ -29,7 +29,7 @@
 
 #include "e2db_abstract.h"
 
-using std::string, std::pair, std::unordered_set, std::stringstream, std::hex, std::dec, std::to_string, std::cout, std::endl;
+using std::string, std::pair, std::unordered_set, std::stringstream, std::hex, std::dec, std::to_string;
 
 namespace e2se_e2db
 {
@@ -2186,202 +2186,378 @@ void e2db_abstract::merge(e2db_abstract* dst)
 	this->collisions = dst->collisions;
 }
 
-void e2db_abstract::dump()
+void e2db_abstract::dump_data(ostream* os)
 {
-	debug("dump");
+	debug("dump_data");
 
-	cout << "[transponders]" << '\n' << '\n';
+	if (os == nullptr)
+		os = new ostream(std::cout.rdbuf());
+
+	*os << "[" << "datadb" << "]" << '\n' << '\n';
+	*os << "type" << ": " << db.type << '\t' << ' ';
+	*os << hex;
+	*os << "version" << ": " << "0x" << db.version << '\t' << ' ';
+	*os << dec;
+	*os << "transponders" << ": " << db.transponders.size() << '\t' << ' ';
+	*os << "services" << ": " << db.services.size() << '\t' << ' ';
+	*os << "parental" << ": " << db.parental << '\t' << ' ';
+	*os << "iservices" << ": " << db.iservices << '\t' << ' ';
+	*os << "imarkers" << ": " << db.imarkers << '\t' << ' ';
+	*os << "istreams" << ": " << db.istreams << '\t' << ' ';
+	*os << "dstat" << ": " << db.dstat << '\t' << ' ';
+	*os << '\n' << '\n';
+	*os << std::endl;
+
+	*os << "[" << "transponders" << "]" << "  " << db.transponders.size() << '\n' << '\n';
 	for (auto & x : db.transponders)
 	{
 		transponder tx = x.second;
 
-		cout << "txid: " << tx.txid << '\n';
-		cout << "ytype: " << tx.ytype << '\n';
-		cout << "pos: " << tx.pos << '\n';
-		cout << "tsid: " << tx.tsid << '\n';
-		cout << "onid: " << tx.onid << '\n';
-		cout << hex;
-		cout << "dvbns: " << tx.dvbns << '\n';
-		cout << dec;
-		cout << "sys: " << tx.sys << '\n';
-		cout << "freq: " << tx.freq << '\n';
-		cout << "sr: " << tx.sr << '\n';
-		cout << "pol: " << tx.pol << '\n';
-		cout << "fec: " << tx.fec << '\n';
-		cout << "hpfec: " << tx.hpfec << '\n';
-		cout << "lpfec: " << tx.lpfec << '\n';
-		cout << "cfec: " << tx.cfec << '\n';
-		cout << "inv: " << tx.inv << '\n';
-		cout << "mod: " << tx.mod << '\n';
-		cout << "tmod: " << tx.tmod << '\n';
-		cout << "cmod: " << tx.cmod << '\n';
-		cout << "amod: " << tx.amod << '\n';
-		cout << "rol: " << tx.rol << '\n';
-		cout << "pil: " << tx.pil << '\n';
-		cout << "band: " << tx.band << '\n';
-		cout << "tmx: " << tx.tmx << '\n';
-		cout << "guard: " << tx.guard << '\n';
-		cout << "hier: " << tx.hier << '\n';
-		cout << "flags: " << tx.flags << '\n';
-		cout << "plpid: " << tx.plpid << '\n';
-		cout << "mispls: " << tx.mispls << '\n';
-		cout << "t2mi: " << tx.t2mi << '\n';
-		cout << "isid: " << tx.isid << '\n';
-		cout << "plscode: " << tx.plscode << '\n';
-		cout << "plsmode: " << tx.plsmode << '\n';
-		cout << "t2mi_plpid: " << tx.t2mi_plpid << '\n';
-		cout << "t2mi_pid: " << tx.t2mi_pid << '\n';
-		cout << "optsverb: " << tx.optsverb << '\n';
-		cout << "idx: " << tx.index << '\n';
-		cout << '\n';
+		*os << "txid" << ": " << tx.txid << '\t' << ' ';
+		*os << "ytype" << ": " << tx.ytype << '\t' << ' ';
+		*os << "pos" << ": " << tx.pos << '\t' << ' ';
+		*os << "tsid" << ": " << tx.tsid << '\t' << ' ';
+		*os << "onid" << ": " << tx.onid << '\t' << ' ';
+		*os << hex;
+		*os << "dvbns" << ": " << "0x" << tx.dvbns << '\t' << ' ';
+		*os << dec;
+		*os << "sys" << ": " << tx.sys << '\t' << ' ';
+		*os << "freq" << ": " << tx.freq << '\t' << ' ';
+		*os << "sr" << ": " << tx.sr << '\t' << ' ';
+		*os << "pol" << ": " << tx.pol << '\t' << ' ';
+		*os << "fec" << ": " << tx.fec << '\t' << ' ';
+		*os << "hpfec" << ": " << tx.hpfec << '\t' << ' ';
+		*os << "lpfec" << ": " << tx.lpfec << '\t' << ' ';
+		*os << "cfec" << ": " << tx.cfec << '\t' << ' ';
+		*os << "inv" << ": " << tx.inv << '\t' << ' ';
+		*os << "mod" << ": " << tx.mod << '\t' << ' ';
+		*os << "tmod" << ": " << tx.tmod << '\t' << ' ';
+		*os << "cmod" << ": " << tx.cmod << '\t' << ' ';
+		*os << "amod" << ": " << tx.amod << '\t' << ' ';
+		*os << "rol" << ": " << tx.rol << '\t' << ' ';
+		*os << "pil" << ": " << tx.pil << '\t' << ' ';
+		*os << "band" << ": " << tx.band << '\t' << ' ';
+		*os << "tmx" << ": " << tx.tmx << '\t' << ' ';
+		*os << "guard" << ": " << tx.guard << '\t' << ' ';
+		*os << "hier" << ": " << tx.hier << '\t' << ' ';
+		*os << "plpid" << ": " << tx.plpid << '\t' << ' ';
+		*os << "mispls" << ": " << tx.mispls << '\t' << ' ';
+		*os << "t2mi" << ": " << tx.t2mi << '\t' << ' ';
+		*os << "isid" << ": " << tx.isid << '\t' << ' ';
+		*os << "plscode" << ": " << tx.plscode << '\t' << ' ';
+		*os << "plsmode" << ": " << tx.plsmode << '\t' << ' ';
+		*os << "t2mi_plpid" << ": " << tx.t2mi_plpid << '\t' << ' ';
+		*os << "t2mi_pid" << ": " << tx.t2mi_pid << '\t' << ' ';
+		*os << "optsverb" << ": " << tx.optsverb << '\t' << ' ';
+		*os << "flags" << ": " << tx.flags << '\t' << ' ';
+		*os << "index" << ": " << tx.index << '\t' << ' ';
+		*os << '\n' << '\n';
 	}
-	cout << endl;
+	*os << std::endl;
 
-	cout << "[services]" << '\n' << '\n';
+	*os << "[" << "services" << "]" << "  " << db.services.size() << '\n' << '\n';
 	for (auto & x : db.services)
 	{
 		service ch = x.second;
 
-		cout << "chid: " << ch.chid << '\n';
-		cout << "txid: " << ch.txid << '\n';
-		cout << "chname: " << ch.chname << '\n';
-		cout << "ssid: " << ch.ssid << '\n';
-		cout << "tsid: " << ch.tsid << '\n';
-		cout << "onid: " << ch.onid << '\n';
-		cout << hex;
-		cout << "dvbns: " << ch.dvbns << '\n';
-		cout << dec;
-		cout << "onid: " << ch.onid << '\n';
-		cout << "stype: " << ch.stype << '\n';
-		cout << "snum: " << ch.snum << '\n';
-		cout << "srcid: " << ch.srcid << '\n';
-		cout << "data: " << '\n' << "[" << '\n';
+		*os << "chid" << ": " << ch.chid << '\t' << ' ';
+		*os << "txid" << ": " << ch.txid << '\t' << ' ';
+		*os << "chname" << ": " << ch.chname << '\t' << ' ';
+		*os << "ssid" << ": " << ch.ssid << '\t' << ' ';
+		*os << "tsid" << ": " << ch.tsid << '\t' << ' ';
+		*os << "onid" << ": " << ch.onid << '\t' << ' ';
+		*os << hex;
+		*os << "dvbns" << ": " << "0x" << ch.dvbns << '\t' << ' ';
+		*os << dec;
+		*os << "stype" << ": " << ch.stype << '\t' << ' ';
+		*os << "snum" << ": " << ch.snum << '\t' << ' ';
+		*os << "srcid" << ": " << ch.srcid << '\t' << ' ';
+		*os << "parental" << ": " << ch.parental << '\t' << ' ';
+		*os << "locked" << ": " << ch.locked << '\t' << ' ';
+		*os << "flags" << ": " << ch.flags << '\t' << ' ';
+		*os << "index" << ": " << ch.index << '\t' << ' ';
+		*os << "[" << "data" << "]" << ": " << "[" << '\t' << ' ';
 		for (auto & q : ch.data)
 		{
-			cout << q.first << ": " << '\n' << "[" << '\n';
+			string sdata_str;
+			switch (q.first)
+			{
+				case SDATA::p: sdata_str = "[p] (package)"; break;
+				case SDATA::c: sdata_str = "[c] (pid)"; break;
+				case SDATA::C: sdata_str = "[C] (caid)"; break;
+				case SDATA::f: sdata_str = "[f] (flags)"; break;
+				default: sdata_str = "[" + string (1, q.first) + "] (unknown)";
+			}
+			*os << sdata_str << "  " << q.second.size() << ": " << '\t';
+			*os << "[" << '\t';
 			for (string & w : q.second)
-				cout << w << ", ";
-			cout << '\n' << "]";
+				*os << w << '\t' << ' ';
+			*os << "]" << '\t' << ' ';
 		}
-		cout << "]" << '\n';
-		cout << "parental: " << ch.parental << '\n';
-		cout << "idx: " << ch.index << '\n';
-		cout << '\n';
+		*os << "]" << '\t' << ' ';
+		*os << '\n' << '\n';
 	}
-	cout << endl;
+	*os << std::endl;
 
-	cout << "[bouquets]" << '\n' << '\n';
+	*os << "[" << "bouquets" << "]" << "  " << bouquets.size() << '\n' << '\n';
 	for (auto & x : bouquets)
 	{
 		bouquet bs = x.second;
 
-		cout << "bname: " << bs.bname << '\n';
-		cout << "rname: " << bs.rname << '\n';
-		cout << "btype: " << bs.btype << '\n';
-		cout << "name: " << bs.name << '\n';
-		cout << "nname: " << bs.nname << '\n';
-		cout << "userbouquets: " << '\n' << "[" << '\n';
+		*os << "bname" << ": " << bs.bname << '\n';
+		*os << "rname" << ": " << bs.rname << '\n';
+		*os << "btype" << ": " << bs.btype << '\n';
+		*os << "name" << ": " << bs.name << '\n';
+		*os << "nname" << ": " << bs.nname << '\n';
+		*os << "[" << "userbouquets" << "]" << "  " << bs.userbouquets.size() << ": " << '\t' << ' ';
+		*os << "[" << '\t' << ' ';
 		for (string & bname : bs.userbouquets)
 		{
-			cout << bname << '\n';
+			*os << "bname" << ": " << bname << '\t' << ' ';
 		}
-		cout << "]" << '\n';
-		cout << "idx: " << bs.index << '\n';
-		cout << '\n';
+		*os << "]" << '\t' << ' ';
+		*os << "index" << ": " << bs.index << '\t' << ' ';
+		*os << '\n' << '\n';
 	}
-	cout << endl;
+	*os << std::endl;
 
-	cout << "[userbouquets]" << '\n' << '\n';
+	*os << "[" << "userbouquets" << "]" << "  " << userbouquets.size() << '\n' << '\n';
 	for (auto & x : userbouquets)
 	{
 		userbouquet ub = x.second;
 
-		cout << "bname: " << ub.bname << '\n';
-		cout << "rname: " << ub.rname << '\n';
-		cout << "name: " << ub.name << '\n';
-		cout << "pname: " << ub.pname << '\n';
-		cout << "channels: " << '\n' << "[" << '\n';
+		*os << "bname" << ": " << ub.bname << '\t' << ' ';
+		*os << "rname" << ": " << ub.rname << '\t' << ' ';
+		*os << "utype" << ": " << ub.utype << '\t' << ' ';
+		*os << "name" << ": " << ub.name << '\t' << ' ';
+		*os << "pname" << ": " << ub.pname << '\t' << ' ';
+		*os << "parental" << ": " << ub.parental << '\t' << ' ';
+		*os << "hidden" << ": " << ub.hidden << '\t' << ' ';
+		*os << "locked" << ": " << ub.locked << '\t' << ' ';
+		*os << "order" << ": " << ub.order << '\t' << ' ';
+		*os << "index" << ": " << ub.index << '\t' << ' ';
+		*os << "[" << "channels" << "]" << "  " << ub.channels.size() << ": " << '\n' << '\n';
 		for (auto & x : ub.channels)
 		{
 			channel_reference chref = x.second;
 
-			cout << "chid: " << chref.chid << '\n';
-			cout << "idx: " << chref.index << '\n';
-			cout << '\n';
+			*os << "chid" << ": " << chref.chid << '\t' << ' ';
+			*os << "etype" << ": " << chref.etype << '\t' << ' ';
+			*os << "atype" << ": " << chref.atype << '\t' << ' ';
+			*os << "marker" << ": " << chref.marker << '\t' << ' ';
+			*os << "stream" << ": " << chref.stream << '\t' << ' ';
+			*os << "url" << ": " << chref.url << '\t' << ' ';
+			*os << "value" << ": " << chref.value << '\t' << ' ';
+			*os << "descrval" << ": " << chref.descrval << '\t' << ' ';
+			*os << "inlineval" << ": " << chref.inlineval << '\t' << ' ';
+			*os << "[" << "ref" << "]" << ": " << '\t' << ' ';
+			*os << "[" << '\t' << ' ';
+			*os << "ssid" << chref.ref.ssid << '\t' << ' ';
+			*os << "tsid" << chref.ref.tsid << '\t' << ' ';
+			*os << "onid" << chref.ref.onid << '\t' << ' ';
+			*os << "dvbns" << chref.ref.dvbns << '\t' << ' ';
+			*os << "]" << '\t' << ' ';
+			*os << "anum" << ": " << chref.anum << '\t' << ' ';
+			*os << "inum" << ": " << chref.inum << '\t' << ' ';
+			*os << "index" << ": " << chref.index << '\t' << ' ';
+			*os << '\n' << '\n';
 		}
-		cout << "]" << '\n';
-		cout << "parental: " << ub.parental << '\n';
-		cout << "hidden: " << ub.hidden << '\n';
-		cout << "locked: " << ub.locked << '\n';
-		cout << "idx: " << ub.index << '\n';
-		cout << '\n';
+		*os << '\n' << '\n';
 	}
-	cout << endl;
+	*os << std::endl;
 
-	cout << "[tuners]" << '\n' << '\n';
+	*os << "[" << "tunersets" << "]" << "  " << tuners.size() << '\n' << '\n';
 	for (auto & x : tuners)
 	{
 		tunersets tv = x.second;
 
-		cout << "tvid: " << tv.ytype << '\n';
-		cout << "ytype: " << tv.ytype << '\n';
-		cout << "charset: " << tv.charset << '\n';
-		cout << "tables: " << '\n' << "[" << '\n';
+		*os << "tvid" << ": " << tv.ytype << '\t' << ' ';
+		*os << "ytype" << ": " << tv.ytype << '\t' << ' ';
+		*os << "charset" << ": " << tv.charset << '\t' << ' ';
+		*os << "[" << "tables" << "]" << "  " << tv.tables.size() << ": " << '\n' << '\n';
 		for (auto & x : tv.tables)
 		{
 			tunersets_table tn = x.second;
 
-			cout << "tnid: " << tn.tnid << '\n';
-			cout << "ytype: " << tn.ytype << '\n';
-			cout << "name: " << tn.name << '\n';
-			cout << "pos: " << tn.pos << '\n';
-			cout << "country: " << tn.country << '\n';
-			cout << "feed: " << tn.feed << '\n';
-			cout << "flags: " << tn.flags << '\n';
-			cout << "transponders: " << '\n' << "[" << '\n';
+			*os << "tnid" << ": " << tn.tnid << '\t' << ' ';
+			*os << "ytype" << ": " << tn.ytype << '\t' << ' ';
+			*os << "name" << ": " << tn.name << '\t' << ' ';
+			*os << "pos" << ": " << tn.pos << '\t' << ' ';
+			*os << "country" << ": " << tn.country << '\t' << ' ';
+			*os << "feed" << ": " << tn.feed << '\t' << ' ';
+			*os << "flags" << ": " << tn.flags << '\t' << ' ';
+			*os << "index" << ": " << tn.index << '\t' << ' ';
+			*os << "[" << "transponders" << "]" << "  " << tn.transponders.size() << ": " << '\n' << '\n';
 			for (auto & x : tn.transponders)
 			{
 				tunersets_transponder tntxp = x.second;
 
-				cout << "trid: " << tntxp.trid << '\n';
-				cout << "tnid: " << tn.tnid << '\n';
-				cout << "ytype: " << tn.ytype << '\n';
-				cout << "pos: " << tn.pos << '\n';
-				cout << "sys: " << tntxp.sys << '\n';
-				cout << "freq: " << tntxp.freq << '\n';
-				cout << "pol: " << tntxp.pol << '\n';
-				cout << "sr: " << tntxp.sr << '\n';
-				cout << "mod: " << tntxp.mod << '\n';
-				cout << "tmod: " << tntxp.tmod << '\n';
-				cout << "cmod: " << tntxp.cmod << '\n';
-				cout << "amod: " << tntxp.amod << '\n';
-				cout << "band: " << tntxp.band << '\n';
-				cout << "tmx: " << tntxp.tmx << '\n';
-				cout << "fec: " << tntxp.fec << '\n';
-				cout << "hpfec: " << tntxp.hpfec << '\n';
-				cout << "lpfec: " << tntxp.lpfec << '\n';
-				cout << "cfec: " << tntxp.cfec << '\n';
-				cout << "inv: " << tntxp.inv << '\n';
-				cout << "rol: " << tntxp.rol << '\n';
-				cout << "pil: " << tntxp.pil << '\n';
-				cout << "guard: " << tntxp.guard << '\n';
-				cout << "hier: " << tntxp.hier << '\n';
-				cout << "plpid: " << tntxp.plpid << '\n';
-				cout << "plsn: " << tntxp.plsn << '\n';
-				cout << "plscode: " << tntxp.plscode << '\n';
-				cout << "plsmode: " << tntxp.plsmode << '\n';
-				cout << "isid: " << tntxp.isid << '\n';
-				cout << "mts: " << tntxp.mts << '\n';
-				cout << "idx: " << tntxp.index << '\n';
-				cout << '\n';
+				*os << "trid" << ": " << tntxp.trid << '\t' << ' ';
+				*os << "tnid" << ": " << tn.tnid << '\t' << ' ';
+				*os << "ytype" << ": " << tn.ytype << '\t' << ' ';
+				*os << "pos" << ": " << tn.pos << '\t' << ' ';
+				*os << "sys" << ": " << tntxp.sys << '\t' << ' ';
+				*os << "freq" << ": " << tntxp.freq << '\t' << ' ';
+				*os << "pol" << ": " << tntxp.pol << '\t' << ' ';
+				*os << "sr" << ": " << tntxp.sr << '\t' << ' ';
+				*os << "mod" << ": " << tntxp.mod << '\t' << ' ';
+				*os << "tmod" << ": " << tntxp.tmod << '\t' << ' ';
+				*os << "cmod" << ": " << tntxp.cmod << '\t' << ' ';
+				*os << "amod" << ": " << tntxp.amod << '\t' << ' ';
+				*os << "band" << ": " << tntxp.band << '\t' << ' ';
+				*os << "tmx" << ": " << tntxp.tmx << '\t' << ' ';
+				*os << "fec" << ": " << tntxp.fec << '\t' << ' ';
+				*os << "hpfec" << ": " << tntxp.hpfec << '\t' << ' ';
+				*os << "lpfec" << ": " << tntxp.lpfec << '\t' << ' ';
+				*os << "cfec" << ": " << tntxp.cfec << '\t' << ' ';
+				*os << "inv" << ": " << tntxp.inv << '\t' << ' ';
+				*os << "rol" << ": " << tntxp.rol << '\t' << ' ';
+				*os << "pil" << ": " << tntxp.pil << '\t' << ' ';
+				*os << "guard" << ": " << tntxp.guard << '\t' << ' ';
+				*os << "hier" << ": " << tntxp.hier << '\t' << ' ';
+				*os << "plpid" << ": " << tntxp.plpid << '\t' << ' ';
+				*os << "plsn" << ": " << tntxp.plsn << '\t' << ' ';
+				*os << "plscode" << ": " << tntxp.plscode << '\t' << ' ';
+				*os << "plsmode" << ": " << tntxp.plsmode << '\t' << ' ';
+				*os << "isid" << ": " << tntxp.isid << '\t' << ' ';
+				*os << "mts" << ": " << tntxp.mts << '\t' << ' ';
+				*os << "t2mi_plpid" << ": " << tntxp.t2mi_plpid << '\t' << ' ';
+				*os << "t2mi_pid" << ": " << tntxp.t2mi_pid << '\t' << ' ';
+				*os << "index" << ": " << tntxp.index << '\t' << ' ';
+				*os << '\n' << '\n';
 			}
-			cout << "]" << '\n';
-			cout << "idx: " << tn.index << '\n';
+			*os << '\n' << '\n';
 		}
-		cout << "]";
-		cout << endl;
+		*os << '\n' << '\n';
 	}
-	cout << endl;
+	*os << std::endl;
+
+	*os << "[" << "tunersets positions" << "]" << "  " << tnloc.size() << '\n' << '\n';
+	for (auto & x : tnloc)
+	{
+		*os << "pos" << ": " << x.first << '\t' << ' ';
+		*os << "tnid" << ": " << x.second << '\t' << ' ';
+		*os << '\n' << '\n';
+	}
+	*os << std::endl;
+
+	*os << "[" << "zapit data" << "]" << "  " << zxdata.size() << '\n' << '\n';
+	for (auto & x : zxdata)
+	{
+		zapit_data zx = x.second;
+
+		*os << "fname" << ": " << zx.fname << '\t' << ' ';
+		*os << "itype" << ": " << zx.itype << '\t' << ' ';
+		*os << "charset" << ": " << zx.charset << '\t' << ' ';
+		*os << '\n' << '\n';
+	}
+	*os << std::endl;
+
+	*os << "[" << "zapit tables" << "]" << "  " << zytables.size() << '\n' << '\n';
+	for (auto & x : zytables)
+	{
+		zapit_table zy = x.second;
+
+		*os << "zyid" << ": " << zy.zyid << '\t' << ' ';
+		*os << "ytype" << ": " << zy.ytype << '\t' << ' ';
+		*os << "pos" << ": " << zy.pos << '\t' << ' ';
+		*os << "name" << ": " << zy.name << '\t' << ' ';
+		*os << "diseqc" << ": " << zy.name << '\t' << ' ';
+		*os << "[" << "transponders" << "]" << zy.transponders.size() << ": " << '\t' << ' ';
+		*os << "[" << '\t' << ' ';
+		for (string & txid : zy.transponders)
+		{
+			*os << "txid" << ": " << txid << '\t' << ' ';
+		}
+		*os << "]" << '\t' << ' ';
+		*os << "index" << ": " << zy.index << '\t' << ' ';
+		*os << '\n' << '\n';
+	}
+	*os << std::endl;
+
+	*os << "[" << "comments" << "]" << "  " << comments.size() << '\n' << '\n';
+	for (auto & x : comments)
+	{
+		*os << "iname" << ": " << x.first << '\t' << ' ';
+		*os << "[" << "comment" << "]" << "  " << x.second.size() << ": " << '\n' << '\n';
+		for (auto & s : x.second)
+		{
+			*os << "[" << "type" << "]" << ": " << s.type << '\t' << ' ';
+			*os << "[" << "ln" << "]" << ": " << s.ln << '\t' << ' ';
+			*os << "[" << "length" << "]" << ": " << s.text.size() << '\t' << ' ';
+			*os << '\n' << '\n';
+		}
+		*os << '\n' << '\n';
+	}
+	*os << std::endl;
+
+	*os << "[collisions]" << "  " << collisions.size() << '\n' << '\n';
+	for (auto & x : collisions)
+	{
+		*os << "chid" << ": " << x.first << '\t' << ' ';
+		*os << "[" << "data" << "]" << ": " << "[" << '\t' << ' ';
+		for (auto it = x.second.begin(); it != x.second.end(); it++)
+		{
+			*os << "id" << ": " << it->first << ", ";
+			*os << "increment" << ": " << it->second;
+			*os << '\t' << ' ';
+		}
+		*os << "]" << '\t' << ' ';
+		*os << '\n' << '\n';
+	}
+	*os << std::endl;
+
+	*os << std::flush;
+}
+
+void e2db_abstract::dump_index(ostream* os)
+{
+	debug("dump_index");
+
+	for (auto & x : index)
+	{
+		const string iname = x.first;
+		string name = "[" + iname + "]";
+
+		if (iname == "txs")
+			name.append(" ").append("(transponders)");
+		else if (iname == "chs")
+			name.append(" ").append("(services)");
+		else if (iname == "mks")
+			name.append(" ").append("(markers)");
+		else if (iname == "bss")
+			name.append(" ").append("(bouquets)");
+		else if (iname == "ubs")
+			name.append(" ").append("(userbouquets)");
+		else if (iname.find("chs:") != string::npos)
+			name.append(" ").append("(services: stype)");
+		else if (iname.find("bouquets.") != string::npos)
+			name.append(" ").append("(bouquet chref)");
+		else if (iname.find("userbouquet.") != string::npos)
+			name.append(" ").append("(userbouquet chref)");
+		else if (iname.find("tns:") != string::npos)
+			name.append(" ").append("(tunersets table: ytype)");
+		else if (iname.find("s:") != string::npos)
+			name.append(" ").append("(tunersets txp table: ytype)");
+		else if (iname.find("t:") != string::npos)
+			name.append(" ").append("(tunersets txp table: ytype)");
+		else if (iname.find("c:") != string::npos)
+			name.append(" ").append("(tunersets txp table: ytype)");
+		else if (iname.find("a:") != string::npos)
+			name.append(" ").append("(tunersets txp table: ytype)");
+
+		*os << name << "  " << x.second.size() << '\n' << '\n';
+
+		for (auto it = x.second.begin(); it != x.second.end(); it++)
+		{
+			*os << "i" << ": " << it->first << '\t' << ' ';
+			*os << "id" << ": " << it->second << '\t' << ' ';
+			*os << '\n' << '\n';
+		}
+		*os << std::endl;
+	}
+
+	*os << std::flush;
 }
 
 }

@@ -54,7 +54,7 @@ class termctl : public ::e2se_e2db::termiface
 		void reset();
 		int paged(int pos, int offset);
 		std::pair<int, int> screensize();
-		void dump_log();
+		void dump_history(ostream* os = nullptr);
 		void load_history();
 		void save_history();
 

@@ -96,8 +96,6 @@ void e2db_console::console_resolver(COMMAND command, istream* is)
 			console_usage(COMMAND::set);
 		else if (hint == "unset")
 			console_usage(COMMAND::unset);
-		else if (hint == "print")
-			console_usage(COMMAND::print);
 		else if (hint == "merge")
 			console_usage(COMMAND::merge);
 		else if (hint == "parse")
@@ -110,6 +108,8 @@ void e2db_console::console_resolver(COMMAND command, istream* is)
 			console_usage(COMMAND::tool);
 		else if (hint == "macro")
 			console_usage(COMMAND::macro);
+		else if (hint == "dump")
+			console_usage(COMMAND::dump);
 		else if (hint == "inspect")
 			console_usage(COMMAND::inspect);
 		else if (hint == "preferences")
@@ -288,20 +288,6 @@ void e2db_console::console_resolver(COMMAND command, istream* is)
 			console_usage(command);
 		else
 			*perr << "Type Error: " << msg("Unknown entry type: %s", type) << pout->endl();
-	}
-	else if (command == COMMAND::print)
-	{
-		string type;
-		*is >> std::skipws >> type;
-
-		if (type == "debug")
-			console_print(0);
-		else if (type == "index")
-			console_print(1);
-		else if (type.empty())
-			console_usage(command);
-		else
-			*perr << "Type Error: " << msg("Unknown print type: %s", type) << pout->endl();
 	}
 	else if (command == COMMAND::fimport)
 	{
@@ -663,19 +649,47 @@ void e2db_console::console_resolver(COMMAND command, istream* is)
 			console_usage(command);
 		}
 	}
+	else if (command == COMMAND::dump)
+	{
+		string opt;
+		*is >> std::skipws >> opt;
+
+		if (opt == "data")
+			console_dump(OPTION::opt_data);
+		else if (opt == "index")
+			console_dump(OPTION::opt_index);
+		else if (opt == "history")
+			console_dump(OPTION::opt_history);
+		else if (opt == "log")
+			console_dump(OPTION::opt_log);
+		else if (opt.empty())
+			console_usage(command);
+		else
+			*perr << "Type Error: " << msg("Unknown option: %s", opt) << pout->endl();
+	}
 	else if (command == COMMAND::inspect)
 	{
-		console_inspect();
+		string opt;
+		*is >> std::skipws >> opt;
+
+		if (opt.empty())
+			console_dump(OPTION::opt_log);
+		else
+			console_usage(command);
 	}
 	else if (command == COMMAND::preferences)
 	{
-		string type, opt1;
-		*is >> std::skipws >> type >> opt1;
+		string opt, val;
+		*is >> std::skipws >> opt >> val;
 
-		if (type.empty() || type == "output" || type == "history")
-			console_preferences(type, opt1);
+		if (opt.empty())
+			console_preferences(OPTION::opt_list, val);
+		else if (opt == "output")
+			console_preferences(OPTION::opt_output, val);
+		else if (opt == "history")
+			console_preferences(OPTION::opt_history, val);
 		else
-			*perr << "Type Error: " << msg("Unknown entry type: %s", type) << pout->endl();
+			*perr << "Type Error: " << msg("Unknown option: %s", opt) << pout->endl();
 	}
 	else
 	{
@@ -695,7 +709,7 @@ void e2db_console::console_usage(COMMAND hint, int level)
 		console_usage(COMMAND::unset, 0);
 		console_usage(COMMAND::fread, 0);
 		console_usage(COMMAND::fwrite, 0);
-		console_usage(COMMAND::print, 0);
+		console_usage(COMMAND::dump, 0);
 		console_usage(COMMAND::inspect, 0);
 		console_usage(COMMAND::preferences, 0);
 		console_usage(COMMAND::version, 0);
@@ -822,20 +836,6 @@ void e2db_console::console_usage(COMMAND hint, int level)
 		*pout << "  ", pout->width(7), *pout << pout->left() << "write", *pout << ' ';
 		pout->width(28), *pout << pout->left() << "[directory]", *pout << ' ' << "Write to directory file." << pout->endl();
 		*pout << pout->endl();
-	}
-	else if (hint == COMMAND::print)
-	{
-		*pout << "  ", pout->width(36), *pout << pout->left() << "print", *pout << ' ' << "Print debug informations." << pout->endl();
-		*pout << pout->endl();
-
-		if (level & 1)
-		{
-			*pout << "  ", *pout << "USAGE" << pout->endl() << pout->endl();
-			*pout << "  ", pout->width(7), *pout << pout->left() << "print", *pout << ' ';
-			pout->width(28), *pout << pout->left() << "debug", *pout << ' ' << "Print debug info." << pout->endl();
-			// pout->width(10), *pout << ' ', pout->width(28), *pout << pout->left() << "index", *pout << ' ' << "Print index." << pout->endl();
-			*pout << pout->endl();
-		}
 	}
 	else if (hint == COMMAND::fimport)
 	{
@@ -1089,6 +1089,22 @@ void e2db_console::console_usage(COMMAND hint, int level)
 			*pout << pout->endl();
 		}
 	}
+	else if (hint == COMMAND::dump)
+	{
+		*pout << "  ", pout->width(36), *pout << pout->left() << "dump", *pout << ' ' << "Dump to debug." << pout->endl();
+		*pout << pout->endl();
+
+		if (level & 1)
+		{
+			*pout << "  ", *pout << "USAGE" << pout->endl() << pout->endl();
+			*pout << "  ", pout->width(7), *pout << pout->left() << "dump", *pout << ' ';
+			pout->width(28), *pout << pout->left() << "data", *pout << ' ' << "Print dump of data items." << pout->endl();
+			pout->width(10), *pout << ' ', pout->width(28), *pout << pout->left() << "index", *pout << ' ' << "Print dump of index." << pout->endl();
+			pout->width(10), *pout << ' ', pout->width(28), *pout << pout->left() << "log", *pout << ' ' << "Print dump of log." << pout->endl();
+			pout->width(10), *pout << ' ', pout->width(28), *pout << pout->left() << "history", *pout << ' ' << "Print dump of current history entries." << pout->endl();
+			*pout << pout->endl();
+		}
+	}
 	else if (hint == COMMAND::inspect)
 	{
 		*pout << "  ", pout->width(36), *pout << pout->left() << "inspect", *pout << ' ' << "Display log." << pout->endl();
@@ -1108,16 +1124,41 @@ void e2db_console::console_usage(COMMAND hint, int level)
 			*pout << pout->endl();
 		}
 	}
+	else
+	{
+		*perr << "Error: " << msg("Wrong parameter hint.") << pout->endl();
+	}
 }
 
-void e2db_console::console_print(int opt)
+void e2db_console::console_dump(OPTION opt)
 {
 	try
 	{
-		if (opt)
-			*pout << "TODO" << pout->endl();
+		if (opt == OPTION::opt_log)
+		{
+			*pout << plog->str();
+		}
+		else if (opt == OPTION::opt_data || opt == OPTION::opt_index || opt == OPTION::opt_history)
+		{
+			std::stringbuf buf = std::stringbuf();
+			std::ostream* os = new std::ostream(&buf);
+
+			if (opt == OPTION::opt_data)
+				dbih->dump_data(os);
+			else if (opt == OPTION::opt_index)
+				dbih->dump_index(os);
+			else if (opt == OPTION::opt_history)
+				termctl->dump_history(os);
+
+			*pout << buf.str();
+			*pout << pout->flush();
+
+			delete os;
+		}
 		else
-			dbih->dump();
+		{
+			*perr << "Error: " << msg("Wrong parameter option.") << pout->endl();
+		}
 	}
 	catch (const std::invalid_argument& err)
 	{
@@ -1133,14 +1174,9 @@ void e2db_console::console_print(int opt)
 	}
 }
 
-void e2db_console::console_inspect()
+void e2db_console::console_preferences(OPTION opt, string val)
 {
-	*pout << plog->str();
-}
-
-void e2db_console::console_preferences(string type, string val)
-{
-	if (type == "output")
+	if (opt == OPTION::opt_output)
 	{
 		OBJIO format = OBJIO::tabular;
 
@@ -1156,7 +1192,7 @@ void e2db_console::console_preferences(string type, string val)
 
 		console_preferences(format);
 	}
-	else if (type == "history")
+	else if (opt == OPTION::opt_history)
 	{
 		HISTORY type = HISTORY::file;
 
@@ -1170,7 +1206,7 @@ void e2db_console::console_preferences(string type, string val)
 
 		console_preferences(type);
 	}
-	else if (type.empty())
+	else if (opt == OPTION::opt_list)
 	{
 		string format;
 		string type;
@@ -1190,7 +1226,7 @@ void e2db_console::console_preferences(string type, string val)
 	}
 	else
 	{
-		*perr << "Error: " << msg("Wrong parameter type.") << pout->endl();
+		*perr << "Error: " << msg("Wrong parameter option.") << pout->endl();
 	}
 }
 
@@ -2590,7 +2626,7 @@ void e2db_console::entry_list(ENTRY entry_type, bool paged, int limit, int pos, 
 	int end = 0;
 	int rows = 1;
 
-	//TODO FIX
+	//TODO FIX number rows
 	if (__objio.out == OBJIO::byline)
 	{
 		switch (entry_type)

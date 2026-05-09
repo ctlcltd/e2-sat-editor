@@ -15,11 +15,12 @@
 #include <map>
 #include <unordered_map>
 #include <unordered_set>
+#include <iostream>
 #include <fstream>
 
 #include "../logger/logger.h"
 
-using std::string, std::pair, std::vector, std::map, std::unordered_map, std::unordered_set;
+using std::string, std::pair, std::vector, std::map, std::unordered_map, std::unordered_set, std::ostream;
 
 #ifndef e2db_abstract_h
 #define e2db_abstract_h
@@ -745,7 +746,8 @@ struct e2db_abstract : protected e2se::log_factory
 		virtual unordered_map<string, e2db_file> get_output() { return this->e2db_out; }
 		virtual void fix_bouquets(bool uniq_ubouquets = false);
 		virtual void merge(e2db_abstract* dst);
-		virtual void dump();
+		virtual void dump_data(ostream* os = nullptr);
+		virtual void dump_index(ostream* os = nullptr);
 
 	protected:
 
