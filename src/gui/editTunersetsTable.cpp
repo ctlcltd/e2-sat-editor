@@ -107,7 +107,7 @@ void editTunersetsTable::tableSatLayout()
 	dtf0->addItem(new QSpacerItem(0, 0));
 
 	QLineEdit* dtf0ss = new QLineEdit;
-	dtf0ss->setProperty("field", "flsgs");
+	dtf0ss->setProperty("field", "flags");
 	fields.emplace_back(dtf0ss);
 	dtf0ss->setMaximumWidth(100);
 	dtf0ss->setValidator(new QIntValidator(0, 65535));

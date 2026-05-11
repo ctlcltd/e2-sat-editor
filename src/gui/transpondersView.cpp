@@ -160,23 +160,23 @@ void transpondersView::layout()
 		list->setColumnHidden(ITEM_ROW_ROLE::debug_txid, true);
 	}
 	list->setColumnWidth(ITEM_ROW_ROLE::combo, 175);	// combo (s: freq|pol|sr, t: freq|tmod|band, c: freq|cmod|sr)
-	list->setColumnWidth(ITEM_ROW_ROLE::sys, 75);		// System
+	list->setColumnWidth(ITEM_ROW_ROLE::sys, 85);		// System
 	list->setColumnWidth(ITEM_ROW_ROLE::pos, 80);		// Position
-	list->setColumnWidth(ITEM_ROW_ROLE::tsid, 80);		// Transport ID
+	list->setColumnWidth(ITEM_ROW_ROLE::tsid, 90);		// Transport ID
 	list->setColumnWidth(ITEM_ROW_ROLE::dvbns, 95);		// DVBNS
 	list->setColumnWidth(ITEM_ROW_ROLE::onid, 85);		// ONID
 	list->setColumnWidth(ITEM_ROW_ROLE::freq, 85);		// Frequency
-	list->setColumnWidth(ITEM_ROW_ROLE::pol, 85);		// Polarization
-	list->setColumnWidth(ITEM_ROW_ROLE::sr, 85);		// Symbol Rate
-	list->setColumnWidth(ITEM_ROW_ROLE::fec, 65);		// FEC
-	list->setColumnWidth(ITEM_ROW_ROLE::mod, 75);		// Modulation | Constellation
+	list->setColumnWidth(ITEM_ROW_ROLE::pol, 90);		// Polarization
+	list->setColumnWidth(ITEM_ROW_ROLE::sr, 95);		// Symbol Rate
+	list->setColumnWidth(ITEM_ROW_ROLE::fec, 75);		// FEC
+	list->setColumnWidth(ITEM_ROW_ROLE::mod, 90);		// Modulation | Constellation
 	list->setColumnWidth(ITEM_ROW_ROLE::band, 85);		// Bandwidth
-	list->setColumnWidth(ITEM_ROW_ROLE::rol, 70);		// Roll offset
+	list->setColumnWidth(ITEM_ROW_ROLE::rol, 75);		// Roll offset
 	list->setColumnWidth(ITEM_ROW_ROLE::pil, 75);		// Pilot
 	list->setColumnWidth(ITEM_ROW_ROLE::inv, 75);		// Inversion
-	list->setColumnWidth(ITEM_ROW_ROLE::tmx, 65);		// Tmx Mode
-	list->setColumnWidth(ITEM_ROW_ROLE::guard, 70);		// Guard
-	list->setColumnWidth(ITEM_ROW_ROLE::hier, 70);		// Hierarchy
+	list->setColumnWidth(ITEM_ROW_ROLE::tmx, 75);		// Tmx Mode
+	list->setColumnWidth(ITEM_ROW_ROLE::guard, 75);		// Guard
+	list->setColumnWidth(ITEM_ROW_ROLE::hier, 75);		// Hierarchy
 
 	// numeric items
 	QTreeWidgetItem* list_head = list->headerItem();

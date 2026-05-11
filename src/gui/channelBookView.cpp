@@ -194,9 +194,9 @@ void channelBookView::layout()
 	list->header()->setDefaultSectionSize(0);
 #endif
 	list->setColumnHidden(ITEM_ROW_ROLE::x, true);		// hidden index
-	list->setColumnWidth(ITEM_ROW_ROLE::chnum, 60);		// (Channel Number) Index
+	list->setColumnWidth(ITEM_ROW_ROLE::chnum, 65);		// (Channel Number) Index
 	list->setColumnWidth(ITEM_ROW_ROLE::chname, 175);	// Name
-	list->setColumnWidth(ITEM_ROW_ROLE::chtype, 70);	// Type
+	list->setColumnWidth(ITEM_ROW_ROLE::chtype, 75);	// Type
 	list->setColumnWidth(ITEM_ROW_ROLE::chpname, 125);	// Provider
 	list->setColumnWidth(ITEM_ROW_ROLE::chtxp, 165);	// Transponder
 	list->setColumnWidth(ITEM_ROW_ROLE::chpos, 80);		// Position

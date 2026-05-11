@@ -253,17 +253,17 @@ void mainView::layout()
 		list->setColumnHidden(ITEM_ROW_ROLE::debug_txid, true);
 	}
 	list->setColumnWidth(ITEM_ROW_ROLE::chssid, 80);	// Service ID
-	list->setColumnWidth(ITEM_ROW_ROLE::chtsid, 80);	// Transport ID
+	list->setColumnWidth(ITEM_ROW_ROLE::chtsid, 90);	// Transport ID
 	list->setColumnWidth(ITEM_ROW_ROLE::chtype, 85);	// (Channel) Type
-	list->setColumnWidth(ITEM_ROW_ROLE::chcas, 45);		// CAS
+	list->setColumnWidth(ITEM_ROW_ROLE::chcas, 50);		// CAS
 	list->setColumnWidth(ITEM_ROW_ROLE::chpname, 150);	// Provider
 	list->setColumnWidth(ITEM_ROW_ROLE::chsys, 85);		// System
 	list->setColumnWidth(ITEM_ROW_ROLE::chpos, 80);		// Position
 	list->setColumnWidth(ITEM_ROW_ROLE::chtname, 125);	// Tuner Name
 	list->setColumnWidth(ITEM_ROW_ROLE::chfreq, 95);	// Frequency
-	list->setColumnWidth(ITEM_ROW_ROLE::chpol, 85);		// Polarization
+	list->setColumnWidth(ITEM_ROW_ROLE::chpol, 90);		// Polarization
 	list->setColumnWidth(ITEM_ROW_ROLE::chsr, 95);		// Symbol Rate
-	list->setColumnWidth(ITEM_ROW_ROLE::chfec, 50);		// FEC
+	list->setColumnWidth(ITEM_ROW_ROLE::chfec, 75);		// FEC
 
 	// numeric items
 	QTreeWidgetItem* list_head = list->headerItem();
