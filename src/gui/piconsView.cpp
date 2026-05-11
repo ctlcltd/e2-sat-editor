@@ -173,7 +173,7 @@ void piconsView::layout()
 		// menu->popup(this->action.acrn_prefs->mapToGlobal(this->action.acrn_prefs->pos()));
 		platform::osMenuPopup(menu, this->action.acrn_prefs, this->action.acrn_prefs->pos());
 
-#if defined Q_OS_MAC && QT_VERSION >= QT_VERSION_CHECK(6, 5, 1)
+#if defined(Q_OS_MAC) && QT_VERSION >= QT_VERSION_CHECK(6, 5, 1)
 		if (platform::osExperiment())
 		{
 			// note: trick to re-gain window focus

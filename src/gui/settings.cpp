@@ -217,7 +217,7 @@ void settings::connectionsLayout()
 		// menu->popup(wid->mapToGlobal(pos)));
 		platform::osMenuPopup(menu, wid, pos);
 
-#if defined Q_OS_MAC && QT_VERSION >= QT_VERSION_CHECK(6, 5, 1)
+#if defined(Q_OS_MAC) && QT_VERSION >= QT_VERSION_CHECK(6, 5, 1)
 		if (platform::osExperiment())
 		{
 			// note: trick to re-gain window focus

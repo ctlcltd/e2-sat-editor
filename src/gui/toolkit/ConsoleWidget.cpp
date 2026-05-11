@@ -10,6 +10,7 @@
  */
 
 #include <QApplication>
+#include <QSettings>
 #include <QMimeData>
 #include <QPlainTextEdit>
 #include <QTextDocument>
@@ -43,6 +44,17 @@ ConsoleWidget::ConsoleWidget(QWidget* parent) : QPlainTextEdit(parent)
 	font.setFamily(QFontDatabase::systemFont(QFontDatabase::FixedFont).families().constFirst());
 	font.setPixelSize(12);
 	this->document()->setDefaultFont(font);
+
+	QVariant fontval = QSettings().value("application/consoleFont");
+
+	if (fontval.isValid() && ! fontval.isNull())
+	{
+		QWidget wid = QWidget();
+		wid.setStyleSheet(QString("font: %1;").arg(fontval.toString()));
+		wid.ensurePolished();
+
+		this->document()->setDefaultFont(wid.font());
+	}
 }
 
 void ConsoleWidget::attachWidget()
@@ -205,7 +217,7 @@ void ConsoleWidget::maybeInsertBlock(QTextCursor &cursor)
 void ConsoleWidget::keyPressEvent(QKeyEvent* event)
 {
 #ifndef Q_OS_MAC
-	const Qt::KeyboardModifiers CtrlModifier = Qt::CtrlModifier;
+	const Qt::KeyboardModifiers CtrlModifier = Qt::ControlModifier;
 #else
 	const Qt::KeyboardModifiers CtrlModifier = Qt::MetaModifier;
 #endif

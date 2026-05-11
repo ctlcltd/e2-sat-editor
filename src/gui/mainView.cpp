@@ -134,8 +134,9 @@ void mainView::layout()
 	TreeProxyStyle* side_style = new TreeProxyStyle;
 	TreeProxyStyle* tree_style = new TreeProxyStyle;
 	TreeProxyStyle* list_style = new TreeProxyStyle;
+	QString treebackground = "transparent";
 
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN)
 	if (! theme::isOverridden() && theme::isFluentWin())
 	{
 		QStyle* style = QStyleFactory::create("fusion");
@@ -143,6 +144,9 @@ void mainView::layout()
 		tree_style->setBaseStyle(style);
 		list_style->setBaseStyle(style);
 	}
+// note: QTreeWidget scrollbar decorations [Linux] [others]
+#elif !defined(Q_OS_MAC)
+	treebackground = "palette(window)";
 #endif
 
 	side->setStyle(side_style);
@@ -169,9 +173,8 @@ void mainView::layout()
 	}
 #endif
 
-	//TODO FIX scrollbar decorations QTreeWidget { background: transparent; } [Linux]
-	side->setStyleSheet("QTreeWidget { background: transparent; border-style: none } QTreeWidget::item { padding: 9px 0 }");
-	tree->setStyleSheet("QTreeWidget { background: transparent; border-style: none } QTreeWidget::item { margin: 1px 0 0; padding: 8px 0 }");
+	side->setStyleSheet("QTreeWidget { background: " + treebackground + "; border-style: none } QTreeWidget::item { padding: 9px 0 }");
+	tree->setStyleSheet("QTreeWidget { background: " + treebackground + "; border-style: none } QTreeWidget::item { margin: 1px 0 0; padding: 8px 0 }");
 	list->setStyleSheet("QTreeWidget { border-style: none } QTreeWidget::item { height: 32px }");
 
 #ifdef Q_OS_MAC
@@ -324,7 +327,7 @@ void mainView::layout()
 		// menu->popup(this->action.lcrn_prefs->mapToGlobal(this->action.lcrn_prefs->pos()));
 		platform::osMenuPopup(menu, this->action.lcrn_prefs, this->action.lcrn_prefs->pos());
 
-#if defined Q_OS_MAC && QT_VERSION >= QT_VERSION_CHECK(6, 5, 1)
+#if defined(Q_OS_MAC) && QT_VERSION >= QT_VERSION_CHECK(6, 5, 1)
 		if (platform::osExperiment())
 		{
 			// note: trick to re-gain window focus

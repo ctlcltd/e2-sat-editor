@@ -127,9 +127,9 @@ gui::gui(int argc, char* argv[])
 #endif
 #endif
 
-#if defined E2SE_PORTABLE
+#if defined(E2SE_PORTABLE)
 	QString qtTranslationsPath = appTranslationsPath;
-#elif defined Q_OS_MAC && E2SE_BUILD == E2SE_TARGET_RELEASE
+#elif defined(Q_OS_MAC) && E2SE_BUILD == E2SE_TARGET_RELEASE
 	QString qtTranslationsPath = appTranslationsPath;
 #else
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
@@ -532,9 +532,9 @@ void gui::tabStackerLayout()
 	ttbnew->setShortcut(QKeySequence::AddTab);
 
 	int ttbspacer = 1;
-#if defined Q_OS_WIN
+#if defined(Q_OS_WIN)
 	ttbnew->setStyleSheet("QPushButton { min-width: 8ex; height: 22px; margin: 5px 4px 3px 4px; padding-top: 4px; padding-bottom: 4px; padding-left: 3px; padding-right: 3px; font-size: 12px; font-weight: bold }");
-#elif defined Q_OS_MAC
+#elif defined(Q_OS_MAC)
 	if (theme::isDefault())
 	{
 		ttbspacer = 5;
@@ -684,6 +684,7 @@ void gui::initSettings()
 	settings.setValue("application/fixUnicodeChars", true);
 #endif
 	settings.setValue("application/piconsBrowsePath", "");
+	settings.setValue("application/consoleFont", "");
 #ifdef E2SE_DEMO
 	settings.setValue("application/seeds", ":/e2se-seeds/enigma_db");
 #endif
@@ -788,6 +789,8 @@ void gui::updateSettings()
 
 		if (version < 2.0)
 		{
+			settings.setValue("application/consoleFont", "");
+
 			settings.beginGroup("ftpcom");
 			settings.setValue("connectTimeout", settings.value("ftpConnectTimeout", 10).toInt());
 			settings.remove("ftpConnectTimeout");

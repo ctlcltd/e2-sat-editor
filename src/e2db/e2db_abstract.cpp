@@ -2355,7 +2355,9 @@ void e2db_abstract::dump_data(ostream* os)
 			*os << "ssid" << chref.ref.ssid << '\t' << ' ';
 			*os << "tsid" << chref.ref.tsid << '\t' << ' ';
 			*os << "onid" << chref.ref.onid << '\t' << ' ';
-			*os << "dvbns" << chref.ref.dvbns << '\t' << ' ';
+			*os << hex;
+			*os << "dvbns" << "0x" << chref.ref.dvbns << '\t' << ' ';
+			*os << dec;
 			*os << "]" << '\t' << ' ';
 			*os << "anum" << ": " << chref.anum << '\t' << ' ';
 			*os << "inum" << ": " << chref.inum << '\t' << ' ';
@@ -2371,7 +2373,7 @@ void e2db_abstract::dump_data(ostream* os)
 	{
 		tunersets tv = x.second;
 
-		*os << "tvid" << ": " << tv.ytype << '\t' << ' ';
+		*os << "tvid" << ": " << x.first << '\t' << ' ';
 		*os << "ytype" << ": " << tv.ytype << '\t' << ' ';
 		*os << "charset" << ": " << tv.charset << '\t' << ' ';
 		*os << "[" << "tables" << "]" << "  " << tv.tables.size() << ": " << '\n' << '\n';
@@ -2462,7 +2464,7 @@ void e2db_abstract::dump_data(ostream* os)
 		*os << "ytype" << ": " << zy.ytype << '\t' << ' ';
 		*os << "pos" << ": " << zy.pos << '\t' << ' ';
 		*os << "name" << ": " << zy.name << '\t' << ' ';
-		*os << "diseqc" << ": " << zy.name << '\t' << ' ';
+		*os << "diseqc" << ": " << zy.diseqc << '\t' << ' ';
 		*os << "[" << "transponders" << "]" << zy.transponders.size() << ": " << '\t' << ' ';
 		*os << "[" << '\t' << ' ';
 		for (string & txid : zy.transponders)
