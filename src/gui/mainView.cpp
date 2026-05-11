@@ -253,7 +253,7 @@ void mainView::layout()
 		list->setColumnHidden(ITEM_ROW_ROLE::debug_txid, true);
 	}
 	list->setColumnWidth(ITEM_ROW_ROLE::chssid, 80);	// Service ID
-	list->setColumnWidth(ITEM_ROW_ROLE::chtsid, 90);	// Transport ID
+	list->setColumnWidth(ITEM_ROW_ROLE::chtsid, 95);	// Transport ID
 	list->setColumnWidth(ITEM_ROW_ROLE::chtype, 85);	// (Channel) Type
 	list->setColumnWidth(ITEM_ROW_ROLE::chcas, 50);		// CAS
 	list->setColumnWidth(ITEM_ROW_ROLE::chpname, 150);	// Provider

@@ -272,18 +272,18 @@ void tunersetsView::layout()
 	if (lhs.at(ITEM_ROW_ROLE::combo).isEmpty())
 		list->setColumnHidden(ITEM_ROW_ROLE::combo, true);
 	list->setColumnWidth(ITEM_ROW_ROLE::row3, 85);		// Frequency
-	list->setColumnWidth(ITEM_ROW_ROLE::row4, 90);		// Polarization | Constellation | Modulation
+	list->setColumnWidth(ITEM_ROW_ROLE::row4, 95);		// Polarization | Constellation | Modulation
 	list->setColumnWidth(ITEM_ROW_ROLE::row5, 95);		// Symbol Rate
 	if (lhs.at(ITEM_ROW_ROLE::row5).isEmpty())
 		list->setColumnHidden(ITEM_ROW_ROLE::row5, true);
 	list->setColumnWidth(ITEM_ROW_ROLE::row6, 85);		// System
 	list->setColumnWidth(ITEM_ROW_ROLE::row7, 85);		// FEC | Bandwidth
 	list->setColumnWidth(ITEM_ROW_ROLE::row8, 85);		// Modulation | Tmx Mode | Inversion
-	list->setColumnWidth(ITEM_ROW_ROLE::row9, 75);		// Inversion | HP FEC
-	list->setColumnWidth(ITEM_ROW_ROLE::rowA, 75);		// Roll offset | LP FEC
+	list->setColumnWidth(ITEM_ROW_ROLE::row9, 85);		// Inversion | HP FEC
+	list->setColumnWidth(ITEM_ROW_ROLE::rowA, 85);		// Roll offset | LP FEC
 	list->setColumnWidth(ITEM_ROW_ROLE::rowB, 75);		// Pilot | Inversion
 	list->setColumnWidth(ITEM_ROW_ROLE::rowC, 75);		// Guard
-	list->setColumnWidth(ITEM_ROW_ROLE::rowD, 75);		// Hierarchy
+	list->setColumnWidth(ITEM_ROW_ROLE::rowD, 85);		// Hierarchy
 
 	// numeric items
 	QTreeWidgetItem* list_head = list->headerItem();

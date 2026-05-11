@@ -162,7 +162,7 @@ void transpondersView::layout()
 	list->setColumnWidth(ITEM_ROW_ROLE::combo, 175);	// combo (s: freq|pol|sr, t: freq|tmod|band, c: freq|cmod|sr)
 	list->setColumnWidth(ITEM_ROW_ROLE::sys, 85);		// System
 	list->setColumnWidth(ITEM_ROW_ROLE::pos, 80);		// Position
-	list->setColumnWidth(ITEM_ROW_ROLE::tsid, 90);		// Transport ID
+	list->setColumnWidth(ITEM_ROW_ROLE::tsid, 95);		// Transport ID
 	list->setColumnWidth(ITEM_ROW_ROLE::dvbns, 95);		// DVBNS
 	list->setColumnWidth(ITEM_ROW_ROLE::onid, 85);		// ONID
 	list->setColumnWidth(ITEM_ROW_ROLE::freq, 85);		// Frequency
@@ -171,12 +171,12 @@ void transpondersView::layout()
 	list->setColumnWidth(ITEM_ROW_ROLE::fec, 75);		// FEC
 	list->setColumnWidth(ITEM_ROW_ROLE::mod, 90);		// Modulation | Constellation
 	list->setColumnWidth(ITEM_ROW_ROLE::band, 85);		// Bandwidth
-	list->setColumnWidth(ITEM_ROW_ROLE::rol, 75);		// Roll offset
+	list->setColumnWidth(ITEM_ROW_ROLE::rol, 85);		// Roll offset
 	list->setColumnWidth(ITEM_ROW_ROLE::pil, 75);		// Pilot
 	list->setColumnWidth(ITEM_ROW_ROLE::inv, 75);		// Inversion
-	list->setColumnWidth(ITEM_ROW_ROLE::tmx, 75);		// Tmx Mode
+	list->setColumnWidth(ITEM_ROW_ROLE::tmx, 85);		// Tmx Mode
 	list->setColumnWidth(ITEM_ROW_ROLE::guard, 75);		// Guard
-	list->setColumnWidth(ITEM_ROW_ROLE::hier, 75);		// Hierarchy
+	list->setColumnWidth(ITEM_ROW_ROLE::hier, 85);		// Hierarchy
 
 	// numeric items
 	QTreeWidgetItem* list_head = list->headerItem();
