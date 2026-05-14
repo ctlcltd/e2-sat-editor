@@ -22,6 +22,7 @@
 #include <QToolBar>
 #include <QFileDialog>
 #include <QFile>
+#include <QDir>
 #include <QMenu>
 #include <QWidgetAction>
 #include <QClipboard>
@@ -1143,11 +1144,11 @@ void piconsView::revealPiconOnFileManager()
 	// note: file protocol separators and windows style separators
 #if defined(Q_OS_WIN)
 		QString program = "explorer.exe";
-		QString systemRoot = QSettings ("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", QSettings::NativeFormat);
-		if (! systemRoot.isEmpty() && systemRoot.contains("PathName") && QFile::exists(systemRoot.value("PathName").toString()))
-			program.prepend(systemRoot.value("PathName").toString()).prepend("\\");
+		QSettings systemRoot = QSettings ("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", QSettings::NativeFormat);
+		if (systemRoot.contains("PathName") && QFile::exists(systemRoot.value("PathName").toString()))
+			program.prepend(systemRoot.value("PathName").toString().append("\\"));
 
-		QProcess::startDetached(program, {(fi.idDir() ? "/select" : NULL), fi.toNativeSeparators()});
+		QProcess::startDetached(program, {(fi.isDir() ? "/select" : ""), QDir::toNativeSeparators(url.toString())});
 	// note: open command accepts the file protocol
 #elif defined(Q_OS_MAC)
 		if (fi.isDir())
