@@ -69,7 +69,7 @@ void checkUpdate::check()
 	debug("check");
 
 	string current_url = "https://github.com/ctlcltd/e2-sat-editor/releases/tag/";
-	current_url.append(this->RELVER);
+	current_url.append(this->RELTAG);
 
 	this->state.checked = true;
 	this->state.current_url = current_url;
@@ -143,7 +143,7 @@ void checkUpdate::autoCheck()
 	{
 		this->state.dialog = DIAL::dial_haveupdate;
 
-		QString version = this->VER;
+		QString version = this->RELVER;
 		QUrl url;
 
 		if (! this->state.version.empty())
@@ -184,7 +184,7 @@ void checkUpdate::notify()
 		this->state.dialog = DIAL::dial_fetcherror;
 	}
 
-	QString version = this->VER;
+	QString version = this->RELVER;
 	QUrl url;
 
 	if (! this->state.version.empty())

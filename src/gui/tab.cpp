@@ -254,7 +254,12 @@ void tab::updateTabName(string path)
 	string filename;
 
 	if (! path.empty())
-		filename = std::filesystem::path(path).filename().u8string();
+	{
+		if (std::filesystem::is_directory(path))
+			filename = std::filesystem::path(path).parent_path().filename().u8string();
+		else
+			filename = std::filesystem::path(path).filename().u8string();
+	}
 
 	gid->changeTabName(ttid, filename);
 
@@ -1403,7 +1408,12 @@ void tab::infoFile()
 	dtf0->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
 	string filepath = this->data->getPath();
-	string filename = std::filesystem::path(filepath).filename().u8string();
+	std::filesystem::path fp = std::filesystem::path(filepath);
+	string filename;
+	if (std::filesystem::is_directory(fp))
+		filename = fp.parent_path().filename().u8string();
+	else
+		filename = fp.filename().u8string();
 
 	int srctype = dbih->get_e2db_services_type();
 	int srcver = dbih->get_e2db_services_version();

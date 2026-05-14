@@ -75,11 +75,15 @@ void printable::documentIndex()
 
 	auto* dbih = this->data->dbih;
 
-	string filename = std::filesystem::path(dbih->get_filepath()).filename().u8string();
+	std::filesystem::path fp = std::filesystem::path(dbih->get_filepath());
+	string filename;
+	if (std::filesystem::is_directory(fp))
+		filename = fp.parent_path().filename().u8string();
+	else
+		filename = fp.filename().u8string();
+
 	if (filename.empty())
-	{
 		filename = tr("Untitled").toStdString();
-	}
 
 	html_page page;
 	pageHeader(page, filename, DOC_VIEW::view_index);

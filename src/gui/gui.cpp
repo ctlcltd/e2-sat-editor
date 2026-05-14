@@ -78,7 +78,7 @@ gui::gui(int argc, char* argv[])
 	mroot->setOrganizationDomain("io.github.ctlcltd");
 	mroot->setApplicationName("e2se");
 	mroot->setApplicationDisplayName("e2 SAT Editor");
-	mroot->setApplicationVersion("1.9");
+	mroot->setApplicationVersion("2.0");
 	mroot->setProperty("editor_version", "2.0.0");
 
 	mroot->connect(mroot, &QApplication::focusChanged, [=]() { this->windowChanged(); });
@@ -580,7 +580,7 @@ void gui::statusBarLayout()
 	QHBoxLayout* separator = new QHBoxLayout;
 	QWidget* frame = new QWidget;
 	frame->setAutoFillBackground(true);
-	frame->setBackgroundRole(QPalette::ToolTipBase);
+	frame->setBackgroundRole(QPalette::Dark);
 	frame->setContentsMargins(0, 0, 0, 0);
 	frame->setFixedSize(1, 10);
 	separator->setSpacing(0);

@@ -1041,18 +1041,21 @@ void e2db_converter::push_html_index(vector<e2db_file>& files)
 {
 	debug("push_html_index");
 
-	string filename = "index";
-	string fname = std::filesystem::path(get_filepath()).filename().u8string();
-	if (filename.empty())
-	{
-		fname = "Untitled";
-	}
+	std::filesystem::path fp = std::filesystem::path(get_filepath());
+	string fname;
+	if (std::filesystem::is_directory(fp))
+		fname = fp.parent_path().filename().u8string();
+	else
+		fname = fp.filename().u8string();
 
-	filename = filename_format(filename, "html");
+	if (fname.empty())
+		fname = "Untitled";
+
+	fname = filename_format(fname, "html");
 
 	html_page page;
-	page_header(page, filename, DOC_VIEW::view_index);
-	page_footer(page, filename, DOC_VIEW::view_index);
+	page_header(page, fname, DOC_VIEW::view_index);
+	page_footer(page, fname, DOC_VIEW::view_index);
 
 	vector<string> paths;
 	for (auto & x : get_input())
@@ -1060,6 +1063,9 @@ void e2db_converter::push_html_index(vector<e2db_file>& files)
 		paths.emplace_back(x.first);
 	}
 	page_body_index_list(page, paths);
+
+	string filename = "index";
+	filename = filename_format(filename, "html");
 
 	e2db_file file;
 	file.filename = filename;

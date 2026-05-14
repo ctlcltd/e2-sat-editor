@@ -65,8 +65,8 @@ class checkUpdate : protected e2se::log_factory
 
 	protected:
 
-		const string RELVER = "v1.8.1";
-		const QString VER = "1.8.1";
+		const string RELTAG = "v2.0.0";
+		const QString RELVER = "2.0.0";
 
 		void notify();
 		void showMessage(DIAL dialog, MEDIUM medium, QString version, QUrl url);
