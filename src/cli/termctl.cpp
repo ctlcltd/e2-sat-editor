@@ -668,7 +668,7 @@ void termctl::tty_setsane(int tty_fd)
 std::pair<int, int> termctl::tty_screensize()
 {
 #if defined(PLATFORM_WIN)
-	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+	::HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
 	GetConsoleScreenBufferInfo(hStdout, &csbiInfo);
 	return std::pair (csbiInfo.dwSize.Y, csbiInfo.dwSize.X);
@@ -684,7 +684,7 @@ std::pair<int, int> termctl::tty_screensize()
 void termctl::tty_gotoxy(int x, int y)
 {
 #ifdef PLATFORM_WIN
-	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+	::HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD coordPos = {short (x), short (y)};
 	SetConsoleCursorPosition(hStdout, coordPos);
 #else
@@ -695,7 +695,7 @@ void termctl::tty_gotoxy(int x, int y)
 void termctl::tty_goforward()
 {
 #ifdef PLATFORM_WIN
-	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+	::HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
 	GetConsoleScreenBufferInfo(hStdout, &csbiInfo);
 	COORD coordPos = {short (csbiInfo.dwCursorPosition.X + 1), csbiInfo.dwCursorPosition.Y};
@@ -708,7 +708,7 @@ void termctl::tty_goforward()
 void termctl::tty_gobackward()
 {
 #ifdef PLATFORM_WIN
-	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+	::HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
 	GetConsoleScreenBufferInfo(hStdout, &csbiInfo);
 	COORD coordPos = {short (csbiInfo.dwCursorPosition.X - 1), csbiInfo.dwCursorPosition.Y};
