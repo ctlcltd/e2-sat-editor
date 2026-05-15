@@ -1115,7 +1115,7 @@ int e2db_abstract::value_transponder_fec(string str, YTYPE ytype)
 		else if (str == "6/7")
 			return 10;
 		else if (str == "None")
-			return 15;
+			return 0xf;
 		return -1;
 	}
 	else if (ytype == YTYPE::terrestrial)
@@ -1137,7 +1137,7 @@ int e2db_abstract::value_transponder_fec(string str, YTYPE ytype)
 		else if (str == "8/9")
 			return 6;
 		else if (str == "None")
-			return 15;
+			return 0xf;
 		return -1;
 	}
 	else if (ytype == YTYPE::cable)
@@ -1159,7 +1159,7 @@ int e2db_abstract::value_transponder_fec(string str, YTYPE ytype)
 		else if (str == "8/9")
 			return 6;
 		else if (str == "None")
-			return 15;
+			return 0xf;
 		return -1;
 	}
 	return -1;
@@ -1175,14 +1175,14 @@ string e2db_abstract::value_transponder_fec(int fec, YTYPE ytype)
 {
 	if (fec < 0)
 		return "";
-	if (ytype == YTYPE::satellite && fec < (int (sizeof(SAT_FEC) / sizeof(SAT_FEC[0]))))
+	if (fec == 0xf)
+		return "None";
+	else if (ytype == YTYPE::satellite && fec < (int (sizeof(SAT_FEC) / sizeof(SAT_FEC[0]))))
 		return SAT_FEC[fec];
 	else if (ytype == YTYPE::terrestrial && fec < (int (sizeof(TER_FEC) / sizeof(TER_FEC[0]))))
 		return TER_FEC[fec];
 	else if (ytype == YTYPE::cable && fec < (int (sizeof(CAB_FEC) / sizeof(CAB_FEC[0]))))
 		return CAB_FEC[fec];
-	else if (fec == 0xf)
-		return "None";
 	return "";
 }
 

@@ -671,9 +671,9 @@ void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transpo
 			feopts = 0;
 
 			if (ver == 3)
-				std::sscanf(str.c_str(), "%8d:%8d:%1d:%1d:%5d:%1d:%1d:%1d:%1d", &freq, &sr, &pol, &fec, &pos, &inv, &sys, &mod, &rol);
+				std::sscanf(str.c_str(), "%8d:%8d:%1d:%d:%5d:%1d:%d:%1d:%1d", &freq, &sr, &pol, &fec, &pos, &inv, &sys, &mod, &rol);
 			else
-				std::sscanf(str.c_str(), "%8d:%8d:%1d:%1d:%5d:%1d:%d:%1d:%1d:%1d:%1d%c", &freq, &sr, &pol, &fec, &pos, &inv, &flags, &sys, &mod, &rol, &pil, &feopts);
+				std::sscanf(str.c_str(), "%8d:%8d:%1d:%d:%5d:%1d:%d:%d:%1d:%1d:%1d%c", &freq, &sr, &pol, &fec, &pos, &inv, &flags, &sys, &mod, &rol, &pil, &feopts);
 
 			tx.ytype = YTYPE::satellite;
 			tx.freq = freq;
@@ -696,7 +696,7 @@ void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transpo
 			band = -1, hpfec = -1, lpfec = -1, tmod = -1, tmx = -1, guard = -1, hier = -1,
 			plpid = -1;
 
-			std::sscanf(str.c_str(), "%9d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%1d:%d:%1d:%d", &freq, &band, &hpfec, &lpfec, &tmod, &tmx, &guard, &hier, &inv, &flags, &sys, &plpid);
+			std::sscanf(str.c_str(), "%9d:%1d:%d:%d:%1d:%1d:%1d:%1d:%1d:%d:%d:%d", &freq, &band, &hpfec, &lpfec, &tmod, &tmx, &guard, &hier, &inv, &flags, &sys, &plpid);
 
 			tx.ytype = YTYPE::terrestrial;
 			tx.freq = freq;
@@ -716,7 +716,7 @@ void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transpo
 			int cmod, cfec;
 			cmod = -1, cfec = -1;
 
-			std::sscanf(str.c_str(), "%6d:%8d:%1d:%1d:%1d:%d:%1d", &freq, &sr, &inv, &cmod, &cfec, &flags, &sys);
+			std::sscanf(str.c_str(), "%6d:%8d:%1d:%1d:%d:%d:%d", &freq, &sr, &inv, &cmod, &cfec, &flags, &sys);
 
 			tx.ytype = YTYPE::cable;
 			tx.freq = freq;
@@ -731,7 +731,7 @@ void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transpo
 			int amod;
 			amod = -1;
 
-			std::sscanf(str.c_str(), "%9d:%1d:%1d:%d:%1d", &freq, &inv, &amod, &flags, &sys);
+			std::sscanf(str.c_str(), "%9d:%1d:%1d:%d:%d", &freq, &inv, &amod, &flags, &sys);
 
 			tx.ytype = YTYPE::atsc;
 			tx.freq = freq;
@@ -1723,9 +1723,9 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 					tx.onid = int (std::strtol(val.data(), NULL, 16));
 				else if (key == "frq")
 				{
-					//TODO TEST
+					// note: dreamset neutrino v1 v2 9 digits, v3 v4 8 digits
 					if (ver > 2 && zy.ytype == YTYPE::terrestrial)
-						tx.freq = int (std::atoi(val.data()) * 1e2);
+						tx.freq = int (std::atoi(val.data()) * 10);
 					else
 						tx.freq = std::atoi(val.data());
 				}
@@ -1764,14 +1764,28 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 					//TODO
 					else if (ver == 3)
 					{
-						if (i < 4)
+						if (i <= 0)
+							tx.fec = 9;
+						else if (i < 4)
 							tx.fec = i;
-						else if (i == 5)
+						else if (i == 4 || i == 5 || i == 13 || i == 22)
 							tx.fec = 4;
-						else if (i == 7)
-							tx.fec = 5;
-						else
-							tx.fec = 3; // 21
+						else if (i == 6)
+							tx.fec = 6;
+						else if (i == 7 || i == 25)
+							tx.fec = 7;
+						else if (i == 8)
+							tx.fec = 8;
+						else if (i == 9)
+							tx.fec = 9;
+						else if (i == 19)
+							tx.fec = 1;
+						else if (i == 11 || i == 20)
+							tx.fec = 2;
+						else if (i == 12 || i == 21)
+							tx.fec = 3;
+						else if (i == 28)
+							tx.fec = 0;
 					}
 					else if (ver == 2)
 					{
@@ -1795,12 +1809,13 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 					tx.guard = std::atoi(val.data());
 				else if (key == "hierarchy")
 					tx.hier = std::atoi(val.data());
+				//TODO
 				else if (key == "mod")
 				{
 					int i = std::atoi(val.data());
 
 					if (zy.ytype == YTYPE::terrestrial && tx.tmod == 3)
-						tx.tmod = i / 2; //TODO
+						tx.tmod = i / 2;
 					else
 						tx.mod = i;
 				}
@@ -1913,6 +1928,7 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 					tx.tsid = int (std::strtol(val.data(), NULL, 16));
 				else if (key == "onid")
 					tx.onid = int (std::strtol(val.data(), NULL, 16));
+				// note: dreamset neutrino v1 v2 9 digits, v3 v4 8 digits
 				else if (key == "frequency")
 					tx.freq = std::atoi(val.data());
 				else if (key == "inversion")

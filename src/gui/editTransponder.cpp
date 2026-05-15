@@ -122,7 +122,7 @@ void editTransponder::layout(QWidget* cwid)
 	dtf0ts->setProperty("field", "tsid");
 	fields.emplace_back(dtf0ts);
 	dtf0ts->setMaximumWidth(60);
-	dtf0ts->setValidator(new QIntValidator(0, 65535));
+	dtf0ts->setValidator(new QIntValidator(0, 99999999));
 	platform::osLineEdit(dtf0ts);
 	dtb01->addWidget(dtf0ts);
 	dtb01->addWidget(new QLabel("[TSID]"));
@@ -162,7 +162,7 @@ void editTransponder::layout(QWidget* cwid)
 	dtf0on->setProperty("field", "onid");
 	fields.emplace_back(dtf0on);
 	dtf0on->setMaximumWidth(60);
-	dtf0on->setValidator(new QIntValidator(0, 65535));
+	dtf0on->setValidator(new QIntValidator(0, 99999999));
 	platform::osLineEdit(dtf0on);
 	dtf0->addRow(tr("ONID"), dtf0on);
 	dtf0->addItem(new QSpacerItem(0, 0));
@@ -241,7 +241,7 @@ void editTransponder::leadSatLayout()
 	dtf0sf->setProperty("field", "s_freq");
 	fields.emplace_back(dtf0sf);
 	dtf0sf->setMinimumWidth(100);
-	dtf0sf->setInputMask("00000.000;0");
+	dtf0sf->setInputMask("00000.000");
 	dtf0sf->setValidator(new QDoubleValidator(0, 99999, 3));
 	dtf0sf->setMaxLength(8);
 	platform::osLineEdit(dtf0sf);
@@ -267,7 +267,7 @@ void editTransponder::leadSatLayout()
 	dtf0ss->setProperty("field", "s_sr");
 	fields.emplace_back(dtf0ss);
 	dtf0ss->setMinimumWidth(100);
-	dtf0ss->setInputMask("00000.000;0");
+	dtf0ss->setInputMask("00000.000");
 	dtf0ss->setValidator(new QDoubleValidator(-1, 99999, 3));
 	dtf0ss->setMaxLength(8);
 	platform::osLineEdit(dtf0ss);
@@ -288,6 +288,7 @@ void editTransponder::leadSatLayout()
 		string w = e2db::SAT_FEC[i];
 		dtf0sc->addItem(QString::fromStdString(w), i);
 	}
+	dtf0sc->addItem("None", 0xf);
 
 	QComboBox* dtf0sy = new QComboBox;
 	dtf0sy->setProperty("field", "s_sys");
@@ -320,7 +321,7 @@ void editTransponder::leadTerrestrialLayout()
 	dtf0tf->setProperty("field", "t_freq");
 	fields.emplace_back(dtf0tf);
 	dtf0tf->setMinimumWidth(100);
-	dtf0tf->setInputMask("000000.000;0");
+	dtf0tf->setInputMask("000000.000");
 	dtf0tf->setValidator(new QDoubleValidator(0, 999999, 3));
 	dtf0tf->setMaxLength(8);
 	platform::osLineEdit(dtf0tf);
@@ -371,6 +372,7 @@ void editTransponder::leadTerrestrialLayout()
 		string w = e2db::TER_FEC[i];
 		dtf0th->addItem(QString::fromStdString(w), i);
 	}
+	dtf0th->addItem("None", 0xf);
 
 	QComboBox* dtf0tl = new QComboBox;
 	dtf0tl->setProperty("field", "t_lpfec");
@@ -386,6 +388,7 @@ void editTransponder::leadTerrestrialLayout()
 		string w = e2db::TER_FEC[i];
 		dtf0tl->addItem(QString::fromStdString(w), i);
 	}
+	dtf0tl->addItem("None", 0xf);
 
 	QComboBox* dtf0ty = new QComboBox;
 	dtf0ty->setProperty("field", "t_sys");
@@ -418,7 +421,7 @@ void editTransponder::leadCableLayout()
 	dtf0cf->setProperty("field", "c_freq");
 	fields.emplace_back(dtf0cf);
 	dtf0cf->setMinimumWidth(100);
-	dtf0cf->setInputMask("000.000;0");
+	dtf0cf->setInputMask("000.000");
 	dtf0cf->setValidator(new QDoubleValidator(0, 999, 3));
 	dtf0cf->setMaxLength(8);
 	platform::osLineEdit(dtf0cf);
@@ -444,7 +447,7 @@ void editTransponder::leadCableLayout()
 	dtf0cs->setProperty("field", "c_sr");
 	fields.emplace_back(dtf0cs);
 	dtf0cs->setMinimumWidth(100);
-	dtf0cs->setInputMask("00000.000;0");
+	dtf0cs->setInputMask("00000.000");
 	dtf0cs->setValidator(new QDoubleValidator(-1, 99999, 3));
 	dtf0cs->setMaxLength(8);
 	platform::osLineEdit(dtf0cs);
@@ -465,6 +468,7 @@ void editTransponder::leadCableLayout()
 		string w = e2db::CAB_FEC[i];
 		dtf0ci->addItem(QString::fromStdString(w), i);
 	}
+	dtf0ci->addItem("None", 0xf);
 
 	dtl0->setLayout(dtf0);
 	dtform->addWidget(dtl0, 0, 1);
@@ -482,7 +486,7 @@ void editTransponder::leadAtscLayout()
 	dtf0af->setProperty("field", "a_freq");
 	fields.emplace_back(dtf0af);
 	dtf0af->setMinimumWidth(100);
-	dtf0af->setInputMask("000000.000;0");
+	dtf0af->setInputMask("000000.000");
 	dtf0af->setValidator(new QDoubleValidator(0, 999999, 3));
 	dtf0af->setMaxLength(8);
 	platform::osLineEdit(dtf0af);
@@ -887,7 +891,9 @@ void editTransponder::computeDvbns()
 				val = dbih->value_transponder_position(field->text().toStdString());
 			else if (key == "dvbns")
 				val = dbih->value_transponder_dvbns(field->text().toStdString());
-			else if (key.find("_freq") != string::npos || key.find("_sr") != string::npos)
+			else if (key.rfind("_freq") != string::npos)
+				val = field->text().isEmpty() ? 0 : int (field->text().toDouble() * 1e3);
+			else if (key.rfind("_sr") != string::npos)
 				val = field->text().isEmpty() ? -1 : int (field->text().toDouble() * 1e3);
 			else
 				val = field->text().isEmpty() ? -1 : field->text().toInt();
@@ -991,7 +997,9 @@ void editTransponder::store()
 				val = dbih->value_transponder_position(field->text().toStdString());
 			else if (key == "dvbns")
 				val = dbih->value_transponder_dvbns(field->text().toStdString());
-			else if (key.find("_freq") != string::npos || key.find("_sr") != string::npos)
+			else if (key.rfind("_freq") != string::npos)
+				val = field->text().isEmpty() ? 0 : int (field->text().toDouble() * 1e3);
+			else if (key.rfind("_sr") != string::npos)
 				val = field->text().isEmpty() ? -1 : int (field->text().toDouble() * 1e3);
 			else
 				val = field->text().isEmpty() ? -1 : field->text().toInt();

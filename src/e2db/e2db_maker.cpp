@@ -133,7 +133,7 @@ void e2db_maker::make_lamedb(string filename, e2db_file& file, int ver)
 					{
 						ss << ':' << (tx.sys != -1 ? tx.sys : 0);
 						ss << ':' << (tx.mod != -1 ? tx.mod : 0);
-						ss << ':' << (tx.rol != -1 ? tx.mod : 0);
+						ss << ':' << (tx.rol != -1 ? tx.rol : 0);
 					}
 
 					if (ver > 3)
@@ -1197,9 +1197,9 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 			{
 				ss << ' ' << "id=\"" << hex << setfill('0') << setw(4) << tx.tsid << dec << "\"";
 				ss << ' ' << "on=\"" << hex << setfill('0') << setw(4) << tx.onid << dec << "\"";
-				//TODO TEST
+				// note: dreamset neutrino v1 v2 9 digits, v3 v4 8 digits
 				if (ver > 2 && zy.ytype == YTYPE::terrestrial)
-					ss << ' ' << "frq=\"" << int (tx.freq / 1e2) << "\"";
+					ss << ' ' << "frq=\"" << int (tx.freq / 10) << "\"";
 				else
 					ss << ' ' << "frq=\"" << tx.freq << "\"";
 				ss << ' ' << "inv=\"" << (tx.inv != -1 && tx.inv != 0 ? tx.inv : 2) << "\"";
@@ -1229,11 +1229,11 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 					if (ver == 4)
 					{
 						if (tx.fec <= 0)
-							i = 9;
+							i = 0;
 						else if (tx.fec < 4)
 							i = tx.fec;
 						else if (tx.fec == 4)
-							i = 5;
+							i = 8;
 						else if (tx.fec == 5)
 							i = 7;
 						else if (tx.fec == 6)
@@ -1246,7 +1246,10 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 							i = 11;
 						else if (tx.fec == 10)
 							i = 6;
+						else
+							i = 9;
 					}
+					//TODO
 					else if (ver == 3)
 					{
 						if (tx.fec <= 0)
@@ -1254,9 +1257,17 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 						else if (tx.fec < 4)
 							i = tx.fec;
 						else if (tx.fec == 4)
-							i = 5;
+							i = 4;
 						else if (tx.fec == 5)
+							i = 9;
+						else if (tx.fec == 6)
+							i = 6;
+						else if (tx.fec == 7)
 							i = 7;
+						else if (tx.fec == 8)
+							i = 8;
+						else
+							i = 9;
 					}
 					else if (ver == 2)
 					{
@@ -1264,6 +1275,8 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 							i = 0;
 						else if (tx.fec < 6)
 							i = tx.fec;
+						else
+							i = 0;
 					}
 					ss << ' ' << "fec=\"" << i << "\"";
 				}
@@ -1290,6 +1303,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 			{
 				ss << ' ' << "id=\"" << hex << setfill('0') << setw(4) << tx.tsid << dec << "\"";
 				ss << ' ' << "onid=\"" << hex << setfill('0') << setw(4) << tx.onid << dec << "\"";
+				// note: dreamset neutrino v1 v2 9 digits, v3 v4 8 digits
 				ss << ' ' << "frequency=\"" << tx.freq << "\"";
 				ss << ' ' << "inversion=\"" << (tx.inv != 2 ? tx.inv : 0) << "\"";
 				ss << ' ' << "symbol_rate=\"" << (tx.sr != -1 && tx.sr != 0 ? tx.sr : 0) << "\"";
@@ -1309,6 +1323,8 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 						i = 4;
 					else if (tx.fec == 10)
 						i = 6;
+					else
+						i = 3;
 					ss << ' ' << "fec_inner=\"" << i << "\"";
 				}
 				ss << ' ' << "polarization=\"" << (tx.pol != -1 ? tx.pol : 0) << "\"";

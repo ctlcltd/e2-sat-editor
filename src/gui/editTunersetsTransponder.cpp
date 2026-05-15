@@ -91,7 +91,7 @@ void editTunersetsTransponder::leadSatLayout()
 	dtf0sf->setProperty("field", "s_freq");
 	fields.emplace_back(dtf0sf);
 	dtf0sf->setMinimumWidth(100);
-	dtf0sf->setInputMask("00000.000;0");
+	dtf0sf->setInputMask("00000.000");
 	dtf0sf->setValidator(new QDoubleValidator(0, 99999, 3));
 	dtf0sf->setMaxLength(8);
 	platform::osLineEdit(dtf0sf);
@@ -117,7 +117,7 @@ void editTunersetsTransponder::leadSatLayout()
 	dtf0ss->setProperty("field", "s_sr");
 	fields.emplace_back(dtf0ss);
 	dtf0ss->setMinimumWidth(100);
-	dtf0ss->setInputMask("00000.000;0");
+	dtf0ss->setInputMask("00000.000");
 	dtf0ss->setValidator(new QDoubleValidator(-1, 99999, 3));
 	dtf0ss->setMaxLength(8);
 	platform::osLineEdit(dtf0ss);
@@ -138,6 +138,7 @@ void editTunersetsTransponder::leadSatLayout()
 		string w = e2db::SAT_FEC[i];
 		dtf0sc->addItem(QString::fromStdString(w), i);
 	}
+	dtf0sc->addItem("None", 0xf);
 
 	QComboBox* dtf0sy = new QComboBox;
 	dtf0sy->setProperty("field", "s_sys");
@@ -170,7 +171,7 @@ void editTunersetsTransponder::leadTerrestrialLayout()
 	dtf0tf->setProperty("field", "t_freq");
 	fields.emplace_back(dtf0tf);
 	dtf0tf->setMinimumWidth(100);
-	dtf0tf->setInputMask("000000.000;0");
+	dtf0tf->setInputMask("000000.000");
 	dtf0tf->setValidator(new QDoubleValidator(0, 999999, 3));
 	dtf0tf->setMaxLength(8);
 	platform::osLineEdit(dtf0tf);
@@ -221,6 +222,7 @@ void editTunersetsTransponder::leadTerrestrialLayout()
 		string w = e2db::TER_FEC[i];
 		dtf0th->addItem(QString::fromStdString(w), i);
 	}
+	dtf0th->addItem("None", 0xf);
 
 	QComboBox* dtf0tl = new QComboBox;
 	dtf0tl->setProperty("field", "t_lpfec");
@@ -236,6 +238,7 @@ void editTunersetsTransponder::leadTerrestrialLayout()
 		string w = e2db::TER_FEC[i];
 		dtf0tl->addItem(QString::fromStdString(w), i);
 	}
+	dtf0tl->addItem("None", 0xf);
 
 	dtl0->setLayout(dtf0);
 	dtform->addWidget(dtl0, 0, 0);
@@ -253,7 +256,7 @@ void editTunersetsTransponder::leadCableLayout()
 	dtf0cf->setProperty("field", "c_freq");
 	fields.emplace_back(dtf0cf);
 	dtf0cf->setMinimumWidth(100);
-	dtf0cf->setInputMask("000.000;0");
+	dtf0cf->setInputMask("000.000");
 	dtf0cf->setValidator(new QDoubleValidator(0, 999, 3));
 	dtf0cf->setMaxLength(8);
 	platform::osLineEdit(dtf0cf);
@@ -274,12 +277,13 @@ void editTunersetsTransponder::leadCableLayout()
 		string w = e2db::CAB_MOD[i];
 		dtf0cm->addItem(QString::fromStdString(w), i);
 	}
+	dtf0cm->addItem("None", 0xf);
 
 	QLineEdit* dtf0cs = new QLineEdit;
 	dtf0cs->setProperty("field", "c_sr");
 	fields.emplace_back(dtf0cs);
 	dtf0cs->setMinimumWidth(100);
-	dtf0cs->setInputMask("00000.000;0");
+	dtf0cs->setInputMask("00000.000");
 	dtf0cs->setValidator(new QDoubleValidator(-1, 99999, 3));
 	dtf0cs->setMaxLength(8);
 	platform::osLineEdit(dtf0cs);
@@ -300,6 +304,7 @@ void editTunersetsTransponder::leadCableLayout()
 		string w = e2db::CAB_FEC[i];
 		dtf0ci->addItem(QString::fromStdString(w), i);
 	}
+	dtf0ci->addItem("None", 0xf);
 
 	dtl0->setLayout(dtf0);
 	dtform->addWidget(dtl0, 0, 0);
@@ -317,7 +322,7 @@ void editTunersetsTransponder::leadAtscLayout()
 	dtf0af->setProperty("field", "a_freq");
 	fields.emplace_back(dtf0af);
 	dtf0af->setMinimumWidth(100);
-	dtf0af->setInputMask("000000.000;0");
+	dtf0af->setInputMask("000000.000");
 	dtf0af->setValidator(new QDoubleValidator(0, 999999, 3));
 	dtf0af->setMaxLength(8);
 	platform::osLineEdit(dtf0af);
@@ -669,7 +674,9 @@ void editTunersetsTransponder::store()
 
 		if (QLineEdit* field = qobject_cast<QLineEdit*>(item))
 		{
-			if (key.find("_freq") != string::npos || key.find("_sr") != string::npos)
+			if (key.rfind("_freq") != string::npos)
+				val = field->text().isEmpty() ? 0 : int (field->text().toDouble() * 1e3);
+			else if (key.rfind("_sr") != string::npos)
 				val = field->text().isEmpty() ? -1 : int (field->text().toDouble() * 1e3);
 			else
 				val = field->text().isEmpty() ? -1 : field->text().toInt();

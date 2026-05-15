@@ -396,7 +396,7 @@ void editFavourite::referenceLayout()
 	dtf2ts->setProperty("field", "tsid");
 	fields.emplace_back(dtf2ts);
 	dtf2ts->setMaximumWidth(60);
-	dtf2ts->setValidator(new QIntValidator(0, 65535));
+	dtf2ts->setValidator(new QIntValidator(0, 99999999));
 	platform::osLineEdit(dtf2ts);
 	dtb21->addWidget(dtf2ts);
 	dtb21->addWidget(new QLabel("[TSID]"));
@@ -416,7 +416,7 @@ void editFavourite::referenceLayout()
 	dtf2on->setProperty("field", "onid");
 	fields.emplace_back(dtf2on);
 	dtf2on->setMaximumWidth(60);
-	dtf2on->setValidator(new QIntValidator(0, 65535));
+	dtf2on->setValidator(new QIntValidator(0, 99999999));
 	platform::osLineEdit(dtf2on);
 	dtf2->addRow(tr("ONID"), dtf2on);
 	dtf0->addItem(new QSpacerItem(0, 0));
