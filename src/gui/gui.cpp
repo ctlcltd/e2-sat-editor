@@ -29,6 +29,7 @@
 #include <QFileDialog>
 #include <QClipboard>
 #include <QUrl>
+#include <QDir>
 #include <QDesktopServices>
 #include <QMouseEvent>
 #ifdef Q_OS_WIN
@@ -948,7 +949,7 @@ int gui::newTab(string path, bool launch)
 		}
 		else
 		{
-			error("newTab", tr("Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(path.data()).toStdString());
+			error("newTab", tr("Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(QDir::toNativeSeparators(QString::fromStdString(path))).toStdString());
 
 			if (launch)
 			{
@@ -1134,7 +1135,8 @@ bool gui::closeTab(int index)
 
 			for (auto & wid : dwids)
 			{
-				wid->setParent(nullptr);
+				if (wid)
+					wid->setParent(nullptr);
 			}
 		}
 	}
@@ -1804,7 +1806,8 @@ void gui::tabPermanentDocksChanged()
 
 			for (auto & wid : dwids)
 			{
-				rwid->restoreDockWidget(wid);
+				if (wid)
+					rwid->restoreDockWidget(wid);
 			}
 		}
 	}
@@ -2343,7 +2346,7 @@ void gui::openFileTab(string path, bool launch)
 		if (launch)
 			newTab();
 
-		error("launcher", tr("Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(path.data()).toStdString());
+		error("launcher", tr("Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(QDir::toNativeSeparators(QString::fromStdString(path))).toStdString());
 
 		errorMessage(tr("File Error", "error"), tr("Error opening files.", "error"));
 	}

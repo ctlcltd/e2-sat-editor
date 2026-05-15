@@ -26,6 +26,7 @@
 #include <QCheckBox>
 #include <QLabel>
 #include <QGroupBox>
+#include <QDir>
 #include <QMouseEvent>
 #ifdef Q_OS_WIN
 #include <QStyleFactory>
@@ -68,6 +69,7 @@ tools::~tools()
 	delete this->theme;
 	delete this->log;
 
+	// note: tools will be deleted by parent tab
 	for (auto & x : this->ths)
 	{
 		console_gui* thptr = x.second;
@@ -751,7 +753,7 @@ void tools::importFileCSV(e2db::FCONVS fci, e2db::fcopts opts)
 		else
 			fname = paths[0];
 
-		tid->statusBarMessage(tr("Importing from %1 …", "message").arg(fname.data()));
+		tid->statusBarMessage(tr("Importing from %1 …", "message").arg(QDir::toNativeSeparators(QString::fromStdString(fname))));
 	}
 
 	bool read = false;
@@ -869,7 +871,7 @@ void tools::exportFileCSV(e2db::FCONVS fco, e2db::fcopts opts)
 		else
 			filename = path;
 
-		tid->statusBarMessage(tr("Exported to %1", "message").arg(filename.data()));
+		tid->statusBarMessage(tr("Exported to %1", "message").arg(QDir::toNativeSeparators(QString::fromStdString(filename))));
 	}
 	else
 	{
@@ -961,7 +963,7 @@ void tools::exportFileHTML(e2db::FCONVS fco, e2db::fcopts opts)
 		else
 			filename = path;
 
-		tid->statusBarMessage(tr("Exported to %1", "message").arg(path.data()));
+		tid->statusBarMessage(tr("Exported to %1", "message").arg(QDir::toNativeSeparators(QString::fromStdString(path))));
 	}
 	else
 	{
@@ -998,7 +1000,7 @@ void tools::importFileM3U(e2db::FCONVS fci, e2db::fcopts opts)
 		else
 			fname = paths[0];
 
-		tid->statusBarMessage(tr("Importing from %1 …", "message").arg(fname.data()));
+		tid->statusBarMessage(tr("Importing from %1 …", "message").arg(QDir::toNativeSeparators(QString::fromStdString(fname))));
 	}
 
 	bool read = false;
@@ -1164,7 +1166,7 @@ void tools::exportFileM3U(e2db::FCONVS fco, e2db::fcopts opts)
 		else
 			filename = path;
 
-		tid->statusBarMessage(tr("Exported to %1", "message").arg(filename.data()));
+		tid->statusBarMessage(tr("Exported to %1", "message").arg(QDir::toNativeSeparators(QString::fromStdString(filename))));
 	}
 	else
 	{
@@ -1248,7 +1250,7 @@ void tools::console(tab* ttab)
 
 	for (auto & wid : dwids)
 	{
-		if (! wid->property("console_dockable").isNull())
+		if (wid && ! wid->property("console_dockable").isNull())
 		{
 			if (wid->property("console_dockable").toInt() == ttid)
 			{
@@ -1264,7 +1266,10 @@ void tools::console(tab* ttab)
 	dwid->setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
 	dwid->setProperty("console_dockable", ttid);
 
+	// note: closing dock widget, reimplemented QWidget::closeEvent
 	dwid->connect(dwid, &DialogDockWidget::finished, [=]() {
+		qDebug() << "closed";
+
 		if (ttab != nullptr)
 		{
 			ttab->removePermanentDockWidget(dwid);
@@ -1280,6 +1285,30 @@ void tools::console(tab* ttab)
 			}
 
 			dwid->deleteLater();
+		}
+	});
+
+	// note: deleted dock widget, from tab widget, from parent tab
+	dwid->connect(dwid, &DialogDockWidget::destroyed, [=]() {
+		if (ttab != nullptr)
+		{
+			// note: ttab->widget is deleted here
+			auto& dwids = ttab->isChildTab() ? ttab->parentTab()->dwids : ttab->dwids;
+
+			dwids.removeAll(dwid);
+			dwids.squeeze();
+
+			int ttid = ttab->getTabId();
+
+			if (this->ths.count(ttid))
+			{
+				console_gui* thptr = this->ths.at(ttid);
+
+				if (thptr != nullptr)
+					thptr->destroy();
+
+				this->ths.erase(ttid);
+			}
 		}
 	});
 

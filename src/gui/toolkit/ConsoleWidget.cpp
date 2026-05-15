@@ -47,7 +47,7 @@ ConsoleWidget::ConsoleWidget(QWidget* parent) : QPlainTextEdit(parent)
 
 	QVariant fontval = QSettings().value("application/consoleFont");
 
-	if (fontval.isValid() && ! fontval.isNull())
+	if (fontval.isValid() && ! fontval.toString().isEmpty())
 	{
 		QWidget wid = QWidget();
 		wid.setStyleSheet(QString("font: %1;").arg(fontval.toString()));

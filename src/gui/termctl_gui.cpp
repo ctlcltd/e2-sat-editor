@@ -337,10 +337,10 @@ void termctl_gui::load_history()
 {
 	QApplication* app = qApp;
 
-	QString hval = app->property("console_history").toString();
-
-	if (! hval.isEmpty())
+	if (! app->property("console_history").isNull())
 	{
+		QString hval = app->property("console_history").toString();
+	
 		history->clear();
 		history->seekg(0);
 

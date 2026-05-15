@@ -43,6 +43,7 @@
 #include <QScrollBar>
 #endif
 #include <QFile>
+#include <QDir>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 
@@ -1200,7 +1201,7 @@ void settings::importProfile()
 		{
 			theme::unsetWaitCursor();
 
-			error("importProfile", tr("File Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(path.data()).toStdString());
+			error("importProfile", tr("File Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(QDir::toNativeSeparators(QString::fromStdString(path))).toStdString());
 
 			errorMessage(tr("File Error", "error"), tr("Error opening files.", "error"));
 
@@ -1381,7 +1382,7 @@ void settings::importProfile()
 		{
 			theme::unsetWaitCursor();
 
-			error("importProfile", tr("Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(path.data()).toStdString());
+			error("importProfile", tr("Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(QDir::toNativeSeparators(QString::fromStdString(path))).toStdString());
 
 			errorMessage(tr("Error", "error"), tr("Error reading files.", "error"));
 		}
@@ -1455,7 +1456,7 @@ void settings::exportProfile()
 	{
 		theme::unsetWaitCursor();
 
-		error("exportProfile", tr("File Error", "error").toStdString(), tr("Error writing file \"%1\".", "error").arg(path.data()).toStdString());
+		error("exportProfile", tr("File Error", "error").toStdString(), tr("Error writing file \"%1\".", "error").arg(QDir::toNativeSeparators(QString::fromStdString(path))).toStdString());
 
 		errorMessage(tr("File Error", "error"), tr("Error opening files.", "error"));
 
@@ -1556,7 +1557,7 @@ void settings::exportProfile()
 	{
 		theme::unsetWaitCursor();
 
-		error("exportProfile", tr("Error", "error").toStdString(), tr("Error writing file \"%1\".", "error").arg(path.data()).toStdString());
+		error("exportProfile", tr("Error", "error").toStdString(), tr("Error writing file \"%1\".", "error").arg(QDir::toNativeSeparators(QString::fromStdString(path))).toStdString());
 
 		errorMessage(tr("Error", "error"), tr("Error writing files.", "error"));
 	}

@@ -37,6 +37,8 @@
 #include <QMenu>
 #include <QScrollArea>
 #include <QClipboard>
+#include <QUrl>
+#include <QDir>
 #include <QMimeData>
 #include <QMouseEvent>
 #ifdef Q_OS_WIN
@@ -255,8 +257,8 @@ void tab::updateTabName(string path)
 
 	if (! path.empty())
 	{
-		if (std::filesystem::is_directory(path))
-			filename = std::filesystem::path(path).parent_path().filename().u8string();
+		if (std::filesystem::is_directory(path) && path.size() && path[path.size() - 1] == '/')
+			filename = std::filesystem::path(path.substr(0, path.size() - 1)).filename().u8string();
 		else
 			filename = std::filesystem::path(path).filename().u8string();
 	}
@@ -771,7 +773,7 @@ bool tab::readFile(string path)
 	QTimer* timer = nullptr;
 
 	if (statusBarIsVisible())
-		timer = statusBarMessage(tr("Reading from %1 …", "message").arg(path.data()));
+		timer = statusBarMessage(tr("Reading from %1 …", "message").arg(QDir::toNativeSeparators(QString::fromStdString(path))));
 
 	this->data->clearErrors();
 
@@ -816,7 +818,7 @@ bool tab::readFile(string path)
 	{
 		updateTabName();
 
-		error("readFile", tr("File Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(path.data()).toStdString());
+		error("readFile", tr("File Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(QDir::toNativeSeparators(QString::fromStdString(path))).toStdString());
 
 		if (this->data->haveErrors())
 		{
@@ -933,13 +935,13 @@ void tab::saveFile(bool saveas)
 			updateTabName(path);
 
 		if (statusBarIsVisible())
-			statusBarMessage(tr("Saved to %1", "message").arg(path.data()));
+			statusBarMessage(tr("Saved to %1", "message").arg(QDir::toNativeSeparators(QString::fromStdString(path))));
 		else
 			QMetaObject::invokeMethod(this->cwid, [=]() { infoMessage(tr("Saved!", "message")); }, Qt::QueuedConnection);
 	}
 	else
 	{
-		error("saveFile", tr("File Error", "error").toStdString(), tr("Error writing file \"%1\".", "error").arg(path.data()).toStdString());
+		error("saveFile", tr("File Error", "error").toStdString(), tr("Error writing file \"%1\".", "error").arg(QDir::toNativeSeparators(QString::fromStdString(path))).toStdString());
 
 		if (this->data->haveErrors())
 		{
@@ -1003,7 +1005,7 @@ void tab::importFile()
 		else
 			filename = paths[0];
 
-		statusBarMessage(tr("Importing from %1 …", "message").arg(filename.data()));
+		statusBarMessage(tr("Importing from %1 …", "message").arg(QDir::toNativeSeparators(QString::fromStdString(filename))));
 	}
 
 	theme::setWaitCursor();
@@ -1267,7 +1269,7 @@ void tab::exportFile()
 		else
 			filename = path;
 
-		statusBarMessage(tr("Exported to %1", "message").arg(QString::fromStdString(filename)));
+		statusBarMessage(tr("Exported to %1", "message").arg(QDir::toNativeSeparators(QString::fromStdString(filename))));
 	}
 	else
 	{
@@ -1407,13 +1409,13 @@ void tab::infoFile()
 	dtf0->setFormAlignment(Qt::AlignLeading);
 	dtf0->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
-	string filepath = this->data->getPath();
-	std::filesystem::path fp = std::filesystem::path(filepath);
 	string filename;
-	if (std::filesystem::is_directory(fp))
-		filename = fp.parent_path().filename().u8string();
+	string filepath = this->data->getPath();
+
+	if (std::filesystem::is_directory(filepath) && filepath.size() && filepath[filepath.size() - 1] == '/')
+		filename = std::filesystem::path(filepath.substr(0, filepath.size() - 1)).filename().u8string();
 	else
-		filename = fp.filename().u8string();
+		filename = std::filesystem::path(filepath).filename().u8string();
 
 	int srctype = dbih->get_e2db_services_type();
 	int srcver = dbih->get_e2db_services_version();
@@ -1454,7 +1456,7 @@ void tab::infoFile()
 			dtf0fp->setToolTip(fpath);
 			dtf0fp->setMaximumWidth(330);
 		}
-		dtf0fp->setText(QString("<a href=\"%1\">%2</a>").arg(furl.toString()).arg(fpath));
+		dtf0fp->setText(QString("<a href=\"%1\">%2</a>").arg(furl.toString()).arg(QDir::toNativeSeparators(fpath)));
 #ifndef E2SE_DEMO
 		dtf0fp->setOpenExternalLinks(true);
 #endif

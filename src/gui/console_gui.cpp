@@ -66,7 +66,7 @@ void console_gui::layout(QWidget* parent)
 	else
 		frm->setParent(parent);
 
-	parent->setProperty("console_widget", true);
+	parent->setProperty("console_widget", 1);
 }
 
 void console_gui::init()
@@ -725,7 +725,7 @@ void console_gui::input_step(current& curr)
 
 void console_gui::input_next(current& curr)
 {
-	qDebug() << "input_next" << "pos:" << curr.pos << "i:" << curr.i;
+	// qDebug() << "input_next" << "pos:" << curr.pos << "i:" << curr.i;
 
 	auto& mask = curr.mask;
 	int& i = curr.i;
@@ -796,7 +796,7 @@ void console_gui::input_next(current& curr)
 
 void console_gui::input_end(current& curr)
 {
-	qDebug() << "input_end" << "overload:" << 0;
+	// qDebug() << "input_end" << "overload:" << 0;
 
 	this->icurr = &curr;
 	this->sync();
@@ -812,7 +812,7 @@ void console_gui::input_end(current& curr)
 
 void console_gui::input_end()
 {
-	qDebug() << "input_end" << "overload:" << 1;
+	// qDebug() << "input_end" << "overload:" << 1;
 
 	this->icurr = nullptr;
 
@@ -822,7 +822,7 @@ void console_gui::input_end()
 
 void console_gui::paged_nav(nav& p)
 {
-	qDebug() << "paged_nav" << "pos:" << p.pos << "offset:" << p.offset;
+	// qDebug() << "paged_nav" << "pos:" << p.pos << "offset:" << p.offset;
 
 	ENTRY entry_type = p.entry_type;
 	int limit = p.limit;
@@ -867,7 +867,7 @@ void console_gui::paged_nav(nav& p)
 
 void console_gui::paged_end()
 {
-	qDebug() << "paged_end";
+	// qDebug() << "paged_end";
 
 	cnt->setInputMasked(false);
 	prompt();

@@ -75,12 +75,13 @@ void printable::documentIndex()
 
 	auto* dbih = this->data->dbih;
 
-	std::filesystem::path fp = std::filesystem::path(dbih->get_filepath());
 	string filename;
-	if (std::filesystem::is_directory(fp))
-		filename = fp.parent_path().filename().u8string();
+	string filepath = dbih->get_filepath();
+
+	if (std::filesystem::is_directory(filepath) && filepath.size() && filepath[filepath.size() - 1] == '/')
+		filename = std::filesystem::path(filepath.substr(0, filepath.size() - 1)).filename().u8string();
 	else
-		filename = fp.filename().u8string();
+		filename = std::filesystem::path(filepath).filename().u8string();
 
 	if (filename.empty())
 		filename = tr("Untitled").toStdString();

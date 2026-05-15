@@ -27,6 +27,7 @@
 #include <QWidgetAction>
 #include <QClipboard>
 #include <QUrl>
+#include <QDir>
 #include <QDesktopServices>
 #include <QMimeData>
 #include <QMouseEvent>
@@ -252,7 +253,7 @@ void piconsView::browseLayout()
 	QLineEdit* browseinput = new QLineEdit;
 	browseinput->setMinimumWidth(240);
 	browseinput->setReadOnly(true);
-	browseinput->setText(this->state.picons_dir);
+	browseinput->setText(QDir::toNativeSeparators(this->state.picons_dir));
 	platform::osLineEdit(browseinput);
 
 	QPushButton* browsebutton = new QPushButton;
@@ -265,7 +266,7 @@ void piconsView::browseLayout()
 		if (curr_dir != dir)
 		{
 			this->state.picons_dir = dir;
-			browseinput->setText(dir);
+			browseinput->setText(QDir::toNativeSeparators(dir));
 			QSettings().setValue("application/piconsBrowsePath", dir);
 
 			visualReloadList();
@@ -816,7 +817,7 @@ void piconsView::changePicon(QListWidgetItem* item, QString path)
 
 	if (! QFile::exists(path))
 	{
-		error("changePicon", tr("File Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(path.data()).toStdString());
+		error("changePicon", tr("File Error", "error").toStdString(), tr("Error reading file \"%1\".", "error").arg(QDir::toNativeSeparators(path)).toStdString());
 
 		return;
 	}
@@ -1148,7 +1149,7 @@ void piconsView::revealPiconOnFileManager()
 		if (systemRoot.contains("PathName") && QFile::exists(systemRoot.value("PathName").toString()))
 			program.prepend(systemRoot.value("PathName").toString().append("\\"));
 
-		QProcess::startDetached(program, {(fi.isDir() ? "/select" : ""), QDir::toNativeSeparators(url.toString())});
+		QProcess::startDetached(program, {(fi.isDir() ? "" : "/select,"), QDir::toNativeSeparators(url.toString())});
 	// note: open command accepts the file protocol
 #elif defined(Q_OS_MAC)
 		if (fi.isDir())
