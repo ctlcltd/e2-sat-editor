@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Download user-manual artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: user-manual
           run-id: ${{ needs.user-manual.outputs.run-id }}

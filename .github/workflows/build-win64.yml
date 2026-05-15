@@ -47,7 +47,7 @@ jobs:
       run: cmake --build build --config ${{ env.BUILD_TYPE }}
 
     - name: Download user-manual artifact
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v8
       with:
         name: user-manual
         path: user-manual
@@ -98,6 +98,6 @@ jobs:
         mv "${{github.workspace}}/user-manual" ../artifact/
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         path: ${{github.workspace}}/e2-sat-editor/artifact

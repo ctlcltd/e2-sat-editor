@@ -63,6 +63,6 @@ jobs:
         mv e2se-cli-x86_64.AppImage ../../artifact
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         path: ${{github.workspace}}/e2-sat-editor/artifact
