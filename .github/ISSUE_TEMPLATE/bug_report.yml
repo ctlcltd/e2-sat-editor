@@ -43,9 +43,9 @@ body:
       label: Software version
       description: What version of our software are you running?
       options:
+        - 2.0
         - 1.9
         - 1.8.1
-        - 1.8
         - other (please specify)
     validations:
       required: true
