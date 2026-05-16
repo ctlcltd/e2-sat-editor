@@ -1236,14 +1236,16 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 						int i = 0;
 						int fec = tx.hpfec;
 
-						if (fec > -1 && fec < 3)
+						if (fec == -1 || fec == 0xf) // FEC_NONE
+							i = 0;
+						else if (fec == 5) // FEC_AUTO
+							i = 9;
+						else if (fec > -1 && fec < 3)
 							i = fec + 1;
 						else if (fec == 3)
 							i = 5;
 						else if (fec == 4)
 							i = 7;
-						else if (fec == 5) // FEC_AUTO
-							i = 9;
 						else if (fec == 6)
 							i = 6;
 						else if (fec == 7)
@@ -1252,8 +1254,6 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 							i = 10;
 						else if (fec == 9)
 							i = 4;
-						else if (fec == -1 || fec == 0xf) // FEC_NONE
-							i = 0;
 						else
 							i = fec;
 
@@ -1263,14 +1263,16 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 						int i = 0;
 						int fec = tx.lpfec;
 
-						if (fec > -1 && fec < 3)
+						if (fec == -1 || fec == 0xf) // FEC_NONE
+							i = 0;
+						else if (fec == 5) // FEC_AUTO
+							i = 9;
+						else if (fec > -1 && fec < 3)
 							i = fec + 1;
 						else if (fec == 3)
 							i = 5;
 						else if (fec == 4)
 							i = 7;
-						else if (fec == 5) // FEC_AUTO
-							i = 9;
 						else if (fec == 6)
 							i = 6;
 						else if (fec == 7)
@@ -1279,8 +1281,6 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 							i = 10;
 						else if (fec == 9)
 							i = 4;
-						else if (fec == -1 || fec == 0xf) // FEC_NONE
-							i = 0;
 						else
 							i = fec;
 
@@ -1331,7 +1331,9 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 					//TODO TEST legacy fec values maybe v3
 					if (ver == 4)
 					{
-						if (fec == 0) // FEC_AUTO
+						if (fec == -1 || fec == 0xf) // FEC_NONE
+							i = 0;
+						else if (fec == 0) // FEC_AUTO
 							i = 9;
 						else if (fec < 4)
 							i = tx.fec;
@@ -1349,8 +1351,6 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 							i = 11;
 						else if (fec == 10)
 							i = 6;
-						else if (fec == -1 || fec == 0xf) // FEC_NONE
-							i = 0;
 						else
 							i = fec;
 					}
@@ -1365,29 +1365,29 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 							sys = tx.sys;
 						}
 
-						if (fec == 0) // FEC_AUTO
-							i = 9;
-						else if (mod == 1 && sys == 1 && fec == 0)
+						if (fec == -1 || fec == 0xf) // FEC_NONE
+							i = 0;
+						else if (mod == 1 && sys == 1 && fec == 0) // FEC_AUTO
 							i = 28;
 						else if (mod == 1 && sys == 1 && fec < 9)
 							i = fec + 9;
 						else if (mod == 2 && sys == 1 && fec < 9)
 							i = fec + 18;
+						else if (fec == 0) // FEC_AUTO
+							i = 9;
 						else if (fec < 9)
 							i = fec;
-						else if (fec == -1 || fec == 0xf) // FEC_NONE
-							i = 0;
 						else
 							i = fec;
 					}
 					else if (ver == 2)
 					{
-						if (fec == 0) // FEC_AUTO
+						if (fec == -1 || fec == 0xf) // FEC_NONE
+							i = 0;
+						else if (fec == 0) // FEC_AUTO
 							i = 9;
 						else if (fec <= 8)
 							i = fec;
-						else if (fec == -1 || fec == 0xf) // FEC_NONE
-							i = 0;
 						else
 							i = fec;
 					}
@@ -1502,8 +1502,8 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 				{
 					int i = 0;
 
-					if (tx.fec <= 0) // FEC_NONE
-						i = 9;
+					if (tx.fec == -1 || tx.fec == 0xf) // FEC_NONE
+						i = 0;
 					else if (tx.fec <= 5)
 						i = tx.fec;
 					else

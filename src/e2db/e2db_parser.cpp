@@ -2084,10 +2084,10 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 				{
 					int i = std::atoi(val.data());
 
-					if (i != 0 && i <= 5)
-						tx.fec = i;
-					else if (i == 0 || i == 9) // FEC_NONE
+					if (i <= 0) // FEC_NONE
 						tx.fec = 0xf;
+					else if (i <= 5)
+						tx.fec = i;
 					else
 						tx.fec = i;
 				}
