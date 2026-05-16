@@ -1741,7 +1741,7 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 				else if (key == "fec")
 				{
 					int i = std::atoi(val.data());
-					int fec = -1;
+					int fec = i;
 
 					//TODO TEST legacy fec values maybe v3
 					if (ver == 4)
@@ -1814,7 +1814,7 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 					}
 
 					if (zy.ytype == YTYPE::cable)
-						tx.cfec = fec <= 6 ? fec : 0; 
+						tx.cfec = fec <= 6 ? fec : i; 
 					else
 						tx.fec = fec;
 				}
@@ -1831,12 +1831,12 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 					else if (i == 6)
 						tx.band = 5;
 					else
-						tx.band = -1;
+						tx.band = i;
 				}
 				else if (key == "hp" || key == "lp" || key == "LP" || key == "HP")
 				{
 					int i = std::atoi(val.data());
-					int fec = -1;
+					int fec = i;
 
 					if (i <= 0) // FEC_NONE
 						fec = 0xf;
@@ -1876,7 +1876,7 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 				else if (key == "mod" || key == "con")
 				{
 					int i = std::atoi(val.data());
-					int mod = -1;
+					int mod = i;
 
 					if (tx.tmod == 3 || key == "con")
 					{
@@ -1897,6 +1897,8 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 							mod = 3;
 						else if (i == 0) // QPSK
 							mod = 1;
+
+						tx.mod = i;
 					}
 					else
 					{
@@ -1904,27 +1906,31 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 						{
 							if (i != 0 && i <= 5)
 								mod = i;
-							else if (i == 0 || i == 6) // QAM_AUTO
+							else if (i == 6) // QAM_AUTO
 								mod = 0;
 						}
 						else if (zy.ytype == YTYPE::atsc)
 						{
 							if (i != 0 && i <= 5)
 								mod = i;
-							else if (i == 0 || i == 6) // QAM_AUTO
+							else if (i == 6) // QAM_AUTO
 								mod = 0;
 							else if (i > 6 && i < 9) // VSB_8 VSB_16
 								mod = i - 1;
 						}
+						//TODO TEST maybe legacy v4
 						else
 						{
 							if (i != 0 && i <= 2)
 								mod = i;
 							else if (i == 3) // APSK_8
+							{
 								mod = 2;
+								tx.cmod = i;
+							}
 							else if (i > 3 && i < 6)
 								mod = i;
-							else if (i == 0) // AUTO
+							else if (i == 0) // QAM_AUTO
 								mod = 0;
 						}
 					}
@@ -2083,7 +2089,7 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 					else if (i == 0 || i == 9) // FEC_NONE
 						tx.fec = 0xf;
 					else
-						tx.fec = -1;
+						tx.fec = i;
 				}
 				else if (key == "polarization")
 					tx.pol = std::atoi(val.data());

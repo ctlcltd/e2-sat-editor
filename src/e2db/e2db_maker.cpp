@@ -1219,7 +1219,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 					bool legacy = zy.legacy || ver == 3;
 
 					{
-						int i = 3; // Auto
+						int i = 0;
 
 						if (tx.band > 0 && tx.band < 5)
 							i = tx.band;
@@ -1227,11 +1227,13 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 							i = 6;
 						else if (tx.band == 6)
 							i = 5;
+						else
+							i = tx.band;
 
 						ss << ' ' << (! legacy ? "bw" : "band") << "=\"" << i << "\"";
 					}
 					{
-						int i = 0; // FEC_NONE
+						int i = 0;
 						int fec = tx.hpfec;
 
 						if (fec > -1 && fec < 3)
@@ -1250,11 +1252,15 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 							i = 10;
 						else if (fec == 9)
 							i = 4;
+						else if (fec == -1 || fec == 0xf) // FEC_NONE
+							i = 0;
+						else
+							i = fec;
 
 						ss << ' ' << (! legacy ? "hp" : "HP") << "=\"" << i << "\"";
 					}
 					{
-						int i = 0; // FEC_NONE
+						int i = 0;
 						int fec = tx.lpfec;
 
 						if (fec > -1 && fec < 3)
@@ -1273,12 +1279,16 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 							i = 10;
 						else if (fec == 9)
 							i = 4;
+						else if (fec == -1 || fec == 0xf) // FEC_NONE
+							i = 0;
+						else
+							i = fec;
 
 						ss << ' ' << (! legacy ? "lp" : "LP") << "=\"" << i << "\"";
 					}
 					if (! legacy)
 					{
-						int i = 6; // QAM_AUTO
+						int i = 0;
 
 						if (tx.tmod == 1) // QPSK
 							i = 0;
@@ -1288,6 +1298,15 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 							i = 3;
 						else if (tx.tmod == 4) // QAM_256
 							i = 5;
+						else if (tx.tmod == 3) // QAM_AUTO
+						{
+							if (tx.mod == 2 || tx.mod == 9 || tx.mod == 6)
+								i = tx.mod;
+							else
+								i = 6;
+						}
+						else
+							i = tx.tmod;
 
 						ss << ' ' << "con=\"" << i << "\"";
 					}
@@ -1301,7 +1320,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 				}
 				else
 				{
-					int i = 0; // FEC_NONE
+					int i = 0;
 					int fec = 0;
 
 					if (zy.ytype == YTYPE::cable)
@@ -1312,7 +1331,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 					//TODO TEST legacy fec values maybe v3
 					if (ver == 4)
 					{
-						if (fec <= 0) // FEC_AUTO
+						if (fec == 0) // FEC_AUTO
 							i = 9;
 						else if (fec < 4)
 							i = tx.fec;
@@ -1330,6 +1349,10 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 							i = 11;
 						else if (fec == 10)
 							i = 6;
+						else if (fec == -1 || fec == 0xf) // FEC_NONE
+							i = 0;
+						else
+							i = fec;
 					}
 					else if (ver == 3)
 					{
@@ -1342,7 +1365,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 							sys = tx.sys;
 						}
 
-						if (fec <= 0) // FEC_AUTO
+						if (fec == 0) // FEC_AUTO
 							i = 9;
 						else if (mod == 1 && sys == 1 && fec == 0)
 							i = 28;
@@ -1352,12 +1375,20 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 							i = fec + 18;
 						else if (fec < 9)
 							i = fec;
+						else if (fec == -1 || fec == 0xf) // FEC_NONE
+							i = 0;
+						else
+							i = fec;
 					}
 					else if (ver == 2)
 					{
-						if (fec <= 0) // FEC_AUTO
+						if (fec == 0) // FEC_AUTO
 							i = 9;
 						else if (fec <= 8)
+							i = fec;
+						else if (fec == -1 || fec == 0xf) // FEC_NONE
+							i = 0;
+						else
 							i = fec;
 					}
 					ss << ' ' << "fec=\"" << i << "\"";
@@ -1381,7 +1412,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 
 					if (zy.ytype == YTYPE::terrestrial)
 					{
-						int i = 6; // QAM_AUTO
+						int i = 0;
 
 						if (mod == 1) // QPSK
 							i = 0;
@@ -1391,20 +1422,31 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 							i = 3;
 						else if (mod == 4) // QAM_256
 							i = 5;
+						else if (mod == 3) // QAM_AUTO
+						{
+							if (tx.mod == 2 || tx.mod == 9 || tx.mod == 6)
+								i = tx.mod;
+							else
+								i = 6;
+						}
+						else
+							i = mod;
 
 						ss << ' ' << "mod=\"" << i << "\"";
 						ss << ' ' << "sys=\"" << (tx.sys != -1 ? tx.sys : 4) << "\"";
 					}
 					else
 					{
-						int i = -1;
+						int i = 0;
 
 						if (zy.ytype == YTYPE::cable)
 						{
 							if (mod != 0 && mod <= 5)
 								i = mod;
-							else // QAM_AUTO
+							else if (mod == 6) // QAM_AUTO
 								i = 6;
+							else
+								i = mod;
 						}
 						else if (zy.ytype == YTYPE::atsc)
 						{
@@ -1412,15 +1454,27 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 								i = mod;
 							else if (mod > 5 && mod < 8) // VSB_8 VSB_16
 								i = i + 1;
-							else // QAM_AUTO
+							else if (mod == 6) // QAM_AUTO
 								i = 6;
+							else
+								i = mod;
 						}
+						//TODO TEST maybe legacy v4
 						else
 						{
-							if (mod != 0 && mod <= 5)
+							if (mod != 0 && mod <= 1)
 								i = mod;
-							else // Auto
+							else if (mod > 1 && mod < 6)
+							{
+								if (mod == 2 && tx.cmod == 3) // APSK_8
+									i = 3;
+								else
+									i = mod;
+							}
+							else if (mod == 0) // Auto
 								i = 0;
+							else
+								i = mod;
 						}
 
 						ss << ' ' << "mod=\"" << i << "\"";
@@ -1446,11 +1500,13 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 				//TODO TEST symbol_rate multiplier
 				ss << ' ' << "symbol_rate=\"" << (tx.sr != -1 && tx.sr != 0 ? tx.sr : 0) << "\"";
 				{
-					int i = 0; // FEC_NONE
+					int i = 0;
 
 					if (tx.fec <= 0) // FEC_NONE
 						i = 9;
 					else if (tx.fec <= 5)
+						i = tx.fec;
+					else
 						i = tx.fec;
 
 					ss << ' ' << "fec_inner=\"" << i << "\"";
