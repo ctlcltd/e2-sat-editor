@@ -671,9 +671,9 @@ void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transpo
 			feopts = 0;
 
 			if (ver == 3)
-				std::sscanf(str.c_str(), "%8d:%8d:%1d:%d:%5d:%1d:%d:%1d:%1d", &freq, &sr, &pol, &fec, &pos, &inv, &sys, &mod, &rol);
+				std::sscanf(str.c_str(), "%8d:%8d:%1d:%d:%5d:%1d:%1d:%1d:%1d", &freq, &sr, &pol, &fec, &pos, &inv, &sys, &mod, &rol);
 			else
-				std::sscanf(str.c_str(), "%8d:%8d:%1d:%d:%5d:%1d:%d:%d:%1d:%1d:%1d%c", &freq, &sr, &pol, &fec, &pos, &inv, &flags, &sys, &mod, &rol, &pil, &feopts);
+				std::sscanf(str.c_str(), "%8d:%8d:%1d:%d:%5d:%1d:%d:%1d:%1d:%1d:%1d%c", &freq, &sr, &pol, &fec, &pos, &inv, &flags, &sys, &mod, &rol, &pil, &feopts);
 
 			tx.ytype = YTYPE::satellite;
 			tx.freq = freq;
@@ -696,7 +696,7 @@ void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transpo
 			band = -1, hpfec = -1, lpfec = -1, tmod = -1, tmx = -1, guard = -1, hier = -1,
 			plpid = -1;
 
-			std::sscanf(str.c_str(), "%9d:%1d:%d:%d:%1d:%1d:%1d:%1d:%1d:%d:%d:%d", &freq, &band, &hpfec, &lpfec, &tmod, &tmx, &guard, &hier, &inv, &flags, &sys, &plpid);
+			std::sscanf(str.c_str(), "%9d:%1d:%d:%d:%1d:%1d:%1d:%1d:%1d:%d:%1d:%d", &freq, &band, &hpfec, &lpfec, &tmod, &tmx, &guard, &hier, &inv, &flags, &sys, &plpid);
 
 			tx.ytype = YTYPE::terrestrial;
 			tx.freq = freq;
@@ -716,7 +716,7 @@ void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transpo
 			int cmod, cfec;
 			cmod = -1, cfec = -1;
 
-			std::sscanf(str.c_str(), "%6d:%8d:%1d:%1d:%d:%d:%d", &freq, &sr, &inv, &cmod, &cfec, &flags, &sys);
+			std::sscanf(str.c_str(), "%6d:%8d:%1d:%1d:%d:%d:%1d", &freq, &sr, &inv, &cmod, &cfec, &flags, &sys);
 
 			tx.ytype = YTYPE::cable;
 			tx.freq = freq;
@@ -731,7 +731,7 @@ void e2db_parser::parse_lamedb_transponder_feparams(string str, char ty, transpo
 			int amod;
 			amod = -1;
 
-			std::sscanf(str.c_str(), "%9d:%1d:%1d:%d:%d", &freq, &inv, &amod, &flags, &sys);
+			std::sscanf(str.c_str(), "%9d:%1d:%1d:%d:%1d", &freq, &inv, &amod, &flags, &sys);
 
 			tx.ytype = YTYPE::atsc;
 			tx.freq = freq;
@@ -1721,6 +1721,7 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 					tx.tsid = int (std::strtol(val.data(), NULL, 16));
 				else if (key == "on")
 					tx.onid = int (std::strtol(val.data(), NULL, 16));
+				//TODO TEST frequency multiplier
 				else if (key == "frq")
 				{
 					// note: dreamset neutrino v1 v2 9 digits, v3 v4 8 digits
@@ -1734,90 +1735,208 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 					int i = std::atoi(val.data());
 					tx.inv = (i != 2 ? i : 0);
 				}
+				//TODO TEST symbol_rate multiplier
 				else if (key == "sr")
 					tx.sr = std::atoi(val.data());
 				else if (key == "fec")
 				{
 					int i = std::atoi(val.data());
+					int fec = -1;
 
+					//TODO TEST legacy fec values maybe v3
 					if (ver == 4)
 					{
-						if (i != 0 && i < 4)
-							tx.fec = i;
+						if (i <= 0) // FEC_NONE
+							fec = 0xf;
+						else if (i < 4)
+							fec = i;
 						else if (i == 4)
-							tx.fec = 8;
+							fec = 8;
 						else if (i == 5)
-							tx.fec = 4;
+							fec = 4;
 						else if (i == 6)
-							tx.fec = 10;
+							fec = 10;
 						else if (i == 7)
-							tx.fec = 5;
+							fec = 5;
 						else if (i == 8)
-							tx.fec = 6;
-						else if (i == 9)
-							tx.fec = 0;
+							fec = 6;
+						else if (i == 9) // FEC_AUTO
+							fec = 0;
 						else if (i == 10)
-							tx.fec = 7;
+							fec = 7;
 						else if (i == 11)
-							tx.fec = 9;
+							fec = 9;
 					}
-					//TODO
 					else if (ver == 3)
 					{
-						if (i <= 0)
-							tx.fec = 9;
-						else if (i < 4)
-							tx.fec = i;
-						else if (i == 4 || i == 5 || i == 13 || i == 22)
-							tx.fec = 4;
-						else if (i == 6)
-							tx.fec = 6;
-						else if (i == 7 || i == 25)
-							tx.fec = 7;
-						else if (i == 8)
-							tx.fec = 8;
-						else if (i == 9)
-							tx.fec = 9;
-						else if (i == 19)
-							tx.fec = 1;
-						else if (i == 11 || i == 20)
-							tx.fec = 2;
-						else if (i == 12 || i == 21)
-							tx.fec = 3;
-						else if (i == 28)
-							tx.fec = 0;
+						int mod = 0;
+						int sys = 0;
+
+						if (i <= 0) // FEC_NONE
+							fec = 0xf;
+						else if (i < 9)
+							fec = i;
+						else if (i == 9) // FEC_AUTO
+							fec = 0;
+						else if (i > 9 && i <= 18)
+						{
+							fec = i - 9;
+							mod = 1;
+							sys = 1;
+						}
+						else if (i > 18 && i < 28)
+						{
+							fec = i - 18;
+							mod = 2;
+							sys = 1;
+						}
+						else if (i == 28) // FEC_AUTO
+						{
+							fec = 0;
+							mod = 2;
+							sys = 1;
+						}
+
+						if (zy.ytype == YTYPE::satellite)
+						{
+							tx.mod = mod;
+							tx.sys = sys;
+						}
 					}
 					else if (ver == 2)
 					{
-						if (i < 6)
-							tx.fec = i;
+						if (i <= 0) // FEC_NONE
+							fec = 0xf;
+						else if (i <= 8)
+							fec = i;
+						else if (i == 9) // FEC_AUTO
+							fec = 0;
 					}
+
+					if (zy.ytype == YTYPE::cable)
+						tx.cfec = fec <= 6 ? fec : 0; 
+					else
+						tx.fec = fec;
 				}
 				else if (key == "pol")
 					tx.pol = std::atoi(val.data());
-				else if (key == "band")
-					tx.band = std::atoi(val.data());
-				else if (key == "HP")
-					tx.hpfec = std::atoi(val.data());
-				else if (key == "LP")
-					tx.lpfec = std::atoi(val.data());
-				else if (key == "const")
-					tx.tmod = 3;
-				else if (key == "trans")
-					tx.tmx = std::atoi(val.data());
-				else if (key == "guard")
-					tx.guard = std::atoi(val.data());
-				else if (key == "hierarchy")
-					tx.hier = std::atoi(val.data());
-				//TODO
-				else if (key == "mod")
+				else if (key == "bw" || key == "band")
 				{
 					int i = std::atoi(val.data());
 
-					if (zy.ytype == YTYPE::terrestrial && tx.tmod == 3)
-						tx.tmod = i / 2;
+					if (i <= 0 || i < 5)
+						tx.band = i;
+					else if (i == 5)
+						tx.band = 6;
+					else if (i == 6)
+						tx.band = 5;
 					else
-						tx.mod = i;
+						tx.band = -1;
+				}
+				else if (key == "hp" || key == "lp" || key == "LP" || key == "HP")
+				{
+					int i = std::atoi(val.data());
+					int fec = -1;
+
+					if (i <= 0) // FEC_NONE
+						fec = 0xf;
+					else if (i <= 3)
+						fec = i - 1;
+					else if (i == 4)
+						fec = 9;
+					else if (i == 5)
+						fec = 3;
+					else if (i == 6)
+						fec = 6;
+					else if (i == 7)
+						fec = 4;
+					else if (i == 8)
+						fec = 7;
+					else if (i == 9) // FEC_AUTO
+						fec = 5;
+					else if (i == 10)
+						fec = 8;
+
+					if (key == "hp" || key == "HP")
+						tx.hpfec = fec;
+					else if (key == "lp" || key == "LP")
+						tx.lpfec = fec;
+				}
+				else if (key == "const")
+				{
+					tx.tmod = 3; // QAM_AUTO
+					zy.legacy = (ver == 4);
+				}
+				else if (key == "tm" || key == "trans")
+					tx.tmx = std::atoi(val.data());
+				else if (key == "gi" || key == "guard")
+					tx.guard = std::atoi(val.data());
+				else if (key == "hi" || key == "hierarchy")
+					tx.hier = std::atoi(val.data());
+				else if (key == "mod" || key == "con")
+				{
+					int i = std::atoi(val.data());
+					int mod = -1;
+
+					if (tx.tmod == 3 || key == "con")
+					{
+						if (zy.ytype == YTYPE::satellite)
+							zy.ytype = YTYPE::terrestrial;
+
+						if (i == 1) // QAM_16
+							mod = i;
+						else if (i == 2) // QAM_32
+							mod = 3;
+						else if (i == 3) // QAM_64
+							mod = 2;
+						else if (i == 5) // QAM_256
+							mod = 4;
+						else if (i == 9) // PSK_8
+							mod = 3;
+						else if (i == 6) // QAM_AUTO
+							mod = 3;
+						else if (i == 0) // QPSK
+							mod = 1;
+					}
+					else
+					{
+						if (zy.ytype == YTYPE::cable)
+						{
+							if (i != 0 && i <= 5)
+								mod = i;
+							else if (i == 0 || i == 6) // QAM_AUTO
+								mod = 0;
+						}
+						else if (zy.ytype == YTYPE::atsc)
+						{
+							if (i != 0 && i <= 5)
+								mod = i;
+							else if (i == 0 || i == 6) // QAM_AUTO
+								mod = 0;
+							else if (i > 6 && i < 9) // VSB_8 VSB_16
+								mod = i - 1;
+						}
+						else
+						{
+							if (i != 0 && i <= 2)
+								mod = i;
+							else if (i == 3) // APSK_8
+								mod = 2;
+							else if (i > 3 && i < 6)
+								mod = i;
+							else if (i == 0) // AUTO
+								mod = 0;
+						}
+					}
+
+					if (zy.ytype == YTYPE::satellite)
+						tx.mod = mod;
+					else if (zy.ytype == YTYPE::terrestrial)
+						tx.tmod = mod;
+					else if (zy.ytype == YTYPE::cable)
+						tx.cmod = mod;
+					else if (zy.ytype == YTYPE::atsc)
+						tx.amod = mod;
 				}
 				else if (key == "sys")
 				{
@@ -1827,10 +1946,25 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 
 					if (ver == 4 && zy.ytype == YTYPE::terrestrial)
 					{
-						if (i == 4)
-							tx.sys = 0;
+						if (i == 0)
+							tx.sys = 1;
+						else if (i > 1 && i < 3)
+							tx.sys = i;
+						else
+							tx.sys = -1;
 					}
 				}
+				else if (key == "pli")
+				{
+					if (zy.ytype == YTYPE::satellite)
+						tx.t2mi_plpid = std::atoi(val.data());
+					else
+						tx.plpid = std::atoi(val.data());
+				}
+				else if (key == "plm")
+					tx.plsmode = std::atoi(val.data());
+				else if (key == "plc")
+					tx.plscode = std::atoi(val.data());
 				else if (key == "i")
 					ch.ssid = int (std::strtol(val.data(), NULL, 16));
 				else if (key == "n")
@@ -1928,6 +2062,7 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 					tx.tsid = int (std::strtol(val.data(), NULL, 16));
 				else if (key == "onid")
 					tx.onid = int (std::strtol(val.data(), NULL, 16));
+				//TODO TEST frequency multiplier
 				// note: dreamset neutrino v1 v2 9 digits, v3 v4 8 digits
 				else if (key == "frequency")
 					tx.freq = std::atoi(val.data());
@@ -1936,23 +2071,19 @@ void e2db_parser::parse_zapit_services_apix_xml(istream& iservicesxml, string fi
 					int i = std::atoi(val.data());
 					tx.inv = (i != 2 ? i : 0);
 				}
+				//TODO TEST symbol_rate multiplier
 				else if (key == "symbol_rate")
 					tx.sr = std::atoi(val.data());
 				else if (key == "fec_inner")
 				{
 					int i = std::atoi(val.data());
-					if (i < 4)
+
+					if (i != 0 && i <= 5)
 						tx.fec = i;
-					else if (i == 4)
-						tx.fec = 8;
-					else if (i == 5)
-						tx.fec = 4;
-					else if (i == 6)
-						tx.fec = 10;
-					else if (i == 7)
-						tx.fec = 5;
-					else if (i == 8)
-						tx.fec = 6;
+					else if (i == 0 || i == 9) // FEC_NONE
+						tx.fec = 0xf;
+					else
+						tx.fec = -1;
 				}
 				else if (key == "polarization")
 					tx.pol = std::atoi(val.data());
@@ -2173,6 +2304,8 @@ void e2db_parser::parse_zapit_bouquets_apix_xml(istream& ibouquetsxml, string fi
 					ref.onid = int (std::strtol(val.data(), NULL, 16));
 				else if (key == "sat_position")
 					pos = std::atoi(val.data());
+				else if (key == "blacklist")
+					locked = std::atoi(val.data());
 			}
 		}
 

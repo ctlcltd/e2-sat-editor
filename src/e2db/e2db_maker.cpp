@@ -1061,18 +1061,18 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 		zy.ytype = tx.ytype;
 		zy.pos = tx.pos;
 
-		if (tx.ytype == YTYPE::satellite && tnloc.count(tx.pos))
-		{
-			string tnid = tnloc.at(tx.pos);
-			tunersets_table tn = tuners[0].tables[tnid];
-			zy.name = tn.name;
-		}
-		else if (tx.ytype == YTYPE::terrestrial)
+		if (tx.ytype == YTYPE::terrestrial)
 			zy.name = "Terrestrial";
 		else if (tx.ytype == YTYPE::cable)
 			zy.name = "Cable";
 		else if (tx.ytype == YTYPE::atsc)
 			zy.name = "ATSC";
+		else if (tx.ytype == YTYPE::satellite && tnloc.count(tx.pos))
+		{
+			string tnid = tnloc.at(tx.pos);
+			tunersets_table tn = tuners[0].tables[tnid];
+			zy.name = tn.name;
+		}
 		else
 			zy.name = tx.pos == -1 ? "NaN" : value_transponder_position(tx.pos);
 
@@ -1197,6 +1197,7 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 			{
 				ss << ' ' << "id=\"" << hex << setfill('0') << setw(4) << tx.tsid << dec << "\"";
 				ss << ' ' << "on=\"" << hex << setfill('0') << setw(4) << tx.onid << dec << "\"";
+				//TODO TEST frequency multiplier
 				// note: dreamset neutrino v1 v2 9 digits, v3 v4 8 digits
 				if (ver > 2 && zy.ytype == YTYPE::terrestrial)
 					ss << ' ' << "frq=\"" << int (tx.freq / 10) << "\"";
@@ -1208,75 +1209,156 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 					if (ver < 3)
 						ss << ' ' << "sr=\"0\"";
 				}
+				//TODO TEST symbol_rate multiplier
 				else
 				{
 					ss << ' ' << "sr=\"" << (tx.sr != -1 && tx.sr != 0 ? tx.sr : 0) << "\"";
 				}
 				if (ver > 2 && zy.ytype == YTYPE::terrestrial)
 				{
-					ss << ' ' << "band=\"" << (tx.band != -1 ? tx.band : 0) << "\"";
-					ss << ' ' << "HP=\"" << (tx.hpfec != -1 ? tx.hpfec : 5) << "\"";
-					ss << ' ' << "LP=\"" << (tx.lpfec != -1 ? tx.lpfec : 5) << "\"";
-					if (tx.tmod != -1)
+					bool legacy = zy.legacy || ver == 3;
+
+					{
+						int i = 3; // Auto
+
+						if (tx.band > 0 && tx.band < 5)
+							i = tx.band;
+						else if (tx.band == 5)
+							i = 6;
+						else if (tx.band == 6)
+							i = 5;
+
+						ss << ' ' << (! legacy ? "bw" : "band") << "=\"" << i << "\"";
+					}
+					{
+						int i = 0; // FEC_NONE
+						int fec = tx.hpfec;
+
+						if (fec > -1 && fec < 3)
+							i = fec + 1;
+						else if (fec == 3)
+							i = 5;
+						else if (fec == 4)
+							i = 7;
+						else if (fec == 5) // FEC_AUTO
+							i = 9;
+						else if (fec == 6)
+							i = 6;
+						else if (fec == 7)
+							i = 8;
+						else if (fec == 8)
+							i = 10;
+						else if (fec == 9)
+							i = 4;
+
+						ss << ' ' << (! legacy ? "hp" : "HP") << "=\"" << i << "\"";
+					}
+					{
+						int i = 0; // FEC_NONE
+						int fec = tx.lpfec;
+
+						if (fec > -1 && fec < 3)
+							i = fec + 1;
+						else if (fec == 3)
+							i = 5;
+						else if (fec == 4)
+							i = 7;
+						else if (fec == 5) // FEC_AUTO
+							i = 9;
+						else if (fec == 6)
+							i = 6;
+						else if (fec == 7)
+							i = 8;
+						else if (fec == 8)
+							i = 10;
+						else if (fec == 9)
+							i = 4;
+
+						ss << ' ' << (! legacy ? "lp" : "LP") << "=\"" << i << "\"";
+					}
+					if (! legacy)
+					{
+						int i = 6; // QAM_AUTO
+
+						if (tx.tmod == 1) // QPSK
+							i = 0;
+						else if (tx.tmod == 1) // QAM_16
+							i = 1;
+						else if (tx.tmod == 2) // QAM_64
+							i = 3;
+						else if (tx.tmod == 4) // QAM_256
+							i = 5;
+
+						ss << ' ' << "con=\"" << i << "\"";
+					}
+					else
+					{
 						ss << ' ' << "const=\"" << 1 << "\"";
-					ss << ' ' << "trans=\"" << (tx.tmx != -1 ? tx.tmx : 2) << "\"";
-					ss << ' ' << "guard=\"" << (tx.guard != -1 ? tx.guard : 4) << "\"";
-					ss << ' ' << "hierarchy=\"" << (tx.hier != -1 ? tx.hier : 4) << "\"";
+					}
+					ss << ' ' << (! legacy ? "tm" : "trans") << "=\"" << (tx.tmx != -1 ? tx.tmx : 2) << "\"";
+					ss << ' ' << (! legacy ? "gi" : "guard") << "=\"" << (tx.guard != -1 ? tx.guard : 4) << "\"";
+					ss << ' ' << (! legacy ? "hi" : "hierarchy") << "=\"" << (tx.hier != -1 ? tx.hier : 0) << "\"";
 				}
 				else
 				{
-					int i = 0;
+					int i = 0; // FEC_NONE
+					int fec = 0;
+
+					if (zy.ytype == YTYPE::cable)
+						fec = tx.cfec;
+					else
+						fec = tx.fec;
+
+					//TODO TEST legacy fec values maybe v3
 					if (ver == 4)
 					{
-						if (tx.fec <= 0)
-							i = 0;
-						else if (tx.fec < 4)
-							i = tx.fec;
-						else if (tx.fec == 4)
-							i = 8;
-						else if (tx.fec == 5)
-							i = 7;
-						else if (tx.fec == 6)
-							i = 8;
-						else if (tx.fec == 7)
-							i = 10;
-						else if (tx.fec == 8)
-							i = 4;
-						else if (tx.fec == 9)
-							i = 11;
-						else if (tx.fec == 10)
-							i = 6;
-						else
+						if (fec <= 0) // FEC_AUTO
 							i = 9;
+						else if (fec < 4)
+							i = tx.fec;
+						else if (fec == 4)
+							i = 8;
+						else if (fec == 5)
+							i = 7;
+						else if (fec == 6)
+							i = 8;
+						else if (fec == 7)
+							i = 10;
+						else if (fec == 8)
+							i = 4;
+						else if (fec == 9)
+							i = 11;
+						else if (fec == 10)
+							i = 6;
 					}
-					//TODO
 					else if (ver == 3)
 					{
-						if (tx.fec <= 0)
-							i = 0;
-						else if (tx.fec < 4)
-							i = tx.fec;
-						else if (tx.fec == 4)
-							i = 4;
-						else if (tx.fec == 5)
+						int mod = -1;
+						int sys = -1;
+
+						if (zy.ytype == YTYPE::satellite)
+						{
+							mod = tx.mod;
+							sys = tx.sys;
+						}
+
+						if (fec <= 0) // FEC_AUTO
 							i = 9;
-						else if (tx.fec == 6)
-							i = 6;
-						else if (tx.fec == 7)
-							i = 7;
-						else if (tx.fec == 8)
-							i = 8;
-						else
-							i = 9;
+						else if (mod == 1 && sys == 1 && fec == 0)
+							i = 28;
+						else if (mod == 1 && sys == 1 && fec < 9)
+							i = fec + 9;
+						else if (mod == 2 && sys == 1 && fec < 9)
+							i = fec + 18;
+						else if (fec < 9)
+							i = fec;
 					}
 					else if (ver == 2)
 					{
-						if (tx.fec <= 0)
-							i = 0;
-						else if (tx.fec < 6)
-							i = tx.fec;
-						else
-							i = 0;
+						if (fec <= 0) // FEC_AUTO
+							i = 9;
+						else if (fec <= 8)
+							i = fec;
 					}
 					ss << ' ' << "fec=\"" << i << "\"";
 				}
@@ -1286,16 +1368,70 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 					ss << ' ' << "pol=\"" << 0 << "\"";
 				if (ver > 3)
 				{
-					//TODO
+					int mod = -1;
+	
+					if (zy.ytype == YTYPE::satellite)
+						mod = tx.mod;
+					else if (zy.ytype == YTYPE::terrestrial)
+						mod = tx.tmod;
+					else if (zy.ytype == YTYPE::cable)
+						mod = tx.cmod;
+					else if (zy.ytype == YTYPE::atsc)
+						mod = tx.amod;
+
 					if (zy.ytype == YTYPE::terrestrial)
 					{
-						ss << ' ' << "mod=\"" << (tx.tmod != -1 ? tx.tmod * 2 : 6) << "\"";
-						ss << ' ' << "sys=\"" << 4 << "\"";
+						int i = 6; // QAM_AUTO
+
+						if (mod == 1) // QPSK
+							i = 0;
+						else if (mod == 1) // QAM_16
+							i = 1;
+						else if (mod == 2) // QAM_64
+							i = 3;
+						else if (mod == 4) // QAM_256
+							i = 5;
+
+						ss << ' ' << "mod=\"" << i << "\"";
+						ss << ' ' << "sys=\"" << (tx.sys != -1 ? tx.sys : 4) << "\"";
 					}
 					else
 					{
-						ss << ' ' << "mod=\"" << (tx.mod != -1 ? tx.mod : 0) << "\"";
+						int i = -1;
+
+						if (zy.ytype == YTYPE::cable)
+						{
+							if (mod != 0 && mod <= 5)
+								i = mod;
+							else // QAM_AUTO
+								i = 6;
+						}
+						else if (zy.ytype == YTYPE::atsc)
+						{
+							if (mod != 0 && mod <= 5)
+								i = mod;
+							else if (mod > 5 && mod < 8) // VSB_8 VSB_16
+								i = i + 1;
+							else // QAM_AUTO
+								i = 6;
+						}
+						else
+						{
+							if (mod != 0 && mod <= 5)
+								i = mod;
+							else // Auto
+								i = 0;
+						}
+
+						ss << ' ' << "mod=\"" << i << "\"";
 						ss << ' ' << "sys=\"" << (tx.sys != -1 ? tx.sys : 0) << "\"";
+
+						if (tx.t2mi_plpid != -1 || tx.plpid != -1)
+							ss << ' ' << "pli=\"" << (zy.ytype == YTYPE::satellite ? tx.t2mi_plpid : tx.plpid) << "\"";
+						if (tx.plsmode != -1)
+							ss << ' ' << "plm=\"" << tx.plsmode << "\"";
+						if (tx.plscode != -1)
+							ss << ' ' << "plc=\"" <<  tx.plscode << "\"";
 					}
 				}
 			}
@@ -1303,28 +1439,20 @@ void e2db_maker::make_services_xml(string filename, e2db_file& file, int ver)
 			{
 				ss << ' ' << "id=\"" << hex << setfill('0') << setw(4) << tx.tsid << dec << "\"";
 				ss << ' ' << "onid=\"" << hex << setfill('0') << setw(4) << tx.onid << dec << "\"";
+				//TODO TEST frequency multiplier
 				// note: dreamset neutrino v1 v2 9 digits, v3 v4 8 digits
 				ss << ' ' << "frequency=\"" << tx.freq << "\"";
 				ss << ' ' << "inversion=\"" << (tx.inv != 2 ? tx.inv : 0) << "\"";
+				//TODO TEST symbol_rate multiplier
 				ss << ' ' << "symbol_rate=\"" << (tx.sr != -1 && tx.sr != 0 ? tx.sr : 0) << "\"";
 				{
-					int i = 0;
-					if (tx.fec <= 0)
+					int i = 0; // FEC_NONE
+
+					if (tx.fec <= 0) // FEC_NONE
 						i = 9;
-					else if (tx.fec < 4)
+					else if (tx.fec <= 5)
 						i = tx.fec;
-					else if (tx.fec == 4)
-						i = 5;
-					else if (tx.fec == 5)
-						i = 7;
-					else if (tx.fec == 6)
-						i = 8;
-					else if (tx.fec == 8)
-						i = 4;
-					else if (tx.fec == 10)
-						i = 6;
-					else
-						i = 3;
+
 					ss << ' ' << "fec_inner=\"" << i << "\"";
 				}
 				ss << ' ' << "polarization=\"" << (tx.pol != -1 ? tx.pol : 0) << "\"";
@@ -1551,9 +1679,9 @@ void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
 					ss << ' ' << "s=\"" << tx.pos << "\"";
 					ss << ' ' << "frq=\"" << tx.freq << "\"";
 					if (ver > 3)
-					{
 						ss << ' ' << "l=\"" << ch.locked << "\"";
-					}
+					else if (ch.locked)
+						ss << ' ' << "l=\"" << 1 << "\"";
 				}
 				else
 				{
@@ -1562,6 +1690,8 @@ void e2db_maker::make_bouquets_xml(string filename, e2db_file& file, int ver)
 					ss << ' ' << "tsid=\"" << hex << setfill('0') << setw(4) << ch.tsid << dec << "\"";
 					ss << ' ' << "onid=\"" << hex << setfill('0') << setw(4) << ch.onid << dec << "\"";
 					ss << ' ' << "sat_position=\"" << tx.pos << "\"";
+					if (ch.locked)
+						ss << ' ' << "blacklist=\"" << 1 << "\"";
 				}
 
 				ss << '/' << '>' << endl;

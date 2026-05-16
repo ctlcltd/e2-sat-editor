@@ -567,6 +567,7 @@ struct e2db_abstract : protected e2se::log_factory
 			int uncomtd = -1;
 			// transponders <txid string>
 			vector<string> transponders;
+			bool legacy = false;
 			int index = -1;
 		};
 

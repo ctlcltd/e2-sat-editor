@@ -2472,6 +2472,7 @@ void e2db_abstract::dump_data(ostream* os)
 			*os << "txid" << ": " << txid << '\t' << ' ';
 		}
 		*os << "]" << '\t' << ' ';
+		*os << "legacy" << ": " << zy.legacy << '\t' << ' ';
 		*os << "index" << ": " << zy.index << '\t' << ' ';
 		*os << '\n' << '\n';
 	}
