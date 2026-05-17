@@ -78,7 +78,7 @@ void printable::documentIndex()
 	string filename;
 	string filepath = dbih->get_filepath();
 
-	if (std::filesystem::is_directory(filepath) && filepath.size() && filepath[filepath.size() - 1] == '/')
+	if (std::filesystem::is_directory(filepath) && filepath.size() != 0 && filepath[filepath.size() - 1] == '/')
 		filename = std::filesystem::path(filepath.substr(0, filepath.size() - 1)).filename().u8string();
 	else
 		filename = std::filesystem::path(filepath).filename().u8string();

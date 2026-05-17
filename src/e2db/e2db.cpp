@@ -443,7 +443,7 @@ void e2db::export_file(FPORTS fpo, string path, string filename)
 		{
 			std::filesystem::path fp = std::filesystem::path(path);
 			string basedir = fp.parent_path().u8string();
-			if (basedir.size() && basedir[basedir.size() - 1] != '/')
+			if (basedir.size() != 0 && basedir[basedir.size() - 1] != '/')
 				basedir.append("/");
 
 			fpath = basedir + filename;

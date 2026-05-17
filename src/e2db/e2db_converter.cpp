@@ -229,7 +229,7 @@ void e2db_converter::export_csv_file(FCONVS fco, fcopts opts, string path)
 	{
 		std::filesystem::path fp = std::filesystem::path(path);
 		string basedir = fp.parent_path().u8string();
-		if (basedir.size() && basedir[basedir.size() - 1] != '/')
+		if (basedir.size() != 0 && basedir[basedir.size() - 1] != '/')
 			basedir.append("/");
 		string filename = fp.filename().u8string();
 
@@ -343,7 +343,7 @@ void e2db_converter::export_html_file(FCONVS fco, fcopts opts, string path)
 	{
 		std::filesystem::path fpath = std::filesystem::path(path);
 		string basedir = fpath.parent_path().u8string();
-		if (basedir.size() && basedir[basedir.size() - 1] != '/')
+		if (basedir.size() != 0 && basedir[basedir.size() - 1] != '/')
 			basedir.append("/");
 		string filename = fpath.filename().u8string();
 
@@ -672,7 +672,7 @@ void e2db_converter::export_m3u_file(FCONVS fco, fcopts opts, vector<string> ubo
 	{
 		std::filesystem::path fp = std::filesystem::path(path);
 		string basedir = fp.parent_path().u8string();
-		if (basedir.size() && basedir[basedir.size() - 1] != '/')
+		if (basedir.size() != 0 && basedir[basedir.size() - 1] != '/')
 			basedir.append("/");
 		string filename = fp.filename().u8string();
 
@@ -1044,7 +1044,7 @@ void e2db_converter::push_html_index(vector<e2db_file>& files)
 	string fname;
 	string filepath = get_filepath();
 
-	if (std::filesystem::is_directory(filepath) && filepath.size() && filepath[filepath.size() - 1] == '/')
+	if (std::filesystem::is_directory(filepath) && filepath.size() != 0 && filepath[filepath.size() - 1] == '/')
 		fname = std::filesystem::path(filepath.substr(0, filepath.size() - 1)).filename().u8string();
 	else
 		fname = std::filesystem::path(filepath).filename().u8string();

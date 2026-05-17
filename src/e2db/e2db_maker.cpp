@@ -633,7 +633,7 @@ void e2db_maker::make_bouquet_epl(string bname, e2db_file& file, int ver)
 		string name;
 		string basedir = MAKER_BPATH;
 
-		if (basedir.size() && basedir[basedir.size() - 1] != '/')
+		if (basedir.size() != 0 && basedir[basedir.size() - 1] != '/')
 			basedir.append("/");
 
 		string path = basedir + ub_bname;
@@ -1989,7 +1989,7 @@ bool e2db_maker::push_file(string path)
 	}
 	for (auto & o: this->e2db_out)
 	{
-		if (path.size() && path[path.size() - 1] != '/')
+		if (path.size() != 0 && path[path.size() - 1] != '/')
 			path.append("/");
 
 		string fpath = path + o.first;

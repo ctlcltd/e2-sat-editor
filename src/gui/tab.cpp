@@ -228,8 +228,10 @@ void tab::tabSwitch()
 			{
 				if (! dwid->isDocked() && dwid->isFloating())
 				{
+					QByteArray geometry = dwid->saveGeometry();
 					dwid->setParent(this->widget);
 					dwid->setFloating(true);
+					dwid->restoreGeometry(geometry);
 					dwid->show();
 				}
 			}
@@ -257,7 +259,7 @@ void tab::updateTabName(string path)
 
 	if (! path.empty())
 	{
-		if (std::filesystem::is_directory(path) && path.size() && path[path.size() - 1] == '/')
+		if (std::filesystem::is_directory(path) && path.size() != 0 && path[path.size() - 1] == '/')
 			filename = std::filesystem::path(path.substr(0, path.size() - 1)).filename().u8string();
 		else
 			filename = std::filesystem::path(path).filename().u8string();
@@ -1244,7 +1246,7 @@ void tab::exportFile()
 	{
 		std::filesystem::path fp = std::filesystem::path(path);
 		string basedir = fp.parent_path().u8string();
-		if (basedir.size() && basedir[basedir.size() - 1] != '/')
+		if (basedir.size() != 0 && basedir[basedir.size() - 1] != '/')
 			basedir.append("/");
 
 		for (string & path : paths)
@@ -1412,7 +1414,7 @@ void tab::infoFile()
 	string filename;
 	string filepath = this->data->getPath();
 
-	if (std::filesystem::is_directory(filepath) && filepath.size() && filepath[filepath.size() - 1] == '/')
+	if (std::filesystem::is_directory(filepath) && filepath.size() != 0 && filepath[filepath.size() - 1] == '/')
 		filename = std::filesystem::path(filepath.substr(0, filepath.size() - 1)).filename().u8string();
 	else
 		filename = std::filesystem::path(filepath).filename().u8string();
@@ -2739,7 +2741,7 @@ void tab::ftpUpload()
 		else
 			basedir = bases;
 
-		if (basedir.size() && basedir[basedir.size() - 1] != '/')
+		if (basedir.size() != 0 && basedir[basedir.size() - 1] != '/')
 			basedir.append("/");
 
 		fpath = basedir + filename;

@@ -1149,7 +1149,12 @@ void piconsView::revealPiconOnFileManager()
 		if (systemRoot.contains("PathName") && QFile::exists(systemRoot.value("PathName").toString()))
 			program.prepend(systemRoot.value("PathName").toString().append("\\"));
 
-		QProcess::startDetached(program, {(fi.isDir() ? "" : "/select,"), QDir::toNativeSeparators(url.toString())});
+		QStringList arguments;
+		if (! fi.isDir())
+			arguments << "/select,";
+		arguments << QDir::toNativeSeparators(url.toString());
+
+		QProcess::startDetached(program, arguments);
 	// note: open command accepts the file protocol
 #elif defined(Q_OS_MAC)
 		if (fi.isDir())

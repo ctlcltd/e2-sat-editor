@@ -580,6 +580,8 @@ void termctl::load_history()
 	}
 #endif
 
+	bool ctx_crlf = true;
+
 	try
 	{
 		std::ifstream ifile (history_file);
@@ -589,7 +591,18 @@ void termctl::load_history()
 		history->seekg(0);
 		std::string line;
 		while (std::getline(ifile, line))
-			*history << line << std::endl;
+		{
+			if (ctx_crlf)
+			{
+				if (line.size() != 0 && line[line.size() - 1] == '\r')
+					line = line.substr(0, line.size() - 1);
+				else
+					ctx_crlf = false;
+			}
+
+			*history << line << '\n';
+		}
+		*history << std::flush;
 
 		ifile.close();
 

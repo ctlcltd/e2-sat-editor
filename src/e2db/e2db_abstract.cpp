@@ -1875,9 +1875,7 @@ bool e2db_abstract::check_crlf(bool& ctx, string& line)
 #ifdef PLATFORM_WIN
 	if (blobctx_crlf)
 		return true;
-	else
-		return false;
-#else
+#endif
 	if (ctx)
 		return currctx_crlf;
 	else if (line.size() != 0 && line[line.size() - 1] == '\r')
@@ -1888,7 +1886,6 @@ bool e2db_abstract::check_crlf(bool& ctx, string& line)
 	ctx = true;
 
 	return currctx_crlf;
-#endif
 }
 
 void e2db_abstract::fix_crlf(string& line)

@@ -258,7 +258,7 @@ void mainView::layout()
 #ifndef Q_OS_WIN
 	list->setColumnWidth(ITEM_ROW_ROLE::chcas, 50);		// CAS
 #else
-	list->setColumnWidth(ITEM_ROW_ROLE::chcas, 45);		// CAS
+	list->setColumnWidth(ITEM_ROW_ROLE::chcas, 40);		// CAS
 #endif
 	list->setColumnWidth(ITEM_ROW_ROLE::chpname, 150);	// Provider
 	list->setColumnWidth(ITEM_ROW_ROLE::chsys, 85);		// System
@@ -655,11 +655,9 @@ void mainView::referencePanelLayout()
 	ref_panel->addWidget(ref7lp, 4, 0, Qt::AlignTop);
 	ref_panel->addWidget(ref7tp, 4, 1, Qt::AlignLeading | Qt::AlignTop);
 
-	ref_panel->addItem(new QSpacerItem(0, 0), 0, 8, 3, 1);
+	ref_panel->addItem(new QSpacerItem(0, 0), 0, 8, 5, 1);
 
 	ref_panel->setVerticalSpacing(0);
-	ref_panel->setRowStretch(0, 1);
-	ref_panel->setRowStretch(2, 1);
 	ref_panel->setRowStretch(4, 1);
 	ref_panel->setRowMinimumHeight(0, 27);
 	ref_panel->setRowMinimumHeight(2, 27);
@@ -4163,7 +4161,7 @@ void mainView::updateReferencePanel()
 		}
 		if (! bsl.empty())
 		{
-			bsls = "<p style=\"line-height: 150%\">" + bsl.join("<br>") + "</p>";
+			bsls = "<p style=\"line-height: 150%\">" + bsl.join(", ") + "</p>";
 		}
 
 		if (dbih->db.services.count(chid))

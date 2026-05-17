@@ -1806,8 +1806,23 @@ void gui::tabPermanentDocksChanged()
 
 			for (auto & wid : dwids)
 			{
-				if (wid)
+				if (DialogDockWidget* dwid = qobject_cast<DialogDockWidget*>(wid))
+				{
+					if (! dwid->isDocked() && dwid->isFloating())
+					{
+						QByteArray geometry = dwid->saveGeometry();
+						rwid->restoreDockWidget(dwid);
+						dwid->restoreGeometry(geometry);
+					}
+					else
+					{
+						rwid->restoreDockWidget(dwid);
+					}
+				}
+				else if (wid)
+				{
 					rwid->restoreDockWidget(wid);
+				}
 			}
 		}
 	}

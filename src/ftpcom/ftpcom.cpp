@@ -259,7 +259,7 @@ vector<string> ftpcom::list_dir_nlst(string basedir)
 
 	stringstream data;
 
-	if (basedir.size() && basedir[basedir.size() - 1] != '/')
+	if (basedir.size() != 0 && basedir[basedir.size() - 1] != '/')
 		basedir.append("/");
 
 	string remotedir = '/' + basedir;
@@ -328,7 +328,7 @@ vector<string> ftpcom::list_dir_mlsd(string basedir)
 
 	stringstream data;
 
-	if (basedir.size() && basedir[basedir.size() - 1] != '/')
+	if (basedir.size() != 0 && basedir[basedir.size() - 1] != '/')
 		basedir.append("/");
 
 	string remotedir = '/' + basedir;
@@ -473,7 +473,7 @@ void ftpcom::download_data(string basedir, string filename, ftpcom_file& file)
 	data.size = 0;
 	CURLcode res = CURLcode::CURLE_GOT_NOTHING;
 
-	if (basedir.size() && basedir[basedir.size() - 1] != '/')
+	if (basedir.size() != 0 && basedir[basedir.size() - 1] != '/')
 		basedir.append("/");
 
 	string path = basedir + filename;
@@ -544,7 +544,7 @@ void ftpcom::upload_data(string basedir, string filename, ftpcom_file file)
 	size_t len = 0;
 	CURLcode res = CURLcode::CURLE_GOT_NOTHING;
 
-	if (basedir.size() && basedir[basedir.size() - 1] != '/')
+	if (basedir.size() != 0 && basedir[basedir.size() - 1] != '/')
 		basedir.append("/");
 
 	string path = basedir + filename;

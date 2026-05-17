@@ -115,7 +115,7 @@ def readline(reader, writer, hide_input=False):
 			inp = yield None
 
 async def main():
-	server = await telnetlib3.create_server(host=HOST_ADDR, port=HOST_PORT, shell=test_shell)
+	server = await telnetlib3.create_server(port=HOST_PORT, shell=test_shell)
 	print("Virtual Telnet started at port", HOST_PORT)
 	await server.wait_closed()
 

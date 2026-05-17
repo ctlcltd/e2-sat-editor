@@ -210,6 +210,8 @@ void inspector::close()
 
 	this->dial->deleteLater();
 	this->dial = nullptr;
+
+	inspectReset();
 }
 
 void inspector::destroy()
