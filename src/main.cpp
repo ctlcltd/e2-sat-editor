@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
 		}
 	}
 
-#if E2SE_APPIMAGE
+#ifdef E2SE_APPIMAGE
 	if (std::getenv("QT_QPA_PLATFORM") == NULL)
 	{
 		// note: prefers xcb QPA over wayland QPA
