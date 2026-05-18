@@ -38,6 +38,15 @@ void ftpHandler::abortOperations()
 		this->ftih->abort();
 }
 
+void ftpHandler::destroyConnection()
+{
+	if (this->ftih != nullptr)
+		delete this->ftih;
+
+	this->ftih = nullptr;
+	this->connected = false;
+}
+
 bool ftpHandler::openConnection()
 {
 	return handleConnection();

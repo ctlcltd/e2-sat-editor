@@ -82,6 +82,7 @@ string e2db_abstract::timestamp()
 	std::strftime(t, 80, "%Y-%m-%d %H:%M:%S", lct);
 
 	char c[8];
+	//TODO TEST gdb trace: printf buffer, tab::ftpComboChanged, QComboBox::setCurrentIndex on currentIndexChanged
 	std::snprintf(c, 8, ".%06d", int (float (ct.tv_nsec) / 1e9 * 1e6));
 
 	return string (t) + string (c);

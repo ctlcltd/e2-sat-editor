@@ -2352,10 +2352,11 @@ void tab::ftpComboItems()
 {
 	// debug("ftpComboItems");
 
-	if (ftp_combo->count())
+	if (ftp_combo->count() != 0)
 	{
 		ftp_combo->clear();
 
+		//TODO TEST maybe cleared twice
 		for (int i = 0; i < ftp_combo->count(); i++)
 		{
 			ftp_combo->removeItem(i);
@@ -2388,9 +2389,15 @@ void tab::ftpComboChanged(int index)
 {
 	debug("profileComboChanged", "index", index);
 
-	this->ftph->closeConnection();
+#ifndef Q_OS_WASM
+	ftpWaitWorkers();
 
-	ftp_combo->setCurrentIndex(index);
+	ftpConnectionIndicator(FTP_STATUS::ftpIdle);
+
+	this->ftph->destroyConnection();
+
+	resetStatusBar(true);
+#endif
 
 	int profile_sel = ftp_combo->itemData(index, Qt::UserRole).toInt();
 	QSettings().setValue("profile/selected", profile_sel);
