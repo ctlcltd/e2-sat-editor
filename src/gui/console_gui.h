@@ -81,6 +81,8 @@ class console_gui : protected e2se::log_factory, public ::e2se_e2db::e2db_consol
 		void attach(QWidget* parent);
 		void detach();
 		void destroy();
+		bool isAttached() { return this->connected; }
+		bool isDetached() { return ! this->connected; }
 
 		void setEventCallback(std::function<void(EVENT event)> func)
 		{
@@ -157,6 +159,7 @@ class console_gui : protected e2se::log_factory, public ::e2se_e2db::e2db_consol
 		current* icurr = nullptr;
 
 	private:
+		bool connected = false;
 		QByteArray* ba_out = nullptr;
 		QByteArray* ba_err = nullptr;
 		QTextStream* ts_out = nullptr;

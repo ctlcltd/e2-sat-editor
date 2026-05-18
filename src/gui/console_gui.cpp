@@ -66,6 +66,7 @@ void console_gui::layout(QWidget* parent)
 	else
 		frm->setParent(parent);
 
+	this->connected = true;
 	parent->setProperty("console_widget", 1);
 }
 
@@ -145,6 +146,7 @@ void console_gui::attach(QWidget* parent)
 
 	cnt->attachWidget();
 
+	this->connected = true;
 	parent->setProperty("console_widget", 1);
 
 	session();
@@ -183,6 +185,8 @@ void console_gui::detach()
 	this->eventCallback = nullptr;
 
 	cnt->detachWidget();
+
+	this->connected = false;
 }
 
 void console_gui::session()

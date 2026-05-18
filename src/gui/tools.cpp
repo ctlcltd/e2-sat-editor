@@ -1268,8 +1268,6 @@ void tools::console(tab* ttab)
 
 	// note: closing dock widget, reimplemented QWidget::closeEvent
 	dwid->connect(dwid, &DialogDockWidget::finished, [=]() {
-		qDebug() << "closed";
-
 		if (ttab != nullptr)
 		{
 			ttab->removePermanentDockWidget(dwid);
@@ -1280,7 +1278,7 @@ void tools::console(tab* ttab)
 			{
 				console_gui* thptr = this->ths.at(ttid);
 
-				if (thptr != nullptr)
+				if (thptr != nullptr && ! thptr->isDetached())
 					thptr->detach();
 			}
 
@@ -1288,7 +1286,7 @@ void tools::console(tab* ttab)
 		}
 	});
 
-	// note: deleted dock widget, from tab widget, from parent tab
+	// note: deleted dock widget, from dock widget, from tab widget, from parent tab
 	dwid->connect(dwid, &DialogDockWidget::destroyed, [=]() {
 		if (ttab != nullptr)
 		{
@@ -1304,10 +1302,8 @@ void tools::console(tab* ttab)
 			{
 				console_gui* thptr = this->ths.at(ttid);
 
-				if (thptr != nullptr)
-					thptr->destroy();
-
-				this->ths.erase(ttid);
+				if (thptr != nullptr && ! thptr->isDetached())
+					thptr->detach();
 			}
 		}
 	});
