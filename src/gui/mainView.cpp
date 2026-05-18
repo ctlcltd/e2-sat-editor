@@ -255,10 +255,12 @@ void mainView::layout()
 	list->setColumnWidth(ITEM_ROW_ROLE::chssid, 80);	// Service ID
 	list->setColumnWidth(ITEM_ROW_ROLE::chtsid, 95);	// Transport ID
 	list->setColumnWidth(ITEM_ROW_ROLE::chtype, 85);	// (Channel) Type
-#ifndef Q_OS_WIN
+#if defined(Q_OS_WIN)
+	list->setColumnWidth(ITEM_ROW_ROLE::chcas, 40);		// CAS
+#elif defined(Q_OS_MAC)
 	list->setColumnWidth(ITEM_ROW_ROLE::chcas, 50);		// CAS
 #else
-	list->setColumnWidth(ITEM_ROW_ROLE::chcas, 40);		// CAS
+	list->setColumnWidth(ITEM_ROW_ROLE::chcas, 45);		// CAS
 #endif
 	list->setColumnWidth(ITEM_ROW_ROLE::chpname, 150);	// Provider
 	list->setColumnWidth(ITEM_ROW_ROLE::chsys, 85);		// System

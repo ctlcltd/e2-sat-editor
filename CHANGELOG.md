@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 ## [v2.0.0]
 
 **Version**: 2.0.0  
-**Release Date**: 2026-05-16  
+**Release Date**: 2026-05-18  
 **Full Changelog**: [v1.9.0...HEAD](https://github.com/ctlcltd/e2-sat-editor/compare/v1.9.0...HEAD)
 
 - Bugfix and improvements
@@ -50,7 +50,8 @@ All notable changes to this project will be documented in this file.
 
 **Version**: 1.8.0  
 **Release Date**: 2024-11-28  
-**Full Changelog**: [v1.7.0...v1.8.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.7.0...v1.8.0)
+**Full Changelog**: [v1.7.0...v1.8.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.7.0...v1.8.0)  
+**Deprecation Date**: 2026-05-16
 
 - New Error Checker util
 - Fix parsing stream URL and description
@@ -66,7 +67,8 @@ All notable changes to this project will be documented in this file.
 
 **Version**: 1.7.0  
 **Release Date**: 2024-10-31  
-**Full Changelog**: [v1.6.0...v1.7.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.6.0...v1.7.0)
+**Full Changelog**: [v1.6.0...v1.7.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.6.0...v1.7.0)  
+**Deprecation Date**: 2026-03-10
 
 - New utils: autofix, remove duplicates, fix/remove parameters and flags, sort
 - Improved lists compatibility Lamedb 2.x
@@ -81,7 +83,8 @@ All notable changes to this project will be documented in this file.
 
 **Version**: 1.6.0  
 **Release Date**: 2024-07-25  
-**Full Changelog**: [v1.5.0...v1.6.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.5.0...v1.6.0)
+**Full Changelog**: [v1.5.0...v1.6.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.5.0...v1.6.0)  
+**Deprecation Date**: 2026-02-02
 
 - Fix crash with empty service parameters on save
 - Fix parental lock on write
@@ -100,7 +103,8 @@ All notable changes to this project will be documented in this file.
 
 **Version**: 1.5.0  
 **Release Date**: 2024-05-20  
-**Full Changelog**: [v1.4.0...v1.5.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.4.0...v1.5.0)
+**Full Changelog**: [v1.4.0...v1.5.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.4.0...v1.5.0)  
+**Deprecation Date**: 2026-02-02
 
 - Improved Edit menu and context menu
 - Fix orbital position with West values
@@ -112,7 +116,8 @@ All notable changes to this project will be documented in this file.
 
 **Version**: 1.4.0  
 **Release Date**: 2024-04-26  
-**Full Changelog**: [v1.3.0...v1.4.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.3.0...v1.4.0)
+**Full Changelog**: [v1.3.0...v1.4.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.3.0...v1.4.0)  
+**Deprecation Date**: 2026-02-02
 
 - Fix FTP issues [Windows]
 - Fix reading files with end of line CRLF [Windows]
@@ -129,7 +134,8 @@ All notable changes to this project will be documented in this file.
 
 **Version**: 1.3.0  
 **Release Date**: 2024-03-30  
-**Full Changelog**: [v1.2.0...v1.3.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.2.0...v1.3.0)
+**Full Changelog**: [v1.2.0...v1.3.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.2.0...v1.3.0)  
+**Deprecation Date**: 2026-02-02
 
 - Stream type reference support
 - Calculate dvbns namespace
@@ -142,7 +148,8 @@ All notable changes to this project will be documented in this file.
 
 **Version**: 1.2.0  
 **Release Date**: 2024-02-22  
-**Full Changelog**: [v1.1.1...v1.2.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.1.1...v1.2.0)
+**Full Changelog**: [v1.1.1...v1.2.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.1.1...v1.2.0)  
+**Deprecation Date**: 2026-02-02
 
 - Connection presets with most common Set-Top-Box settings
 - Connection profile import and export
@@ -155,7 +162,8 @@ All notable changes to this project will be documented in this file.
 
 **Version**: 1.1.1 
 **Release Date**: 2024-01-20  
-**Full Changelog**: [v1.1.0...v1.1.1](https://github.com/ctlcltd/e2-sat-editor/compare/v1.1.0...v1.1.1)
+**Full Changelog**: [v1.1.0...v1.1.1](https://github.com/ctlcltd/e2-sat-editor/compare/v1.1.0...v1.1.1)  
+**Deprecation Date**: 2024-10-27
 
 - Fix FTP issue, file listing and directory
 
@@ -164,7 +172,8 @@ All notable changes to this project will be documented in this file.
 
 **Version**: 1.1.0  
 **Release Date**: 2024-01-15  
-**Full Changelog**: [v1.0.0...v1.1.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.0.0...v1.1.0)
+**Full Changelog**: [v1.0.0...v1.1.0](https://github.com/ctlcltd/e2-sat-editor/compare/v1.0.0...v1.1.0)  
+**Deprecation Date**: 2024-10-27
 
 - Important fixes: remove channel reference, remove service, Drag and Drop logic, tree column widths
 - Prevent crash and strange behaviour
@@ -174,7 +183,8 @@ All notable changes to this project will be documented in this file.
 
 **Version**: 1.0.0  
 **Release Date**: 2024-01-04  
-**Full Changelog**: [v0.9.0...v1.0.0](https://github.com/ctlcltd/e2-sat-editor/compare/v0.9.0...v1.0.0)
+**Full Changelog**: [v0.9.0...v1.0.0](https://github.com/ctlcltd/e2-sat-editor/compare/v0.9.0...v1.0.0)  
+**Deprecation Date**: 2024-10-27
 
 - File Information dialog
 - Online Help
@@ -185,7 +195,8 @@ All notable changes to this project will be documented in this file.
 
 **Version**: 0.9.0  
 **Release Date**: 2023-09-26  
-**Full Changelog**: [v0.8.0...v0.9.0](https://github.com/ctlcltd/e2-sat-editor/compare/v0.8.0...v0.9.0)
+**Full Changelog**: [v0.8.0...v0.9.0](https://github.com/ctlcltd/e2-sat-editor/compare/v0.8.0...v0.9.0)  
+**Deprecation Date**: 2024-05-14
 
 - Translations, 33 languages (same as qt-base): Arabic, Bulgarian, Catalan, Czech, Danish, German, Spanish, Persian, Finnish, French, Gaelic, Galician, Hebrew, Croatian, Hungarian, Italian, Japanese, Korean, Lithuanian, Latvian, Dutch, Norwegian Nynorsk, Polish, Portuguese (Brazil), Portuguese (Portugal), Russian, Slovak, Slovenian, Swedish, Turkish, Ukrainian, Chinese (China), Chinese (Taiwan)
 - Bugfix
@@ -196,7 +207,8 @@ All notable changes to this project will be documented in this file.
 
 **Version**: 0.8.0  
 **Release Date**: 2023-06-13  
-**Full Changelog**: [v0.7.0...v0.8.0](https://github.com/ctlcltd/e2-sat-editor/compare/v0.7.0...v0.8.0)
+**Full Changelog**: [v0.7.0...v0.8.0](https://github.com/ctlcltd/e2-sat-editor/compare/v0.7.0...v0.8.0)  
+**Deprecation Date**: 2024-05-14
 
 - Bugfix, stability, Qt compatibility
 - Added Picons editor
@@ -209,7 +221,8 @@ All notable changes to this project will be documented in this file.
 
 **Version**: 0.7.0  
 **Release Date**: 2023-05-21  
-**Full Changelog**: [v0.6.0-pre...v0.7.0](https://github.com/ctlcltd/e2-sat-editor/compare/v0.6.0-pre...v0.7.0)
+**Full Changelog**: [v0.6.0-pre...v0.7.0](https://github.com/ctlcltd/e2-sat-editor/compare/v0.6.0-pre...v0.7.0)  
+**Deprecation Date**: 2024-05-14
 
 - Improvements: tree views, log inspector, logger, icon resources
 - Testing and fixing for platforms
@@ -221,7 +234,8 @@ All notable changes to this project will be documented in this file.
 
 **Version**: 0.6.0-pre  
 **Release Date**: 2023-04-07  
-**Full Changelog**: [v0.5.0-pre...v0.6.0-pre](https://github.com/ctlcltd/e2-sat-editor/compare/v0.5.0-pre...v0.6.0-pre)
+**Full Changelog**: [v0.5.0-pre...v0.6.0-pre](https://github.com/ctlcltd/e2-sat-editor/compare/v0.5.0-pre...v0.6.0-pre)  
+**Deprecation Date**: 2023-05-20
 
 - Fix clipboard releated issues
 - Improved Drag and Drop and copy/paste operations
@@ -234,7 +248,8 @@ All notable changes to this project will be documented in this file.
 
 **Version**: 0.5.0-pre  
 **Release Date**: 2023-03-18  
-**Full Changelog**: [v0.4.0-pre...v0.5.0-pre](https://github.com/ctlcltd/e2-sat-editor/compare/v0.4.0-pre...v0.5.0-pre)
+**Full Changelog**: [v0.4.0-pre...v0.5.0-pre](https://github.com/ctlcltd/e2-sat-editor/compare/v0.4.0-pre...v0.5.0-pre)  
+**Deprecation Date**: 2023-05-20
 
 - Added support for Neutrino Zapit XML channel lists
 - Fix XML parser bug under MinGW
@@ -247,7 +262,8 @@ All notable changes to this project will be documented in this file.
 
 **Version**: 0.4.0-pre  
 **Release Date**: 2023-02-25  
-**Full Changelog**: [v0.3.0-pre...v0.4.0-pre](https://github.com/ctlcltd/e2-sat-editor/compare/v0.3.0-pre...v0.4.0-pre)
+**Full Changelog**: [v0.3.0-pre...v0.4.0-pre](https://github.com/ctlcltd/e2-sat-editor/compare/v0.3.0-pre...v0.4.0-pre)  
+**Deprecation Date**: 2023-05-20
 
 - Editor edit views refactoring
 - Added support for Lamedb 2.3 2.2 channel lists
@@ -259,7 +275,8 @@ All notable changes to this project will be documented in this file.
 
 **Version**: 0.3.0-pre  
 **Release date**: 2023-01-24  
-**Full Changelog**: [v0.3.0-pre](https://github.com/ctlcltd/e2-sat-editor/commits/v0.3.0-pre)
+**Full Changelog**: [v0.3.0-pre](https://github.com/ctlcltd/e2-sat-editor/commits/v0.3.0-pre)  
+**Deprecation Date**: 2023-05-20
 
 - Fix Qt6 and Qt5 compatibility
 - Revised layout and Qt stylesheet

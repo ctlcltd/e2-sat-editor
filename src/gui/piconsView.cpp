@@ -481,7 +481,7 @@ void piconsView::listItemSelectionChanged()
 		tabSetFlag(gui::TabListCut, true);
 		tabSetFlag(gui::TabListCopy, true);
 		tabSetFlag(gui::TabListDelete, true);
-		tabSetFlag(gui::TabListRevealPicon, true);
+		tabSetFlag(gui::TabListRevealPicon, ! this->state.picons_dir.isEmpty());
 		tabSetFlag(gui::TabListBatchPicon, QSettings().value("preference/piconsAllowBatchCommand").toBool());
 	}
 
