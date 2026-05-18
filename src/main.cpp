@@ -43,11 +43,11 @@ int main(int argc, char* argv[])
 #ifdef E2SE_APPIMAGE
 	if (std::getenv("QT_QPA_PLATFORM") == NULL)
 	{
-		// note: prefers xcb QPA over wayland QPA
-		std::setenv("QT_QPA_PLATFORM", "xcb;wayland");
+		// note: non-std setenv posix
+		// prefers xcb QPA over wayland QPA
+		setenv("QT_QPA_PLATFORM", "xcb;wayland", 1);
 
 		//TODO FIX scaling wayland QPA
-		// std::setenv("QT_AUTO_SCREEN_SCALE_FACTOR", "1");
 	}
 #endif
 
