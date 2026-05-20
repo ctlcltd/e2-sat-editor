@@ -124,4 +124,5 @@ appimage/type2-runtime | AppImage type2 runtime library | MIT
 musl-libc | AppImage / musl libc library | MIT
 libfuse | AppImage / libfuse library | LGPL-2.1-only GPL-2.0-only
 squashfuse | AppImage / squashfuse library | BSD-2-Clause
+e2se/apprunqtlinux | AppRun launcher | GPL-3.0-or-later, MIT
 

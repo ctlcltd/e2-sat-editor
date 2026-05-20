@@ -71,7 +71,7 @@ Main components will be usable as dependency and from `cli`, they will not depen
 
 Cross-platform compatibility: `Windows`, `macOS`, `Linux`, `Unix-like BSD`, `WebAssembly` (Emscripten).
 
-Compilers compatibility: `GNU GCC`, `Clang`, `MinGW-w64`.
+Compilers compatibility: `GNU GCC`, `Clang/LLVM`, `MinGW-w64`.
 
 Software Demo mode compatibility: `Qt for WebAssembly`.
 

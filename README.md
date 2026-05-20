@@ -14,7 +14,7 @@ It has tab navigation with global Cut-Copy-Paste support; Drag and Drop support;
 
 It supports both Enigma2, Lamedb 4 and Lamedb 5 formats (2.4 and 2.5) and Enigma1 (2.3 and 2.2).
 
-And it supports also Neutrino xml (api v1, v2, v3, v4).
+And it supports Neutrino, Zapit xml (api v1, v2, v3, v4).
 
 &nbsp;
 
@@ -81,7 +81,7 @@ Instructions on how to build in [BUILD.md](https://github.com/ctlcltd/e2-sat-edi
 
 ## Translations
 
-The software is available in 33 languages: Arabic, Bulgarian, Catalan, Czech, Danish, German, Spanish, Persian, Finnish, French, Gaelic, Galician, Hebrew, Croatian, Hungarian, Italian, Japanese, Korean, Lithuanian, Latvian, Dutch, Norwegian Nynorsk, Polish, Portuguese (Brazil), Portuguese (Portugal), Russian, Slovak, Slovenian, Swedish, Turkish, Ukrainian, Chinese (China), Chinese (Taiwan).
+The software is available in 35 languages: Arabic, Bulgarian, Catalan, Czech, Danish, German, English, English (US), Spanish, Persian, Finnish, French, Gaelic, Galician, Hebrew, Croatian, Hungarian, Italian, Japanese, Korean, Lithuanian, Latvian, Dutch, Norwegian Nynorsk, Polish, Portuguese (Brazil), Portuguese (Portugal), Russian, Slovak, Slovenian, Swedish, Turkish, Ukrainian, Chinese (China), Chinese (Taiwan).
 
 New languages can be added.
 

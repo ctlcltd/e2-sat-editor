@@ -20,7 +20,7 @@ There are several points To Do and To Evaluate.
 - [x] console, similar to a browser inspector [gui] [e2db_console.cpp] [termctl_gui.cpp] [console_gui.cpp]
 - [x] improve management of duplicate channels [gui] [mainView.cpp] [editService.cpp]
 - [x] mirror transponders lamedb from|to xml [gui] [e2db] [tools.cpp]
-- [x] calculate dvbns namespace [gui] [e2db] [editService.cpp] [tools.cpp]
+- [x] calculate `dvbns` namespace [gui] [e2db] [editService.cpp] [tools.cpp]
 - [x] favourite support, `stream` reference type [gui] [e2db]
 - [x] connection profiles import and export [gui] [settings.cpp]
 
