@@ -1108,7 +1108,7 @@ void piconsView::revealPiconOnFileManager()
 #ifdef E2SE_DEMO
 	return tid->demoMessage();
 #endif
-
+#ifndef Q_OS_WASM
 	QUrl url;
 	url.setScheme("file");
 
@@ -1162,7 +1162,7 @@ void piconsView::revealPiconOnFileManager()
 		else
 			QProcess::startDetached("/usr/bin/open", {"--reveal", url.toString()});
 	// note: D-Bus and XDG specification related support, Q_OS_LINUX includes android embeded
-#elif defined(Q_OS_LINUX) || defined(Q_OS_UNIX) 
+#elif defined(Q_OS_LINUX) || defined(Q_OS_UNIX)
 		QProcess::startDetached("dbus-send", {
 			"--session", "--dest=org.freedesktop.FileManager1", "--type=method_call",
 			"/org/freedesktop/FileManager1", "org.freedesktop.FileManager1.ShowItems",
@@ -1170,6 +1170,8 @@ void piconsView::revealPiconOnFileManager()
 		});
 #endif
 	}
+#endif
+
 #endif // sandbox check end
 }
 

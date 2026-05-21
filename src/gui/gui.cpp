@@ -201,6 +201,7 @@ gui::gui(int argc, char* argv[])
 
 	layout();
 
+#ifndef E2SE_DEMO
 	if (QSettings().value("geometry").isNull())
 	{
 		mwid->resize(960, 670);
@@ -211,6 +212,10 @@ gui::gui(int argc, char* argv[])
 		mwid->restoreGeometry(QSettings().value("geometry").toByteArray());
 		mwid->show();
 	}
+#else
+	mwid->setWindowFlags(Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint | Qt::CustomizeWindowHint);
+	mwid->showMaximized();
+#endif
 
 #ifdef E2SE_CHECKUPDATE
 	if (QSettings().value("preference/autoCheckUpdate", false).toBool())

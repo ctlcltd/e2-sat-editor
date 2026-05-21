@@ -23,15 +23,10 @@ namespace e2se_ftpcom
 struct ftpcom
 {
 	public:
-		struct ftpcom_file
-		{
-			string filename;
-			string data;
-			string mime;
-			size_t size = 0;
-		};
+		struct ftpcom_file {};
 };
 }
+
 
 namespace e2se_gui
 {
@@ -44,9 +39,11 @@ class ftpcom
 		virtual ~ftpcom() = default;
 		bool connect() { return false; }
 		bool disconnect() { return false; }
+		bool reconnect() { return false; }
+		void abort() {}
 		void didChange() {}
 		string get_server_hostname() { return ""; }
-		unordered_map<string, ftpcom_file> get_files(std::function<void(const string filename)> func) { unordered_map<string, ftpcom_file> files; return files; }
+		unordered_map<string, ftpcom_file> get_files(std::function<void(const string filename)> func) { return {}; }
 		void put_files(unordered_map<string, ftpcom_file> files, std::function<void(const string filename)> func) {}
 		bool cmd_ifreload() { return false; }
 		bool cmd_tnreload() { return false; }
