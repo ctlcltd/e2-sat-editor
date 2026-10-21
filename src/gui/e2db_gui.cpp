@@ -707,6 +707,7 @@ QStringList e2db::entryFavourite(channel_reference chref)
 		case e2db::ETYPE::efile: sys = "[file]"; break;
 		case e2db::ETYPE::evod: sys = "[vod]"; break;
 		case e2db::ETYPE::eraw: sys = "[raw]"; break;
+		case e2db::ETYPE::edab: sys = "[dab]"; break;
 		case e2db::ETYPE::egstplayer: sys = "[gstplayer]"; break;
 		case e2db::ETYPE::eexteplayer3: sys = "[exteplayer3]"; break;
 		case e2db::ETYPE::eservice: sys = "[eservice]"; break;

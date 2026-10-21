@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 
 
+## [v2.1.0]
+
+**Version**: 2.1.0  
+**Release Date**: *not released*  
+**Full Changelog**: [v2.0.0...HEAD](https://github.com/ctlcltd/e2-sat-editor/compare/v2.0.0...HEAD)
+
+- Bugfix
+
+
 ## [v2.0.0]
 
 **Version**: 2.0.0  

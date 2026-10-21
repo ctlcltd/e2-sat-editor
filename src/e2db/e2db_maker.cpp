@@ -753,10 +753,10 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file, int ver)
 			ss << uppercase << ch.tsid << ':';
 			ss << uppercase << ch.onid << ':';
 			ss << uppercase << ch.dvbns << ':';
+			ss << uppercase << chref.x7 << ':';
+			ss << uppercase << chref.x8 << ':';
+			ss << uppercase << chref.x9 << ':';
 			ss << dec;
-			ss << chref.x7 << ':';
-			ss << chref.x8 << ':';
-			ss << chref.x9 << ':';
 
 			if (! chref.marker && ! chref.value.empty())
 			{
@@ -784,10 +784,10 @@ void e2db_maker::make_userbouquet(string bname, e2db_file& file, int ver)
 			ss << uppercase << chref.ref.tsid << ':';
 			ss << uppercase << chref.ref.onid << ':';
 			ss << uppercase << chref.ref.dvbns << ':';
+			ss << uppercase << chref.x7 << ':';
+			ss << uppercase << chref.x8 << ':';
+			ss << uppercase << chref.x9 << ':';
 			ss << dec;
-			ss << chref.x7 << ':';
-			ss << chref.x8 << ':';
-			ss << chref.x9 << ':';
 
 			if (! chref.url.empty())
 			{

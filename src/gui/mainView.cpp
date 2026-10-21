@@ -3587,6 +3587,7 @@ void mainView::putListItems(vector<QString> items)
 
 				marker_count++;
 			}
+			//TODO FIX :x7:x8:x9
 			else if (reftype == REF_TYPE::stream)
 			{
 				chref.stream = true;
@@ -4323,6 +4324,7 @@ void mainView::updateReferencePanel()
 				case e2db::ETYPE::efile: psys = "[file]"; break;
 				case e2db::ETYPE::evod: psys = "[vod]"; break;
 				case e2db::ETYPE::eraw: psys = "[raw]"; break;
+				case e2db::ETYPE::edab: psys = "[dab]"; break;
 				case e2db::ETYPE::egstplayer: psys = "[gstplayer]"; break;
 				case e2db::ETYPE::eexteplayer3: psys = "[exteplayer3]"; break;
 				case e2db::ETYPE::eservice: psys = "[eservice]"; break;

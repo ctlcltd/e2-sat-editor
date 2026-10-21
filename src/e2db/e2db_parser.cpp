@@ -1210,7 +1210,7 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 	char xdata;
 	xdata = 0;
 
-	std::sscanf(str.c_str(), "%d:%d:%X:%X:%X:%X:%X:%d:%d:%d:%c", &etype, &atype, &anum, &ssid, &tsid, &onid, &dvbns, &x7, &x8, &x9, &xdata);
+	std::sscanf(str.c_str(), "%d:%d:%X:%X:%X:%X:%X:%X:%X:%X:%c", &etype, &atype, &anum, &ssid, &tsid, &onid, &dvbns, &x7, &x8, &x9, &xdata);
 
 	ref.ssid = ssid;
 	ref.tsid = tsid;
@@ -1287,6 +1287,11 @@ void e2db_parser::parse_channel_reference(string str, channel_reference& chref, 
 	chref.etype = etype;
 	chref.atype = atype;
 	chref.anum = anum;
+
+	//TODO
+	chref.x7 = x7;
+	chref.x8 = x8;
+	chref.x9 = x9;
 }
 
 void e2db_parser::parse_tunersets_xml(int ytype, istream& itunxml)

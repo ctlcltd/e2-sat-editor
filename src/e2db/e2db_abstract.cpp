@@ -305,7 +305,7 @@ void e2db_abstract::value_channel_reference(string str, channel_reference& chref
 	int etype = 0, atype = 0, anum = 0, ssid = 0, tsid = 0, onid = 0, dvbns = 0,
 		x7 = 0, x8 = 0, x9 = 0;
 
-	std::sscanf(str.c_str(), "%d:%d:%X:%X:%X:%X:%X:%d:%d:%d", &etype, &atype, &anum, &ssid, &tsid, &onid, &dvbns, &x7, &x8, &x9);
+	std::sscanf(str.c_str(), "%d:%d:%X:%X:%X:%X:%X:%X:%X:%X", &etype, &atype, &anum, &ssid, &tsid, &onid, &dvbns, &x7, &x8, &x9);
 
 	switch (atype)
 	{
@@ -349,7 +349,7 @@ string e2db_abstract::value_reference_id(service ch)
 	int dvbns = ch.dvbns;
 
 	char refid[50];
-	// %1d:%4d:%4X:%4X:%4X:%4X:%X:%d:%d:%d:
+	// %d:%d:%4X:%4X:%4X:%4X:%X:%X:%X:%X:
 	std::snprintf(refid, 50, "%d:%d:%X:%X:%X:%X:%X:0:0:0", etype, atype, stype, ssid, tsid, onid, dvbns);
 
 	return refid;
@@ -369,8 +369,8 @@ string e2db_abstract::value_reference_id(channel_reference chref)
 	int x9 = chref.x9;
 
 	char refid[50];
-	// %1d:%4d:%4X:%4X:%4X:%4X:%X:%d:%d:%d:
-	std::snprintf(refid, 50, "%d:%d:%X:%X:%X:%X:%X:%d:%d:%d", etype, atype, anum, ssid, tsid, onid, dvbns, x7, x8, x9);
+	// %d:%d:%4X:%4X:%4X:%4X:%X:%X:%X:%X:
+	std::snprintf(refid, 50, "%d:%d:%X:%X:%X:%X:%X:%X:%X:%X", etype, atype, anum, ssid, tsid, onid, dvbns, x7, x8, x9);
 
 	return refid;
 }
@@ -420,8 +420,8 @@ string e2db_abstract::value_reference_id(channel_reference chref, service ch)
 	x9 = chref.x9;
 
 	char refid[50];
-	// %1d:%4d:%4X:%4X:%4X:%4X:%X:%d:%d:%d:
-	std::snprintf(refid, 50, "%d:%d:%X:%X:%X:%X:%X:%d:%d:%d", etype, atype, anum, ssid, tsid, onid, dvbns, x7, x8, x9);
+	// %d:%d:%4X:%4X:%4X:%4X:%X:%X:%X:%X:
+	std::snprintf(refid, 50, "%d:%d:%X:%X:%X:%X:%X:%X:%X:%X", etype, atype, anum, ssid, tsid, onid, dvbns, x7, x8, x9);
 
 	return refid;
 }
@@ -486,6 +486,8 @@ int e2db_abstract::value_favourite_type(string str)
 		return ETYPE::evod;
 	else if (str == "[raw]")
 		return ETYPE::eraw;
+	else if (str == "[dab]")
+		return ETYPE::edab;
 	else if (str == "[gstplayer]")
 		return ETYPE::egstplayer;
 	else if (str == "[exteplayer3]")
@@ -2350,11 +2352,14 @@ void e2db_abstract::dump_data(ostream* os)
 			*os << "inlineval" << ": " << chref.inlineval << '\t' << ' ';
 			*os << "[" << "ref" << "]" << ": " << '\t' << ' ';
 			*os << "[" << '\t' << ' ';
-			*os << "ssid" << chref.ref.ssid << '\t' << ' ';
-			*os << "tsid" << chref.ref.tsid << '\t' << ' ';
-			*os << "onid" << chref.ref.onid << '\t' << ' ';
+			*os << "ssid" << ": " << chref.ref.ssid << '\t' << ' ';
+			*os << "tsid" << ": " << chref.ref.tsid << '\t' << ' ';
+			*os << "onid" << ": " << chref.ref.onid << '\t' << ' ';
 			*os << hex;
-			*os << "dvbns" << "0x" << chref.ref.dvbns << '\t' << ' ';
+			*os << "dvbns" << ": " << "0x" << chref.ref.dvbns << '\t' << ' ';
+			*os << "x7" << ": " << "0x" << chref.x7 << '\t' << ' ';
+			*os << "x8" << ": " << "0x" << chref.x8 << '\t' << ' ';
+			*os << "x9" << ": " << "0x" << chref.x9 << '\t' << ' ';
 			*os << dec;
 			*os << "]" << '\t' << ' ';
 			*os << "anum" << ": " << chref.anum << '\t' << ' ';

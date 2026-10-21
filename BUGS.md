@@ -40,8 +40,8 @@ Information on contributions, to contribute and send Pull Request, please see [C
 
 **To Improve:**
 
-- [ ] service flags and compatibility, `dvbfrontend` [gui] [e2db]
-- [ ] reference flags and compatibility, `dvbfrontend` [gui] [e2db]
+- [ ] reference data and compatibility, `dvbfrontend` [gui] [e2db]
+- [ ] service data and compatibility, `dvbfrontend` [gui] [e2db]
 - [ ] counters accuracy for items, Total, TV, Radio, Data [gui] [tab.cpp]
 - [ ] delete bouquet, file is not deleted, permanent delete method [gui] [mainView.cpp]
 - [ ] lamedb 2.5 2.4 differs, cached pid, caid [e2db]
@@ -55,7 +55,7 @@ Information on contributions, to contribute and send Pull Request, please see [C
 - [x] neutrino feparams and versions, unknown compatibility, `dvbfrontend` [gui] [e2db]
 - [x] workers refactoring, actions and `QThread` concurrency [gui] [ftpcom] [checkUpdate.cpp] [piconsView.cpp]
 - [x] ftp connection indicator, better visual feedback [gui] [tab.cpp]
-- [x] service and reference flags, show flags in the UI (issues:#33) [gui]
+- [x] reference flags, show flags in the UI (issues:#33) [gui]
 - [x] ftp connection messages, eg. "Connected", better visual feedback, status bar is not enough (issues:#35) [gui] [tab.cpp]
 - [x] ftp error messages, from "Access denied to remote resource." to file error. [fptcom]
 - [x] convert lamedbx from and to zapitx, better visual feedback [gui] [tab.cpp]
@@ -64,7 +64,8 @@ Information on contributions, to contribute and send Pull Request, please see [C
 
 **To Evaluate:**
 
-- [ ] service and reference flags, better visual feedback (issues:#33) [gui]
+- [ ] DAB/DAB+ stream support, `dvbfrontend` (issues:#39) [e2db]
+- [ ] reference flags, better visual feedback (issues:#33) [gui]
 - [ ] neutrino feparams: frequency, symbol rate, `dvbfrontend` [e2db]
 - [ ] scale factor, dialog zorder, Qt QPA wayland, eg. `ubuntu` `kde-neon-6` [qt] [linux]
 - [ ] AppImage deploy, GLIBC/GCC/conda-forge and compatibility [qt] [linux]

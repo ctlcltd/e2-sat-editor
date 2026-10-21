@@ -131,6 +131,7 @@ struct e2db_abstract : protected e2se::log_factory
 			efile = 2,   // file enigma 1
 			evod = 4097, // default player
 			eraw = 4114, // raw service
+			edab = 4115,
 			egstplayer = 5001,
 			eexteplayer3 = 5002,
 			eservice = 8193,
@@ -191,10 +192,13 @@ struct e2db_abstract : protected e2se::log_factory
 			{ETYPE::ecast, ETYPE::ecast},
 			{ETYPE::efile, ETYPE::efile},
 			{ETYPE::evod, ETYPE::evod},
+			{ETYPE::eraw, ETYPE::eraw},
+			{ETYPE::edab, ETYPE::edab},
 			{ETYPE::egstplayer, ETYPE::egstplayer},
 			{ETYPE::eexteplayer3, ETYPE::eexteplayer3},
 			{ETYPE::eservice, ETYPE::eservice},
-			{ETYPE::eyoutube, ETYPE::eyoutube}
+			{ETYPE::eyoutube, ETYPE::eyoutube},
+			{ETYPE::eservice2, ETYPE::eservice2}
 		};
 
 		// entry type extended - label
@@ -203,6 +207,7 @@ struct e2db_abstract : protected e2se::log_factory
 			{ETYPE::efile, "[file]"},
 			{ETYPE::evod, "[vod]"},
 			{ETYPE::eraw, "[raw]"},
+			{ETYPE::edab, "[dab]"},
 			{ETYPE::egstplayer, "[gstreamer]"},
 			{ETYPE::eexteplayer3, "[exteplayer3]"},
 			{ETYPE::eservice, "[eservice]"},
